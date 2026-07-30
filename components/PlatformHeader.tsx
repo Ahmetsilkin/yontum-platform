@@ -1,0 +1,2 @@
+import Link from'next/link';
+export default function PlatformHeader(){return <header className="platformHeader"><Link className="platformLogo" href="/"><span>Y</span><b>YONTUM<small>MARKAN. SİTEN. RANDEVULARIN.</small></b></Link><nav><Link href="/#ozellikler">Özellikler</Link><Link href="/kayit">Ücretsiz Beta</Link><Link href="/giris">Giriş Yap</Link><Link className="navCta" href="/kayit">Ücretsiz Başla →</Link></nav></header>}
