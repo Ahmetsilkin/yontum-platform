@@ -1,0 +1,67 @@
+/* ================= Yontum tanıtım sitesi (landing) - VIP tema =================
+   Bu dosya SADECE platformun kendi tanıtım sayfasını (src/app/page.tsx) etkiler.
+   Admin paneli (admin-modern.css) ve müşteri siteleri (radical-themes.css) ayrı
+   dosyalarda, bu değişiklik onları etkilemez. */
+
+:root{
+  --v-bg:#0a0906;
+  --v-bg-alt:#12100a;
+  --v-ink:#f5ecd8;
+  --v-muted:#a89871;
+  --v-gold:#d4af37;
+  --v-gold-soft:#e8c96b;
+  --v-line:#2e2717;
+}
+
+.platformHeader{background:#0a0906ed;border-bottom:1px solid var(--v-line);color:var(--v-ink)}
+.platformLogo,.platformLogo b,.platformLogo span{color:var(--v-ink)}
+.platformLogo small{color:var(--v-muted)}
+.platformHeader nav a{color:var(--v-muted)}
+.platformHeader nav a:hover{color:var(--v-ink)}
+.platformHeader .navCta{background:linear-gradient(135deg,var(--v-gold),#b8892a)!important;color:#0a0906!important;padding:11px 18px;font-weight:700}
+
+.landing{background:var(--v-bg);color:var(--v-ink)}
+.landingHero{background:var(--v-bg)}
+.landingHero .overline{color:var(--v-gold-soft)}
+.landingHero h1{color:var(--v-ink)}
+.landingHero h1 em{color:var(--v-gold);font-style:normal}
+.landingHero p{color:var(--v-muted)}
+.landingHero small{color:var(--v-muted)}
+.primaryBtn{background:linear-gradient(135deg,var(--v-gold),#b8892a)!important;color:#0a0906!important;font-weight:800}
+.textLink{color:var(--v-ink)}
+
+/* Ürün ekran görüntüsü mockup'ı bilinçli olarak beyaz bırakıldı - gerçek bir
+   tarayıcı penceresini temsil ettiği için karşıtlık oluşturup öne çıkması iyi. */
+.browser{box-shadow:0 35px 90px #000a}
+.floatCard{background:var(--v-bg-alt);border:1px solid var(--v-line);color:var(--v-ink)}
+.floatCard span{background:var(--v-gold);color:#0a0906}
+
+.logoStrip{background:var(--v-bg-alt);border-top:1px solid var(--v-line);border-bottom:1px solid var(--v-line);color:var(--v-muted)}
+.logoStrip b{color:var(--v-gold-soft)}
+
+.landingSection{background:var(--v-bg)}
+.sectionIntro .overline{color:var(--v-gold-soft)}
+.sectionIntro h2{color:var(--v-ink)}
+.featureGrid{border-top-color:var(--v-line)}
+.featureGrid article{border-color:var(--v-line)!important;color:var(--v-ink)}
+.featureGrid small{color:var(--v-gold-soft)}
+.featureGrid p{color:var(--v-muted)}
+
+.how{background:#050403}
+.how .overline{color:var(--v-gold-soft)}
+.how article b{color:var(--v-gold)}
+.how article p{color:var(--v-muted)}
+
+.pricing{background:var(--v-bg);color:var(--v-ink)}
+.priceCards article{background:var(--v-bg-alt);border:1px solid var(--v-line)}
+.priceCards article.featured{border-color:var(--v-gold)}
+.priceCards h3{color:var(--v-ink)}
+.priceCards ul{color:var(--v-muted)}
+.priceCards a{background:linear-gradient(135deg,var(--v-gold),#b8892a);color:#0a0906}
+
+.finalCta{background:linear-gradient(135deg,#1d1811,#0a0906)!important;border-top:1px solid var(--v-line)}
+.finalCta .overline{color:var(--v-gold-soft)}
+.finalCta h2{color:var(--v-ink)}
+.primaryBtn.light{background:linear-gradient(135deg,var(--v-gold),#b8892a)!important;color:#0a0906!important}
+
+.platformFooter{background:#050403;border-top:1px solid var(--v-line)}
