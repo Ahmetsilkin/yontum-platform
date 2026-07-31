@@ -27,6 +27,13 @@
 .authCard h2{font-size:40px;color:var(--admin-ink)}
 .authCard .input{border-radius:10px;background:#141414;color:var(--admin-ink);border:1px solid var(--admin-line)}
 .authCard .formButton{border-radius:10px;background:linear-gradient(135deg,var(--admin-gold),#b8892a);color:#0a0a0a;font-weight:700}
+.verifiedPage{background:#000!important;color:#fff}
+.verifiedPage section{background:#141414!important;border-color:#262626!important;color:#fff}
+.verifiedPage h1{color:#fff}
+.verifiedPage section>p:not(.overline){color:#9a9a9a}
+.verifiedPage .overline{color:#e8c96b}
+.verifiedIcon{background:var(--admin-gold)!important;color:#0a0a0a!important}
+.verifiedPage a,.verifiedPage .primaryBtn,.verifiedPage .formButton{background:linear-gradient(135deg,var(--admin-gold),#b8892a);color:#0a0a0a!important;font-weight:700}
 .daySchedule{box-shadow:0 25px 60px #0006}
 @media(max-width:650px){.dashboardTop h1{font-size:22px}.dashboardContent{padding-top:20px!important}.panel,.stat,.siteEditor{border-radius:12px}.stats{gap:8px}.stat b{font-size:26px}.authCard{padding:26px 20px;border-radius:16px}.appointmentTabs{padding-bottom:6px}}
 
