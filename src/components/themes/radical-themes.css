@@ -1,0 +1,381 @@
+.radical{--accent:#111;--bg:#f5f3ee;--surface:#fff;--text:#111;--muted:#777;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}.radical.mode-dark{--bg:#0d0d0d;--surface:#171717;--text:#f7f4ed;--muted:#aaa}.radical a{color:inherit;text-decoration:none}.rBrand{display:flex;align-items:center;gap:12px;text-transform:uppercase;letter-spacing:2px}.rBrand img,.rBrand i{width:44px;height:44px;object-fit:cover;background:var(--accent);color:#fff;display:grid;place-items:center;font-style:normal}.rCta{display:inline-block;background:var(--accent);color:#fff!important;padding:14px 20px;font-weight:800;transition:.2s}.cta-outline .rCta{background:transparent;color:var(--accent)!important;border:2px solid var(--accent)}.cta-pill .rCta{border-radius:999px}.cta-underline .rCta{background:transparent;color:var(--text)!important;border-bottom:3px solid var(--accent);padding-inline:0}.cta-floating .rCta{border-radius:14px;box-shadow:8px 8px 0 color-mix(in srgb,var(--accent) 30%,#111);transform:translateY(-3px)}.rHero small,.rServices>header small,.rAbout>small,.rStaff>small,.rBooking>header small{letter-spacing:3px;font-size:10px}.rHero h1{font-size:clamp(55px,9vw,130px);line-height:.86;margin:25px 0;letter-spacing:-.06em}.rHero h1 em{display:block;color:var(--accent);font-style:normal}.rHero p{max-width:620px;color:var(--muted);line-height:1.7;font-size:17px}.rServices{padding:100px 7vw}.rServices h2,.rAbout h2,.rBooking h2{font:700 46px Georgia}.rServices>div{display:grid;grid-template-columns:repeat(3,1fr)}.rServices article{padding:25px;border:1px solid #aaa4}.rServices article>span{font:italic 25px Georgia;color:var(--muted)}.rServices h3{font-size:23px}.rServices p{color:var(--muted)}.rServices footer{display:flex;justify-content:space-between;margin-top:25px}.rServices em{font-style:normal}.rStaff{padding:80px 7vw}.rStaff>div{display:flex;gap:20px;overflow-x:auto}.rStaff article{min-width:220px}.rStaff img,.rStaff article>i{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:60px}.rGallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-flow:dense;gap:0;overflow:hidden}.rGallery>*{min-width:0;display:block}.rGallery img,.rGallery video{width:100%;height:340px;object-fit:cover}.rGallery.media-count-1{grid-template-columns:1fr}.rGallery.media-count-2{grid-template-columns:repeat(2,1fr)}.rGallery.media-count-3{grid-template-columns:repeat(3,1fr)}.rGallery.media-count-4{grid-template-columns:repeat(2,1fr)}.rGallery.media-count-5,.rGallery.media-count-6{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.rGallery.media-count-1>*,.rGallery.media-count-2>*,.rGallery.media-count-3>*,.rGallery.media-count-4>*,.rGallery.media-count-5>*,.rGallery.media-count-6>*{height:auto!important;aspect-ratio:4/3;grid-column:auto!important;grid-row:auto!important;object-fit:cover}.rGallery video{background:#000}
+.radical.scheme-light{--bg:#f8f7f3;--surface:#fff;--text:#171717;--muted:#707070}.radical.scheme-dark{--bg:#0d0d0d;--surface:#181818;--text:#f6f2e9;--muted:#aaa}.radical.scheme-warm{--bg:#f4eadb;--surface:#fff9ef;--text:#39261d;--muted:#826d60}.radical.scheme-natural{--bg:#eef3ea;--surface:#f9fbf7;--text:#243328;--muted:#6e7d70}.radical.scheme-soft{--bg:#fff3f7;--surface:#fffafd;--text:#422531;--muted:#8d707b}.radical.scheme-vivid{--bg:#fff5df;--surface:#fff;--text:#27152c;--muted:#785c75}.radical.scheme-luxury{--bg:#14110e;--surface:#1d1813;--text:#f2e3c5;--muted:#b8a98e}.rAbout{padding:100px 12vw;max-width:1200px}.rAbout p{font-size:20px;line-height:1.9;color:var(--muted)}.rBooking{padding:100px 7vw;background:color-mix(in srgb,var(--accent) 7%,var(--surface))}.rBooking .tenantBooking{background:var(--surface)!important;color:var(--text);border-color:color-mix(in srgb,var(--text) 14%,transparent)!important}
+.rBooking .tbServices button,.rBooking .staffOptions button,.rBooking .tbDays button,.rBooking .tbSlots button{background:var(--bg)!important;border-color:color-mix(in srgb,var(--text) 16%,transparent)!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+.rBooking .tbServices small,.rBooking .staffOptions small{color:var(--muted)!important}
+.rBooking .tbTitle span{color:color-mix(in srgb,var(--text) 40%,transparent)}
+.rBooking .tbTitle h3{color:var(--text)}
+.rBooking .tbTitle p{color:var(--muted)}
+.rBooking .input{background:var(--bg)!important;color:var(--text)!important;border-color:color-mix(in srgb,var(--text) 18%,transparent)!important}.googleReviews{padding:90px 7vw;background:var(--surface);color:var(--text)}.googleReviews>header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:35px}.googleReviews h2{font:700 42px Georgia;margin:8px 0}.googleReviews h2 span,.googleReviewGrid article span{color:#f5a623;letter-spacing:2px}.googleReviews header p{color:var(--muted)}.googleReviews header>a{border-bottom:1px solid}.googleReviewGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.googleReviewGrid article{border:1px solid color-mix(in srgb,var(--text) 14%,transparent);padding:18px;display:grid;grid-template-columns:44px 1fr;gap:10px}.googleReviewGrid img,.googleReviewGrid article>i{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--accent);color:#fff;display:grid;place-items:center;font-style:normal}.googleReviewGrid article>div{display:flex;flex-direction:column}.googleReviewGrid small{color:var(--muted)}.googleReviewGrid article>p,.googleReviewGrid article>a{grid-column:1/-1}.googleReviewGrid article>p{line-height:1.6}.googleReviewGrid article>a{font-size:11px;text-decoration:underline}.googleReviews>footer{margin-top:18px;font-size:10px;color:var(--muted)}.rContact{padding:55px 7vw;background:#0b0b0b;color:#fff;display:grid;grid-template-columns:2fr repeat(3,1fr);gap:25px}.rContact div small{display:block;color:#888}.rWhatsapp{position:fixed;right:22px;bottom:22px;background:#25d366!important;color:#fff!important;padding:15px 20px;border-radius:40px;z-index:50;font-weight:800}
+/* Heritage */.tHeritage{display:grid;grid-template-columns:220px 1fr;background:#f1e7d5;min-height:100vh}.tHeritage>aside{position:sticky;top:0;height:100vh;border-right:4px double #352216;padding:35px 22px;display:flex;flex-direction:column;justify-content:space-between}.tHeritage aside nav{display:grid;gap:15px}.stamp{border:3px double;padding:15px;text-align:center;max-width:170px;overflow:hidden}.stamp span,.issue span,.popBadge span{display:block;max-width:100%;overflow-wrap:anywhere;word-break:break-word;line-height:1.05}.stamp span{font-size:clamp(11px,1.3vw,18px)}.tHeritage .rHero{padding:12vh 8vw;border-bottom:4px double}.tHeritage .rHero h1{font-family:Georgia;font-style:italic}.tHeritage .rServices.ledger>div{grid-template-columns:1fr}.tHeritage .rServices article{display:grid;grid-template-columns:70px 1fr auto;align-items:center;border-width:0 0 1px}.tHeritage .rServices article footer{display:block}.tHeritage .rGallery.framed{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:30px;gap:20px}.tHeritage .rGallery img{border:12px solid #fff;box-shadow:0 8px 20px #0002}
+/* Modern */.tModern>header{height:78px;display:flex;justify-content:space-between;align-items:center;padding:0 5vw;border-bottom:1px solid}.tModern .rHero{padding:12vh 6vw;overflow:hidden}.tModern .rHero h1{text-transform:uppercase;font-family:Impact,Arial}.ticker{white-space:nowrap;font-size:35px;font-weight:900;margin:70px -10vw -30px;background:var(--accent);color:#fff;padding:12px;transform:rotate(-2deg)}.tModern .rServices.horizontal>div{display:flex;overflow-x:auto}.tModern .rServices article{min-width:360px}.tModern .rStaff.rows article{display:grid;grid-template-columns:100px 1fr;min-width:300px}.tModern .rStaff.rows img{aspect-ratio:1}
+/* Editorial */.tEditorial>header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:22px 5vw;border-block:1px solid;text-align:center}.tEditorial>header span:last-child{text-align:right}.tEditorial .rHero{display:grid;grid-template-columns:.7fr 1.3fr;padding:9vh 8vw}.issue{font:900 clamp(60px,10vw,150px)/.75 Georgia;color:var(--accent);opacity:.2}.tEditorial .rHero h1{font-family:Georgia;font-weight:400}.rGallery.editorial{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;padding:0 5vw}.rGallery.editorial>*:first-child{grid-row:span 2;height:688px}.editorialColumns{display:grid;grid-template-columns:.8fr 1.2fr}.tEditorial .rServices.article>div{grid-template-columns:1fr}.tEditorial .rServices.article article{border-inline:0}
+/* Soft */.tSoft>header{display:flex;justify-content:space-between;padding:25px 6vw}.tSoft .rHero{padding:70px 7vw;display:grid;grid-template-columns:1fr 1fr;gap:30px}.softBlob{background:color-mix(in srgb,var(--accent) 13%,white);border-radius:50px 50px 50px 8px;padding:60px}.tSoft .rHero h1{font-family:Georgia;font-size:clamp(50px,7vw,95px)}.rGallery.heroCollage{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rGallery.heroCollage>*{border-radius:100px 100px 12px 12px}.tSoft .rServices.pills>div{gap:15px}.tSoft .rServices article{border:0;border-radius:30px;background:#fff}.tSoft .rStaff.bubbles img{border-radius:50%;aspect-ratio:1}
+/* Luxury */.tLuxury{background:var(--bg);color:var(--text)}.tLuxury>header{display:flex;justify-content:space-between;padding:30px 6vw;border-bottom:1px solid #9b7b3f}.tLuxury .rHero{text-align:center;padding:14vh 8vw}.tLuxury .rHero h1{font-family:Georgia;font-weight:400}.goldLine{height:1px;background:#9b7b3f;max-width:500px;margin:30px auto}.tLuxury .rServices{background:#18140f}.tLuxury .rServices.menu>div{grid-template-columns:1fr 1fr}.tLuxury .rServices article{border-color:#9b7b3f}.tLuxury .rGallery.cinema{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}.rGallery.cinema>*{filter:saturate(.7)}
+/* Pop */.tPop{background:#fff3fa}.tPop>header{display:flex;justify-content:space-between;padding:20px 5vw}.popBento{display:grid;grid-template-columns:2fr .7fr;gap:15px;padding:30px 5vw}.popBento .rHero{background:#fff;border:4px solid;border-radius:30px;padding:60px}.popBadge{background:#ffed4a;border:4px solid;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:30px;font-weight:900;transform:rotate(8deg)}.rGallery.popTile{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;padding:0 5vw}.rGallery.popTile>*{border:4px solid;border-radius:25px}.tPop .rServices.stickers article{border:4px solid;border-radius:25px;box-shadow:8px 8px 0 var(--accent)}
+/* Zen */.tZen{background:var(--bg);color:var(--text)}.tZen>header{display:flex;justify-content:space-between;padding:35px 8vw}.tZen .rHero{min-height:75vh;padding:20vh 15vw}.tZen .rHero h1{font-family:Georgia;font-weight:400;max-width:900px}.tZen .rServices.zenLines>div{grid-template-columns:1fr}.tZen .rServices article{border-width:1px 0 0;padding:35px 0}.rGallery.zenWide{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:0 6vw}.rGallery.zenWide>*{height:500px}
+/* Fresh */.tFresh>header{display:flex;justify-content:space-between;padding:20px 5vw}.freshDashboard{display:grid;grid-template-columns:2fr 1fr;gap:14px;padding:40px 5vw}.freshDashboard .rHero{grid-row:span 2;background:#fff;padding:60px;border-radius:20px}.freshStat{background:var(--accent);color:#fff;border-radius:20px;display:flex;flex-direction:column;justify-content:center;padding:30px}.freshStat b{font-size:55px}.tFresh .rServices.info>div{gap:14px}.tFresh .rServices article{background:#fff;border:0;border-radius:16px}.freshSplit{display:grid;grid-template-columns:1fr 1fr}.freshSplit .rAbout{padding-inline:5vw}
+/* Calm */.tCalm{max-width:1100px;margin:auto;background:#f4f6f8;box-shadow:0 0 80px #0001}.tCalm>header{display:flex;justify-content:space-between;padding:28px 6vw}.tCalm .rHero{padding:12vh 10vw}.tCalm .rHero h1{font-family:Georgia;font-weight:400;font-size:clamp(50px,7vw,90px)}.calmReading{display:grid;grid-template-columns:1fr 1fr;background:#fff}.tCalm .rServices.calmRows{padding-inline:5vw}.tCalm .rServices.calmRows>div{grid-template-columns:1fr}.tCalm .rServices article{border-inline:0}.tCalm .rBooking{padding-inline:5vw}
+.heritageBody,.tModern,.tEditorial,.tSoft,.tLuxury,.tPop,.tZen,.tFresh,.tCalm{display:flex;flex-direction:column}.rHero{order:10}.rServices,.editorialColumns{order:20}.rStaff,.freshSplit{order:30}.rAbout{order:40}.rBooking{order:60}.googleReviews{order:65}.rContact{order:70}.rGallery.gallery-pos-after_hero{order:15}.rGallery.gallery-pos-after_services{order:25}.rGallery.gallery-pos-after_staff{order:35}.rGallery.gallery-pos-before_booking{order:50}.rGallery.gallery-pos-before_footer{order:68}.rGallery.gallery-size-compact{width:min(900px,92%);margin-inline:auto}.rGallery.gallery-size-standard{width:min(1200px,100%);margin-inline:auto}.rGallery.gallery-size-large{width:100%}.rGallery.gallery-size-fullscreen{width:100vw;margin-left:calc(50% - 50vw)}.rGallery.gallery-ratio-1_1>*{aspect-ratio:1/1!important}.rGallery.gallery-ratio-4_3>*{aspect-ratio:4/3!important}.rGallery.gallery-ratio-16_9>*{aspect-ratio:16/9!important}.rGallery.gallery-ratio-3_4>*{aspect-ratio:3/4!important}.rGallery.gallery-ratio-original>*{aspect-ratio:auto!important;height:auto!important}.radical .rGallery[class*="media-count-"]>*{height:auto!important;aspect-ratio:4/3!important;grid-column:auto!important;grid-row:auto!important;object-fit:cover!important}.radical .rGallery.media-count-1{grid-template-columns:1fr!important}.radical .rGallery.media-count-2{grid-template-columns:repeat(2,1fr)!important}.radical .rGallery.media-count-3{grid-template-columns:repeat(3,1fr)!important}.radical .rGallery.media-count-4{grid-template-columns:repeat(2,1fr)!important}.radical .rGallery.media-count-5,.radical .rGallery.media-count-6{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}.radical .rGallery.gallery-ratio-1_1>*{aspect-ratio:1/1!important}.radical .rGallery.gallery-ratio-4_3>*{aspect-ratio:4/3!important}.radical .rGallery.gallery-ratio-16_9>*{aspect-ratio:16/9!important}.radical .rGallery.gallery-ratio-3_4>*{aspect-ratio:3/4!important}.radical .rGallery.gallery-ratio-original>*{aspect-ratio:auto!important;height:auto!important}.cta-anim-pulse .rCta{animation:ctaPulse 2s ease-in-out infinite}.cta-anim-float .rCta{animation:ctaFloat 2.4s ease-in-out infinite}.cta-anim-shine .rCta{position:relative;overflow:hidden}.cta-anim-shine .rCta:after{content:'';position:absolute;inset:-40% auto -40% -35%;width:25%;background:#fff8;transform:rotate(20deg);animation:ctaShine 2.8s ease-in-out infinite}.cta-anim-bounce .rCta{animation:ctaBounce 2.2s ease infinite}@keyframes ctaPulse{50%{transform:scale(1.045);box-shadow:0 8px 25px color-mix(in srgb,var(--accent) 35%,transparent)}}@keyframes ctaFloat{50%{transform:translateY(-7px)}}@keyframes ctaShine{55%,100%{left:125%}}@keyframes ctaBounce{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-7px)}90%{transform:translateY(-3px)}}@media(max-width:800px){.tHeritage{display:block}.tHeritage>aside{position:static;height:auto;border-right:0;border-bottom:3px double;flex-direction:row}.tHeritage aside nav,.stamp{display:none}.tEditorial .rHero,.editorialColumns,.tSoft .rHero,.freshDashboard,.freshSplit,.calmReading{grid-template-columns:1fr}.issue{display:none}.popBento{grid-template-columns:1fr}.popBadge{display:none}.rServices>div,.tLuxury .rServices.menu>div{grid-template-columns:1fr}.rGallery.media-count-1,.rGallery.media-count-3,.rGallery.media-count-5{grid-template-columns:1fr!important}.rGallery.media-count-2,.rGallery.media-count-4,.rGallery.media-count-6{grid-template-columns:1fr 1fr!important}.rGallery>*{grid-column:auto!important;grid-row:auto!important;height:auto!important;aspect-ratio:4/3!important}.googleReviews>header{display:block}.googleReviews header>a{display:inline-block;margin-top:12px}.googleReviewGrid{grid-template-columns:1fr}.rContact{grid-template-columns:1fr 1fr}.rHero h1{font-size:55px}.rBooking{padding:65px 16px}.rStaff{padding-inline:22px}}
+@media(max-width:800px){.radical .rGallery.gallery-mobile-one{grid-template-columns:1fr!important}.radical .rGallery.gallery-mobile-two{grid-template-columns:1fr 1fr!important}.radical .rGallery.gallery-mobile-auto.media-count-1,.radical .rGallery.gallery-mobile-auto.media-count-3,.radical .rGallery.gallery-mobile-auto.media-count-5{grid-template-columns:1fr!important}.radical .rGallery.gallery-mobile-auto.media-count-2,.radical .rGallery.gallery-mobile-auto.media-count-4,.radical .rGallery.gallery-mobile-auto.media-count-6{grid-template-columns:1fr 1fr!important}.rGallery.gallery-size-fullscreen{width:100vw;margin-left:calc(50% - 50vw)}}
+
+/* ================= Cinematic (yeni, 2026 tarzı) =================
+   Tam ekran kapak fotoğrafı, devasa başlık, sinema afişi hissi.
+   Modern barbershop/salon sitelerinde öne çıkan trend: minimal metin,
+   büyük görsel, cesur tipografi. */
+.tCinematic{background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+.tCinematic .cNav{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:26px 6vw;background:linear-gradient(180deg,#000000cc,transparent);backdrop-filter:blur(6px)}
+.tCinematic .cNav .rBrand{color:#f2ede4}
+.tCinematic .cNav .rBrand i{background:var(--accent)}
+.tCinematic .cNav .rCta{background:var(--accent);color:#0a0a0a!important;border:0;padding:13px 24px;font-weight:800;border-radius:2px}
+.tCinematic .cHero{min-height:100vh;margin-top:-90px;background:linear-gradient(160deg,#1a1a1a,#0a0a0a);background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:8vw 6vw}
+.tCinematic .cHeroInner{max-width:900px}
+.tCinematic .cHeroInner small{letter-spacing:5px;font-size:11px;color:var(--accent);font-weight:800}
+.tCinematic .cHeroInner h1{font:900 clamp(46px,8vw,110px)/0.94 Arial,sans-serif;text-transform:uppercase;letter-spacing:-0.02em;margin:18px 0 22px}
+.tCinematic .cHeroInner h1 em{display:block;font-style:normal;color:var(--accent)}
+.tCinematic .cHeroInner p{max-width:480px;color:#c9c2b4;line-height:1.7;font-size:15px;margin-bottom:26px}
+.tCinematic .cHeroInner .rCta{background:var(--accent);color:#0a0a0a!important;border:0;padding:16px 30px;font-weight:800;border-radius:2px;letter-spacing:1px}
+
+.tCinematic .rServices.cinematicRows{background:#0a0a0a;padding:120px 6vw}
+.tCinematic .rServices.cinematicRows header small{color:var(--accent);letter-spacing:4px;font-weight:800}
+.tCinematic .rServices.cinematicRows header h2{font:900 clamp(28px,4vw,48px)/1 Arial,sans-serif;text-transform:uppercase;margin:12px 0 50px}
+.tCinematic .rServices.cinematicRows>div{display:block}
+.tCinematic .rServices.cinematicRows article{display:flex;align-items:baseline;gap:24px;padding:26px 0;border-bottom:1px solid #262626}
+.tCinematic .rServices.cinematicRows article span{font-size:13px;color:var(--accent);font-weight:800}
+.tCinematic .rServices.cinematicRows article h3{font-size:22px;font-weight:700;flex:1}
+.tCinematic .rServices.cinematicRows article p{color:#8a8478;font-size:13px}
+.tCinematic .rServices.cinematicRows article footer{display:flex;gap:16px;color:#8a8478;font-size:13px}
+.tCinematic .rServices.cinematicRows article footer b{color:#f2ede4}
+
+.tCinematic .rGallery.cinematicShowcase{display:grid;grid-template-columns:1.4fr 1fr;gap:6px;padding:0 6px}
+.tCinematic .rGallery.cinematicShowcase img,.tCinematic .rGallery.cinematicShowcase video{width:100%;height:100%;object-fit:cover;filter:grayscale(15%);transition:.3s}
+.tCinematic .rGallery.cinematicShowcase img:hover{filter:grayscale(0)}
+.tCinematic .rGallery.cinematicShowcase>*:first-child{grid-row:span 2;min-height:520px}
+
+.tCinematic .rStaff.cinematicPortrait{padding:110px 6vw;background:#0e0e0e}
+.tCinematic .rStaff.cinematicPortrait small{color:var(--accent);letter-spacing:4px;font-weight:800}
+.tCinematic .rStaff.cinematicPortrait>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:40px}
+.tCinematic .rStaff.cinematicPortrait article{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px}
+.tCinematic .rStaff.cinematicPortrait img{width:100%;height:100%;object-fit:cover;filter:grayscale(60%);transition:.3s}
+.tCinematic .rStaff.cinematicPortrait article:hover img{filter:grayscale(0)}
+.tCinematic .rStaff.cinematicPortrait h3,.tCinematic .rStaff.cinematicPortrait p{position:absolute;left:16px;color:#fff;margin:0}
+.tCinematic .rStaff.cinematicPortrait h3{bottom:34px;font-size:16px}
+.tCinematic .rStaff.cinematicPortrait p{bottom:14px;font-size:12px;color:#c9c2b4}
+
+.tCinematic .rAbout{padding:110px 6vw;max-width:800px}
+.tCinematic .rAbout small{color:var(--accent);letter-spacing:4px;font-weight:800}
+.tCinematic .rAbout h2{font:900 clamp(26px,4vw,42px)/1.1 Arial,sans-serif;text-transform:uppercase;margin:14px 0}
+.tCinematic .rAbout p{color:#c9c2b4;line-height:1.8}
+
+.tCinematic .rBooking{background:#111;padding:110px 6vw}
+.tCinematic .rBooking header small{color:var(--accent);letter-spacing:4px;font-weight:800}
+.tCinematic .rBooking header h2{font:900 clamp(26px,4vw,42px)/1.1 Arial,sans-serif;text-transform:uppercase;margin:14px 0 40px}
+
+.tCinematic .rContact{background:#0a0a0a;border-top:1px solid #262626;padding:60px 6vw;color:#8a8478}
+.tCinematic .rContact small{color:var(--accent);letter-spacing:2px}
+.tCinematic .rContact p{color:#f2ede4}
+
+@media(max-width:720px){
+  .tCinematic .rGallery.cinematicShowcase{grid-template-columns:1fr}
+  .tCinematic .rGallery.cinematicShowcase>*:first-child{min-height:280px}
+  .tCinematic .cHero{padding:8vw 6vw 60px}
+}
+
+/* ================= Kendi puanlama sistemimiz (site üzerinde gösterim) ================= */
+.ownReviews{padding:90px 7vw;background:var(--bg);color:var(--text);order:65}
+.ownReviews header h2{font:800 44px Arial,sans-serif;margin:10px 0 6px}
+.ownReviews header h2 span{color:#e8a33d;font-size:24px;letter-spacing:2px;margin-left:8px}
+.ownReviews header p{opacity:.6;font-size:13px}
+.ownReviewGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.ownReviewGrid article{background:var(--surface);border:1px solid color-mix(in srgb,var(--text) 12%,transparent);border-radius:14px;padding:22px}
+.ownReviewStars{color:#e8a33d;letter-spacing:2px;margin-bottom:10px}
+.ownReviewGrid article p{font-size:14px;line-height:1.6;opacity:.85;margin-bottom:14px}
+.ownReviewGrid article small{opacity:.5;font-weight:700;letter-spacing:.5px}
+@media(max-width:720px){.ownReviewGrid{grid-template-columns:1fr}.ownReviews header h2{font-size:34px}}
+.ownReviewHead{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ownReviewAvatar{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px}
+.ownReviewHead b{display:block;font-size:14px}
+
+/* ================= Yorumlar - her temanın kendi karakterine uygun ================= */
+.tModern .ownReviewGrid article{border-radius:14px}
+.tEditorial .ownReviews{padding-left:12%}
+.tEditorial .ownReviewGrid{grid-template-columns:1fr 1fr}
+.tEditorial .ownReviewGrid article{border:0;border-top:2px solid var(--accent);border-radius:0;padding-top:18px}
+.tLuxury .ownReviewGrid article{border-color:color-mix(in srgb,var(--accent) 40%,transparent);background:color-mix(in srgb,var(--text) 4%,transparent)}
+.tLuxury .ownReviewAvatarFallback{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.tZen .ownReviewGrid{grid-template-columns:1fr;max-width:640px;margin-inline:auto;gap:0}
+.tZen .ownReviewGrid article{border:0;border-bottom:1px solid color-mix(in srgb,var(--text) 15%,transparent);border-radius:0;padding:24px 0}
+.tCinematic .ownReviews header h2{text-transform:uppercase;letter-spacing:2px}
+.tCinematic .ownReviewGrid article{border-radius:2px;background:color-mix(in srgb,var(--text) 5%,transparent)}
+.tCinematic .ownReviewAvatarFallback{border-radius:2px}
+
+/* ================= Vitrin (dropshipping/e-ticaret tarzı) =================
+   Bold rozetler, aciliyet mesajları, büyük kartlar - modern online mağaza
+   enerjisi. Nötr paletle (accent rengine bağlı) ama yüksek kontrastlı. */
+.tVitrin{background:#050505;color:#f5f2ea}
+.tVitrin .vBar{background:linear-gradient(90deg,var(--accent),#f0c14b);color:#050505;text-align:center;padding:10px;font-size:12.5px;font-weight:900;letter-spacing:.5px}
+.tVitrin header{display:flex;justify-content:space-between;align-items:center;padding:22px 6vw;border-bottom:1px solid #1c1c1c}
+.tVitrin .vHero{padding:8vw 6vw;text-align:center;background:radial-gradient(circle at 50% 0%,#141414,#050505 65%)}
+.tVitrin .vHero h1{font:900 clamp(40px,7.5vw,80px)/1.02 Arial,sans-serif;text-transform:uppercase;letter-spacing:-.01em}
+.tVitrin .vHero h1 em{color:#f0c14b;font-style:normal}
+.tVitrin .vBadgeRow{display:flex;justify-content:center;gap:10px;margin-top:24px;flex-wrap:wrap}
+.tVitrin .vBadge{background:#141414;color:#f0c14b;border:1.5px solid #f0c14b;padding:9px 18px;border-radius:999px;font-weight:800;font-size:12.5px}
+
+.tVitrin .rServices.vitrinDeals{padding:80px 6vw;background:#050505}
+.tVitrin .rServices.vitrinDeals header h2{font:900 clamp(28px,4vw,42px)/1 Arial,sans-serif;color:#f5f2ea;text-transform:uppercase}
+.tVitrin .rServices.vitrinDeals>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:32px}
+.tVitrin .rServices.vitrinDeals article{position:relative;border:1.5px solid #262626;border-radius:16px;padding:24px;background:#101010;overflow:hidden;color:#f5f2ea}
+.tVitrin .rServices.vitrinDeals article:nth-child(3n+1):before{content:'POPÜLER';position:absolute;top:12px;right:-30px;background:#f0c14b;color:#050505;font-size:10px;font-weight:900;padding:4px 34px;transform:rotate(35deg)}
+.tVitrin .rServices.vitrinDeals article h3{font-size:19px;margin:6px 0;color:#f5f2ea}
+.tVitrin .rServices.vitrinDeals article footer b{font-size:24px;color:#f0c14b}
+
+.tVitrin .rGallery.vitrinGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 6vw 80px;background:#050505}
+.tVitrin .rGallery.vitrinGrid img{border-radius:12px;aspect-ratio:1;object-fit:cover;filter:brightness(.85);transition:.2s}
+.tVitrin .rGallery.vitrinGrid img:hover{filter:brightness(1)}
+
+@media(max-width:720px){
+  .tVitrin .rServices.vitrinDeals>div{grid-template-columns:1fr 1fr}
+  .tVitrin .rGallery.vitrinGrid{grid-template-columns:1fr 1fr}
+}
+
+/* ================= Mega (2. koyu dropshipping tema - Vitrin'den bilinçli olarak çok farklı) =================
+   Bento-grid düzen, elektrik mavi vurgu, yuvarlak kartlar, yatay kaydırmalı ekip.
+   Vitrin sert/köşeli+altın iken, Mega yumuşak/yuvarlak+camgöbeği. */
+.tMega{background:#0d0d0f;color:#f1f1f4}
+.tMega header{display:flex;justify-content:space-between;align-items:center;padding:24px 6vw}
+.tMega .rBrand{color:#f1f1f4}
+.tMega .rCta{background:#5ee7ff!important;color:#0d0d0f!important;border-radius:999px;font-weight:800}
+
+.megaHero{padding:7vw 6vw 5vw;display:grid;grid-template-columns:1.4fr .6fr;gap:5vw;align-items:end;background:linear-gradient(180deg,#141420,#0d0d0f)}
+.megaHero h1{font:800 clamp(36px,6vw,64px)/1.05 Arial,sans-serif}
+.megaHero h1 em{color:#5ee7ff;font-style:normal}
+.megaHeroStat{background:#16161c;border:1px solid #26262e;border-radius:20px;padding:26px;text-align:center}
+.megaHeroStat b{display:block;font-size:38px;color:#5ee7ff;font-weight:900}
+.megaHeroStat span{font-size:12px;color:#9a9aa5}
+
+.megaBento{display:grid;grid-template-columns:1.3fr .9fr;gap:18px;padding:70px 6vw;background:#0d0d0f}
+.tMega .rServices.megaCards{padding:0}
+.tMega .rServices.megaCards header h2{font:800 30px Arial,sans-serif;margin-bottom:24px}
+.tMega .rServices.megaCards>div{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tMega .rServices.megaCards article{background:#16161c;border-radius:20px;padding:22px;border:1px solid #24242c}
+.tMega .rServices.megaCards article:first-child{grid-column:1/-1;background:linear-gradient(135deg,#173036,#16161c)}
+.tMega .rServices.megaCards article h3{font-size:18px;margin:8px 0}
+.tMega .rServices.megaCards article footer b{color:#5ee7ff;font-size:20px}
+.tMega .rGallery.megaBig{display:grid;grid-template-rows:1fr 1fr;gap:12px;border-radius:20px;overflow:hidden}
+.tMega .rGallery.megaBig img{width:100%;height:100%;object-fit:cover;border-radius:20px}
+
+.tMega .rStaff.megaScroll{padding:60px 6vw;background:#0d0d0f}
+.tMega .rStaff.megaScroll header h2{font:800 26px Arial,sans-serif}
+.tMega .rStaff.megaScroll>div{display:flex;gap:14px;overflow-x:auto;margin-top:24px;padding-bottom:8px}
+.tMega .rStaff.megaScroll article{flex:0 0 auto;width:150px;background:#16161c;border-radius:18px;padding:16px;text-align:center;border:1px solid #24242c}
+.tMega .rStaff.megaScroll img,.tMega .rStaff.megaScroll .staffAvatar{width:70px;height:70px;border-radius:50%;object-fit:cover;margin:0 auto 10px}
+.tMega .rStaff.megaScroll h3{font-size:14px}
+.tMega .rStaff.megaScroll p{font-size:11px;color:#9a9aa5}
+
+@media(max-width:720px){
+  .megaHero{grid-template-columns:1fr}
+  .megaBento{grid-template-columns:1fr}
+  .tMega .rServices.megaCards>div{grid-template-columns:1fr}
+}
+
+/* Vitrin ve Mega için yorum bölümü stilleri */
+.tVitrin .ownReviews{background:#050505}
+.tVitrin .ownReviewGrid article{background:#101010;border-color:#262626}
+.tVitrin .ownReviewStars{color:#f0c14b}
+.tVitrin .ownReviewAvatarFallback{background:#f0c14b;color:#050505}
+.tMega .ownReviews{background:#0d0d0f}
+.tMega .ownReviewGrid article{background:#16161c;border-color:#24242c;border-radius:20px}
+.tMega .ownReviewStars{color:#5ee7ff}
+.tMega .ownReviewAvatarFallback{background:#5ee7ff;color:#0d0d0f}
+
+/* ================= Prestij (referans: premium erkek kuaförü sitesi) =================
+   Tam ekran fotoğraflı hero, yüzen istatistik rozetleri, ikonlu özellik
+   şeridi, zarif menü tarzı fiyat listesi - lüks/premium hizmet hissi. */
+.tPrestij{background:var(--bg);color:var(--text)}
+.tPrestij .pNav{display:flex;justify-content:space-between;align-items:center;padding:22px 6vw;position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px)}
+.tPrestij .pHero{min-height:92vh;background-size:cover;background-position:center;background-color:#141414;display:flex;align-items:flex-end;padding:6vw}
+.tPrestij .pHeroInner{color:#fff;max-width:720px}
+.tPrestij .pHeroInner small{color:var(--accent);letter-spacing:3px;font-weight:800;font-size:12px}
+.tPrestij .pHeroInner h1{font:800 clamp(38px,6vw,68px)/1.1 Georgia,serif;margin:16px 0}
+.tPrestij .pHeroInner h1 em{font-style:italic;color:var(--accent)}
+.tPrestij .pHeroInner p{color:#e5e2da;max-width:520px;line-height:1.7;margin-bottom:24px}
+.tPrestij .pStatRow{display:flex;gap:28px;margin-top:32px;flex-wrap:wrap}
+.tPrestij .pStatRow div{border-left:2px solid var(--accent);padding-left:12px}
+.tPrestij .pStatRow b{display:block;font-size:20px;color:#fff}
+.tPrestij .pStatRow span{font-size:11px;color:#c9c5ba;letter-spacing:.5px}
+
+.tPrestij .pFeatures{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:color-mix(in srgb,var(--text) 10%,transparent);border-top:1px solid color-mix(in srgb,var(--text) 12%,transparent);border-bottom:1px solid color-mix(in srgb,var(--text) 12%,transparent)}
+.tPrestij .pFeatures>div{background:var(--bg);padding:36px 24px;text-align:center}
+.tPrestij .pFeatures span{font-size:26px;color:var(--accent)}
+.tPrestij .pFeatures b{display:block;margin:12px 0 4px;font-size:14px}
+.tPrestij .pFeatures small{color:color-mix(in srgb,var(--text) 60%,transparent);font-size:12px}
+
+.tPrestij .rServices.prestijMenu{padding:100px 7vw;max-width:800px;margin:0 auto}
+.tPrestij .rServices.prestijMenu header{text-align:center;margin-bottom:50px}
+.tPrestij .rServices.prestijMenu header h2{font:800 34px Georgia,serif}
+.tPrestij .rServices.prestijMenu>div{display:block}
+.tPrestij .rServices.prestijMenu article{display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px dotted color-mix(in srgb,var(--text) 25%,transparent)}
+.tPrestij .rServices.prestijMenu article h3{font-size:17px;font-weight:600}
+.tPrestij .rServices.prestijMenu article footer b{color:var(--accent);font-size:18px;font-weight:800}
+
+.tPrestij .rGallery.prestijGrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:6px;padding:0 6px 90px}
+.tPrestij .rGallery.prestijGrid img{width:100%;height:100%;object-fit:cover}
+.tPrestij .rGallery.prestijGrid>*:nth-child(4n+1){grid-column:span 2;grid-row:span 2}
+
+@media(max-width:720px){
+  .tPrestij .pFeatures{grid-template-columns:1fr 1fr}
+  .tPrestij .rGallery.prestijGrid{grid-template-columns:1fr 1fr}
+}
+
+/* ================= Atölye (Prestij'in ikizi ama bilinçli olarak farklı - split hero, kart tabanlı) ================= */
+.tAtolye{background:var(--bg);color:var(--text)}
+.tAtolye header{display:flex;justify-content:space-between;align-items:center;padding:22px 6vw}
+.tAtolye .aHero{display:grid;grid-template-columns:1fr 1fr;min-height:74vh}
+.tAtolye .aHeroImg{overflow:hidden}
+.tAtolye .aHeroImg img{width:100%;height:100%;object-fit:cover;min-height:400px}
+.tAtolye .aHeroText{display:flex;flex-direction:column;justify-content:center;padding:6vw}
+.tAtolye .aHeroText small{color:var(--accent);letter-spacing:3px;font-weight:800;font-size:12px}
+.tAtolye .aHeroText h1{font:800 clamp(32px,4.5vw,52px)/1.15 Arial,sans-serif;margin:14px 0}
+.tAtolye .aHeroText h1 em{font-style:normal;color:var(--accent)}
+.tAtolye .aStatStrip{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.tAtolye .aStatStrip span{font-size:13px;color:color-mix(in srgb,var(--text) 70%,transparent)}
+
+.tAtolye .rServices.atolyeCards{padding:90px 6vw;background:var(--surface)}
+.tAtolye .rServices.atolyeCards header{text-align:center;margin-bottom:40px}
+.tAtolye .rServices.atolyeCards header h2{font:800 32px Arial,sans-serif}
+.tAtolye .rServices.atolyeCards>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.tAtolye .rServices.atolyeCards article{background:var(--bg);border-radius:18px;padding:26px;box-shadow:0 12px 30px #0000000a}
+.tAtolye .rServices.atolyeCards article h3{font-size:18px;margin:8px 0}
+.tAtolye .rServices.atolyeCards article footer b{color:var(--accent);font-size:20px}
+
+.tAtolye .rGallery.atolyeMasonry{columns:3 200px;column-gap:8px;padding:0 6vw 90px}
+.tAtolye .rGallery.atolyeMasonry img{width:100%;border-radius:14px;margin-bottom:8px;break-inside:avoid}
+
+@media(max-width:720px){
+  .tAtolye .aHero{grid-template-columns:1fr}
+  .tAtolye .aHeroImg img{min-height:280px}
+  .tAtolye .rGallery.atolyeMasonry{columns:2 150px}
+}
+
+/* Prestij ve Atölye için yorum bölümü stilleri */
+.tPrestij .ownReviews{max-width:900px;margin:0 auto}
+.tPrestij .ownReviewGrid article{border-radius:2px;border-color:color-mix(in srgb,var(--text) 12%,transparent)}
+.tPrestij .ownReviewStars{color:var(--accent)}
+.tAtolye .ownReviewGrid article{border-radius:18px;box-shadow:0 12px 30px #0000000a;border:0;background:var(--surface)}
+.tAtolye .ownReviewStars{color:var(--accent)}
+
+/* ================= Yazı tipi seçimi (panelden ayarlanan) ================= */
+.radical.font-serif h1,.radical.font-serif h2,.radical.font-serif h3{font-family:Georgia,'Times New Roman',serif}
+.radical.font-sans h1,.radical.font-sans h2,.radical.font-sans h3{font-family:Arial,Helvetica,sans-serif}
+.radical.font-display h1,.radical.font-display h2,.radical.font-display h3{font-family:'Arial Narrow',Impact,Arial,sans-serif;text-transform:uppercase;letter-spacing:-.01em}
+
+/* ================= Galeri - lightbox + hover efekti (tüm temalarda ortak) ================= */
+.galleryItemBtn{all:unset;display:block;width:100%;height:100%;cursor:zoom-in;overflow:hidden;position:relative}
+.galleryItemBtn img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .35s ease,filter .35s ease}
+.galleryItemBtn:hover img{transform:scale(1.06)}
+.galleryItemBtn:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#00000030,transparent 40%);opacity:0;transition:opacity .25s}
+.galleryItemBtn:hover:after{opacity:1}
+
+.galleryLightbox{position:fixed;inset:0;background:#000000e8;z-index:200;display:flex;align-items:center;justify-content:center;padding:5vw;cursor:zoom-out;animation:glFade .2s ease}
+@keyframes glFade{from{opacity:0}to{opacity:1}}
+.galleryLightbox img,.galleryLightbox video{max-width:100%;max-height:88vh;border-radius:6px;box-shadow:0 30px 80px #00000080;cursor:default}
+.glClose{position:absolute;top:24px;right:28px;background:none;border:0;color:#fff;font-size:26px;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;transition:background .2s}
+.glClose:hover{background:#ffffff1a}
+.glNav{position:absolute;top:50%;transform:translateY(-50%);background:#ffffff14;border:0;color:#fff;font-size:34px;width:52px;height:52px;border-radius:50%;cursor:pointer;display:grid;place-items:center;transition:background .2s}
+.glNav:hover{background:#ffffff2a}
+.glPrev{left:20px}
+.glNext{right:20px}
+@media(max-width:640px){
+  .glNav{width:40px;height:40px;font-size:26px}
+  .glClose{top:14px;right:14px}
+}
+
+/* ================= Elit (referans site yapısıyla birebir aynı sıralama) ================= */
+.tElit{background:var(--bg);color:var(--text)}
+.tElit .eNav{display:flex;justify-content:space-between;align-items:center;padding:20px 6vw;position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid color-mix(in srgb,var(--text) 8%,transparent)}
+.tElit .eNav nav{display:flex;align-items:center;gap:28px}
+.tElit .eNav nav a{font-size:13.5px;font-weight:600;color:var(--text);text-decoration:none;opacity:.75}
+.tElit .eNav nav a:hover{opacity:1;color:var(--accent)}
+
+.tElit .eHero{position:relative;min-height:94vh;background-size:cover;background-position:center;background-color:#141414;display:flex;align-items:flex-end;padding:6vw}
+.tElit .eHeroInner{color:#fff;max-width:720px}
+.tElit .eHeroInner small{color:var(--accent);letter-spacing:3px;font-weight:800;font-size:12px}
+.tElit .eHeroInner h1{font:800 clamp(38px,6vw,66px)/1.12 Georgia,serif;margin:16px 0}
+.tElit .eHeroInner h1 em{font-style:italic;color:var(--accent)}
+.tElit .eHeroInner p{color:#e5e2da;max-width:520px;line-height:1.7;margin-bottom:26px}
+.tElit .eScrollHint{position:absolute;bottom:24px;right:6vw;color:#fff;font-size:12px;letter-spacing:1px;opacity:.8}
+
+.tElit .eMiniStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:6px}
+.tElit .eMiniStrip img{width:100%;height:220px;object-fit:cover;border-radius:2px}
+
+.tElit .eFeatures{margin-top:0}
+
+.tElit .eContactSection{padding:100px 6vw;background:var(--surface)}
+.tElit .eContactGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:40px;text-align:center}
+.tElit .eContactGrid small{color:var(--accent);letter-spacing:2px;font-weight:800;font-size:11px}
+.tElit .eContactGrid p{margin-top:8px;font-size:14.5px;line-height:1.6}
+.tElit .eMap{width:100%;height:360px;border:0;border-radius:16px;filter:grayscale(20%)}
+
+.tElit .eFooter{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;padding:70px 6vw 30px;border-top:1px solid color-mix(in srgb,var(--text) 10%,transparent)}
+.tElit .eFooter p{color:color-mix(in srgb,var(--text) 60%,transparent);font-size:13.5px;line-height:1.7;margin-top:14px;max-width:320px}
+.tElit .eFooter b{display:block;margin-bottom:14px;font-size:13px;letter-spacing:1px}
+.tElit .eFooter a,.tElit .eFooter span{display:block;font-size:13.5px;color:color-mix(in srgb,var(--text) 70%,transparent);text-decoration:none;margin-bottom:9px}
+.tElit .eFooter a:hover{color:var(--accent)}
+.tElit .eCopyright{text-align:center;padding:24px;font-size:12px;color:color-mix(in srgb,var(--text) 45%,transparent);border-top:1px solid color-mix(in srgb,var(--text) 8%,transparent)}
+
+@media(max-width:720px){
+  .tElit .eNav nav{display:none}
+  .tElit .eMiniStrip{grid-template-columns:1fr 1fr}
+  .tElit .eContactGrid{grid-template-columns:1fr 1fr}
+  .tElit .eFooter{grid-template-columns:1fr}
+}
+
+/* Elit yorum bölümü */
+.tElit .ownReviewGrid article{border-radius:2px;border-color:color-mix(in srgb,var(--text) 12%,transparent)}
+.tElit .ownReviewStars{color:var(--accent)}
+
+/* Elit hizmet listesi ve galeri (Prestij ile aynı görsel dil) */
+.tElit .rServices.prestijMenu{padding:100px 7vw;max-width:800px;margin:0 auto}
+.tElit .rServices.prestijMenu header{text-align:center;margin-bottom:50px}
+.tElit .rServices.prestijMenu header h2{font:800 34px Georgia,serif}
+.tElit .rServices.prestijMenu>div{display:block}
+.tElit .rServices.prestijMenu article{display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px dotted color-mix(in srgb,var(--text) 25%,transparent)}
+.tElit .rServices.prestijMenu article h3{font-size:17px;font-weight:600}
+.tElit .rServices.prestijMenu article footer b{color:var(--accent);font-size:18px;font-weight:800}
+.tElit .rGallery.prestijGrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:6px;padding:0 6px 90px}
+.tElit .rGallery.prestijGrid img{width:100%;height:100%;object-fit:cover}
+.tElit .rGallery.prestijGrid>*:nth-child(4n+1){grid-column:span 2;grid-row:span 2}
+@media(max-width:720px){.tElit .rGallery.prestijGrid{grid-template-columns:1fr 1fr}}
+
+/* Eksik/CSS'siz kalmış galeri varyantları - kritik düzeltme */
+.rGallery.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;padding:0 6vw 20px}
+.rGallery.subtle{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 8vw}
+/* Genel güvenlik ağı: yukarıdakilerin hiçbirine uymayan bir varyant gelirse yine de düzgün bir ızgara olsun */
+.rGallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+@media(max-width:640px){
+  .rGallery.strip,.rGallery.subtle{grid-template-columns:1fr 1fr}
+}
+
+/* Konum rozeti (Prestij + Elit) */
+.eLocationBadge{display:inline-block;background:color-mix(in srgb,var(--accent) 16%,#00000090);color:#fff;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);padding:9px 20px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.5px;margin-bottom:18px}
+
+/* Hakkımızda - fotoğraf karuseli + metin split (Prestij + Elit) */
+.aboutSplit{display:grid;grid-template-columns:1fr 1.1fr;gap:6vw;align-items:center;max-width:1300px;padding:100px 6vw}
+.aboutCarousel{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/5;background:#141414}
+.aboutCarousel img{width:100%;height:100%;object-fit:cover;display:block}
+.aboutDots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.aboutDots button{width:9px;height:9px;border-radius:50%;background:#ffffff55;border:0;cursor:pointer;padding:0}
+.aboutDots button.active{background:#fff}
+.aboutSplitText small{color:var(--accent);letter-spacing:2px;font-weight:800;font-size:12px}
+.aboutSplitText h2{font:800 clamp(28px,3.5vw,42px)/1.15 Georgia,serif;margin:14px 0 18px}
+.aboutSplitText>p{color:var(--muted);line-height:1.8;margin-bottom:30px}
+.aboutFeatures{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:color-mix(in srgb,var(--text) 8%,transparent);border-radius:12px;overflow:hidden}
+.aboutFeatures>div{background:var(--surface);padding:22px 18px;text-align:left}
+.aboutFeatures span{font-size:20px;color:var(--accent)}
+.aboutFeatures b{display:block;margin:8px 0 2px;font-size:13.5px}
+.aboutFeatures small{color:var(--muted);font-size:11.5px}
+
+@media(max-width:820px){
+  .aboutSplit{grid-template-columns:1fr;padding:70px 6vw}
+  .aboutCarousel{aspect-ratio:16/10}
+}
