@@ -1,0 +1,3 @@
+import{NextResponse}from'next/server';import{createClient}from'@/lib/supabase-server';
+const allowed=['/panel','/dogrulandi','/sifre-olustur','/sifre-yenile'];
+export async function GET(request:Request){const{searchParams,origin}=new URL(request.url),code=searchParams.get('code'),requested=searchParams.get('next');const db=await createClient();if(code)await db.auth.exchangeCodeForSession(code);const{data:{user}}=await db.auth.getUser();let next=requested&&allowed.includes(requested)?requested:'/dogrulandi';if(user?.user_metadata?.invited_staff)next='/sifre-olustur';return NextResponse.redirect(`${origin}${next}`)}
