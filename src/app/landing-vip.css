@@ -9,8 +9,8 @@
 .platformHeader nav a:hover{color:#fff}
 .platformHeader .navCta{background:#d4af37!important;color:#000!important;padding:11px 18px;font-weight:700}
 
-.landing.splash{background:#000;color:#fff;min-height:calc(100vh - 78px);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
-.splashHero{padding:6vw;position:relative;z-index:1}
+.landing.splash{background:#000;color:#fff;min-height:calc(100vh - 78px);display:flex;align-items:center;justify-content:center;text-align:center}
+.splashHero{padding:6vw}
 .splashHero .overline{color:#d4af37;letter-spacing:6px;font-size:12px;font-weight:700}
 .splashHero h1{font:800 clamp(60px,12vw,160px)/1 Arial,sans-serif;letter-spacing:-0.03em;color:#fff;margin:22px 0 10px}
 .splashHero h1 em{color:#d4af37;font-style:normal}
