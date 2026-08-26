@@ -718,3 +718,77 @@
   .auAbout{grid-template-columns:1fr}
   .auAboutGallery>*:nth-child(2){transform:none}
 }
+
+/* Usta */
+.tUsta{background:#fff;color:#171412}
+.tUsta .usNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:20px 6vw;background:#fffdfa;border-bottom:1px solid #eee6da}
+.tUsta .usNav nav{display:flex;gap:28px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.tUsta .usNav nav a{color:#171412;opacity:.7}
+.tUsta .usNav nav a:hover{opacity:1}
+.tUsta .usNav .rCta{background:var(--accent);color:#fff;border-radius:2px}
+.usHero{position:relative;min-height:88vh;display:flex;align-items:flex-end;background:#0a0a0a center/cover;padding:6vw}
+.usHeroCard{position:absolute;left:6vw;top:14vh;width:min(300px,86vw);background:#fff;padding:26px;display:flex;flex-direction:column;gap:6px;box-shadow:0 25px 60px #00000040;text-decoration:none}
+.usHeroCard small{letter-spacing:2px;font-size:10px;font-weight:800;color:var(--accent)}
+.usHeroCard b{font:700 22px Georgia,serif;color:#171412}
+.usHeroCard span{color:#777;font-size:13px;line-height:1.5}
+.usHeroCard em{font-style:normal;font-weight:800;color:var(--accent);margin-top:6px}
+.usHeroText{margin-left:auto;max-width:640px;text-align:right}
+.usHeroText h1{font:800 clamp(34px,4.2vw,58px)/1.15 Arial,sans-serif;text-transform:uppercase;letter-spacing:-.5px;color:#fff;margin:0}
+.usHeroText h1 em{font-style:normal;color:var(--accent)}
+.usIntro{display:grid;grid-template-columns:1.1fr 1fr .8fr;gap:28px;padding:90px 6vw;background:color-mix(in srgb,var(--accent) 20%,#211a14);color:#f3ede4}
+.usIntroText small{letter-spacing:3px;font-size:11px;font-weight:800;color:color-mix(in srgb,var(--accent) 60%,#fff)}
+.usIntroText h2{font:700 36px Georgia,serif;margin:14px 0 16px}
+.usIntroText p{color:#d8cfc2;line-height:1.8}
+.usOrangeBtn{display:inline-block;margin-top:22px;background:var(--accent);color:#fff;padding:14px 22px;font-weight:800;font-size:13px}
+.usMapCard{border-radius:4px;overflow:hidden;min-height:220px}
+.usMapCard iframe{width:100%;height:100%;min-height:220px;border:0;filter:grayscale(.3) contrast(1.05)}
+.usInfoCards{display:flex;flex-direction:column;gap:14px}
+.usInfoCards>div{background:#fff;color:#171412;padding:16px 18px;display:flex;align-items:center;gap:14px}
+.usInfoCards span{font-size:20px}
+.usInfoCards b{display:block;font-size:14px}
+.usInfoCards small{color:#888;font-size:11px}
+.usWorks{padding:90px 6vw;background:#f6efe3;display:grid;grid-template-columns:.75fr 1.25fr;gap:5vw;align-items:center}
+.usWorksText small{letter-spacing:2px;font-size:10px;font-weight:800;color:var(--accent)}
+.usWorksText h2{font:800 40px Arial,sans-serif;text-transform:uppercase;margin:12px 0 14px;line-height:1.05}
+.usWorksText p{color:#7a6f5f;line-height:1.7}
+.rGallery.ustaWorks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rGallery.ustaWorks img,.rGallery.ustaWorks video{aspect-ratio:3/4;object-fit:cover}
+.usPriceRow{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.usTestimonial{background:var(--accent);padding:70px 5vw;display:flex;align-items:center}
+.usTestimonial .ownReviewGrid{background:transparent;border:0;padding:0}
+.usTestimonial .ownReviewGrid article{background:#ffffff22;border:0;color:#fff}
+.usTestimonial .ownReviewStars{color:#ffe9c7!important}
+.rServices.ustaPrice{padding:70px 5vw;background:#fff}
+.rServices.ustaPrice header{margin-bottom:26px}
+.rServices.ustaPrice header h2{font:800 32px Arial,sans-serif;text-transform:uppercase}
+.rServices.ustaPrice>div{display:flex;flex-direction:column;gap:0}
+.rServices.ustaPrice article{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;border-bottom:1px solid #eee;gap:16px}
+.rServices.ustaPrice article span{display:none}
+.rServices.ustaPrice article h3{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin:0}
+.rServices.ustaPrice article p{display:none}
+.rServices.ustaPrice article footer{display:flex;gap:10px}
+.rServices.ustaPrice article footer em{display:none}
+.rServices.ustaPrice article footer b{font:700 16px Georgia,serif;color:var(--accent)}
+.usTeam{padding:90px 6vw;background:#fff}
+.usTeamHead{max-width:600px;margin:0 auto 50px;text-align:center}
+.usTeamHead small{letter-spacing:2px;font-size:10px;font-weight:800;color:var(--accent)}
+.usTeamHead h2{font:700 38px Georgia,serif;margin:12px 0}
+.usTeamHead p{color:#777}
+.usTeamGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.usTeamGrid article{background:#f6efe3;padding:0;overflow:hidden;position:relative;aspect-ratio:3/3.6}
+.usTeamGrid article img{width:100%;height:100%;object-fit:cover}
+.usTeamGrid article i{width:100%;height:100%;display:grid;place-items:center;font:700 60px Georgia,serif;color:var(--accent);font-style:normal;background:color-mix(in srgb,var(--accent) 10%,#f6efe3)}
+.usTeamGrid article b{position:absolute;left:14px;bottom:34px;font-size:15px;color:#171412}
+.usTeamGrid article small{position:absolute;left:14px;bottom:14px;font-size:11px;color:#777}
+.usJoinCard{background:#171412;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:26px;text-decoration:none;aspect-ratio:3/3.6}
+.usJoinCard span{font:700 18px Georgia,serif;line-height:1.35}
+.usJoinCard em{font-style:normal;color:var(--accent);font-weight:800;font-size:13px}
+@media(max-width:900px){
+  .usHero{min-height:auto;padding:26vw 6vw 60px;flex-direction:column;align-items:stretch}
+  .usHeroCard{position:static;width:100%;margin-bottom:26px}
+  .usHeroText{text-align:left;margin-left:0}
+  .usIntro{grid-template-columns:1fr;padding:60px 6vw}
+  .usWorks{grid-template-columns:1fr}
+  .rGallery.ustaWorks{grid-template-columns:repeat(3,1fr)}
+  .usPriceRow{grid-template-columns:1fr}
+}

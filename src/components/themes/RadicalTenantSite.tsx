@@ -4,7 +4,7 @@ import TenantBooking from'@/components/TenantBooking';import GoogleReviews from'
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
 const FAMILY_DEFAULT_SCHEME:Record<string,string>={zen:'light',modern:'light',editorial:'light',vitrin:'dark',mega:'dark',prestij:'light',atolye:'light',nabiz:'dark',zeytin:'warm',nese:'light',aura:'soft'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_modern').split('_').at(-1),C:any={heritage:Heritage,modern:Modern,editorial:Editorial,soft:Soft,luxury:Luxury,pop:Pop,zen:Zen,fresh:Fresh,calm:Calm,cinematic:Cinematic,vitrin:Vitrin,mega:Mega,prestij:Prestij,atolye:Atolye,nabiz:Nabiz,zeytin:Zeytin,nese:Nese,aura:Aura},Layout=C[family]||Modern,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_modern').split('_').at(-1),C:any={heritage:Heritage,modern:Modern,editorial:Editorial,soft:Soft,luxury:Luxury,pop:Pop,zen:Zen,fresh:Fresh,calm:Calm,cinematic:Cinematic,vitrin:Vitrin,mega:Mega,prestij:Prestij,atolye:Atolye,nabiz:Nabiz,zeytin:Zeytin,nese:Nese,aura:Aura,usta:Usta},Layout=C[family]||Modern,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -219,6 +219,63 @@ function Aura(p:P){
     <Staff p={p} variant="row"/>
     <Booking p={p}/>
     <OwnRatings businessId={b.id}/>
+    <Contact b={b}/>
+  </main>;
+}
+function Usta(p:P){
+  const{b}=p;
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active);
+  return <main id="top" className="tUsta">
+    <header className="usNav">
+      <Brand b={b}/>
+      <nav><a href="#hizmetler">{b.services_label||'Hizmetler'}</a><a href="#usGallery">Galeri</a><a href="#usTeam">Ekibimiz</a></nav>
+      <CTA b={b}/>
+    </header>
+    <section className="usHero" style={b.cover_url?{backgroundImage:`linear-gradient(90deg,#0a0a0a 18%,#0a0a0a55),url(${b.cover_url})`}:undefined}>
+      <a className="usHeroCard" href="#randevu">
+        <small>{b.hero_label||'RANDEVU AL'}</small>
+        <b>{dec(b,'usta_cardTitle','Hızlı randevu')}</b>
+        <span>{dec(b,'usta_cardText','Uygun saati seç, birkaç adımda tamamla.')}</span>
+        <em>{b.booking_button_text||'Randevu Al'} →</em>
+      </a>
+      <div className="usHeroText">
+        <h1>{b.hero_title||'Gelenek'}<br/><em>{b.hero_highlight||'Modern Tarzla Buluşuyor'}</em></h1>
+      </div>
+    </section>
+    <section className="usIntro">
+      <div className="usIntroText">
+        <small>{dec(b,'usta_introLabel','HİZMET BEKLENTİNİN ÜSTÜNDE')}</small>
+        <h2>{dec(b,'usta_introTitle','Beklentinin Ötesinde Hizmet')}</h2>
+        <p>{dec(b,'usta_introText',b.hero_description||'')}</p>
+        <a className="usOrangeBtn" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+      </div>
+      {b.address&&<div className="usMapCard"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum"/></div>}
+      <div className="usInfoCards">
+        {b.address&&<div><span>📍</span><div><b>{b.address_label||'KONUM'}</b><small>{b.address}</small></div></div>}
+        {b.phone&&<div><span>📞</span><div><b>{b.phone}</b><small>Randevu için ara</small></div></div>}
+      </div>
+    </section>
+    <section id="usGallery" className="usWorks">
+      <div className="usWorksText">
+        <small>{dec(b,'usta_galleryLabel','ÇALIŞMALARIMIZ')}</small>
+        <h2>{dec(b,'usta_galleryTitle','Keşfet')}</h2>
+        <p>{dec(b,'usta_galleryText','Ekibimiz güncel tekniklerle en iyi hizmeti sunmaya odaklanır.')}</p>
+      </div>
+      <Gallery p={p} variant="ustaWorks"/>
+    </section>
+    <section className="usPriceRow">
+      <div className="usTestimonial"><OwnRatings businessId={b.id}/></div>
+      <ServiceList p={p} variant="ustaPrice"/>
+    </section>
+    <section id="usTeam" className="usTeam">
+      <div className="usTeamHead"><small>EKİBİMİZ</small><h2>{dec(b,'usta_teamTitle','Ustalarımızla Tanışın')}</h2><p>{dec(b,'usta_teamText','Her biri işine tutkuyla bağlı, deneyimli ustalar.')}</p></div>
+      <div className="usTeamGrid">
+        {visibleStaff.map((s:any)=><article key={s.id}>{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}<b>{s.name}</b><small>{s.title||'Usta'}</small></article>)}
+        <a className="usJoinCard" href="#randevu"><span>{dec(b,'usta_joinText','Ekibimize katılmak ister misin?')}</span><em>{dec(b,'usta_joinLinkText','İletişime geç →')}</em></a>
+      </div>
+    </section>
+    <Booking p={p}/>
+    <About b={b}/>
     <Contact b={b}/>
   </main>;
 }
