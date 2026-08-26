@@ -224,25 +224,27 @@ function Aura(p:P){
 }
 function Usta(p:P){
   const{b}=p;
-  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active);
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   return <main id="top" className="tUsta">
     <header className="usNav">
       <Brand b={b}/>
-      <nav><a href="#hizmetler">{b.services_label||'Hizmetler'}</a><a href="#usGallery">Galeri</a><a href="#usTeam">Ekibimiz</a></nav>
-      <CTA b={b}/>
+      <nav><a href="#hizmetler">{b.services_label||'Hizmetler'}</a><a href="#usAbout">{b.about_label||'Hakkımızda'}</a><a href="#usGallery">Galeri</a><a href="#usTeam">Ekibimiz</a></nav>
+      <a className="usContactBtn" href="#randevu">{dec(b,'usta_navCta','İletişime Geç')}</a>
     </header>
-    <section className="usHero" style={b.cover_url?{backgroundImage:`linear-gradient(90deg,#0a0a0a 18%,#0a0a0a55),url(${b.cover_url})`}:undefined}>
+    <section className="usHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+      <div className="usHeroOverlay"/>
       <a className="usHeroCard" href="#randevu">
-        <small>{b.hero_label||'RANDEVU AL'}</small>
-        <b>{dec(b,'usta_cardTitle','Hızlı randevu')}</b>
-        <span>{dec(b,'usta_cardText','Uygun saati seç, birkaç adımda tamamla.')}</span>
+        <b>{dec(b,'usta_cardTitle','Randevu Al')}</b>
+        <span className="usFakeField">{dec(b,'usta_cardName','Adınız Soyadınız')}</span>
+        <span className="usFakeField">{b.phone_label||'Telefon'}</span>
+        <span className="usFakeField">{dec(b,'usta_cardDate','Tarih & Saat Seç')}</span>
         <em>{b.booking_button_text||'Randevu Al'} →</em>
       </a>
       <div className="usHeroText">
         <h1>{b.hero_title||'Gelenek'}<br/><em>{b.hero_highlight||'Modern Tarzla Buluşuyor'}</em></h1>
       </div>
     </section>
-    <section className="usIntro">
+    <section id="usAbout" className="usIntro">
       <div className="usIntroText">
         <small>{dec(b,'usta_introLabel','HİZMET BEKLENTİNİN ÜSTÜNDE')}</small>
         <h2>{dec(b,'usta_introTitle','Beklentinin Ötesinde Hizmet')}</h2>
@@ -260,6 +262,7 @@ function Usta(p:P){
         <small>{dec(b,'usta_galleryLabel','ÇALIŞMALARIMIZ')}</small>
         <h2>{dec(b,'usta_galleryTitle','Keşfet')}</h2>
         <p>{dec(b,'usta_galleryText','Ekibimiz güncel tekniklerle en iyi hizmeti sunmaya odaklanır.')}</p>
+        <div className="usGalleryNav"><span>{String(p.gallery.length+p.media.length).padStart(2,'0')}</span><i/><button type="button" aria-hidden="true">←</button><button type="button" aria-hidden="true">→</button></div>
       </div>
       <Gallery p={p} variant="ustaWorks"/>
     </section>
@@ -270,13 +273,22 @@ function Usta(p:P){
     <section id="usTeam" className="usTeam">
       <div className="usTeamHead"><small>EKİBİMİZ</small><h2>{dec(b,'usta_teamTitle','Ustalarımızla Tanışın')}</h2><p>{dec(b,'usta_teamText','Her biri işine tutkuyla bağlı, deneyimli ustalar.')}</p></div>
       <div className="usTeamGrid">
-        {visibleStaff.map((s:any)=><article key={s.id}>{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}<b>{s.name}</b><small>{s.title||'Usta'}</small></article>)}
-        <a className="usJoinCard" href="#randevu"><span>{dec(b,'usta_joinText','Ekibimize katılmak ister misin?')}</span><em>{dec(b,'usta_joinLinkText','İletişime geç →')}</em></a>
+        {visibleStaff.map((s:any)=><article key={s.id}>
+          <div className="usTeamLabel"><b>{s.name}</b><small>{s.title||'Usta'}</small></div>
+          <div className="usTeamSocials"><i>in</i><i>◎</i></div>
+          {s.photo_url?<img src={s.photo_url} alt={s.name}/>:<em>{s.name[0]}</em>}
+        </article>)}
+        <a className="usJoinCard" href="#randevu"><span>{dec(b,'usta_joinText','Ekibimize katılmak ister misin?')}</span><em>{dec(b,'usta_joinLinkText','Özgeçmiş gönder →')}</em></a>
       </div>
     </section>
     <Booking p={p}/>
-    <About b={b}/>
-    <Contact b={b}/>
+    <footer className="usFooter">
+      <div className="usFooterCol usFooterBrand"><Brand b={b}/><p>{dec(b,'usta_footerTagline',b.hero_description||'')}</p></div>
+      <div className="usFooterCol"><b>Menü</b><a href="#top">Ana Sayfa</a><a href="#usAbout">Hakkımızda</a><a href="#usGallery">Galeri</a><a href="#usTeam">Ekibimiz</a></div>
+      <div className="usFooterCol"><b>Hızlı Erişim</b><a href="#hizmetler">Hizmetler</a><a href="/gizlilik">Gizlilik Politikası</a><a href="#randevu">Konum & İletişim</a></div>
+      <div className="usFooterCol"><b>Çalışma Saatleri</b>{p.hours.filter((h:any)=>h.is_open).length?<ul className="usFooterHours">{[...p.hours].sort((x:any,y:any)=>x.day_of_week-y.day_of_week).filter((h:any)=>h.is_open).map((h:any)=><li key={h.day_of_week}>{DAY_NAMES[h.day_of_week]}<span>{h.start_time?.slice(0,5)}–{h.end_time?.slice(0,5)}</span></li>)}</ul>:null}<a className="usOrangeBtn" href="#randevu">Randevu Al →</a></div>
+      <div className="usFooterBottom"><span>© {new Date().getFullYear()} {b.name}</span>{b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">Instagram</a>}</div>
+    </footer>
   </main>;
 }
 function Fresh(p:P){return <main id="top" className="tFresh"><header><Brand b={p.b}/><CTA b={p.b}/></header><section className="freshDashboard"><div className="rHero"><HeroText b={p.b}/></div><div className="freshStat"><b>7/24</b><span>Online Randevu</span></div><div className="freshStat"><b>{p.services.length}</b><span>Profesyonel Hizmet</span></div></section><ServiceList p={p} variant="info"/><div className="freshSplit"><Staff p={p}/><About b={p.b}/></div><Gallery p={p}/><Booking p={p}/><Contact b={p.b}/></main>}
