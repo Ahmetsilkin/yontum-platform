@@ -3,8 +3,8 @@ import{useState}from'react';
 import TenantBooking from'@/components/TenantBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={zen:'light',modern:'light',editorial:'light',vitrin:'dark',mega:'dark',prestij:'light',atolye:'light',nabiz:'dark',zeytin:'warm',nese:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_modern').split('_').at(-1),C:any={heritage:Heritage,modern:Modern,editorial:Editorial,soft:Soft,luxury:Luxury,pop:Pop,zen:Zen,fresh:Fresh,calm:Calm,cinematic:Cinematic,vitrin:Vitrin,mega:Mega,prestij:Prestij,atolye:Atolye,nabiz:Nabiz,zeytin:Zeytin,nese:Nese},Layout=C[family]||Modern,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={zen:'light',modern:'light',editorial:'light',vitrin:'dark',mega:'dark',prestij:'light',atolye:'light',nabiz:'dark',zeytin:'warm',nese:'light',aura:'soft'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_modern').split('_').at(-1),C:any={heritage:Heritage,modern:Modern,editorial:Editorial,soft:Soft,luxury:Luxury,pop:Pop,zen:Zen,fresh:Fresh,calm:Calm,cinematic:Cinematic,vitrin:Vitrin,mega:Mega,prestij:Prestij,atolye:Atolye,nabiz:Nabiz,zeytin:Zeytin,nese:Nese,aura:Aura},Layout=C[family]||Modern,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -181,6 +181,45 @@ function Elit(p:P){
       <div><b>İletişim</b><span>{p.b.phone}</span><span>{p.b.address}</span></div>
     </footer>
     <p className="eCopyright">© {new Date().getFullYear()} {p.b.name}. Tüm hakları saklıdır.</p>
+  </main>;
+}
+function Aura(p:P){
+  const{b}=p;
+  const archImages:string[]=(Array.isArray(b.about_images)&&b.about_images.length?b.about_images:p.gallery.slice(0,3).map((g:any)=>g.image_url)).slice(0,3);
+  const totalYears=b.established_year?new Date().getFullYear()-Number(b.established_year):null;
+  return <main id="top" className="tAura">
+    <header className="auNav">
+      <Brand b={b}/>
+      <nav><a href="#hizmetler">{b.services_label||'Hizmetler'}</a><a href="#auAbout">{b.about_label||'Hakkımızda'}</a><a href="#randevu">Randevu</a></nav>
+      <CTA b={b}/>
+    </header>
+    <section className="auHero">
+      <div className="auHeroText">
+        {b.address&&<span className="auLocation">📍 {b.address.split(',')[0]}</span>}
+        <HeroText b={b}/>
+        <a className="auPlayLink" href="#hizmetler"><span className="auPlayDot">▶</span>{b.services_label?`${b.services_label} keşfet`:'Hizmetlerimizi keşfet'}</a>
+      </div>
+      <div className="auHeroVisual">{b.cover_url?<img src={b.cover_url} alt={b.name}/>:<div className="auHeroPlaceholder">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<span>{b.name?.[0]}</span>}</div>}</div>
+    </section>
+    <section className="auStats">
+      <div><b>{p.staff.filter((s:any)=>!s.is_default).length||1}+</b><span>Uzman Ekip</span></div>
+      <div><b>{p.services.length}+</b><span>Farklı Hizmet</span></div>
+      {totalYears&&totalYears>0?<div><b>{totalYears}+</b><span>Yıllık Tecrübe</span></div>:<div><b>5.0</b><span>Google Puanı</span></div>}
+    </section>
+    {b.show_about&&(b.description||b.about_title)&&<section id="auAbout" className="auAbout">
+      <div className="auAboutText">
+        <small>02 / {b.about_label||'HAKKIMIZDA'}</small>
+        <h2>{b.about_title||'Bir Salondan Fazlası'}</h2>
+        {b.description&&<p>{b.description}</p>}
+      </div>
+      {archImages.length>0&&<div className="auAboutGallery">{archImages.map((src,i)=><div key={i} className="auArch"><img src={src} alt={b.name}/></div>)}</div>}
+    </section>}
+    <ServiceList p={p} variant="prestijMenu"/>
+    <Gallery p={p} variant="auraArch"/>
+    <Staff p={p} variant="row"/>
+    <Booking p={p}/>
+    <OwnRatings businessId={b.id}/>
+    <Contact b={b}/>
   </main>;
 }
 function Fresh(p:P){return <main id="top" className="tFresh"><header><Brand b={p.b}/><CTA b={p.b}/></header><section className="freshDashboard"><div className="rHero"><HeroText b={p.b}/></div><div className="freshStat"><b>7/24</b><span>Online Randevu</span></div><div className="freshStat"><b>{p.services.length}</b><span>Profesyonel Hizmet</span></div></section><ServiceList p={p} variant="info"/><div className="freshSplit"><Staff p={p}/><About b={p.b}/></div><Gallery p={p}/><Booking p={p}/><Contact b={p.b}/></main>}

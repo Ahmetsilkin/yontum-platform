@@ -1,4 +1,4 @@
-'use client';import{useMemo,useState}from'react';import type{Appointment}from'@/lib/types';import'./day-schedule.css';
+'use client';import{useEffect,useMemo,useRef,useState}from'react';import type{Appointment}from'@/lib/types';import'./day-schedule.css';
 
 const dayNames=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],monthNames=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
 
@@ -13,6 +13,11 @@ export default function DaySchedule({appointments,staff}:{appointments:Appointme
     return appointments.filter(a=>a.start_at.slice(0,10)===date&&a.status!=='cancelled'&&(!matchIds||matchIds.has(a.staff_id))).sort((a,b)=>a.start_at.localeCompare(b.start_at));
   },[appointments,date,staffId,staff]);
   const hours=Array.from({length:15},(_,i)=>i+7);
+  const pickerRef=useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    const todayBtn=pickerRef.current?.querySelector<HTMLButtonElement>('button.today');
+    todayBtn?.scrollIntoView({block:'nearest',inline:'start'});
+  },[]);
   return (
     <section className="daySchedule">
       <header>
@@ -22,7 +27,7 @@ export default function DaySchedule({appointments,staff}:{appointments:Appointme
           {staff.filter((s:any,i:number)=>!s.is_default&&staff.findIndex((x:any)=>x.user_id&&x.user_id===s.user_id)===i).map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
         </select>
       </header>
-      <div className="scheduleDayPicker">
+      <div className="scheduleDayPicker" ref={pickerRef}>
         {scheduleDays.map(d=>
           <button key={d.value} type="button" className={`${date===d.value?'selected':''} ${d.isToday?'today':''}`} onClick={()=>setDate(d.value)}>
             <small>{d.name}</small><b>{d.n}</b><span>{d.month}</span>

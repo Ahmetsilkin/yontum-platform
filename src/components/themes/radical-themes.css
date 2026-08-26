@@ -674,3 +674,47 @@
   .neDoodle{display:none}
   .rGallery.nesePolaroid img{width:150px;height:170px}
 }
+
+/* Aura */
+.tAura{background:var(--bg);color:var(--text)}
+.tAura .auNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:18px 6vw;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid color-mix(in srgb,var(--text) 8%,transparent)}
+.tAura .auNav nav{display:flex;gap:30px;font-size:13px;font-weight:600}
+.tAura .auNav nav a{color:var(--text);opacity:.75}
+.tAura .auNav nav a:hover{opacity:1;color:var(--accent)}
+.tAura .auNav .rCta{border-radius:999px;padding:13px 22px}
+.auHero{display:grid;grid-template-columns:1fr .9fr;gap:5vw;align-items:center;padding:6vw 6vw 8vw}
+.auHeroText small{letter-spacing:3px;font-size:10px;color:var(--accent);font-weight:800}
+.auHeroText h1{font:800 clamp(44px,6vw,84px)/1 Georgia,serif;margin:20px 0}
+.auHeroText h1 em{font-style:normal;font-weight:300;display:block;color:color-mix(in srgb,var(--text) 55%,transparent)}
+.auHeroText>p{color:color-mix(in srgb,var(--text) 65%,transparent);max-width:480px;line-height:1.7;margin-bottom:26px}
+.auLocation{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--accent) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);padding:8px 16px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:18px}
+.auPlayLink{display:inline-flex;align-items:center;gap:12px;margin-top:22px;font-weight:700;font-size:13px;color:var(--text)}
+.auPlayDot{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid color-mix(in srgb,var(--text) 18%,transparent);display:grid;place-items:center;font-size:11px;color:var(--accent)}
+.auHeroVisual{position:relative;aspect-ratio:4/5;border-radius:280px 280px 24px 24px;overflow:hidden;background:color-mix(in srgb,var(--accent) 14%,var(--surface))}
+.auHeroVisual img{width:100%;height:100%;object-fit:cover}
+.auHeroPlaceholder{width:100%;height:100%;display:grid;place-items:center;font:700 90px Georgia,serif;color:var(--accent)}
+.auHeroPlaceholder img{max-width:55%;max-height:55%;object-fit:contain}
+.auStats{display:flex;justify-content:center;gap:0;margin:-60px auto 60px;position:relative;z-index:5;width:max-content;background:var(--surface);border-radius:20px;box-shadow:0 25px 60px #00000018;overflow:hidden}
+.auStats div{padding:26px 34px;text-align:center;border-right:1px solid color-mix(in srgb,var(--text) 10%,transparent)}
+.auStats div:last-child{border-right:0}
+.auStats b{display:block;font:800 26px Georgia,serif;color:var(--accent)}
+.auStats span{font-size:11px;color:color-mix(in srgb,var(--text) 60%,transparent);letter-spacing:.5px}
+.auAbout{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:70px 6vw 100px;background:color-mix(in srgb,var(--accent) 6%,var(--bg))}
+.auAboutText small{letter-spacing:3px;font-size:11px;color:var(--accent);font-weight:800}
+.auAboutText h2{font:700 40px Georgia,serif;margin:14px 0 18px}
+.auAboutText p{color:color-mix(in srgb,var(--text) 68%,transparent);line-height:1.85;font-size:16px}
+.auAboutGallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:end}
+.auArch{aspect-ratio:2/3;border-radius:120px 120px 12px 12px;overflow:hidden;background:color-mix(in srgb,var(--accent) 16%,var(--surface))}
+.auArch img{width:100%;height:100%;object-fit:cover}
+.auAboutGallery>*:nth-child(2){aspect-ratio:2/3.4;transform:translateY(-18px)}
+.rGallery.auraArch{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:0 6vw 90px}
+.rGallery.auraArch img,.rGallery.auraArch video{aspect-ratio:3/4;border-radius:40px 40px 10px 10px;object-fit:cover}
+.tAura .rBooking{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+.tAura .rServices.prestijMenu{background:var(--bg)}
+@media(max-width:850px){
+  .auHero{grid-template-columns:1fr;padding-bottom:60px}
+  .auHeroVisual{aspect-ratio:4/3;border-radius:24px}
+  .auStats{flex-wrap:wrap;margin-top:-30px}
+  .auAbout{grid-template-columns:1fr}
+  .auAboutGallery>*:nth-child(2){transform:none}
+}
