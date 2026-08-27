@@ -34,14 +34,19 @@
 .ksReveal.in{opacity:1;margin-top:0}
 @media(prefers-reduced-motion:reduce){.ksReveal{opacity:1;margin-top:0;transition:none}}
 
-/* Hero — kie.ai ile üretilmiş berberlik fotoğrafı, kaydırdıkça hafif yakınlaşan/kayan (kapak fotoğrafı yerine) */
+/* Hero — kaydırdıkça ileri-geri oynayan berberlik klibi (kapak fotoğrafı yerine) */
 .ksHero{position:relative;min-height:92vh;display:flex;align-items:flex-end;background:#0a0a0a;overflow:hidden}
-.ksHeroPhoto{position:absolute;inset:-4%;z-index:0;background-position:center;background-size:cover;background-repeat:no-repeat;
-  transform:scale(calc(1.06 + var(--ksP,0) * .14)) translateY(calc(var(--ksP,0) * -3%));
-  transition:transform .12s linear}
+.ksHeroPhoto{position:absolute;inset:-2%;z-index:0;overflow:hidden}
+.ksHeroLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(calc(1.02 + var(--ksP,0) * .06));
+  transition:transform .12s linear,opacity .5s ease}
+.ksHeroPoster{opacity:1}
+.ksHeroPoster.hide{opacity:0}
+.ksHeroClip{opacity:0}
+.ksHeroClip.show{opacity:1}
 .ksHeroOverlay{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,#000 10%,#00000090 34%,#00000030 62%,#0000 85%)}
 .ksHeroInner{position:relative;z-index:2;padding:0 6vw 70px;max-width:800px}
-@media(prefers-reduced-motion:reduce){.ksHeroPhoto{transition:none}}
+@media(prefers-reduced-motion:reduce){.ksHeroLayer{transition:opacity .5s ease}}
 .ksKicker{display:inline-block;letter-spacing:3px;font-size:12px;font-weight:700;color:#fff;opacity:.8;text-transform:uppercase;margin-bottom:16px}
 .ksHeroInner h1{font:800 clamp(38px,6vw,72px)/1.05 'Plus Jakarta Sans','Inter',Arial,sans-serif;letter-spacing:-1px;color:#fff;margin:0 0 30px}
 .ksHeroActions{display:flex;align-items:center;gap:24px;flex-wrap:wrap}

@@ -80,8 +80,48 @@ function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;c
   const Tag=as as any;
   return <Tag ref={ref} className={`ksReveal ${shown?'in':''} ${className}`} style={{transitionDelay:`${Math.min(i,8)*70}ms`}}>{children}</Tag>;
 }
-function KsHeroPhoto({t}:{t:number}){
-  return <div className="ksHeroPhoto" style={{'--ksP':t,backgroundImage:'url(/keskin/hero.jpg)'}as React.CSSProperties} aria-hidden="true"/>;
+/* Kaydırdıkça ileri-geri "scrub" olan berberlik klibi. Video bir blob olarak
+   yüklenir (Safari/iOS'ta güvenilir currentTime araması için), poster ilk kare
+   boyanana kadar görünür kalır, prefers-reduced-motion'da video hiç çekilmez. */
+function KsHeroVideo({t}:{t:number}){
+  const vidRef=useRef<HTMLVideoElement>(null);
+  const[ready,setReady]=useState(false);
+  const[reduced,setReduced]=useState(false);
+  useEffect(()=>{
+    const mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+    const onChange=()=>setReduced(mq.matches);
+    mq.addEventListener('change',onChange);
+    return()=>mq.removeEventListener('change',onChange);
+  },[]);
+  useEffect(()=>{
+    if(reduced)return;
+    const v=vidRef.current;if(!v)return;
+    const src=window.matchMedia('(max-width:800px)').matches?'/keskin/hero-m.mp4':'/keskin/hero.mp4';
+    let cancelled=false,url='';
+    fetch(src).then(r=>r.blob()).then(blob=>{
+      if(cancelled)return;
+      url=URL.createObjectURL(blob);
+      v.src=url;
+      v.load();
+    }).catch(()=>{});
+    const onMeta=()=>{
+      setReady(true);
+      try{v.currentTime=Math.max(t*(v.duration||1),0.001)}catch{}
+      v.play().then(()=>v.pause()).catch(()=>{});
+    };
+    v.addEventListener('loadedmetadata',onMeta);
+    return()=>{cancelled=true;v.removeEventListener('loadedmetadata',onMeta);if(url)URL.revokeObjectURL(url)};
+  },[reduced]);
+  useEffect(()=>{
+    const v=vidRef.current;if(!v||!ready||!v.duration)return;
+    const target=Math.min(t*v.duration,v.duration-0.05);
+    if(Math.abs(v.currentTime-target)>0.03){try{v.currentTime=target}catch{}}
+  },[t,ready]);
+  return <div className="ksHeroPhoto" style={{'--ksP':t}as React.CSSProperties} aria-hidden="true">
+    <img className={`ksHeroLayer ksHeroPoster ${ready?'hide':''}`} src="/keskin/hero-poster.jpg" alt=""/>
+    {!reduced&&<video ref={vidRef} className={`ksHeroLayer ksHeroClip ${ready?'show':''}`} muted playsInline preload="none"/>}
+  </div>;
 }
 
 /* ================= Keskin — açık zemin, siyah tipografili modern berber teması ================= */
@@ -121,7 +161,7 @@ function Keskin(p:P){
     </header>
 
     <section ref={heroRef as any} className="ksHero">
-      <KsHeroPhoto t={heroT}/>
+      <KsHeroVideo t={heroT}/>
       <div className="ksHeroOverlay"/>
       <div className="ksHeroInner">
         {(b.established_year||city)&&<span className="ksKicker">{b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' — ':''}{city?city.toUpperCase():''}</span>}
