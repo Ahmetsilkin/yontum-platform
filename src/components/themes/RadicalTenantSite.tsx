@@ -80,12 +80,8 @@ function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;c
   const Tag=as as any;
   return <Tag ref={ref} className={`ksReveal ${shown?'in':''} ${className}`} style={{transitionDelay:`${Math.min(i,8)*70}ms`}}>{children}</Tag>;
 }
-function KsHeroScene({t}:{t:number}){
-  return <div className="ksScene" style={{'--ksP':t}as React.CSSProperties} aria-hidden="true">
-    <div className="ksPole"><i/></div>
-    <div className="ksScissors">✂</div>
-    <span className="ksSnip s1"/><span className="ksSnip s2"/><span className="ksSnip s3"/><span className="ksSnip s4"/>
-  </div>;
+function KsHeroPhoto({t}:{t:number}){
+  return <div className="ksHeroPhoto" style={{'--ksP':t,backgroundImage:'url(/keskin/hero.jpg)'}as React.CSSProperties} aria-hidden="true"/>;
 }
 
 /* ================= Keskin — açık zemin, siyah tipografili modern berber teması ================= */
@@ -125,7 +121,7 @@ function Keskin(p:P){
     </header>
 
     <section ref={heroRef as any} className="ksHero">
-      <KsHeroScene t={heroT}/>
+      <KsHeroPhoto t={heroT}/>
       <div className="ksHeroOverlay"/>
       <div className="ksHeroInner">
         {(b.established_year||city)&&<span className="ksKicker">{b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' — ':''}{city?city.toUpperCase():''}</span>}

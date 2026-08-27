@@ -24,3 +24,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scrollcraft generation workspace (raw source PNGs, kie.ai job cache) — not a deploy asset
+/scrollcraft/
