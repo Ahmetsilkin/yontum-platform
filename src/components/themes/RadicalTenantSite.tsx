@@ -200,7 +200,7 @@ function Keskin(p:P){
 
     <section id="ksContact" className="ksFooter">
       <div className="ksFooterGrid">
-        <div><a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a><p>{b.established_year?b.established_year+"'den beri ":''}{city?city+"'de ":''}keskin tarzın adresi.</p></div>
+        <div><a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a></div>
         <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="ksHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
         <div><small>İLETİŞİM</small>{b.address&&<p>📍 {b.address}</p>}{b.phone&&<p>📞 {b.phone}</p>}{b.instagram&&<p>◎ <a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
       </div>
