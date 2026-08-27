@@ -65,7 +65,17 @@ function Keskin(p:P){
   const faq=parseFaq(dec(b,'ks_faq',''));
   const aboutPhoto=p.gallery?.[0]?.image_url||b.cover_url||'';
   const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
-  const openStatus=(()=>{const d=new Date(),h=p.hours.find((x:any)=>x.day_of_week===d.getDay());if(!h||!h.is_open)return 'Bugün kapalı';const now=d.getHours()*60+d.getMinutes();return now>=hmMin(h.start_time)&&now<hmMin(h.end_time)?`Bugün ${h.start_time.slice(0,5)} – ${h.end_time.slice(0,5)} açık`:'Bugün kapalı'})();
+  const openStatus=(()=>{
+    const WD:Record<string,number>={Sunday:0,Monday:1,Tuesday:2,Wednesday:3,Thursday:4,Friday:5,Saturday:6};
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',weekday:'long',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+    const weekday=parts.find(x=>x.type==='weekday')?.value||'';
+    const hh=Number(parts.find(x=>x.type==='hour')?.value||0),mm=Number(parts.find(x=>x.type==='minute')?.value||0);
+    const dayIdx=WD[weekday]??new Date().getDay(),nowMin=hh*60+mm;
+    const h=p.hours.find((x:any)=>x.day_of_week===dayIdx);
+    if(!h||!h.is_open)return 'Bugün kapalı';
+    return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time)?`Bugün ${h.start_time.slice(0,5)} – ${h.end_time.slice(0,5)} açık`:'Bugün kapalı';
+  })();
+  const openDaysCount=(p.hours||[]).filter((h:any)=>h.is_open).length;
   return <main id="top" className="tKeskin">
     <header className="ksNav">
       <a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a>
@@ -79,13 +89,14 @@ function Keskin(p:P){
       <a className="ksNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
 
-    <section className="ksHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+    <section className="ksHero" style={b.cover_url&&b.cover_type!=='video'?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+      {b.cover_url&&b.cover_type==='video'&&<video className="ksHeroVideo" src={b.cover_url} autoPlay muted loop playsInline/>}
       <div className="ksHeroOverlay"/>
       <div className="ksHeroInner">
         {(b.established_year||city)&&<span className="ksKicker">{b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' — ':''}{city?city.toUpperCase():''}</span>}
-        <h1>{b.hero_title||dec(b,'ks_heroLine1','Keskin tarz,')}<br/>{b.hero_highlight||dec(b,'ks_heroLine2','kusursuz kesim.')}</h1>
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/>{b.hero_highlight}</>}</h1>
         <div className="ksHeroActions">
-          <a className="ksHeroCta" href="#randevu">{dec(b,'ks_heroCta','Hemen Randevu Al')}</a>
+          <a className="ksHeroCta" href="#randevu">{b.booking_button_text||'Hemen Randevu Al'}</a>
           <span className="ksOpenStatus">🕐 {openStatus}</span>
         </div>
       </div>
@@ -95,7 +106,7 @@ function Keskin(p:P){
       <header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Ne yaptıracaksın?'}</h2></header>
       <div className="ksServiceGrid">
         {p.services.map(s=><article key={s.id}>
-          <div className="ksServicePhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
+          <div className="ksServicePhoto">{s.image_url?(s.image_type==='video'?<video src={s.image_url} autoPlay muted loop playsInline/>:<img src={s.image_url} alt={s.name}/>):<i>✂</i>}</div>
           <div className="ksServiceBody">
             <div className="ksServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
             {s.description&&<p>{s.description}</p>}
@@ -108,13 +119,13 @@ function Keskin(p:P){
     <section id="hakkimizda" className="ksAbout">
       <div className="ksAboutPhoto">{aboutPhoto?<img src={aboutPhoto} alt={b.name}/>:<i>✂</i>}</div>
       <div className="ksAboutText">
-        <small>HAKKIMIZDA</small>
-        <h2>{dec(b,'ks_aboutTitle',`${city?city+"'ün ":''}Keskin Adresi`)}</h2>
-        <p>{dec(b,'ks_aboutText','Klasik berberlik geleneğini modern bir salon deneyimiyle buluşturuyoruz. Ustura bilediğimiz kadar detaylara da özen gösteririz; koltuğa oturduğunda sadece kesim değil, kendine ayırdığın bir mola bulursun.')}</p>
+        <small>{b.about_label||'HAKKIMIZDA'}</small>
+        <h2>{b.about_title||`${city?city+"'ün ":''}Keskin Adresi`}</h2>
+        <p>{b.description||'Klasik berberlik geleneğini modern bir salon deneyimiyle buluşturuyoruz. Ustura bilediğimiz kadar detaylara da özen gösteririz; koltuğa oturduğunda sadece kesim değil, kendine ayırdığın bir mola bulursun.'}</p>
         <div className="ksStats">
-          <div><b>{years?`${years}+`:dec(b,'ks_statYears','10+')}</b><small>Yıllık Deneyim</small></div>
-          <div><b>{dec(b,'ks_stat2Value','3')}</b><small>{dec(b,'ks_stat2Label','Usta Berber')}</small></div>
-          <div><b>{dec(b,'ks_stat3Value','6')}</b><small>{dec(b,'ks_stat3Label','Gün Açık')}</small></div>
+          <div><b>{years?`${years}+`:'—'}</b><small>Yıllık Deneyim</small></div>
+          <div><b>{visibleStaff.length||1}</b><small>Usta Berber</small></div>
+          <div><b>{openDaysCount||7}</b><small>Gün Açık</small></div>
         </div>
       </div>
     </section>
@@ -154,7 +165,7 @@ function Keskin(p:P){
 
     <section id="ksContact" className="ksFooter">
       <div className="ksFooterGrid">
-        <div><a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a><p>{dec(b,'ks_footerTagline',`${b.established_year?b.established_year+"'den beri ":''}${city?city+"'de ":''}keskin tarzın adresi.`)}</p></div>
+        <div><a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a><p>{b.established_year?b.established_year+"'den beri ":''}{city?city+"'de ":''}keskin tarzın adresi.</p></div>
         <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="ksHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
         <div><small>İLETİŞİM</small>{b.address&&<p>📍 {b.address}</p>}{b.phone&&<p>📞 {b.phone}</p>}{b.instagram&&<p>◎ <a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
       </div>
