@@ -21,23 +21,9 @@ const COLOR_SETS=[
   {id:'natural',label:'Doğal Yeşil',accent:'#4f6f52',scheme:'natural',bg:'#eef3ea',text:'#243328'},
   {id:'luxury',label:'Lüks Espresso',accent:'#9b7b3f',scheme:'luxury',bg:'#14110e',text:'#f2e3c5'},
 ];
-const FIXED_COLOR_THEMES=['usta'];
+const FIXED_COLOR_THEMES=['fadedistrict'];
 type ThemeField={key:string;label:string;placeholder?:string;type?:'text'|'textarea'};
 const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
-  usta:[
-    {key:'usta_cardTitle',label:'Ana ekrandaki randevu kartı başlığı',placeholder:'Hızlı randevu'},
-    {key:'usta_cardText',label:'Ana ekrandaki randevu kartı açıklaması',placeholder:'Uygun saati seç, birkaç adımda tamamla.'},
-    {key:'usta_introLabel',label:'Tanıtım bölümü üst yazı',placeholder:'HİZMET BEKLENTİNİN ÜSTÜNDE'},
-    {key:'usta_introTitle',label:'Tanıtım bölümü başlığı',placeholder:'Beklentinin Ötesinde Hizmet'},
-    {key:'usta_introText',label:'Tanıtım bölümü açıklaması',type:'textarea'},
-    {key:'usta_galleryLabel',label:'Galeri üst yazı',placeholder:'ÇALIŞMALARIMIZ'},
-    {key:'usta_galleryTitle',label:'Galeri başlığı',placeholder:'Keşfet'},
-    {key:'usta_galleryText',label:'Galeri açıklaması',type:'textarea'},
-    {key:'usta_teamTitle',label:'Ekip bölümü başlığı',placeholder:'Ustalarımızla Tanışın'},
-    {key:'usta_teamText',label:'Ekip bölümü açıklaması',type:'textarea'},
-    {key:'usta_joinText',label:'Ekip katılım daveti yazısı',placeholder:'Ekibimize katılmak ister misin?'},
-    {key:'usta_joinLinkText',label:'Ekip katılım link yazısı',placeholder:'İletişime geç →'},
-  ],
 };
 export default function BusinessDashboard({userEmail}:{userEmail:string}){const[business,setBusiness]=useState<Business|null>(null),[services,setServices]=useState<Service[]>([]),[hours,setHours]=useState<WorkingHour[]>([]),[appointments,setAppointments]=useState<Appointment[]>([]),[loading,setLoading]=useState(true),[tab,setTab]=useState('overview'),[message,setMessage]=useState(''),[editService,setEditService]=useState<Partial<Service>|null>(null),[gallery,setGallery]=useState<Array<{id:string;image_url:string;alt_text:string|null}>>([]),[mediaList,setMediaList]=useState<any[]>([]),[appointmentView,setAppointmentView]=useState<'active'|'past'|'completed'|'cancelled'|'archive'>('active'),[manualOpen,setManualOpen]=useState(false),[cancelTarget,setCancelTarget]=useState<Appointment|null>(null),[staffList,setStaffList]=useState<any[]>([]),[memberRole,setMemberRole]=useState('owner'),[staffForm,setStaffForm]=useState(false),[staffFilter,setStaffFilter]=useState('all'),[deleteStaff,setDeleteStaff]=useState<any|null>(null),[catalogThemes,setCatalogThemes]=useState<any[]>([]),[previewDevice,setPreviewDevice]=useState<'desktop'|'tablet'|'mobile'>('mobile'),[decor,setDecor]=useState<any>({}),[mobileMenuOpen,setMobileMenuOpen]=useState(false);const decorTimer=useRef<ReturnType<typeof setTimeout>|null>(null);const previewWrapRef=useRef<HTMLDivElement>(null);const[previewScale,setPreviewScale]=useState(1);const[newStaffCredentials,setNewStaffCredentials]=useState<{name:string;phone:string;email:string;password:string;loginUrl:string}|null>(null);const[showChangePassword,setShowChangePassword]=useState(false);const[currentUserId,setCurrentUserId]=useState('');const[manualDate,setManualDate]=useState('');const[manualServiceId,setManualServiceId]=useState('');const[manualStaffId,setManualStaffId]=useState('');const[manualTime,setManualTime]=useState('');const[scheduleTarget,setScheduleTarget]=useState('business');const[staffScheduleHours,setStaffScheduleHours]=useState<any[]>([]);const manualDays=useMemo(()=>Array.from({length:14},(_,i)=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+i);return{value:d.toLocaleDateString('en-CA'),name:dayNames[d.getDay()],n:d.getDate(),month:monthNames[d.getMonth()]}}),[]);
  const manualSlots=useMemo(()=>{
