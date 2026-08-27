@@ -234,12 +234,12 @@ function Usta(p:P){
     <section className="usHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
       <div className="usHeroOverlay"/>
       <a className="usHeroCard" href="#randevu">
-        <b>{dec(b,'usta_cardTitle','Randevu Al')}</b>
-        <span className="usFakeField">{dec(b,'usta_cardName','Adınız Soyadınız')}</span>
+        <b>{dec(b,'usta_cardTitle','Randevu oluştur')}</b>
+        <span className="usFakeField">{p.services[0]?.name||b.services_label||'Hizmet seç'}</span>
         <span className="usFakeField">E-posta</span>
         <span className="usFakeField">{b.phone_label||'Telefon'}</span>
         <span className="usFakeField">{dec(b,'usta_cardDate','Tarih & Saat Seç')}</span>
-        <em>{b.booking_button_text||'Randevu Al'} →</em>
+        <em>{dec(b,'usta_cardSubmit','Talep Gönder')} →</em>
       </a>
       <div className="usHeroText">
         <h1>{b.hero_title||'Gelenek'}<br/><em>{b.hero_highlight||'Modern Tarzla Buluşuyor'}</em></h1>
@@ -268,7 +268,7 @@ function Usta(p:P){
       <Gallery p={p} variant="ustaWorks"/>
     </section>
     <section id="hizmetler" className="usPriceRow">
-      <div className="usTestimonial"><OwnRatings businessId={b.id}/></div>
+      <div className="usTestimonial"><OwnRatings businessId={b.id} variant="quote"/></div>
       <ServiceList p={p} variant="ustaPrice"/>
     </section>
     <section id="usTeam" className="usTeamSection">
