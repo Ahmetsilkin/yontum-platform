@@ -30,12 +30,13 @@
 .fdBookBtn{flex:0 0 auto;white-space:nowrap;border:1px solid var(--fd-copper);color:var(--fd-copper-light)!important;padding:11px 20px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:.2s}
 .fdBookBtn:hover{background:var(--fd-copper);color:#0d0b09!important}
 @media(max-width:720px){.fdNav nav{display:none}.fdBookBtn{padding:9px 14px;font-size:11px}}
-.fdHero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0b09 center/cover;overflow:hidden;text-align:center}
+.fdHero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0b09 center/cover;background-attachment:fixed;overflow:hidden;text-align:center}
+@media(max-width:800px){.fdHero{background-attachment:scroll}}
 .fdHeroBlur{position:absolute;inset:-6%;background:inherit;background-size:cover;background-position:center;filter:blur(14px) brightness(.55);transform:scale(1.08)}
 .fdHeroSpotlight{position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 42%,#00000000 0%,#0d0b09b0 65%,#0d0b09f5 100%)}
 .fdHeroInner{position:relative;z-index:2;max-width:760px;padding:0 6vw}
 .fdKicker{display:inline-block;letter-spacing:4px;font-size:11px;font-weight:700;color:var(--fd-copper-light);text-transform:uppercase;margin-bottom:18px}
-.fdHeroInner h1{font:700 clamp(40px,6vw,84px)/1.08 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;color:#fff;margin:0}
+.fdHeroInner h1{font:700 clamp(40px,6vw,84px)/1.05 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:-1.5px;color:#fff;margin:0}
 .fdHeroInner h1 em{font-style:normal;color:var(--fd-copper-light)}
 .fdHeroInner>p{color:#d8cec0;max-width:520px;margin:26px auto 0;line-height:1.8;font-size:16px}
 .fdBookBtnGlow{display:inline-block;margin-top:36px;background:var(--fd-copper);color:#1a0f04!important;padding:16px 34px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:14px;box-shadow:0 0 18px 2px color-mix(in srgb,var(--fd-copper) 65%,transparent),0 0 60px 10px color-mix(in srgb,var(--fd-copper) 30%,transparent);transition:box-shadow .2s,transform .2s}
@@ -43,10 +44,10 @@
 .rServices.fdMenu{background:var(--fd-bg);padding:100px 6vw}
 .rServices.fdMenu>header{text-align:center;max-width:600px;margin:0 auto 50px}
 .rServices.fdMenu>header small{color:var(--fd-copper-light);letter-spacing:3px;font-weight:700}
-.rServices.fdMenu>header h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;margin:12px 0 0;color:#fff}
+.rServices.fdMenu>header h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:-1px;margin:12px 0 0;color:#fff}
 .rServices.fdMenu>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--fd-line);border:1px solid var(--fd-line)}
-.rServices.fdMenu article{background:var(--fd-surface);padding:30px 26px;border:0}
-.rServices.fdMenu article:hover{background:var(--fd-surface2)}
+.rServices.fdMenu article{background:var(--fd-surface);padding:30px 26px;border:1px solid transparent;transition:background .2s,border-color .2s,box-shadow .2s,transform .2s}
+.rServices.fdMenu article:hover{background:var(--fd-surface2);border-color:color-mix(in srgb,var(--fd-copper) 55%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--fd-copper) 30%,transparent),0 0 24px color-mix(in srgb,var(--fd-copper) 22%,transparent);transform:translateY(-3px)}
 .rServices.fdMenu article>span{display:none}
 .rServices.fdMenu h3{font:600 19px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:#fff;margin:0}
 .rServices.fdMenu p{color:var(--fd-muted);font-size:13px;margin-top:10px;line-height:1.6}
@@ -56,26 +57,30 @@
 .fdGallerySection{padding:100px 6vw;background:var(--fd-surface)}
 .fdGallerySection>header{text-align:center;max-width:600px;margin:0 auto 46px}
 .fdGallerySection small{color:var(--fd-copper-light);letter-spacing:3px;font-weight:700}
-.fdGallerySection h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;margin:12px 0 0;color:#fff}
+.fdGallerySection h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:-1px;margin:12px 0 0;color:#fff}
 .rGallery.fdGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--fd-line)}
 .rGallery.fdGrid img,.rGallery.fdGrid video{aspect-ratio:4/5;object-fit:cover;filter:saturate(.9) contrast(1.05);transition:filter .2s,transform .3s}
+.rGallery.fdGrid .galleryItemBtn{position:relative;overflow:hidden;box-shadow:0 0 0 0 transparent;transition:box-shadow .25s}
+.rGallery.fdGrid .galleryItemBtn:hover{box-shadow:inset 0 0 0 1px var(--fd-copper),0 0 22px color-mix(in srgb,var(--fd-copper) 26%,transparent);z-index:1}
 .rGallery.fdGrid .galleryItemBtn:hover img{filter:saturate(1.1) contrast(1.1) brightness(1.05);transform:scale(1.03)}
 .fdTeamSection{padding:100px 6vw;background:var(--fd-bg)}
 .fdTeamSection>header{text-align:center;max-width:600px;margin:0 auto 46px}
 .fdTeamSection small{color:var(--fd-copper-light);letter-spacing:3px;font-weight:700}
-.fdTeamSection h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;margin:12px 0 0;color:#fff}
+.fdTeamSection h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:-1px;margin:12px 0 0;color:#fff}
 .fdTeamGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:26px}
 .fdTeamGrid article{text-align:center}
-.fdTeamPhoto{aspect-ratio:3/4;border-radius:2px;overflow:hidden;background:var(--fd-surface2);position:relative;box-shadow:0 0 0 1px var(--fd-line)}
+.fdTeamPhoto{aspect-ratio:3/4;border-radius:2px;overflow:hidden;background:var(--fd-surface2);position:relative;box-shadow:0 0 0 1px var(--fd-line);transition:box-shadow .25s,transform .25s}
+.fdTeamGrid article:hover .fdTeamPhoto{box-shadow:0 0 0 1px var(--fd-copper),0 0 26px color-mix(in srgb,var(--fd-copper) 30%,transparent);transform:translateY(-4px)}
+.fdTeamGrid article:hover .fdTeamPhoto img{transform:scale(1.04)}
 .fdTeamPhoto:after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#00000000 40%,#0d0b09b0 100%)}
-.fdTeamPhoto img{width:100%;height:100%;object-fit:cover}
+.fdTeamPhoto img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .fdTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;font:700 54px 'Oswald',serif;font-style:normal;color:var(--fd-copper)}
 .fdTeamGrid b{display:block;margin-top:16px;font-family:'Oswald',Arial,sans-serif;font-size:16px;letter-spacing:.5px;color:#fff}
 .fdTeamGrid small{display:block;margin-top:4px;color:var(--fd-copper-light);font-size:11px;letter-spacing:1px;text-transform:uppercase}
 .tFadeDistrict .rBooking{background:var(--fd-surface);padding:100px 6vw}
 .tFadeDistrict .rBooking>header{text-align:center;max-width:600px;margin:0 auto 40px}
 .tFadeDistrict .rBooking>header small{color:var(--fd-copper-light);letter-spacing:3px;font-weight:700}
-.tFadeDistrict .rBooking>header h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;color:#fff}
+.tFadeDistrict .rBooking>header h2{font:700 38px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:-1px;color:#fff}
 .tFadeDistrict .tenantBooking{background:var(--fd-surface2);border-color:var(--fd-line);color:var(--fd-text)}
 .tFadeDistrict .tbServices button,.tFadeDistrict .staffOptions button,.tFadeDistrict .tbDays button,.tFadeDistrict .tbSlots button{background:var(--fd-surface);border-color:var(--fd-line);color:var(--fd-text)!important;-webkit-text-fill-color:var(--fd-text)}
 .tFadeDistrict .tenantBooking input,.tFadeDistrict .tenantBooking textarea{background:var(--fd-bg);border-color:var(--fd-line);color:var(--fd-text)}
@@ -88,7 +93,7 @@
 .fdContact{background:var(--fd-surface);padding:100px 6vw 30px}
 .fdContactInner{display:grid;grid-template-columns:1fr 1fr;gap:6vw;max-width:1200px;margin:0 auto}
 .fdContactText small{color:var(--fd-copper-light);letter-spacing:3px;font-weight:700}
-.fdContactText h2{font:700 34px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;margin:12px 0 22px;color:#fff}
+.fdContactText h2{font:700 34px 'Oswald',Arial,sans-serif;text-transform:uppercase;letter-spacing:-1px;margin:12px 0 22px;color:#fff}
 .fdContactRow{color:var(--fd-muted);font-size:14px;margin:0 0 12px}
 .fdContactRow a{color:var(--fd-copper-light)}
 .fdMap{border-radius:2px;overflow:hidden;min-height:260px;filter:grayscale(.4) invert(.9) contrast(.9)}
