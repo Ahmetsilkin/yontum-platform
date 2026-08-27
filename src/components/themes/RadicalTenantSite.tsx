@@ -236,6 +236,7 @@ function Usta(p:P){
       <a className="usHeroCard" href="#randevu">
         <b>{dec(b,'usta_cardTitle','Randevu Al')}</b>
         <span className="usFakeField">{dec(b,'usta_cardName','Adınız Soyadınız')}</span>
+        <span className="usFakeField">E-posta</span>
         <span className="usFakeField">{b.phone_label||'Telefon'}</span>
         <span className="usFakeField">{dec(b,'usta_cardDate','Tarih & Saat Seç')}</span>
         <em>{b.booking_button_text||'Randevu Al'} →</em>
@@ -283,7 +284,7 @@ function Usta(p:P){
     </section>
     <Booking p={p}/>
     <footer className="usFooter">
-      <div className="usFooterCol usFooterBrand"><Brand b={b}/><p>{dec(b,'usta_footerTagline',b.hero_description||'')}</p></div>
+      <div className="usFooterCol usFooterBrand"><Brand b={b}/><p>{dec(b,'usta_footerTagline',b.hero_description||'')}</p>{b.address&&<span>{b.address}</span>}{b.phone&&<span>{b.phone}</span>}{b.email&&<span>{b.email}</span>}</div>
       <div className="usFooterCol"><b>Menü</b><a href="#top">Ana Sayfa</a><a href="#usAbout">Hakkımızda</a><a href="#usGallery">Galeri</a><a href="#usTeam">Ekibimiz</a></div>
       <div className="usFooterCol"><b>Hızlı Erişim</b><a href="#hizmetler">Hizmetler</a><a href="/gizlilik">Gizlilik Politikası</a><a href="#randevu">Konum & İletişim</a></div>
       <div className="usFooterCol"><b>Çalışma Saatleri</b>{p.hours.filter((h:any)=>h.is_open).length?<ul className="usFooterHours">{[...p.hours].sort((x:any,y:any)=>x.day_of_week-y.day_of_week).filter((h:any)=>h.is_open).map((h:any)=><li key={h.day_of_week}>{DAY_NAMES[h.day_of_week]}<span>{h.start_time?.slice(0,5)}–{h.end_time?.slice(0,5)}</span></li>)}</ul>:null}<a className="usOrangeBtn" href="#randevu">Randevu Al →</a></div>

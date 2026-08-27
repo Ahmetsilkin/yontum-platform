@@ -720,7 +720,10 @@
 }
 
 /* Usta — referans tasarımın renkleri sabittir, işletmenin seçtiği vurgu rengini kullanmaz */
-.tUsta{--us-cream:#f4ecdf;--us-brown:#3c332b;--us-orange:#e8823a;--us-ink:#171412;background:#fff;color:var(--us-ink);font-family:Arial,Helvetica,sans-serif}
+.tUsta{--us-cream:#f4ecdf;--us-brown:#3c332b;--us-orange:#e8823a;--us-ink:#171412;--accent:var(--us-orange);--brand:var(--us-orange);background:#fff;color:var(--us-ink);font-family:Arial,Helvetica,sans-serif}
+.tUsta .rBooking{background:#fff}
+.tUsta .rBooking header small{color:var(--us-orange)}
+.tUsta .tenantBooking{border-color:#eee6da}
 .tUsta .usNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 6vw;background:#fff;border-bottom:1px solid #f0ede6}
 .tUsta .usNav .rBrand{flex:0 0 auto;min-width:0}
 .tUsta .usNav .rBrand b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
