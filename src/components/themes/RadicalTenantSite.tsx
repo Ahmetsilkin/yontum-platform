@@ -228,7 +228,7 @@ function Usta(p:P){
   return <main id="top" className="tUsta">
     <header className="usNav">
       <Brand b={b}/>
-      <nav><a href="#hizmetler">{b.services_label||'Hizmetler'}</a><a href="#usAbout">{b.about_label||'Hakkımızda'}</a><a href="#usGallery">Galeri</a><a href="#hizmetler">Ekibimiz</a></nav>
+      <nav><a href="#hizmetler">{b.services_label||'Hizmetler'}</a><a href="#usAbout">{b.about_label||'Hakkımızda'}</a><a href="#usGallery">Galeri</a><a href="#usTeam">Ekibimiz</a></nav>
       <a className="usContactBtn" href="#randevu">{dec(b,'usta_navCta','İletişime Geç')}</a>
     </header>
     <section className="usHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
@@ -266,19 +266,25 @@ function Usta(p:P){
       </div>
       <Gallery p={p} variant="ustaWorks"/>
     </section>
-    <section id="hizmetler" className="usBento">
-      <div className="usBentoHead"><small>{dec(b,'usta_bentoLabel','HİZMETLER · EKİP · YORUMLAR')}</small><h2>{dec(b,'usta_bentoTitle','Tek Bakışta Her Şey')}</h2></div>
-      <div className="usBentoGrid">
-        <div className="usBentoCard usBentoReviews"><OwnRatings businessId={b.id}/></div>
-        {p.services.map((s:any,i:number)=><div key={s.id} className={`usBentoCard usBentoService usbs${i%4}`}><b>{s.name}</b><small>{s.duration_minutes} dk</small>{b.show_prices&&s.price!=null&&<em>{Number(s.price).toLocaleString('tr-TR')} ₺</em>}</div>)}
-        {visibleStaff.map((s:any)=><div key={s.id} className="usBentoCard usBentoStaff">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}<span><b>{s.name}</b><small>{s.title||'Usta'}</small></span></div>)}
-        <a className="usBentoCard usBentoJoin" href="#randevu"><span>{dec(b,'usta_joinText','Ekibimize katılmak ister misin?')}</span><em>{dec(b,'usta_joinLinkText','Özgeçmiş gönder →')}</em></a>
+    <section id="hizmetler" className="usPriceRow">
+      <div className="usTestimonial"><OwnRatings businessId={b.id}/></div>
+      <ServiceList p={p} variant="ustaPrice"/>
+    </section>
+    <section id="usTeam" className="usTeamSection">
+      <div className="usTeamHead"><small>EKİBİMİZ</small><h2>{dec(b,'usta_teamTitle','Ustalarımızla Tanışın')}</h2><p>{dec(b,'usta_teamText','Her biri işine tutkuyla bağlı, deneyimli ustalar.')}</p></div>
+      <div className="usTeamGrid">
+        {visibleStaff.map((s:any)=><article key={s.id}>
+          <div className="usTeamLabel"><b>{s.name}</b><small>{s.title||'Usta'}</small></div>
+          <div className="usTeamSocials"><i>in</i><i>◎</i></div>
+          {s.photo_url?<img src={s.photo_url} alt={s.name}/>:<em>{s.name[0]}</em>}
+        </article>)}
+        <a className="usJoinCard" href="#randevu"><span>{dec(b,'usta_joinText','Ekibimize katılmak ister misin?')}</span><em>{dec(b,'usta_joinLinkText','Özgeçmiş gönder →')}</em></a>
       </div>
     </section>
     <Booking p={p}/>
     <footer className="usFooter">
       <div className="usFooterCol usFooterBrand"><Brand b={b}/><p>{dec(b,'usta_footerTagline',b.hero_description||'')}</p></div>
-      <div className="usFooterCol"><b>Menü</b><a href="#top">Ana Sayfa</a><a href="#usAbout">Hakkımızda</a><a href="#usGallery">Galeri</a><a href="#hizmetler">Ekibimiz</a></div>
+      <div className="usFooterCol"><b>Menü</b><a href="#top">Ana Sayfa</a><a href="#usAbout">Hakkımızda</a><a href="#usGallery">Galeri</a><a href="#usTeam">Ekibimiz</a></div>
       <div className="usFooterCol"><b>Hızlı Erişim</b><a href="#hizmetler">Hizmetler</a><a href="/gizlilik">Gizlilik Politikası</a><a href="#randevu">Konum & İletişim</a></div>
       <div className="usFooterCol"><b>Çalışma Saatleri</b>{p.hours.filter((h:any)=>h.is_open).length?<ul className="usFooterHours">{[...p.hours].sort((x:any,y:any)=>x.day_of_week-y.day_of_week).filter((h:any)=>h.is_open).map((h:any)=><li key={h.day_of_week}>{DAY_NAMES[h.day_of_week]}<span>{h.start_time?.slice(0,5)}–{h.end_time?.slice(0,5)}</span></li>)}</ul>:null}<a className="usOrangeBtn" href="#randevu">Randevu Al →</a></div>
       <div className="usFooterBottom"><span>© {new Date().getFullYear()} {b.name}</span>{b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">Instagram</a>}</div>
