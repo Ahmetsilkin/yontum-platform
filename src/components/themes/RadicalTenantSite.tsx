@@ -35,39 +35,77 @@ function Booking({p}:{p:P}){return <section id="randevu" className="rBooking"><h
 function Contact({b}:{b:any}){const mapQuery=encodeURIComponent(b.address||b.name||'');return <><GoogleReviews businessId={b.id}/>{b.show_map!==false&&b.address&&<iframe className="rContactMap" src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} loading="lazy" title="Konum"/>}<footer className="rContact"><Brand b={b}/><div><small>{b.address_label}</small><p>{b.address}</p></div><div><small>{b.phone_label}</small><p>{b.phone}</p></div>{b.instagram&&<div><small>{b.instagram_label}</small><p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p></div>}</footer></>}
 const HeroText=({b}:{b:any})=><><small>{b.hero_label}</small><h1>{b.hero_title||'Tarzını'} <em>{b.hero_highlight||''}</em></h1>{b.hero_description&&<p>{b.hero_description}</p>}<CTA b={b}/></>;
 const DAY_NAMES=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+function fdHourRows(hours:any[]){const order=[1,2,3,4,5,6,0],key=(h:any)=>h?`${h.is_open}|${h.start_time}|${h.end_time}`:'x';const rows:{label:string;value:string}[]=[];let i=0;while(i<order.length){const day=order[i],h=hours.find((x:any)=>x.day_of_week===day);let j=i;while(j+1<order.length){const nh=hours.find((x:any)=>x.day_of_week===order[j+1]);if(key(nh)!==key(h))break;j++}rows.push({label:i===j?DAY_NAMES[day]:`${DAY_NAMES[day]} - ${DAY_NAMES[order[j]]}`,value:h&&h.is_open?`${h.start_time.slice(0,5)} - ${h.end_time.slice(0,5)}`:'Kapalı'});i=j+1}return rows}
 
-/* ================= Fade District — koyu, spot ışıklı, altın/bakır vurgulu premium berber teması ================= */
+/* ================= Fade District — koyu, altın vurgulu premium berber teması ================= */
 function FadeDistrict(p:P){
   const{b}=p;
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const popularNames=String(dec(b,'fd_popularServices','')).split(',').map(s=>s.trim()).filter(Boolean);
+  const years=b.established_year?Math.max(1,new Date().getFullYear()-b.established_year):null;
+  const hourRows=fdHourRows(p.hours||[]);
+  const kicker=b.hero_label||[b.business_type==='barber'?'Berber':'İşletme',b.address?b.address.split(',').slice(-2).join(' / ').trim():''].filter(Boolean).join(' · ').toUpperCase();
   return <main id="top" className="tFadeDistrict">
     <header className="fdNav">
       <Brand b={b}/>
       <nav>
         <a href="#top">{dec(b,'fd_navHome','Ana Sayfa')}</a>
+        <a href="#hakkimizda">Hakkımızda</a>
         <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
         <a href="#fdGallery">Galeri</a>
-        <a href="#fdTeam">Ekip</a>
-        <a href="#randevu">Randevu</a>
+        <a href="#fdReviews">Yorumlar</a>
         <a href="#fdContact">İletişim</a>
       </nav>
       <a className="fdBookBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
-    <section className="fdHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
-      <div className="fdHeroBlur"/>
-      <div className="fdHeroSpotlight"/>
-      <div className="fdHeroInner">
-        {b.hero_label&&<span className="fdKicker">{b.hero_label}</span>}
-        <h1>{b.hero_title||dec(b,'fd_heroLine1','Keskin Kal.')}<br/><em>{b.hero_highlight||dec(b,'fd_heroLine2','Efsane Görün.')}</em></h1>
+
+    <section className="fdHero2">
+      <div className="fdHeroPattern" aria-hidden="true">{Array.from({length:54}).map((_,i)=><span key={i}/>)}</div>
+      <div className="fdHero2Inner">
+        {kicker&&<span className="fdKicker">{kicker}</span>}
+        <h1>{b.hero_title||b.name}</h1>
         {b.hero_description&&<p>{b.hero_description}</p>}
-        <a className="fdBookBtnGlow" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+        <div className="fdHeroActions">
+          <CTA b={b}/>
+          {b.phone&&<a className="fdHeroPhone" href={`tel:${b.phone}`}>☎ {b.phone}</a>}
+        </div>
+        {b.address&&<p className="fdHeroAddr">📍 {b.address}</p>}
       </div>
     </section>
-    <ServiceList p={p} variant="fdMenu"/>
+
+    <section id="hakkimizda" className="fdAbout">
+      <header><small>HAKKIMIZDA</small><h2>{dec(b,'fd_aboutTitle','Zanaatine Tutkuyla Bağlı Bir Ekip')}</h2></header>
+      <div className="fdAboutGrid">
+        <p>{dec(b,'fd_aboutText','Berberlik bizim için sadece bir meslek değil, kuşaktan kuşağa aktarılan bir tutkudur. Modern teknikleri geleneksel ustalıkla birleştirerek her müşterimize kendine özel bir deneyim sunuyoruz.')}</p>
+        <div className="fdAboutIcon" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none"><line x1="18" y1="18" x2="102" y2="102" stroke="currentColor" strokeWidth="1.4"/><line x1="102" y1="18" x2="18" y2="102" stroke="currentColor" strokeWidth="1.4"/><circle cx="18" cy="18" r="8" stroke="currentColor" strokeWidth="1.4"/><circle cx="18" cy="102" r="8" stroke="currentColor" strokeWidth="1.4"/></svg></div>
+      </div>
+      <div className="fdStats">
+        <div><b>{years?`${years}+`:dec(b,'fd_statYears','10+')}</b><small>YIL TECRÜBE</small></div>
+        <div><b>{dec(b,'fd_statRating','4.9')}</b><small>GOOGLE PUANI</small></div>
+        <div><b>{dec(b,'fd_statCustomers','5.000+')}</b><small>MUTLU MÜŞTERİ</small>{!!dec(b,'fd_statBadge','Belgeli')&&<i className="fdBadge">{dec(b,'fd_statBadge','Belgeli')}</i>}</div>
+      </div>
+    </section>
+
+    <section id="hizmetler" className="fdServices2">
+      <header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Ustalık İsteyen Dokunuşlar'}</h2>{b.services_description&&<p>{b.services_description}</p>}</header>
+      <div className="fdServiceGrid">
+        {p.services.map(s=><article key={s.id}>
+          {popularNames.includes(s.name)&&<i className="fdBadge fdPopularBadge">Popüler</i>}
+          <h3>{s.name}</h3>
+          {s.description&&<p>{s.description}</p>}
+          <footer><em>{s.duration_minutes} dk</em>{b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer>
+          <a className="fdServiceBtn" href="#randevu">Randevu Al →</a>
+        </article>)}
+      </div>
+    </section>
+
+    <Booking p={p}/>
+
     <section id="fdGallery" className="fdGallerySection">
-      <header><small>GALERİ</small><h2>{dec(b,'fd_galleryTitle','İşçiliğimiz')}</h2></header>
+      <header><small>GALERİ</small><h2>{dec(b,'fd_galleryTitle','Salondan Kareler')}</h2></header>
       <Gallery p={p} variant="fdGrid"/>
     </section>
+
     {visibleStaff.length>0&&<section id="fdTeam" className="fdTeamSection">
       <header><small>EKİP</small><h2>{dec(b,'fd_teamTitle','Ustalarımız')}</h2></header>
       <div className="fdTeamGrid">
@@ -77,20 +115,39 @@ function FadeDistrict(p:P){
         </article>)}
       </div>
     </section>}
-    <Booking p={p}/>
-    <OwnRatings businessId={b.id}/>
-    <section id="fdContact" className="fdContact">
-      <div className="fdContactInner">
-        <div className="fdContactText">
-          <small>İLETİŞİM</small>
-          <h2>{dec(b,'fd_contactTitle','Bizi Ziyaret Et')}</h2>
-          {b.address&&<p className="fdContactRow">📍 {b.address}</p>}
-          {b.phone&&<p className="fdContactRow">📞 {b.phone}</p>}
-          {b.instagram&&<p className="fdContactRow">◎ <a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}
+
+    <div id="fdReviews"><OwnRatings businessId={b.id}/></div>
+
+    <section className="fdSubNav">
+      <b>{b.name}</b>
+      <nav>
+        <a href="#top">Ana Sayfa</a>
+        <a href="#hakkimizda">Hakkımızda</a>
+        <a href="#hizmetler">Hizmetler</a>
+        <a href="#fdGallery">Galeri</a>
+        <a href="#fdContact">İletişim</a>
+      </nav>
+      <a className="fdBookBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </section>
+
+    <section id="fdContact" className="fdContact2">
+      <header><small>İLETİŞİM</small><h2>{dec(b,'fd_contactTitle','Bizi Ziyaret Edin')}</h2></header>
+      <div className="fdContact2Grid">
+        <div className="fdContactInfo">
+          {b.address&&<div className="fdContactBlock"><small>ADRES</small><p>📍 {b.address}</p></div>}
+          {b.phone&&<div className="fdContactBlock"><small>TELEFON</small><p>📞 {b.phone}</p></div>}
+          {b.instagram&&<div className="fdContactBlock"><small>INSTAGRAM</small><p>◎ <a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p></div>}
         </div>
-        {b.address&&<div className="fdMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum"/></div>}
+        <div className="fdHoursTable">
+          <small>ÇALIŞMA SAATLERİ</small>
+          {hourRows.map((r,i)=><div key={i} className="fdHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
+        </div>
       </div>
-      <div className="fdFooterBottom"><span>{b.name}</span><span>© {new Date().getFullYear()}</span></div>
+      <div className="fdContactActions">
+        <CTA b={b}/>
+        {b.address&&<a className="fdDirectionsBtn" target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(b.address)}`}>Yol Tarifi</a>}
+      </div>
+      <div className="fdFooterBottom"><Brand b={b}/><span>© {new Date().getFullYear()} {b.name}</span></div>
     </section>
   </main>;
 }
