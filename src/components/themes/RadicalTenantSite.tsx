@@ -3,8 +3,8 @@ import{useState}from'react';
 import TenantBooking from'@/components/TenantBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={fadedistrict:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_fadedistrict').split('_').at(-1),C:any={fadedistrict:FadeDistrict},Layout=C[family]||FadeDistrict,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -35,119 +35,130 @@ function Booking({p}:{p:P}){return <section id="randevu" className="rBooking"><h
 function Contact({b}:{b:any}){const mapQuery=encodeURIComponent(b.address||b.name||'');return <><GoogleReviews businessId={b.id}/>{b.show_map!==false&&b.address&&<iframe className="rContactMap" src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} loading="lazy" title="Konum"/>}<footer className="rContact"><Brand b={b}/><div><small>{b.address_label}</small><p>{b.address}</p></div><div><small>{b.phone_label}</small><p>{b.phone}</p></div>{b.instagram&&<div><small>{b.instagram_label}</small><p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p></div>}</footer></>}
 const HeroText=({b}:{b:any})=><><small>{b.hero_label}</small><h1>{b.hero_title||'Tarzını'} <em>{b.hero_highlight||''}</em></h1>{b.hero_description&&<p>{b.hero_description}</p>}<CTA b={b}/></>;
 const DAY_NAMES=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-function fdHourRows(hours:any[]){const order=[1,2,3,4,5,6,0],key=(h:any)=>h?`${h.is_open}|${h.start_time}|${h.end_time}`:'x';const rows:{label:string;value:string}[]=[];let i=0;while(i<order.length){const day=order[i],h=hours.find((x:any)=>x.day_of_week===day);let j=i;while(j+1<order.length){const nh=hours.find((x:any)=>x.day_of_week===order[j+1]);if(key(nh)!==key(h))break;j++}rows.push({label:i===j?DAY_NAMES[day]:`${DAY_NAMES[day]} - ${DAY_NAMES[order[j]]}`,value:h&&h.is_open?`${h.start_time.slice(0,5)} - ${h.end_time.slice(0,5)}`:'Kapalı'});i=j+1}return rows}
+function groupedHourRows(hours:any[]){const order=[1,2,3,4,5,6,0],key=(h:any)=>h?`${h.is_open}|${h.start_time}|${h.end_time}`:'x';const rows:{label:string;value:string}[]=[];let i=0;while(i<order.length){const day=order[i],h=hours.find((x:any)=>x.day_of_week===day);let j=i;while(j+1<order.length){const nh=hours.find((x:any)=>x.day_of_week===order[j+1]);if(key(nh)!==key(h))break;j++}rows.push({label:i===j?DAY_NAMES[day]:`${DAY_NAMES[day]} - ${DAY_NAMES[order[j]]}`,value:h&&h.is_open?`${h.start_time.slice(0,5)} - ${h.end_time.slice(0,5)}`:'Kapalı'});i=j+1}return rows}
+function parseFaq(raw:string):{q:string;a:string}[]{
+  const fallback=[
+    {q:'Randevusuz gelebilir miyim?',a:'Randevulu müşterilerimize öncelik veriyoruz, ancak uygun saat varsa randevusuz da hizmet alabilirsin.'},
+    {q:'Randevumu nasıl iptal ederim?',a:'Randevu onayında sana gelen bağlantıya tıklayarak randevunu görüntüleyip iptal edebilirsin.'},
+    {q:'Ödeme seçenekleri neler?',a:'Nakit ve kredi/banka kartıyla ödeme kabul ediyoruz.'},
+    {q:'Otopark var mı?',a:'Salonumuzun yakınında otopark imkanı bulunuyor.'}
+  ];
+  if(!raw)return fallback;
+  try{const arr=JSON.parse(raw);const cleaned=Array.isArray(arr)?arr.filter((x:any)=>x&&(x.q||x.a)):[];return cleaned.length?cleaned:fallback}catch{return fallback}
+}
+function Faq({items}:{items:{q:string;a:string}[]}){
+  const[open,setOpen]=useState<number|null>(0);
+  return <div className="ksFaqList">{items.map((it,i)=><div key={i} className={`ksFaqItem ${open===i?'open':''}`}>
+    <button type="button" onClick={()=>setOpen(open===i?null:i)}><span>{it.q}</span><i>{open===i?'–':'+'}</i></button>
+    {open===i&&<p>{it.a}</p>}
+  </div>)}</div>;
+}
 
-/* ================= Fade District — koyu, altın vurgulu premium berber teması ================= */
-function FadeDistrict(p:P){
+/* ================= Keskin — açık zemin, siyah tipografili modern berber teması ================= */
+function Keskin(p:P){
   const{b}=p;
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
-  const popularNames=String(dec(b,'fd_popularServices','')).split(',').map(s=>s.trim()).filter(Boolean);
   const years=b.established_year?Math.max(1,new Date().getFullYear()-b.established_year):null;
-  const hourRows=fdHourRows(p.hours||[]);
-  const kicker=b.hero_label||[b.business_type==='barber'?'Berber':'İşletme',b.address?b.address.split(',').slice(-2).join(' / ').trim():''].filter(Boolean).join(' · ').toUpperCase();
-  return <main id="top" className="tFadeDistrict">
-    <header className="fdNav">
-      <Brand b={b}/>
+  const cityRaw=b.address?b.address.split(',').pop()?.trim():'';
+  const city=cityRaw&&cityRaw.length<=24?cityRaw:'';
+  const hourRows=groupedHourRows(p.hours||[]);
+  const faq=parseFaq(dec(b,'ks_faq',''));
+  const aboutPhoto=p.gallery?.[0]?.image_url||b.cover_url||'';
+  const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
+  const openStatus=(()=>{const d=new Date(),h=p.hours.find((x:any)=>x.day_of_week===d.getDay());if(!h||!h.is_open)return 'Bugün kapalı';const now=d.getHours()*60+d.getMinutes();return now>=hmMin(h.start_time)&&now<hmMin(h.end_time)?`Bugün ${h.start_time.slice(0,5)} – ${h.end_time.slice(0,5)} açık`:'Bugün kapalı'})();
+  return <main id="top" className="tKeskin">
+    <header className="ksNav">
+      <a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a>
       <nav>
-        <a href="#top">{dec(b,'fd_navHome','Ana Sayfa')}</a>
-        <a href="#hakkimizda">Hakkımızda</a>
         <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
-        <a href="#fdGallery">Galeri</a>
-        <a href="#fdReviews">Yorumlar</a>
-        <a href="#fdContact">İletişim</a>
+        <a href="#ksGallery">Galeri</a>
+        <a href="#ksFaq">SSS</a>
+        <a href="#randevu">Randevu</a>
+        <a href="#ksContact">İletişim</a>
       </nav>
-      <a className="fdBookBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+      <a className="ksNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
 
-    <section className="fdHero2">
-      <div className="fdHeroPattern" aria-hidden="true">{Array.from({length:54}).map((_,i)=><span key={i}/>)}</div>
-      <div className="fdHero2Inner">
-        {kicker&&<span className="fdKicker">{kicker}</span>}
-        <h1>{b.hero_title||b.name}</h1>
-        {b.hero_description&&<p>{b.hero_description}</p>}
-        <div className="fdHeroActions">
-          <CTA b={b}/>
-          {b.phone&&<a className="fdHeroPhone" href={`tel:${b.phone}`}>☎ {b.phone}</a>}
+    <section className="ksHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+      <div className="ksHeroOverlay"/>
+      <div className="ksHeroInner">
+        {(b.established_year||city)&&<span className="ksKicker">{b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' — ':''}{city?city.toUpperCase():''}</span>}
+        <h1>{b.hero_title||dec(b,'ks_heroLine1','Keskin tarz,')}<br/>{b.hero_highlight||dec(b,'ks_heroLine2','kusursuz kesim.')}</h1>
+        <div className="ksHeroActions">
+          <a className="ksHeroCta" href="#randevu">{dec(b,'ks_heroCta','Hemen Randevu Al')}</a>
+          <span className="ksOpenStatus">🕐 {openStatus}</span>
         </div>
-        {b.address&&<p className="fdHeroAddr">📍 {b.address}</p>}
       </div>
     </section>
 
-    <section id="hakkimizda" className="fdAbout">
-      <header><small>HAKKIMIZDA</small><h2>{dec(b,'fd_aboutTitle','Zanaatine Tutkuyla Bağlı Bir Ekip')}</h2></header>
-      <div className="fdAboutGrid">
-        <p>{dec(b,'fd_aboutText','Berberlik bizim için sadece bir meslek değil, kuşaktan kuşağa aktarılan bir tutkudur. Modern teknikleri geleneksel ustalıkla birleştirerek her müşterimize kendine özel bir deneyim sunuyoruz.')}</p>
-        <div className="fdAboutIcon" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none"><line x1="18" y1="18" x2="102" y2="102" stroke="currentColor" strokeWidth="1.4"/><line x1="102" y1="18" x2="18" y2="102" stroke="currentColor" strokeWidth="1.4"/><circle cx="18" cy="18" r="8" stroke="currentColor" strokeWidth="1.4"/><circle cx="18" cy="102" r="8" stroke="currentColor" strokeWidth="1.4"/></svg></div>
-      </div>
-      <div className="fdStats">
-        <div><b>{years?`${years}+`:dec(b,'fd_statYears','10+')}</b><small>YIL TECRÜBE</small></div>
-        <div><b>{dec(b,'fd_statRating','4.9')}</b><small>GOOGLE PUANI</small></div>
-        <div><b>{dec(b,'fd_statCustomers','5.000+')}</b><small>MUTLU MÜŞTERİ</small>{!!dec(b,'fd_statBadge','Belgeli')&&<i className="fdBadge">{dec(b,'fd_statBadge','Belgeli')}</i>}</div>
-      </div>
-    </section>
-
-    <section id="hizmetler" className="fdServices2">
-      <header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Ustalık İsteyen Dokunuşlar'}</h2>{b.services_description&&<p>{b.services_description}</p>}</header>
-      <div className="fdServiceGrid">
+    <section id="hizmetler" className="ksServices">
+      <header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Ne yaptıracaksın?'}</h2></header>
+      <div className="ksServiceGrid">
         {p.services.map(s=><article key={s.id}>
-          {popularNames.includes(s.name)&&<i className="fdBadge fdPopularBadge">Popüler</i>}
-          <h3>{s.name}</h3>
-          {s.description&&<p>{s.description}</p>}
-          <footer><em>{s.duration_minutes} dk</em>{b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer>
-          <a className="fdServiceBtn" href="#randevu">Randevu Al →</a>
+          <div className="ksServicePhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
+          <div className="ksServiceBody">
+            <div className="ksServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
+            {s.description&&<p>{s.description}</p>}
+            <small>🕐 {s.duration_minutes} dk</small>
+          </div>
         </article>)}
       </div>
     </section>
 
-    <Booking p={p}/>
-
-    <section id="fdGallery" className="fdGallerySection">
-      <header><small>GALERİ</small><h2>{dec(b,'fd_galleryTitle','Salondan Kareler')}</h2></header>
-      <Gallery p={p} variant="fdGrid"/>
+    <section id="hakkimizda" className="ksAbout">
+      <div className="ksAboutPhoto">{aboutPhoto?<img src={aboutPhoto} alt={b.name}/>:<i>✂</i>}</div>
+      <div className="ksAboutText">
+        <small>HAKKIMIZDA</small>
+        <h2>{dec(b,'ks_aboutTitle',`${city?city+"'ün ":''}Keskin Adresi`)}</h2>
+        <p>{dec(b,'ks_aboutText','Klasik berberlik geleneğini modern bir salon deneyimiyle buluşturuyoruz. Ustura bilediğimiz kadar detaylara da özen gösteririz; koltuğa oturduğunda sadece kesim değil, kendine ayırdığın bir mola bulursun.')}</p>
+        <div className="ksStats">
+          <div><b>{years?`${years}+`:dec(b,'ks_statYears','10+')}</b><small>Yıllık Deneyim</small></div>
+          <div><b>{dec(b,'ks_stat2Value','3')}</b><small>{dec(b,'ks_stat2Label','Usta Berber')}</small></div>
+          <div><b>{dec(b,'ks_stat3Value','6')}</b><small>{dec(b,'ks_stat3Label','Gün Açık')}</small></div>
+        </div>
+      </div>
     </section>
 
-    {visibleStaff.length>0&&<section id="fdTeam" className="fdTeamSection">
-      <header><small>EKİP</small><h2>{dec(b,'fd_teamTitle','Ustalarımız')}</h2></header>
-      <div className="fdTeamGrid">
+    <section id="ksGallery" className="ksGallerySection">
+      <header><small>GALERİ</small><h2>{dec(b,'ks_galleryTitle','Salondan kareler')}</h2></header>
+      <Gallery p={p} variant="ksGrid"/>
+    </section>
+
+    {visibleStaff.length>0&&<section id="ksTeam" className="ksTeamSection">
+      <header><small>EKİP</small><h2>{dec(b,'ks_teamTitle','Ustalarımız')}</h2></header>
+      <div className="ksTeamGrid">
         {visibleStaff.map((s:any)=><article key={s.id}>
-          <div className="fdTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
+          <div className="ksTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
           <b>{s.name}</b><small>{s.title||'Usta Berber'}</small>
         </article>)}
       </div>
     </section>}
 
-    <div id="fdReviews"><OwnRatings businessId={b.id}/></div>
-
-    <section className="fdSubNav">
-      <b>{b.name}</b>
-      <nav>
-        <a href="#top">Ana Sayfa</a>
-        <a href="#hakkimizda">Hakkımızda</a>
-        <a href="#hizmetler">Hizmetler</a>
-        <a href="#fdGallery">Galeri</a>
-        <a href="#fdContact">İletişim</a>
-      </nav>
-      <a className="fdBookBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    <section className="ksWhy">
+      <header><small>NEDEN {b.name.toUpperCase()}?</small></header>
+      <div className="ksWhyGrid">
+        <div><i>✨</i><h3>{dec(b,'ks_why1Title','Usta İşçilik')}</h3><p>{dec(b,'ks_why1Text','Her kesim, yüz hatlarına göre kişiye özel tasarlanır. Acele iş yok, kusursuz iş var.')}</p></div>
+        <div><i>🛡</i><h3>{dec(b,'ks_why2Title','Tam Hijyen')}</h3><p>{dec(b,'ks_why2Text','Her müşteride tek kullanımlık ustura, sterilize aletler ve taze havlu standarttır.')}</p></div>
+        <div><i>📅</i><h3>{dec(b,'ks_why3Title','Kolay Randevu')}</h3><p>{dec(b,'ks_why3Text','Sıra beklemek yok. Online randevunu al, dakikası dakikasına koltukta ol.')}</p></div>
+      </div>
     </section>
 
-    <section id="fdContact" className="fdContact2">
-      <header><small>İLETİŞİM</small><h2>{dec(b,'fd_contactTitle','Bizi Ziyaret Edin')}</h2></header>
-      <div className="fdContact2Grid">
-        <div className="fdContactInfo">
-          {b.address&&<div className="fdContactBlock"><small>ADRES</small><p>📍 {b.address}</p></div>}
-          {b.phone&&<div className="fdContactBlock"><small>TELEFON</small><p>📞 {b.phone}</p></div>}
-          {b.instagram&&<div className="fdContactBlock"><small>INSTAGRAM</small><p>◎ <a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p></div>}
-        </div>
-        <div className="fdHoursTable">
-          <small>ÇALIŞMA SAATLERİ</small>
-          {hourRows.map((r,i)=><div key={i} className="fdHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
-        </div>
+    <section id="ksFaq" className="ksFaqSection">
+      <header><small>MERAK EDİLENLER</small><h2>Sık sorulan sorular</h2></header>
+      <Faq items={faq}/>
+    </section>
+
+    <Booking p={p}/>
+
+    <OwnRatings businessId={b.id}/>
+
+    <section id="ksContact" className="ksFooter">
+      <div className="ksFooterGrid">
+        <div><a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a><p>{dec(b,'ks_footerTagline',`${b.established_year?b.established_year+"'den beri ":''}${city?city+"'de ":''}keskin tarzın adresi.`)}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="ksHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>{b.address&&<p>📍 {b.address}</p>}{b.phone&&<p>📞 {b.phone}</p>}{b.instagram&&<p>◎ <a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
       </div>
-      <div className="fdContactActions">
-        <CTA b={b}/>
-        {b.address&&<a className="fdDirectionsBtn" target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(b.address)}`}>Yol Tarifi</a>}
-      </div>
-      <div className="fdFooterBottom"><Brand b={b}/><span>© {new Date().getFullYear()} {b.name}</span></div>
+      <div className="ksFooterBottom">© {new Date().getFullYear()} {b.name}. Tüm hakları saklıdır.</div>
     </section>
   </main>;
 }
