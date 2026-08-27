@@ -1,5 +1,5 @@
 'use client';
-import{useState}from'react';
+import{useState,useEffect,useRef}from'react';
 import TenantBooking from'@/components/TenantBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
@@ -54,6 +54,40 @@ function Faq({items}:{items:{q:string;a:string}[]}){
   </div>)}</div>;
 }
 
+function useScrollFrac(){
+  const ref=useRef<HTMLElement>(null);
+  const[t,setT]=useState(0);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    let raf=0;
+    const onScroll=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{const h=el.offsetHeight||1,r=el.getBoundingClientRect();setT(Math.min(1,Math.max(0,-r.top/h)))})};
+    onScroll();
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll);
+    return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(raf)};
+  },[]);
+  return{ref,t};
+}
+function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;className?:string;i?:number;as?:'div'|'article'}){
+  const ref=useRef<HTMLDivElement>(null);
+  const[shown,setShown]=useState(false);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){setShown(true);io.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -8% 0px'});
+    io.observe(el);
+    return()=>io.disconnect();
+  },[]);
+  const Tag=as as any;
+  return <Tag ref={ref} className={`ksReveal ${shown?'in':''} ${className}`} style={{transitionDelay:`${Math.min(i,8)*70}ms`}}>{children}</Tag>;
+}
+function KsHeroScene({t}:{t:number}){
+  return <div className="ksScene" style={{'--ksP':t}as React.CSSProperties} aria-hidden="true">
+    <div className="ksPole"><i/></div>
+    <div className="ksScissors">✂</div>
+    <span className="ksSnip s1"/><span className="ksSnip s2"/><span className="ksSnip s3"/><span className="ksSnip s4"/>
+  </div>;
+}
+
 /* ================= Keskin — açık zemin, siyah tipografili modern berber teması ================= */
 function Keskin(p:P){
   const{b}=p;
@@ -76,6 +110,7 @@ function Keskin(p:P){
     return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time)?`Bugün ${h.start_time.slice(0,5)} – ${h.end_time.slice(0,5)} açık`:'Bugün kapalı';
   })();
   const openDaysCount=(p.hours||[]).filter((h:any)=>h.is_open).length;
+  const{ref:heroRef,t:heroT}=useScrollFrac();
   return <main id="top" className="tKeskin">
     <header className="ksNav">
       <a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a>
@@ -89,8 +124,8 @@ function Keskin(p:P){
       <a className="ksNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
 
-    <section className="ksHero" style={b.cover_url&&b.cover_type!=='video'?{backgroundImage:`url(${b.cover_url})`}:undefined}>
-      {b.cover_url&&b.cover_type==='video'&&<video className="ksHeroVideo" src={b.cover_url} autoPlay muted loop playsInline/>}
+    <section ref={heroRef as any} className="ksHero">
+      <KsHeroScene t={heroT}/>
       <div className="ksHeroOverlay"/>
       <div className="ksHeroInner">
         {(b.established_year||city)&&<span className="ksKicker">{b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' — ':''}{city?city.toUpperCase():''}</span>}
@@ -103,20 +138,20 @@ function Keskin(p:P){
     </section>
 
     <section id="hizmetler" className="ksServices">
-      <header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Ne yaptıracaksın?'}</h2></header>
+      <Reveal><header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Ne yaptıracaksın?'}</h2></header></Reveal>
       <div className="ksServiceGrid">
-        {p.services.map(s=><article key={s.id}>
+        {p.services.map((s,i)=><Reveal as="article" key={s.id} i={i}>
           <div className="ksServicePhoto">{s.image_url?(s.image_type==='video'?<video src={s.image_url} autoPlay muted loop playsInline/>:<img src={s.image_url} alt={s.name}/>):<i>✂</i>}</div>
           <div className="ksServiceBody">
             <div className="ksServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
             {s.description&&<p>{s.description}</p>}
             <small>🕐 {s.duration_minutes} dk</small>
           </div>
-        </article>)}
+        </Reveal>)}
       </div>
     </section>
 
-    <section id="hakkimizda" className="ksAbout">
+    <Reveal as="article" className="ksAboutWrap"><section id="hakkimizda" className="ksAbout">
       <div className="ksAboutPhoto">{aboutPhoto?<img src={aboutPhoto} alt={b.name}/>:<i>✂</i>}</div>
       <div className="ksAboutText">
         <small>{b.about_label||'HAKKIMIZDA'}</small>
@@ -128,40 +163,40 @@ function Keskin(p:P){
           <div><b>{openDaysCount||7}</b><small>Gün Açık</small></div>
         </div>
       </div>
-    </section>
+    </section></Reveal>
 
     <section id="ksGallery" className="ksGallerySection">
-      <header><small>GALERİ</small><h2>{dec(b,'ks_galleryTitle','Salondan kareler')}</h2></header>
-      <Gallery p={p} variant="ksGrid"/>
+      <Reveal><header><small>GALERİ</small><h2>{dec(b,'ks_galleryTitle','Salondan kareler')}</h2></header></Reveal>
+      <Reveal><Gallery p={p} variant="ksGrid"/></Reveal>
     </section>
 
     {visibleStaff.length>0&&<section id="ksTeam" className="ksTeamSection">
-      <header><small>EKİP</small><h2>{dec(b,'ks_teamTitle','Ustalarımız')}</h2></header>
+      <Reveal><header><small>EKİP</small><h2>{dec(b,'ks_teamTitle','Ustalarımız')}</h2></header></Reveal>
       <div className="ksTeamGrid">
-        {visibleStaff.map((s:any)=><article key={s.id}>
+        {visibleStaff.map((s:any,i:number)=><Reveal as="article" key={s.id} i={i}>
           <div className="ksTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
           <b>{s.name}</b><small>{s.title||'Usta Berber'}</small>
-        </article>)}
+        </Reveal>)}
       </div>
     </section>}
 
     <section className="ksWhy">
-      <header><small>NEDEN {b.name.toUpperCase()}?</small></header>
+      <Reveal><header><small>NEDEN {b.name.toUpperCase()}?</small></header></Reveal>
       <div className="ksWhyGrid">
-        <div><i>✨</i><h3>{dec(b,'ks_why1Title','Usta İşçilik')}</h3><p>{dec(b,'ks_why1Text','Her kesim, yüz hatlarına göre kişiye özel tasarlanır. Acele iş yok, kusursuz iş var.')}</p></div>
-        <div><i>🛡</i><h3>{dec(b,'ks_why2Title','Tam Hijyen')}</h3><p>{dec(b,'ks_why2Text','Her müşteride tek kullanımlık ustura, sterilize aletler ve taze havlu standarttır.')}</p></div>
-        <div><i>📅</i><h3>{dec(b,'ks_why3Title','Kolay Randevu')}</h3><p>{dec(b,'ks_why3Text','Sıra beklemek yok. Online randevunu al, dakikası dakikasına koltukta ol.')}</p></div>
+        <Reveal i={0}><i>✨</i><h3>{dec(b,'ks_why1Title','Usta İşçilik')}</h3><p>{dec(b,'ks_why1Text','Her kesim, yüz hatlarına göre kişiye özel tasarlanır. Acele iş yok, kusursuz iş var.')}</p></Reveal>
+        <Reveal i={1}><i>🛡</i><h3>{dec(b,'ks_why2Title','Tam Hijyen')}</h3><p>{dec(b,'ks_why2Text','Her müşteride tek kullanımlık ustura, sterilize aletler ve taze havlu standarttır.')}</p></Reveal>
+        <Reveal i={2}><i>📅</i><h3>{dec(b,'ks_why3Title','Kolay Randevu')}</h3><p>{dec(b,'ks_why3Text','Sıra beklemek yok. Online randevunu al, dakikası dakikasına koltukta ol.')}</p></Reveal>
       </div>
     </section>
 
     <section id="ksFaq" className="ksFaqSection">
-      <header><small>MERAK EDİLENLER</small><h2>Sık sorulan sorular</h2></header>
-      <Faq items={faq}/>
+      <Reveal><header><small>MERAK EDİLENLER</small><h2>Sık sorulan sorular</h2></header></Reveal>
+      <Reveal><Faq items={faq}/></Reveal>
     </section>
 
-    <Booking p={p}/>
+    <Reveal><Booking p={p}/></Reveal>
 
-    <OwnRatings businessId={b.id}/>
+    <Reveal><OwnRatings businessId={b.id}/></Reveal>
 
     <section id="ksContact" className="ksFooter">
       <div className="ksFooterGrid">
