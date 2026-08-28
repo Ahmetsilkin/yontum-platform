@@ -1,10 +1,10 @@
 'use client';
 import{useState,useEffect,useRef}from'react';
-import TenantBooking from'@/components/TenantBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
-type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[]};
+import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
+type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -242,6 +242,124 @@ function Keskin(p:P){
       </div>
       <div className="ksFooterBottom">© {new Date().getFullYear()} {b.name}. Tüm hakları saklıdır.</div>
     </section>
+  </main>;
+}
+
+/* ================= Atölye — koyu zemin, altın vurgulu, dergi tarzı Journal bölümlü lüks berber teması ================= */
+function Atelier(p:P){
+  const{b}=p;
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const years=b.established_year?Math.max(1,new Date().getFullYear()-b.established_year):null;
+  const cityRaw=b.address?b.address.split(',').pop()?.trim():'';
+  const city=cityRaw&&cityRaw.length<=24?cityRaw:'';
+  const hourRows=groupedHourRows(p.hours||[]);
+  const faq=parseFaq(dec(b,'at_faq',''));
+  const posts=(p.blogPosts||[]).slice(0,3);
+  const{ref:heroRef,t:heroT}=useScrollFrac();
+  return <main id="top" className="tAtelier">
+    <header className="atNav">
+      <a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BARBER ATELIER')}</small></a>
+      <nav>
+        <a href="#top">Home</a>
+        <a href="#hizmetler">{b.services_label||'Services'}</a>
+        <a href="#atGallery">Gallery</a>
+        <a href="#atJournal">Journal</a>
+      </nav>
+      <a className="atNavBtn" href="#randevu">{b.booking_button_text||'Book Now'}</a>
+    </header>
+
+    <section ref={heroRef as any} className="atHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+      <div className="atHeroBlur" style={{transform:`scale(${1.05+heroT*.1})`}}/>
+      <div className="atHeroOverlay"/>
+      <div className="atHeroInner">
+        {(b.established_year||city)&&<span className="atKicker">✂ {b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' · ':''}{city}</span>}
+        <h1>{b.hero_title||'The cut is the'}<br/><em>{b.hero_highlight||dec(b,'at_heroItalic','last thing you')}</em><br/>{dec(b,'at_heroLine3','should worry about.')}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <div className="atHeroActions">
+          <a className="atBtnSolid" href="#randevu">{b.booking_button_text||'Book Now'} ↗</a>
+          <a className="atBtnOutline" href="#randevu">See Today&apos;s Slots</a>
+        </div>
+      </div>
+      <div className="atHeroStats">
+        <div><b>{years?`${years}`:dec(b,'at_statYears','10')}</b><small>Years On The Lane</small></div>
+        <div><b>{visibleStaff.length||dec(b,'at_statStaff','3')}</b><small>Master Barbers</small></div>
+        <div><b>{dec(b,'at_statRating','4.9')}</b><small>Average Rating</small></div>
+      </div>
+    </section>
+
+    <section id="hizmetler" className="atServices">
+      <Reveal><header><small>{b.services_label||'THE MENU'}</small><h2>{b.services_title||'Services priced plainly, timed honestly.'}</h2><a href="#randevu">Full Menu →</a></header></Reveal>
+      <div className="atServiceGrid">
+        {p.services.map((s,i)=><Reveal as="article" key={s.id} i={i}>
+          <div className="atServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
+          {s.description&&<p>{s.description}</p>}
+          <small>🕐 {s.duration_minutes} min</small>
+        </Reveal>)}
+      </div>
+    </section>
+
+    <section id="randevu" className="atBookingSection">
+      <Reveal><header><small>{b.booking_label||'BOOKING'}</small><h2>{b.booking_title||'Live availability, no phone call.'}</h2></header></Reveal>
+      <Reveal><AtelierBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <section id="atGallery" className="atGallerySection">
+      <Reveal><header><small>PORTFOLIO</small><h2>{dec(b,'at_galleryTitle','Latest cuts.')}</h2></header></Reveal>
+      <Reveal><Gallery p={p} variant="atGrid"/></Reveal>
+    </section>
+
+    {posts.length>0&&<section id="atJournal" className="atJournalSection">
+      <Reveal><header><small>THE JOURNAL</small><h2>{dec(b,'at_journalTitle','Grooming, written down.')}</h2><a href={`/site/${b.slug}/blog`}>All Entries →</a></header></Reveal>
+      <div className="atJournalGrid">
+        {posts.map((post:any,i:number)=><Reveal as="article" key={post.id} i={i}>
+          <a href={`/site/${b.slug}/blog/${post.slug}`}>
+            <div className="atJournalCover">{post.cover_url?<img src={post.cover_url} alt={post.title}/>:<i>✂</i>}</div>
+            {post.category&&<small>{post.category.toUpperCase()}</small>}
+            <h3>{post.title}</h3>
+            {post.excerpt&&<p>{post.excerpt}</p>}
+          </a>
+        </Reveal>)}
+      </div>
+    </section>}
+
+    {visibleStaff.length>0&&<section id="atTeam" className="atTeamSection">
+      <Reveal><header><small>THE TEAM</small><h2>{dec(b,'at_teamTitle','Three master barbers, one standard.')}</h2></header></Reveal>
+      <div className="atTeamGrid">
+        {visibleStaff.map((s:any,i:number)=><Reveal as="article" key={s.id} i={i}>
+          <div className="atTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
+          <b>{s.name}</b><small>{s.title||'Master Barber'}</small>
+        </Reveal>)}
+      </div>
+    </section>}
+
+    <section id="atFaq" className="atFaqSection">
+      <Reveal><header><small>QUESTIONS</small><h2>Good to know before you sit down.</h2></header></Reveal>
+      <Reveal><Faq items={faq}/></Reveal>
+    </section>
+
+    <Reveal><OwnRatings businessId={b.id}/></Reveal>
+
+    <section className="atContact">
+      <Reveal><h2>{city?`${city}. `:''}{dec(b,'at_contactTagline','Behind the black door.')}</h2></Reveal>
+      <Reveal className="atContactRow">
+        <div className="atMap">{b.address&&<iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum"/>}</div>
+        <div className="atContactCard">
+          <small>VISIT</small>
+          {b.address&&<p>{b.address}</p>}
+          {b.phone&&<p>{b.phone}</p>}
+          {b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}
+        </div>
+      </Reveal>
+    </section>
+
+    <footer className="atFooter">
+      <div className="atFooterGrid">
+        <div><a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BARBER ATELIER')}</small></a><p>{dec(b,'at_footerTagline','A barber atelier for those who treat grooming as part of the uniform.')}</p></div>
+        <div><small>HOURS</small>{hourRows.map((r,i)=><div key={i} className="atHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>VISIT</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
+      </div>
+      <div className="atFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
   </main>;
 }
 
