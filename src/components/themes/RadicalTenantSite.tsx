@@ -164,7 +164,7 @@ function Keskin(p:P){
       <KsHeroVideo t={heroT}/>
       <div className="ksHeroOverlay"/>
       <div className="ksHeroInner">
-        {(b.established_year||city)&&<span className="ksKicker">{b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' — ':''}{city?city.toUpperCase():''}</span>}
+        {city&&<span className="ksKicker">{city.toUpperCase()}</span>}
         <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/>{b.hero_highlight}</>}</h1>
         <div className="ksHeroActions">
           <a className="ksHeroCta" href="#randevu">{b.booking_button_text||'Hemen Randevu Al'}</a>
