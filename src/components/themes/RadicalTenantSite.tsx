@@ -256,6 +256,17 @@ function Atelier(p:P){
   const faq=parseFaq(dec(b,'at_faq',''));
   const posts=(p.blogPosts||[]).slice(0,3);
   const{ref:heroRef,t:heroT}=useScrollFrac();
+  const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
+  const isOpenNow=(()=>{
+    const WD:Record<string,number>={Sunday:0,Monday:1,Tuesday:2,Wednesday:3,Thursday:4,Friday:5,Saturday:6};
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',weekday:'long',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+    const weekday=parts.find(x=>x.type==='weekday')?.value||'';
+    const hh=Number(parts.find(x=>x.type==='hour')?.value||0),mm=Number(parts.find(x=>x.type==='minute')?.value||0);
+    const dayIdx=WD[weekday]??new Date().getDay(),nowMin=hh*60+mm;
+    const h=(p.hours||[]).find((x:any)=>x.day_of_week===dayIdx);
+    if(!h||!h.is_open)return false;
+    return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time);
+  })();
   return <main id="top" className="tAtelier">
     <header className="atNav">
       <a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BERBER ATÖLYESİ')}</small></a>
@@ -277,8 +288,10 @@ function Atelier(p:P){
         {b.hero_description&&<p>{b.hero_description}</p>}
         <div className="atHeroActions">
           <a className="atBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} ↗</a>
-          {b.phone&&<a className="atBtnOutline" href={`tel:${b.phone}`}>📞 Bizi Ara</a>}
+          <a className="atBtnOutline" href="#hizmetler">Hizmetlerimiz</a>
+          {b.phone&&<a className="atBtnGhost" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
         </div>
+        <div className="atRatingBadge"><b>★ {dec(b,'at_statRating','5.0')}</b><span>Google Maps Üzerinden ({dec(b,'at_reviewCount','150')}+ Yorum)</span></div>
       </div>
       <div className="atHeroStats">
         <div><b>{years?`${years}`:dec(b,'at_statYears','10')}</b><small>Yıllık Deneyim</small></div>
@@ -348,6 +361,10 @@ function Atelier(p:P){
           {b.address&&<p>{b.address}</p>}
           {b.phone&&<p>{b.phone}</p>}
           {b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}
+          <div className="atContactActions">
+            {b.address&&<a className="atMapBtn" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`} target="_blank" rel="noopener noreferrer">📍 Google Maps'te Aç</a>}
+            {b.phone&&<a className="atCallBtn" href={`tel:${b.phone}`}>📞 Hemen Ara</a>}
+          </div>
         </div>
       </Reveal>
     </section>
@@ -355,15 +372,20 @@ function Atelier(p:P){
     <footer className="atFooter">
       <div className="atFooterGrid">
         <div><a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BERBER ATÖLYESİ')}</small></a><p>{dec(b,'at_footerTagline','Bakımı üniformasının bir parçası sayanlar için bir berber atölyesi.')}</p></div>
-        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="atHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>ÇALIŞMA SAATLERİ <span className={`atOpenBadge ${isOpenNow?'open':'closed'}`}>{isOpenNow?'● Şu An Açık':'● Kapalı'}</span></small>{hourRows.map((r,i)=><div key={i} className="atHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
         <div><small>ZİYARET</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
       </div>
       <div className="atFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
+
+    <div className="atMobileSticky">
+      <a href="#randevu">✂ Hemen Randevu Al</a>
+      {b.phone&&<a className="atMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
+    </div>
   </main>;
 }
 
-function WhatsApp({b}:{b:any}){if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);return n?<a className="rWhatsapp" href={`https://wa.me/${n}?text=${encodeURIComponent(b.whatsapp_message||'Merhaba')}`}>WhatsApp</a>:null}
+function WhatsApp({b}:{b:any}){if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);if(!n)return null;return <a className="rWhatsapp" href={`https://wa.me/${n}?text=${encodeURIComponent(b.whatsapp_message||'Merhaba')}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp'tan yaz"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg></a>}
 function accentHex(name:string,fallback:string){return({black:'#111111',burgundy:'#7c3157',pink:'#ed5da8',purple:'#7652a6',sage:'#6f8f78',blue:'#71849c',orange:'#d8753f',gold:'#9b7b3f'}as any)[name]||fallback||'#111111'}
 
 function dec(b:any,key:string,fallback:string){const d=b.theme_decorations||{};return Object.prototype.hasOwnProperty.call(d,key)?d[key]:fallback}

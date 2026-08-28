@@ -44,6 +44,7 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'at_statYears',label:'İstatistik — yıl (kuruluş yılı girilmezse)',placeholder:'10'},
     {key:'at_statStaff',label:'İstatistik — berber sayısı (çalışan eklenmezse)',placeholder:'3'},
     {key:'at_statRating',label:'İstatistik — ortalama puan',placeholder:'4.9'},
+    {key:'at_reviewCount',label:'Google yorum sayısı (girişte "150+ Yorum" gibi görünür)',placeholder:'150'},
     {key:'at_faq',label:'Sık sorulan sorular',type:'faq'},
   ],
 };
