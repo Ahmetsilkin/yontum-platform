@@ -258,14 +258,14 @@ function Atelier(p:P){
   const{ref:heroRef,t:heroT}=useScrollFrac();
   return <main id="top" className="tAtelier">
     <header className="atNav">
-      <a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BARBER ATELIER')}</small></a>
+      <a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BERBER ATÖLYESİ')}</small></a>
       <nav>
-        <a href="#top">Home</a>
-        <a href="#hizmetler">{b.services_label||'Services'}</a>
-        <a href="#atGallery">Gallery</a>
-        <a href="#atJournal">Journal</a>
+        <a href="#top">Ana Sayfa</a>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#atGallery">Galeri</a>
+        <a href="#atJournal">Blog</a>
       </nav>
-      <a className="atNavBtn" href="#randevu">{b.booking_button_text||'Book Now'}</a>
+      <a className="atNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
 
     <section ref={heroRef as any} className="atHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
@@ -273,43 +273,43 @@ function Atelier(p:P){
       <div className="atHeroOverlay"/>
       <div className="atHeroInner">
         {(b.established_year||city)&&<span className="atKicker">✂ {b.established_year?`EST. ${b.established_year}`:''}{b.established_year&&city?' · ':''}{city}</span>}
-        <h1>{b.hero_title||'The cut is the'}<br/><em>{b.hero_highlight||dec(b,'at_heroItalic','last thing you')}</em><br/>{dec(b,'at_heroLine3','should worry about.')}</h1>
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
         {b.hero_description&&<p>{b.hero_description}</p>}
         <div className="atHeroActions">
-          <a className="atBtnSolid" href="#randevu">{b.booking_button_text||'Book Now'} ↗</a>
-          <a className="atBtnOutline" href="#randevu">See Today&apos;s Slots</a>
+          <a className="atBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} ↗</a>
+          {b.phone&&<a className="atBtnOutline" href={`tel:${b.phone}`}>📞 Bizi Ara</a>}
         </div>
       </div>
       <div className="atHeroStats">
-        <div><b>{years?`${years}`:dec(b,'at_statYears','10')}</b><small>Years On The Lane</small></div>
-        <div><b>{visibleStaff.length||dec(b,'at_statStaff','3')}</b><small>Master Barbers</small></div>
-        <div><b>{dec(b,'at_statRating','4.9')}</b><small>Average Rating</small></div>
+        <div><b>{years?`${years}`:dec(b,'at_statYears','10')}</b><small>Yıllık Deneyim</small></div>
+        <div><b>{visibleStaff.length||dec(b,'at_statStaff','3')}</b><small>Usta Berber</small></div>
+        <div><b>{dec(b,'at_statRating','4.9')}</b><small>Ortalama Puan</small></div>
       </div>
     </section>
 
     <section id="hizmetler" className="atServices">
-      <Reveal><header><small>{b.services_label||'THE MENU'}</small><h2>{b.services_title||'Services priced plainly, timed honestly.'}</h2><a href="#randevu">Full Menu →</a></header></Reveal>
+      <Reveal><header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Açık fiyatlarla, dürüst sürelerle.'}</h2></header></Reveal>
       <div className="atServiceGrid">
         {p.services.map((s,i)=><Reveal as="article" key={s.id} i={i}>
           <div className="atServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
           {s.description&&<p>{s.description}</p>}
-          <small>🕐 {s.duration_minutes} min</small>
+          <small>🕐 {s.duration_minutes} dk</small>
         </Reveal>)}
       </div>
     </section>
 
     <section id="randevu" className="atBookingSection">
-      <Reveal><header><small>{b.booking_label||'BOOKING'}</small><h2>{b.booking_title||'Live availability, no phone call.'}</h2></header></Reveal>
+      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Telefon açmadan, canlı müsaitlik.'}</h2></header></Reveal>
       <Reveal><AtelierBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
     </section>
 
     <section id="atGallery" className="atGallerySection">
-      <Reveal><header><small>PORTFOLIO</small><h2>{dec(b,'at_galleryTitle','Latest cuts.')}</h2></header></Reveal>
+      <Reveal><header><small>GALERİ</small><h2>{dec(b,'at_galleryTitle','Son çalışmalarımız.')}</h2></header></Reveal>
       <Reveal><Gallery p={p} variant="atGrid"/></Reveal>
     </section>
 
     {posts.length>0&&<section id="atJournal" className="atJournalSection">
-      <Reveal><header><small>THE JOURNAL</small><h2>{dec(b,'at_journalTitle','Grooming, written down.')}</h2><a href={`/site/${b.slug}/blog`}>All Entries →</a></header></Reveal>
+      <Reveal><header><h2>{dec(b,'at_journalTitle','Bakım üzerine yazılar.')}</h2><a href={`/site/${b.slug}/blog`}>Tüm Yazılar →</a></header></Reveal>
       <div className="atJournalGrid">
         {posts.map((post:any,i:number)=><Reveal as="article" key={post.id} i={i}>
           <a href={`/site/${b.slug}/blog/${post.slug}`}>
@@ -323,28 +323,28 @@ function Atelier(p:P){
     </section>}
 
     {visibleStaff.length>0&&<section id="atTeam" className="atTeamSection">
-      <Reveal><header><small>THE TEAM</small><h2>{dec(b,'at_teamTitle','Three master barbers, one standard.')}</h2></header></Reveal>
+      <Reveal><header><small>EKİP</small><h2>{dec(b,'at_teamTitle','Ustalarımız, tek bir standart.')}</h2></header></Reveal>
       <div className="atTeamGrid">
         {visibleStaff.map((s:any,i:number)=><Reveal as="article" key={s.id} i={i}>
           <div className="atTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
-          <b>{s.name}</b><small>{s.title||'Master Barber'}</small>
+          <b>{s.name}</b><small>{s.title||'Usta Berber'}</small>
         </Reveal>)}
       </div>
     </section>}
 
     <section id="atFaq" className="atFaqSection">
-      <Reveal><header><small>QUESTIONS</small><h2>Good to know before you sit down.</h2></header></Reveal>
+      <Reveal><header><small>SORULAR</small><h2>Koltuğa oturmadan önce bilmen gerekenler.</h2></header></Reveal>
       <Reveal><Faq items={faq}/></Reveal>
     </section>
 
     <Reveal><OwnRatings businessId={b.id}/></Reveal>
 
     <section className="atContact">
-      <Reveal><h2>{city?`${city}. `:''}{dec(b,'at_contactTagline','Behind the black door.')}</h2></Reveal>
+      <Reveal><h2>{city?`${city}. `:''}{dec(b,'at_contactTagline','Siyah kapının ardında.')}</h2></Reveal>
       <Reveal className="atContactRow">
         <div className="atMap">{b.address&&<iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum"/>}</div>
         <div className="atContactCard">
-          <small>VISIT</small>
+          <small>ZİYARET</small>
           {b.address&&<p>{b.address}</p>}
           {b.phone&&<p>{b.phone}</p>}
           {b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}
@@ -354,9 +354,9 @@ function Atelier(p:P){
 
     <footer className="atFooter">
       <div className="atFooterGrid">
-        <div><a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BARBER ATELIER')}</small></a><p>{dec(b,'at_footerTagline','A barber atelier for those who treat grooming as part of the uniform.')}</p></div>
-        <div><small>HOURS</small>{hourRows.map((r,i)=><div key={i} className="atHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
-        <div><small>VISIT</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
+        <div><a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BERBER ATÖLYESİ')}</small></a><p>{dec(b,'at_footerTagline','Bakımı üniformasının bir parçası sayanlar için bir berber atölyesi.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="atHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>ZİYARET</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
       </div>
       <div className="atFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
