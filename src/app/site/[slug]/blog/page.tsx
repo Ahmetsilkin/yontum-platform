@@ -13,12 +13,12 @@ export default async function BlogIndex({params}:{params:Promise<{slug:string}>}
   const{data:posts}=await db.from('blog_posts').select('*').eq('business_id',b.id).eq('is_published',true).order('published_at',{ascending:false});
   return <main className="tAtelier">
     <header className="atNav">
-      <a className="atBrand" href={`/site/${b.slug}`}><b>{b.name}</b><small>BARBER ATELIER</small></a>
-      <nav><a href={`/site/${b.slug}`}>Home</a><a href={`/site/${b.slug}#hizmetler`}>Services</a><a href={`/site/${b.slug}/blog`}>Journal</a></nav>
-      <a className="atNavBtn" href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Book Now'}</a>
+      <a className="atBrand" href={`/site/${b.slug}`}><b>{b.name}</b><small>BERBER ATÖLYESİ</small></a>
+      <nav><a href={`/site/${b.slug}`}>Ana Sayfa</a><a href={`/site/${b.slug}#hizmetler`}>Hizmetler</a><a href={`/site/${b.slug}/blog`}>Blog</a></nav>
+      <a className="atNavBtn" href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'}</a>
     </header>
     <section className="atJournalSection" style={{paddingTop:70}}>
-      <header><small>THE JOURNAL</small><h2>Grooming, written down.</h2></header>
+      <header><small>BLOG</small><h2>Bakım üzerine yazılar.</h2></header>
       <div className="atJournalGrid">
         {(posts||[]).map(post=><article key={post.id}>
           <a href={`/site/${b.slug}/blog/${post.slug}`}>

@@ -18,9 +18,9 @@ export default async function BlogPost({params}:{params:Promise<{slug:string;pos
   const paragraphs=(post.content||'').split(/\n{2,}/).map((p:string)=>p.trim()).filter(Boolean);
   return <main className="tAtelier">
     <header className="atNav">
-      <a className="atBrand" href={`/site/${b.slug}`}><b>{b.name}</b><small>BARBER ATELIER</small></a>
-      <nav><a href={`/site/${b.slug}`}>Home</a><a href={`/site/${b.slug}#hizmetler`}>Services</a><a href={`/site/${b.slug}/blog`}>Journal</a></nav>
-      <a className="atNavBtn" href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Book Now'}</a>
+      <a className="atBrand" href={`/site/${b.slug}`}><b>{b.name}</b><small>BERBER ATÖLYESİ</small></a>
+      <nav><a href={`/site/${b.slug}`}>Ana Sayfa</a><a href={`/site/${b.slug}#hizmetler`}>Hizmetler</a><a href={`/site/${b.slug}/blog`}>Blog</a></nav>
+      <a className="atNavBtn" href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'}</a>
     </header>
     <article className="atPostArticle">
       <div className="atPostHead">
@@ -32,7 +32,7 @@ export default async function BlogPost({params}:{params:Promise<{slug:string;pos
       <div className="atPostBody">
         {paragraphs.length?paragraphs.map((p:string,i:number)=><p key={i}>{p}</p>):post.excerpt&&<p>{post.excerpt}</p>}
       </div>
-      <a className="atPostBack" href={`/site/${b.slug}/blog`}>← All Entries</a>
+      <a className="atPostBack" href={`/site/${b.slug}/blog`}>← Tüm Yazılar</a>
     </article>
     <footer className="atFooter"><div className="atFooterBottom">© {new Date().getFullYear()} {b.name}</div></footer>
   </main>;

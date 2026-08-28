@@ -254,7 +254,8 @@ function Atelier(p:P){
   const city=cityRaw&&cityRaw.length<=24?cityRaw:'';
   const hourRows=groupedHourRows(p.hours||[]);
   const faq=parseFaq(dec(b,'at_faq',''));
-  const posts=(p.blogPosts||[]).slice(0,3);
+  const posts=p.blogPosts||[];
+  const[openPost,setOpenPost]=useState<any>(null);
   const{ref:heroRef,t:heroT}=useScrollFrac();
   const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
   const isOpenNow=(()=>{
@@ -322,17 +323,31 @@ function Atelier(p:P){
     </section>
 
     {posts.length>0&&<section id="atJournal" className="atJournalSection">
-      <Reveal><header><h2>{dec(b,'at_journalTitle','Bakım üzerine yazılar.')}</h2><a href={`/site/${b.slug}/blog`}>Tüm Yazılar →</a></header></Reveal>
-      <div className="atJournalGrid">
-        {posts.map((post:any,i:number)=><Reveal as="article" key={post.id} i={i}>
-          <a href={`/site/${b.slug}/blog/${post.slug}`}>
-            <div className="atJournalCover">{post.cover_url?<img src={post.cover_url} alt={post.title}/>:<i>✂</i>}</div>
-            {post.category&&<small>{post.category.toUpperCase()}</small>}
-            <h3>{post.title}</h3>
-            {post.excerpt&&<p>{post.excerpt}</p>}
-          </a>
-        </Reveal>)}
-      </div>
+      {!openPost?<>
+        <Reveal><header><h2>{dec(b,'at_journalTitle','Bakım üzerine yazılar.')}</h2></header></Reveal>
+        <div className="atJournalGrid">
+          {posts.map((post:any,i:number)=><Reveal as="article" key={post.id} i={i}>
+            <button type="button" onClick={()=>setOpenPost(post)}>
+              <div className="atJournalCover">{post.cover_url?<img src={post.cover_url} alt={post.title}/>:<i>✂</i>}</div>
+              {post.category&&<small>{post.category.toUpperCase()}</small>}
+              <h3>{post.title}</h3>
+              {post.excerpt&&<p>{post.excerpt}</p>}
+            </button>
+          </Reveal>)}
+        </div>
+      </>:<article className="atPostArticle">
+        <div className="atPostHead">
+          {openPost.category&&<small>{openPost.category.toUpperCase()}</small>}
+          <h1>{openPost.title}</h1>
+          {openPost.published_at&&<span>{new Intl.DateTimeFormat('tr-TR',{day:'numeric',month:'long',year:'numeric'}).format(new Date(openPost.published_at))}</span>}
+        </div>
+        {openPost.cover_url&&<div className="atPostCover"><img src={openPost.cover_url} alt={openPost.title}/></div>}
+        <div className="atPostBody">
+          {(openPost.content||'').split(/\n{2,}/).map((t:string)=>t.trim()).filter(Boolean).map((par:string,i:number)=><p key={i}>{par}</p>)}
+          {!openPost.content&&openPost.excerpt&&<p>{openPost.excerpt}</p>}
+        </div>
+        <button type="button" className="atPostBack" onClick={()=>setOpenPost(null)}>← Tüm Yazılar</button>
+      </article>}
     </section>}
 
     {visibleStaff.length>0&&<section id="atTeam" className="atTeamSection">
