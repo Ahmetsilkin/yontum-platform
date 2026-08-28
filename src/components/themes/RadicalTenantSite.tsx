@@ -35,6 +35,7 @@ function Booking({p}:{p:P}){return <section id="randevu" className="rBooking"><h
 function Contact({b}:{b:any}){const mapQuery=encodeURIComponent(b.address||b.name||'');return <><GoogleReviews businessId={b.id}/>{b.show_map!==false&&b.address&&<iframe className="rContactMap" src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} loading="lazy" title="Konum"/>}<footer className="rContact"><Brand b={b}/><div><small>{b.address_label}</small><p>{b.address}</p></div><div><small>{b.phone_label}</small><p>{b.phone}</p></div>{b.instagram&&<div><small>{b.instagram_label}</small><p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p></div>}</footer></>}
 const HeroText=({b}:{b:any})=><><small>{b.hero_label}</small><h1>{b.hero_title||'Tarzını'} <em>{b.hero_highlight||''}</em></h1>{b.hero_description&&<p>{b.hero_description}</p>}<CTA b={b}/></>;
 const DAY_NAMES=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+const trDate=(d:string)=>new Intl.DateTimeFormat('tr-TR',{day:'numeric',month:'long',year:'numeric'}).format(new Date(d));
 function groupedHourRows(hours:any[]){const order=[1,2,3,4,5,6,0],key=(h:any)=>h?`${h.is_open}|${h.start_time}|${h.end_time}`:'x';const rows:{label:string;value:string}[]=[];let i=0;while(i<order.length){const day=order[i],h=hours.find((x:any)=>x.day_of_week===day);let j=i;while(j+1<order.length){const nh=hours.find((x:any)=>x.day_of_week===order[j+1]);if(key(nh)!==key(h))break;j++}rows.push({label:i===j?DAY_NAMES[day]:`${DAY_NAMES[day]} - ${DAY_NAMES[order[j]]}`,value:h&&h.is_open?`${h.start_time.slice(0,5)} - ${h.end_time.slice(0,5)}`:'Kapalı'});i=j+1}return rows}
 function parseFaq(raw:string):{q:string;a:string}[]{
   const fallback=[
@@ -329,17 +330,15 @@ function Atelier(p:P){
           {posts.map((post:any,i:number)=><Reveal as="article" key={post.id} i={i}>
             <button type="button" onClick={()=>setOpenPost(post)}>
               <div className="atJournalCover">{post.cover_url?<img src={post.cover_url} alt={post.title}/>:<i>✂</i>}</div>
-              {post.category&&<small>{post.category.toUpperCase()}</small>}
               <h3>{post.title}</h3>
-              {post.excerpt&&<p>{post.excerpt}</p>}
+              {post.published_at&&<span className="atJournalDate">{trDate(post.published_at)}</span>}
             </button>
           </Reveal>)}
         </div>
       </>:<article className="atPostArticle">
         <div className="atPostHead">
-          {openPost.category&&<small>{openPost.category.toUpperCase()}</small>}
           <h1>{openPost.title}</h1>
-          {openPost.published_at&&<span>{new Intl.DateTimeFormat('tr-TR',{day:'numeric',month:'long',year:'numeric'}).format(new Date(openPost.published_at))}</span>}
+          {openPost.published_at&&<span>{trDate(openPost.published_at)}</span>}
         </div>
         {openPost.cover_url&&<div className="atPostCover"><img src={openPost.cover_url} alt={openPost.title}/></div>}
         <div className="atPostBody">
