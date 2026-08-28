@@ -69,6 +69,27 @@ function useScrollFrac(){
   },[]);
   return{ref,t};
 }
+/* Sabitlenmiş (sticky) video hero için: t, dış (uzun) sarmalayıcının ne kadar
+   kaydırıldığına göre hesaplanır — bu sayede içerideki video, sarmalayıcı
+   kaydırılırken ekranda sabit kalıp (position:sticky) sadece kare değiştirir,
+   sarmalayıcının kaydırma payı bitince sayfa doğal şekilde devam eder. */
+function useScrollFracPinned(){
+  const ref=useRef<HTMLElement>(null);
+  const[t,setT]=useState(0);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    let raf=0;
+    const onScroll=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{
+      const scrollable=el.offsetHeight-window.innerHeight,r=el.getBoundingClientRect();
+      setT(scrollable>0?Math.min(1,Math.max(0,-r.top/scrollable)):0);
+    })};
+    onScroll();
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll);
+    return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(raf)};
+  },[]);
+  return{ref,t};
+}
 function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;className?:string;i?:number;as?:'div'|'article'}){
   const ref=useRef<HTMLDivElement>(null);
   const[shown,setShown]=useState(false);
@@ -414,7 +435,7 @@ function Vitrin(p:P){
   const{b}=p;
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const hourRows=groupedHourRows(p.hours||[]);
-  const{ref:heroRef,t:heroT}=useScrollFrac();
+  const{ref:heroRef,t:heroT}=useScrollFracPinned();
   const spotRef=useRef<HTMLDivElement>(null);
   useEffect(()=>{
     const el=spotRef.current;if(!el)return;
@@ -444,16 +465,18 @@ function Vitrin(p:P){
       <a className="vtNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
 
-    <section ref={heroRef as any} className="vtHero">
-      <KsHeroVideo t={heroT} base="/vitrin/hero" cls="vtHeroPhoto"/>
-      <div className="vtHeroOverlay"/>
-      <div ref={spotRef} className="vtHeroSpot"/>
-      <div className="vtHeroInner">
-        <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
-        {b.hero_description&&<p>{b.hero_description}</p>}
-        <div className="vtHeroActions">
-          <a className="vtBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} ↗</a>
-          <a className="vtBtnOutline" href="#hizmetler">Hizmetlerimiz</a>
+    <section ref={heroRef as any} className="vtHeroWrap">
+      <div className="vtHero">
+        <KsHeroVideo t={heroT} base="/vitrin/hero" cls="vtHeroPhoto"/>
+        <div className="vtHeroOverlay"/>
+        <div ref={spotRef} className="vtHeroSpot"/>
+        <div className="vtHeroInner">
+          <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
+          {b.hero_description&&<p>{b.hero_description}</p>}
+          <div className="vtHeroActions">
+            <a className="vtBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} ↗</a>
+            <a className="vtBtnOutline" href="#hizmetler">Hizmetlerimiz</a>
+          </div>
         </div>
       </div>
     </section>

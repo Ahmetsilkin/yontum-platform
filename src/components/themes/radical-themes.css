@@ -431,8 +431,11 @@
 .vtNavBtn:hover{background:var(--vt-amber);color:#1a1206!important}
 @media(max-width:900px){.vtNav nav{display:none}.vtNavBtn{padding:10px 16px;font-size:10px}}
 
-/* Hero — kaydırdıkça ileri-geri oynayan sinematik vitrin videosu, imleci takip eden ışık lekesi (imza hareket) */
-.vtHero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0806;overflow:hidden}
+/* Hero — kaydırdıkça ileri-geri oynayan sinematik vitrin videosu, imleci takip eden ışık lekesi (imza hareket).
+   .vtHeroWrap uzun bir kaydırma payı açar (≈3 ekran boyu); içindeki .vtHero bu pay boyunca
+   position:sticky ile ekranda sabit kalır, video kaydırma ile ilerler, pay bitince sayfa devam eder. */
+.vtHeroWrap{position:relative;height:300vh}
+.vtHero{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0806;overflow:hidden}
 .vtHeroPhoto{position:absolute;inset:-2%;z-index:0;overflow:hidden}
 .vtHeroOverlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#0a0806b3 0%,#0a080666 40%,#0a0806b3 100%)}
 .vtHeroSpot{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),#e0a54426,transparent 65%);transition:background .1s linear}
@@ -445,7 +448,7 @@
 .vtBtnSolid:hover{transform:translateY(-2px)}
 .vtBtnOutline{border:1px solid rgba(255,255,255,.18);color:var(--vt-ink)!important;padding:17px 30px;font-size:13px;letter-spacing:1px;text-transform:uppercase;transition:border-color .2s}
 .vtBtnOutline:hover{border-color:var(--vt-amber)}
-@media(max-width:640px){.vtHero{min-height:88vh}}
+@media(max-width:640px){.vtHeroWrap{height:280vh}}
 
 /* Misyon — büyük, ortalanmış editoryal alıntı */
 .vtMission{padding:130px 8vw;max-width:900px;margin:0 auto;text-align:center}
