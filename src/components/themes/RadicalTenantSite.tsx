@@ -3,8 +3,8 @@ import{useState,useEffect,useRef}from'react';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -84,7 +84,7 @@ function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;c
 /* Kaydırdıkça ileri-geri "scrub" olan berberlik klibi. Video bir blob olarak
    yüklenir (Safari/iOS'ta güvenilir currentTime araması için), poster ilk kare
    boyanana kadar görünür kalır, prefers-reduced-motion'da video hiç çekilmez. */
-function KsHeroVideo({t}:{t:number}){
+function KsHeroVideo({t,base='/keskin/hero',cls='ksHeroPhoto'}:{t:number;base?:string;cls?:string}){
   const vidRef=useRef<HTMLVideoElement>(null);
   const[ready,setReady]=useState(false);
   const[reduced,setReduced]=useState(false);
@@ -98,7 +98,7 @@ function KsHeroVideo({t}:{t:number}){
   useEffect(()=>{
     if(reduced)return;
     const v=vidRef.current;if(!v)return;
-    const src=window.matchMedia('(max-width:800px)').matches?'/keskin/hero-m.mp4':'/keskin/hero.mp4';
+    const src=window.matchMedia('(max-width:800px)').matches?`${base}-m.mp4`:`${base}.mp4`;
     let cancelled=false,url='';
     fetch(src).then(r=>r.blob()).then(blob=>{
       if(cancelled)return;
@@ -113,14 +113,14 @@ function KsHeroVideo({t}:{t:number}){
     };
     v.addEventListener('loadedmetadata',onMeta);
     return()=>{cancelled=true;v.removeEventListener('loadedmetadata',onMeta);if(url)URL.revokeObjectURL(url)};
-  },[reduced]);
+  },[reduced,base]);
   useEffect(()=>{
     const v=vidRef.current;if(!v||!ready||!v.duration)return;
     const target=Math.min(t*v.duration,v.duration-0.05);
     if(Math.abs(v.currentTime-target)>0.03){try{v.currentTime=target}catch{}}
   },[t,ready]);
-  return <div className="ksHeroPhoto" style={{'--ksP':t}as React.CSSProperties} aria-hidden="true">
-    <img className={`ksHeroLayer ksHeroPoster ${ready?'hide':''}`} src="/keskin/hero-poster.jpg" alt=""/>
+  return <div className={cls} style={{'--ksP':t}as React.CSSProperties} aria-hidden="true">
+    <img className={`ksHeroLayer ksHeroPoster ${ready?'hide':''}`} src={`${base}-poster.jpg`} alt=""/>
     {!reduced&&<video ref={vidRef} className={`ksHeroLayer ksHeroClip ${ready?'show':''}`} muted playsInline preload="none"/>}
   </div>;
 }
@@ -395,6 +395,118 @@ function Atelier(p:P){
     <div className="atMobileSticky">
       <a href="#randevu">✂ Hemen Randevu Al</a>
       {b.phone&&<a className="atMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
+    </div>
+  </main>;
+}
+
+/* ================= Vitrin — gece vitrin ışığı, kaydırma ile ileri-geri oynayan sinematik video hero, yatay kaydırmalı galeri ================= */
+function VitrinGallery({p}:{p:P}){
+  const all=[...p.gallery.map(x=>({id:x.id,type:'image',url:x.image_url,alt:x.alt_text})),...p.media];
+  if(!p.b.show_gallery||!all.length)return null;
+  return <div className="vtGalleryStrip">
+    {all.map(x=>x.type==='video'?
+      <div className="vtGalleryItem" key={x.id}><video src={x.url} controls playsInline preload="metadata"/></div>:
+      <div className="vtGalleryItem" key={x.id}><img src={x.url} alt={x.alt||p.b.name} loading="lazy"/></div>
+    )}
+  </div>;
+}
+function Vitrin(p:P){
+  const{b}=p;
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const hourRows=groupedHourRows(p.hours||[]);
+  const{ref:heroRef,t:heroT}=useScrollFrac();
+  const spotRef=useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    const el=spotRef.current;if(!el)return;
+    const onMove=(e:MouseEvent)=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',`${e.clientX-r.left}px`);el.style.setProperty('--my',`${e.clientY-r.top}px`)};
+    el.addEventListener('mousemove',onMove);
+    return()=>el.removeEventListener('mousemove',onMove);
+  },[]);
+  const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
+  const isOpenNow=(()=>{
+    const WD:Record<string,number>={Sunday:0,Monday:1,Tuesday:2,Wednesday:3,Thursday:4,Friday:5,Saturday:6};
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',weekday:'long',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+    const weekday=parts.find(x=>x.type==='weekday')?.value||'';
+    const hh=Number(parts.find(x=>x.type==='hour')?.value||0),mm=Number(parts.find(x=>x.type==='minute')?.value||0);
+    const dayIdx=WD[weekday]??new Date().getDay(),nowMin=hh*60+mm;
+    const h=(p.hours||[]).find((x:any)=>x.day_of_week===dayIdx);
+    if(!h||!h.is_open)return false;
+    return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time);
+  })();
+  return <main id="top" className="tVitrin">
+    <header className="vtNav">
+      <a className="vtBrand" href="#top">{b.name}</a>
+      <nav>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#vtGallery">Galeri</a>
+        <a href="#randevu">Randevu</a>
+      </nav>
+      <a className="vtNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section ref={heroRef as any} className="vtHero">
+      <KsHeroVideo t={heroT} base="/vitrin/hero" cls="vtHeroPhoto"/>
+      <div className="vtHeroOverlay"/>
+      <div ref={spotRef} className="vtHeroSpot"/>
+      <div className="vtHeroInner">
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <div className="vtHeroActions">
+          <a className="vtBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} ↗</a>
+          <a className="vtBtnOutline" href="#hizmetler">Hizmetlerimiz</a>
+        </div>
+      </div>
+    </section>
+
+    <section className="vtMission">
+      <Reveal><p>{b.description||dec(b,'vt_mission','Ustura keskin, ışık alçak, zaman senin.')}</p></Reveal>
+    </section>
+
+    <section id="hizmetler" className="vtServices">
+      <Reveal><header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Açık fiyatlarla, dürüst sürelerle.'}</h2></header></Reveal>
+      <div className="vtServiceList">
+        {p.services.map((s,i)=><Reveal as="article" key={s.id} i={i}>
+          <span>{String(i+1).padStart(2,'0')}</span>
+          <h3>{s.name}</h3>
+          {s.description&&<p>{s.description}</p>}
+          <footer><em>{s.duration_minutes} dk</em>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</footer>
+        </Reveal>)}
+      </div>
+    </section>
+
+    <section id="vtGallery" className="vtGallerySection">
+      <Reveal><header><small>GALERİ</small><h2>{dec(b,'vt_galleryTitle','Son çalışmalarımız.')}</h2></header></Reveal>
+      <VitrinGallery p={p}/>
+    </section>
+
+    {visibleStaff.length>0&&<section className="vtTeamSection">
+      <Reveal><header><small>EKİP</small><h2>{dec(b,'vt_teamTitle','Ustalarımız.')}</h2></header></Reveal>
+      <div className="vtTeamList">
+        {visibleStaff.map((s:any,i:number)=><Reveal as="div" className="vtTeamRow" key={s.id} i={i}>
+          <b>{s.name}</b><small>{s.title||'Usta Berber'}</small>
+        </Reveal>)}
+      </div>
+    </section>}
+
+    <Reveal><OwnRatings businessId={b.id}/></Reveal>
+
+    <section id="randevu" className="vtBookingSection">
+      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
+      <Reveal><AtelierBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <footer className="vtFooter">
+      <div className="vtFooterGrid">
+        <div><a className="vtBrand" href="#top">{b.name}</a><p>{dec(b,'vt_footerTagline','Gece geç saatlere kadar açık bir vitrin.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ <span className={`vtOpenBadge ${isOpenNow?'open':'closed'}`}>{isOpenNow?'● Şu An Açık':'● Kapalı'}</span></small>{hourRows.map((r,i)=><div key={i} className="vtHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>ZİYARET</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
+      </div>
+      <div className="vtFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+
+    <div className="vtMobileSticky">
+      <a href="#randevu">✂ Hemen Randevu Al</a>
+      {b.phone&&<a className="vtMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
     </div>
   </main>;
 }
