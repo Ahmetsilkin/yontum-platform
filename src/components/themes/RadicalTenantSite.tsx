@@ -3,8 +3,8 @@ import{useState,useEffect,useRef}from'react';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -530,6 +530,163 @@ function Vitrin(p:P){
     <div className="vtMobileSticky">
       <a href="#randevu">✂ Hemen Randevu Al</a>
       {b.phone&&<a className="vtMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
+    </div>
+  </main>;
+}
+
+/* ================= Zarafet — ipeksi krem zemin, altın vurgulu, jaluzi-aralık geçişli, sabitlenmiş
+   kademeli galeri ve dağınık yorum kartlarıyla zarif kuaför/güzellik/nail/spa teması =================
+   (kuaför/güzellik/nail/spa sektörlerinin dördü de bu bileşeni paylaşır — layout_family:'zarafet') */
+function ZarafetBlinds({src,alt,bars=14}:{src?:string;alt:string;bars?:number}){
+  const ref=useRef<HTMLDivElement>(null);
+  const[shown,setShown]=useState(false);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){setShown(true);io.unobserve(e.target)}})},{threshold:.3});
+    io.observe(el);
+    return()=>io.disconnect();
+  },[]);
+  return <div ref={ref} className="zfBlinds">
+    {src?<img src={src} alt={alt}/>:<i>✂</i>}
+    <div className="zfBlindsBars" aria-hidden="true">
+      {Array.from({length:bars}).map((_,i)=><span key={i} className={shown?'open':''} style={{transitionDelay:`${i*35}ms`}}/>)}
+    </div>
+  </div>;
+}
+function ZarafetServices({p}:{p:P}){
+  const scrollerRef=useRef<HTMLDivElement>(null);
+  const nudge=(dir:number)=>{const el=scrollerRef.current;if(!el)return;el.scrollBy({left:dir*el.clientWidth*.82,behavior:'smooth'})};
+  if(!p.services.length)return null;
+  return <section id="hizmetler" className="zfServices">
+    <Reveal><header>
+      <div><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Duyulara dokunan bir deneyim.'}</h2></div>
+      <div className="zfCarouselNav"><button type="button" onClick={()=>nudge(-1)} aria-label="Önceki">‹</button><button type="button" onClick={()=>nudge(1)} aria-label="Sonraki">›</button></div>
+    </header></Reveal>
+    <div className="zfServiceScroller" ref={scrollerRef}>
+      {p.services.map(s=><article key={s.id} className="zfServiceCard">
+        <div className="zfServiceCardPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
+        <h3>{s.name}</h3>
+        <div className="zfServiceCardFoot"><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
+      </article>)}
+    </div>
+  </section>;
+}
+function ZarafetCollage({p}:{p:P}){
+  const{ref,t}=useScrollFracPinned();
+  const photos=[...p.gallery.map((x:any)=>x.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,5);
+  if(!p.b.show_gallery||!photos.length)return null;
+  const positions=[{top:'10%',left:'6%'},{top:'56%',left:'3%'},{top:'14%',right:'5%'},{top:'58%',right:'9%'},{top:'36%',left:'40%'}];
+  return <section ref={ref as any} id="zfGallery" className="zfCollageWrap">
+    <div className="zfCollage">
+      <div className="zfCollageCenter">
+        <small>GALERİ</small>
+        <h2>{dec(p.b,'zf_collageTitle','Her detay, bir zevk.')}</h2>
+      </div>
+      {photos.map((src,i)=><div key={i} className={`zfCollagePhoto ${t>.15+i*.14?'in':''}`} style={positions[i]}><img src={src} alt=""/></div>)}
+    </div>
+  </section>;
+}
+function ZarafetReviews({businessId}:{businessId:string}){
+  const[data,setData]=useState<any>(null);
+  useEffect(()=>{fetch(`/api/ratings/${businessId}`).then(r=>r.json()).then(setData).catch(()=>{})},[businessId]);
+  const{ref,t}=useScrollFracPinned();
+  if(!data?.enabled||!data.reviews?.length)return null;
+  const cards=data.reviews.slice(0,4);
+  const positions=[{top:'60%',left:'6%'},{top:'8%',right:'7%'},{top:'58%',right:'4%'},{top:'10%',left:'3%'}];
+  return <section ref={ref as any} className="zfReviewsWrap">
+    <div className="zfReviewsPin">
+      <h2>{data.count}+ müşteri<br/>memnuniyetle anlatıyor.</h2>
+      {cards.map((r:any,i:number)=><div key={i} className={`zfReviewCard ${t>.15+i*.15?'in':''}`} style={positions[i]}>
+        <div className="zfReviewStars">{'★'.repeat(r.stars||5)}</div>
+        <b>{r.customer_name||'Müşterimiz'}</b>
+        <p>"{r.comment}"</p>
+      </div>)}
+    </div>
+  </section>;
+}
+function Zarafet(p:P){
+  const{b}=p;
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const hourRows=groupedHourRows(p.hours||[]);
+  const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
+  const isOpenNow=(()=>{
+    const WD:Record<string,number>={Sunday:0,Monday:1,Tuesday:2,Wednesday:3,Thursday:4,Friday:5,Saturday:6};
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',weekday:'long',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+    const weekday=parts.find(x=>x.type==='weekday')?.value||'';
+    const hh=Number(parts.find(x=>x.type==='hour')?.value||0),mm=Number(parts.find(x=>x.type==='minute')?.value||0);
+    const dayIdx=WD[weekday]??new Date().getDay(),nowMin=hh*60+mm;
+    const h=(p.hours||[]).find((x:any)=>x.day_of_week===dayIdx);
+    if(!h||!h.is_open)return false;
+    return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time);
+  })();
+  const missionPhoto=p.gallery?.[0]?.image_url||b.cover_url||'';
+  return <main id="top" className="tZarafet">
+    <header className="zfNav">
+      <a className="zfBrand" href="#top">{b.name}</a>
+      <nav>
+        <a href="#top">Ana Sayfa</a>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#zfGallery">Galeri</a>
+        <a href="#randevu">Randevu</a>
+      </nav>
+      <a className="zfNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="zfHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+      <div className="zfHeroOverlay"/>
+      <div className="zfHeroInner">
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <a className="zfBtnOutline" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+      </div>
+    </section>
+
+    <section className="zfMission">
+      <div className="zfMissionWatermark" aria-hidden="true">{b.name?.[0]}</div>
+      <Reveal><small>{dec(b,'zf_missionLabel','')||''}</small></Reveal>
+      <Reveal i={1}><h2>{dec(b,'zf_missionTitle','Güzellik, yaşam biçimidir.')}</h2></Reveal>
+      {(b.description||dec(b,'zf_missionText',''))&&<Reveal i={2}><p>{b.description||dec(b,'zf_missionText','')}</p></Reveal>}
+      {missionPhoto&&<Reveal i={3} className="zfMissionPhotoWrap"><ZarafetBlinds src={missionPhoto} alt={b.name}/></Reveal>}
+    </section>
+
+    <ZarafetServices p={p}/>
+
+    <ZarafetCollage p={p}/>
+
+    {visibleStaff.length>0&&<section className="zfTeamSection">
+      <Reveal><header><small>EKİP</small><h2>{dec(b,'zf_teamTitle','Ellerine güvenebileceğin ustalar.')}</h2></header></Reveal>
+      <div className="zfTeamGrid">
+        {visibleStaff.map((s:any,i:number)=><Reveal as="article" key={s.id} i={i}>
+          <div className="zfTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
+          <b>{s.name}</b><small>{s.title||'Uzman'}</small>
+        </Reveal>)}
+      </div>
+    </section>}
+
+    <ZarafetReviews businessId={b.id}/>
+
+    <section id="randevu" className="zfBookingSection">
+      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
+      <Reveal><AtelierBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <footer className="zfFooter">
+      <div className="zfFooterGrid">
+        <div><a className="zfBrand" href="#top">{b.name}</a><p>{dec(b,'zf_footerTagline','Kendine ayırdığın zaman, en değerli olanıdır.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ <span className={`zfOpenBadge ${isOpenNow?'open':'closed'}`}>{isOpenNow?'● Şu An Açık':'● Kapalı'}</span></small>{hourRows.map((r,i)=><div key={i} className="zfHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}
+          <div className="zfFooterActions">
+            {b.address&&<a className="zfMapBtn" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`} target="_blank" rel="noopener noreferrer">Google Maps'te Aç</a>}
+            {b.phone&&<a className="zfCallBtn" href={`tel:${b.phone}`}>Hemen Ara</a>}
+          </div>
+        </div>
+      </div>
+      <div className="zfFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+
+    <div className="zfMobileSticky">
+      <a href="#randevu">Hemen Randevu Al</a>
+      {b.phone&&<a className="zfMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
     </div>
   </main>;
 }

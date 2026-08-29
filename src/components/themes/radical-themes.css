@@ -175,7 +175,7 @@
 @media(max-width:800px){.ksFooterGrid{grid-template-columns:1fr;gap:36px}}
 
 /* ================= Atölye — koyu zemin, altın vurgulu, dergi tarzı Journal bölümlü lüks berber teması ================= */
-.tAtelier{--at-bg:#0d0a08;--at-surface:#17130f;--at-line:rgba(255,255,255,.12);--at-ink:#f5ebdd;--at-muted:#a2968a;--at-gold:#d4af37;--at-gold-light:#e8c968;--accent:var(--at-gold);--brand:var(--at-gold);background:var(--at-bg);color:var(--at-ink);font-family:'Inter',Arial,Helvetica,sans-serif}
+.tAtelier{--at-bg:#0d0a08;--at-surface:#17130f;--at-card-bg:#18181B;--at-line:rgba(255,255,255,.12);--at-ink:#f5ebdd;--at-muted:#a2968a;--at-gold:#d4af37;--at-gold-light:#e8c968;--accent:var(--at-gold);--brand:var(--at-gold);background:var(--at-bg);color:var(--at-ink);font-family:'Inter',Arial,Helvetica,sans-serif}
 .tAtelier h1,.tAtelier h2,.tAtelier h3{font-family:'Playfair Display',Georgia,serif}
 .tAtelier em{font-style:italic;color:var(--at-gold-light)}
 
@@ -242,20 +242,20 @@
 .atBooking>.atBookCol>small{display:block;letter-spacing:2px;font-size:10px;font-weight:700;color:var(--at-gold-light);margin:0 0 16px}
 .atBooking>.atBookCol>small:not(:first-child){margin-top:32px}
 .atBookServiceGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-.atBookServiceGrid button{text-align:left;background:#18181B;border:1px solid var(--at-line);color:var(--at-ink);padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.atBookServiceGrid button{text-align:left;background:var(--at-card-bg);border:1px solid var(--at-line);color:var(--at-ink);padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .atBookServiceGrid button:hover{border-color:var(--at-gold)}
 .atBookServiceGrid button b{display:block;font-size:13px;font-weight:700}
 .atBookServiceGrid button em{display:block;color:var(--at-gold-light);font-style:normal;font-size:12px;margin-top:4px}
 .atBookServiceGrid button small{display:block;color:var(--at-muted);font-size:11px;margin-top:6px}
 .atBookServiceGrid button.selected{border-color:var(--at-gold);box-shadow:0 0 10px #d4af374d}
 .atBookStaffRow{display:flex;flex-wrap:wrap;gap:10px}
-.atBookStaffRow button{background:#18181B;border:1px solid var(--at-line);color:var(--at-ink);padding:10px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.atBookStaffRow button{background:var(--at-card-bg);border:1px solid var(--at-line);color:var(--at-ink);padding:10px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .atBookStaffRow button:hover{border-color:var(--at-gold)}
 .atBookStaffRow button b{display:block;font-size:12px;font-weight:700}
 .atBookStaffRow button small{display:block;color:var(--at-muted);font-size:10px;margin-top:3px}
 .atBookStaffRow button.selected{border-color:var(--at-gold);box-shadow:0 0 10px #d4af374d}
 .atBookDayRow{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
-.atBookDayRow button{flex:0 0 52px;background:#18181B;border:1px solid var(--at-line);color:var(--at-ink);padding:10px 0;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.atBookDayRow button{flex:0 0 52px;background:var(--at-card-bg);border:1px solid var(--at-line);color:var(--at-ink);padding:10px 0;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .atBookDayRow button:hover:not(:disabled){border-color:var(--at-gold)}
 .atBookDayRow button small{display:block;color:var(--at-muted);font-size:9px}
 .atBookDayRow button b{display:block;font-size:15px;margin-top:3px}
@@ -263,7 +263,7 @@
 .atBookDayRow button.closed{opacity:.4;text-decoration:line-through;cursor:not-allowed}
 .atBookTimeGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .atBookTimeGrid p{grid-column:1/-1;color:var(--at-muted);font-size:13px}
-.atBookTimeGrid button{background:#18181B;border:1px solid var(--at-line);color:var(--at-ink);padding:10px 0;font-size:13px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.atBookTimeGrid button{background:var(--at-card-bg);border:1px solid var(--at-line);color:var(--at-ink);padding:10px 0;font-size:13px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .atBookTimeGrid button:hover{border-color:var(--at-gold)}
 .atBookTimeGrid button.selected{background:var(--at-gold);border-color:var(--at-gold);color:#1a1206;box-shadow:0 0 10px #d4af374d}
 .atBookSummary{grid-column:1/-1;border-top:1px solid var(--at-line);padding:22px 40px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;color:var(--at-muted);font-size:13px}
@@ -414,7 +414,7 @@
 }
 
 /* ================= Vitrin — gece vitrin ışığı, kaydırma ile ileri-geri oynayan sinematik video hero, yatay kaydırmalı galeri ================= */
-.tVitrin{--vt-bg:#0a0806;--vt-surface:#151210;--vt-line:rgba(255,255,255,.12);--vt-ink:#f2e9dc;--vt-muted:#9b8f80;--vt-amber:#e0a544;--vt-amber-light:#eec37f;--accent:var(--vt-amber);--brand:var(--vt-amber);background:var(--vt-bg);color:var(--vt-ink);font-family:'Inter',Arial,Helvetica,sans-serif;
+.tVitrin{--vt-bg:#0a0806;--vt-surface:#151210;--at-card-bg:#18181B;--vt-line:rgba(255,255,255,.12);--vt-ink:#f2e9dc;--vt-muted:#9b8f80;--vt-amber:#e0a544;--vt-amber-light:#eec37f;--accent:var(--vt-amber);--brand:var(--vt-amber);background:var(--vt-bg);color:var(--vt-ink);font-family:'Inter',Arial,Helvetica,sans-serif;
   /* AtelierBooking bileşeni --at-* değişkenlerini okuyor; kendi paletimizle eşliyoruz ki booking widget'ı yeniden yazmadan aynı kalitede çalışsın. */
   --at-bg:var(--vt-bg);--at-surface:var(--vt-surface);--at-line:var(--vt-line);--at-ink:var(--vt-ink);--at-muted:var(--vt-muted);--at-gold:var(--vt-amber);--at-gold-light:var(--vt-amber-light);
 }
@@ -533,4 +533,133 @@
   .vtMobileSticky{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:10px;padding:12px 14px;background:#060504f2;backdrop-filter:blur(10px);border-top:1px solid var(--vt-line)}
   .vtMobileSticky>a:first-child{flex:1;background:var(--vt-amber);color:#1a1206!important;text-align:center;padding:15px;font-weight:700;font-size:14px;letter-spacing:.5px;border-radius:10px;box-shadow:0 6px 20px #e0a54440}
   .vtMobileStickyCall{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;border:1px solid var(--vt-line);border-radius:10px;color:var(--vt-ink)!important;font-size:18px}
+}
+
+/* ================= Zarafet — ipeksi krem zemin, altın vurgulu, jaluzi geçişli, sabitlenmiş kademeli
+   galeri ve dağınık yorum kartlarıyla zarif kuaför/güzellik/nail/spa teması ================= */
+.tZarafet{--zf-bg:#f6f1e8;--zf-surface:#ffffff;--zf-line:rgba(43,36,32,.12);--zf-ink:#2b2420;--zf-muted:#8a7d6c;--zf-gold:#a68a54;--zf-gold-light:#c7ab72;--accent:var(--zf-gold);--brand:var(--zf-gold);background:var(--zf-bg);color:var(--zf-ink);font-family:'Inter',Arial,Helvetica,sans-serif;
+  --at-bg:var(--zf-bg);--at-surface:var(--zf-surface);--at-card-bg:var(--zf-surface);--at-line:var(--zf-line);--at-ink:var(--zf-ink);--at-muted:var(--zf-muted);--at-gold:var(--zf-gold);--at-gold-light:var(--zf-gold-light);}
+.tZarafet h1,.tZarafet h2,.tZarafet h3{font-family:'Playfair Display',Georgia,serif}
+.tZarafet em{font-style:italic;color:var(--zf-gold)}
+
+/* Nav */
+.zfNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 6vw;background:#f6f1e8ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--zf-line)}
+.zfBrand{font-family:'Playfair Display',Georgia,serif;font-size:20px;letter-spacing:1px;color:var(--zf-ink)}
+.zfNav nav{display:flex;gap:32px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+.zfNav nav a{color:var(--zf-muted);transition:color .15s}
+.zfNav nav a:hover{color:var(--zf-ink)}
+.zfNavBtn{border:1px solid var(--zf-gold);color:var(--zf-gold)!important;padding:12px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:.2s;border-radius:999px}
+.zfNavBtn:hover{background:var(--zf-gold);color:#fff!important}
+@media(max-width:900px){.zfNav nav{display:none}.zfNavBtn{padding:10px 16px;font-size:10px}}
+
+/* Hero */
+.zfHero{position:relative;min-height:92vh;display:flex;align-items:center;background:#2b2420 center/cover;overflow:hidden}
+.zfHeroOverlay{position:absolute;inset:0;background:linear-gradient(100deg,#0000004d 20%,#00000010 60%)}
+.zfHeroInner{position:relative;z-index:2;max-width:640px;padding:0 6vw}
+.zfHeroInner h1{font:500 clamp(36px,5.5vw,68px)/1.15 'Playfair Display',Georgia,serif;color:#fff;margin:0 0 22px}
+.zfHeroInner>p{color:#fffc;max-width:480px;line-height:1.8;font-size:16px;margin:0 0 32px}
+.zfBtnOutline{display:inline-block;border:1px solid #fff9;color:#fff!important;padding:16px 30px;font-size:12px;letter-spacing:2px;text-transform:uppercase;border-radius:999px;transition:.2s}
+.zfBtnOutline:hover{background:#fff;color:var(--zf-ink)!important}
+@media(max-width:640px){.zfHero{min-height:78vh}}
+
+/* Misyon — hayalet marka izi + jaluzi (blinds) fotoğraf geçişi */
+.zfMission{position:relative;padding:120px 8vw;max-width:760px;margin:0 auto;text-align:center;overflow:hidden}
+.zfMissionWatermark{position:absolute;top:-40px;left:50%;transform:translateX(-50%);font:400 340px 'Playfair Display',Georgia,serif;color:var(--zf-ink);opacity:.045;line-height:1;pointer-events:none;z-index:0}
+.zfMission>*{position:relative;z-index:1}
+.zfMission h2{font:500 clamp(28px,3.6vw,44px)/1.3;letter-spacing:-.3px;margin:10px 0 20px}
+.zfMission>p{color:var(--zf-muted);line-height:1.8;font-size:16px;margin:0 auto 50px;max-width:560px}
+.zfMissionPhotoWrap{display:block}
+.zfBlinds{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:4px}
+.zfBlinds img{width:100%;height:100%;object-fit:cover;display:block}
+.zfBlinds i{width:100%;height:100%;display:grid;place-items:center;background:var(--zf-surface);font-size:30px;font-style:normal;color:var(--zf-muted)}
+.zfBlindsBars{position:absolute;inset:0;display:flex}
+.zfBlindsBars span{flex:1;background:var(--zf-gold);transform:scaleY(1);transform-origin:top;transition:transform .8s cubic-bezier(.6,0,.2,1)}
+.zfBlindsBars span.open{transform:scaleY(0)}
+
+/* Hizmetler — yatay kaydırmalı karusel */
+.zfServices{padding:100px 0;background:var(--zf-surface)}
+.zfServices>div:first-child,.zfServices header{max-width:1200px;margin:0 auto 40px;padding:0 6vw;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.zfServices header small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfServices header h2{font:500 clamp(28px,3.4vw,40px)/1.2;margin:10px 0 0}
+.zfCarouselNav{display:flex;gap:8px}
+.zfCarouselNav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--zf-line);background:none;color:var(--zf-ink);font-size:18px;cursor:pointer;transition:border-color .2s}
+.zfCarouselNav button:hover{border-color:var(--zf-gold)}
+.zfServiceScroller{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 6vw 10px;scrollbar-width:none}
+.zfServiceScroller::-webkit-scrollbar{display:none}
+.zfServiceCard{scroll-snap-align:start;flex:0 0 min(300px,78vw)}
+.zfServiceCardPhoto{aspect-ratio:4/5;background:var(--zf-bg);border-radius:6px;overflow:hidden;margin-bottom:16px}
+.zfServiceCardPhoto img{width:100%;height:100%;object-fit:cover}
+.zfServiceCardPhoto i{width:100%;height:100%;display:grid;place-items:center;font-size:26px;font-style:normal;color:var(--zf-muted)}
+.zfServiceCard h3{font:500 19px 'Playfair Display',Georgia,serif;margin:0 0 8px}
+.zfServiceCardFoot{display:flex;justify-content:space-between;color:var(--zf-muted);font-size:13px}
+.zfServiceCardFoot b{color:var(--zf-gold);font-weight:700}
+
+/* Galeri — sabitlenmiş başlık + kademeli giren fotoğraf koleksiyonu */
+.zfCollageWrap{position:relative;height:220vh}
+.zfCollage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--zf-bg)}
+.zfCollageCenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2;max-width:480px;padding:0 20px}
+.zfCollageCenter small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfCollageCenter h2{font:500 clamp(28px,3.6vw,42px)/1.25;margin:12px 0 0}
+.zfCollagePhoto{position:absolute;width:min(220px,26vw);aspect-ratio:3/4;border-radius:6px 6px 60px 6px;overflow:hidden;opacity:0;transform:translateY(40px) scale(.92);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 50px #0000001a}
+.zfCollagePhoto.in{opacity:1;transform:translateY(0) scale(1)}
+.zfCollagePhoto img{width:100%;height:100%;object-fit:cover}
+@media(max-width:800px){.zfCollageWrap{height:260vh}.zfCollagePhoto{width:130px}}
+
+/* Ekip */
+.zfTeamSection{padding:110px 6vw;background:var(--zf-surface)}
+.zfTeamSection>header{max-width:600px;margin:0 auto 46px;text-align:center}
+.zfTeamSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfTeamSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
+.zfTeamGrid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,220px));justify-content:center;gap:28px}
+.zfTeamGrid article{text-align:center}
+.zfTeamPhoto{aspect-ratio:3/4;border-radius:6px 6px 60px 6px;overflow:hidden;background:var(--zf-bg)}
+.zfTeamPhoto img{width:100%;height:100%;object-fit:cover}
+.zfTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;font:500 40px 'Playfair Display',serif;color:var(--zf-gold);font-style:normal}
+.zfTeamGrid b{display:block;margin-top:14px;font:500 16px 'Playfair Display',Georgia,serif}
+.zfTeamGrid small{display:block;margin-top:2px;color:var(--zf-muted);font-size:12px}
+
+/* Yorumlar — sabitlenmiş dev başlık + dağınık kademeli kartlar */
+.zfReviewsWrap{position:relative;height:200vh}
+.zfReviewsPin{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--zf-surface);display:flex;align-items:center;justify-content:center;text-align:center}
+.zfReviewsPin>h2{font:500 clamp(32px,4.5vw,54px)/1.2;max-width:640px;padding:0 20px;position:relative;z-index:1}
+.zfReviewCard{position:absolute;width:min(260px,68vw);background:var(--zf-bg);border-radius:6px;padding:22px;opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 50px #0000001a;text-align:left}
+.zfReviewCard.in{opacity:1;transform:translateY(0)}
+.zfReviewStars{color:var(--zf-gold);letter-spacing:2px;margin-bottom:8px;font-size:13px}
+.zfReviewCard b{display:block;font:500 15px 'Playfair Display',Georgia,serif;margin-bottom:6px}
+.zfReviewCard p{color:var(--zf-muted);font-size:13px;line-height:1.6;margin:0}
+@media(max-width:800px){.zfReviewsWrap{height:240vh}.zfReviewCard{width:min(220px,72vw);padding:16px}}
+
+/* Randevu */
+.zfBookingSection{padding:110px 6vw;background:var(--zf-bg)}
+.zfBookingSection>header{max-width:600px;margin:0 auto 46px;text-align:center}
+.zfBookingSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfBookingSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
+
+/* Footer */
+.zfFooter{background:#2b2420;color:#f6f1e8;padding:80px 6vw 30px;border-radius:60px 60px 0 0}
+.zfFooterGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6vw}
+.zfFooterGrid .zfBrand{color:#f6f1e8}
+.zfFooterGrid>div:first-child p{color:#f6f1e8b3;margin-top:14px;font-size:13px;line-height:1.7;max-width:300px}
+.zfFooterGrid>div>small{display:flex;align-items:center;flex-wrap:wrap;gap:8px;letter-spacing:2px;font-size:11px;font-weight:700;color:var(--zf-gold-light);margin-bottom:16px}
+.zfFooterGrid>div>p{color:#f6f1e8cc;font-size:14px;margin:0 0 10px}
+.zfFooterGrid>div>p a{color:#f6f1e8;text-decoration:underline}
+.zfHoursRow{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#f6f1e8cc;padding:8px 0;border-top:1px solid #f6f1e81f}
+.zfHoursRow:first-of-type{border-top:0}
+.zfOpenBadge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:9px;letter-spacing:1px;font-weight:700}
+.zfOpenBadge.open{background:#22c55e26;color:#4ade80}
+.zfOpenBadge.closed{background:#ffffff14;color:#f6f1e8a3}
+.zfFooterActions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.zfMapBtn{display:block;border:1px solid #f6f1e830;color:#f6f1e8!important;padding:12px 16px;text-align:center;font-size:12px;border-radius:999px;transition:border-color .2s}
+.zfMapBtn:hover{border-color:var(--zf-gold-light)}
+.zfCallBtn{display:block;background:var(--zf-gold);color:#2b2420!important;padding:12px 16px;text-align:center;font-weight:700;font-size:12px;border-radius:999px}
+.zfFooterBottom{max-width:1100px;margin:60px auto 0;padding-top:22px;border-top:1px solid #f6f1e81f;font-size:12px;color:#f6f1e8a3;text-align:center}
+@media(max-width:800px){.zfFooterGrid{grid-template-columns:1fr;gap:36px}}
+
+/* Mobil sabit randevu barı */
+.zfMobileSticky{display:none}
+@media(max-width:768px){
+  .tZarafet{padding-bottom:80px}
+  .zfMobileSticky{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:10px;padding:12px 14px;background:#f6f1e8f2;backdrop-filter:blur(10px);border-top:1px solid var(--zf-line)}
+  .zfMobileSticky>a:first-child{flex:1;background:var(--zf-gold);color:#fff!important;text-align:center;padding:15px;font-weight:700;font-size:14px;border-radius:999px;box-shadow:0 6px 20px #a68a5440}
+  .zfMobileStickyCall{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;border:1px solid var(--zf-line);border-radius:999px;color:var(--zf-ink)!important;font-size:18px}
 }
