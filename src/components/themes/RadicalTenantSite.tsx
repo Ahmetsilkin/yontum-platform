@@ -594,6 +594,39 @@ function ZarafetReviews({businessId}:{businessId:string}){
     </div>
   </section>;
 }
+function ZarafetContact({businessId,bgPhoto}:{businessId:string;bgPhoto?:string}){
+  const[sent,setSent]=useState(false);
+  const[sending,setSending]=useState(false);
+  const[error,setError]=useState('');
+  async function submit(e:React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+    const f=new FormData(e.currentTarget);
+    setSending(true);setError('');
+    const r=await fetch('/api/contact-messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({businessId,name:String(f.get('name')||''),message:String(f.get('message')||'')})});
+    const j=await r.json();
+    setSending(false);
+    if(!r.ok){setError(j.error||'Mesaj gönderilemedi.');return}
+    setSent(true);
+  }
+  return <section className="zfContact" style={bgPhoto?{backgroundImage:`url(${bgPhoto})`}:undefined}>
+    <div className="zfContactOverlay"/>
+    <div className="zfContactGrid">
+      <Reveal className="zfContactText">
+        <h2>Bize Ulaş</h2>
+        <p>Bir sorun mu var, özel bir isteğin mi? Adını ve mesajını bırak, sana dönelim.</p>
+      </Reveal>
+      <Reveal i={1} className="zfContactFormWrap">
+        {sent?<p className="zfContactSent">Mesajın iletildi, teşekkürler.</p>:
+        <form onSubmit={submit} className="zfContactForm">
+          <input className="zfContactInput" name="name" placeholder="Adın" required maxLength={80}/>
+          <textarea className="zfContactInput zfContactTextarea" name="message" placeholder="Mesajın" required maxLength={1000} rows={4}/>
+          {error&&<p className="zfContactError">{error}</p>}
+          <button type="submit" className="zfBtnOutline" disabled={sending}>{sending?'Gönderiliyor…':'Gönder'}</button>
+        </form>}
+      </Reveal>
+    </div>
+  </section>;
+}
 function Zarafet(p:P){
   const{b}=p;
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
@@ -663,6 +696,8 @@ function Zarafet(p:P){
       <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
       <Reveal><AtelierBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
     </section>
+
+    <ZarafetContact businessId={b.id} bgPhoto={missionPhoto}/>
 
     <footer className="zfFooter">
       <div className="zfFooterGrid">

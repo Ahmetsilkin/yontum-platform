@@ -634,6 +634,22 @@
 .zfBookingSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
 .zfBookingSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
 
+/* İletişim — fotoğraf zeminli, sade "Bize Ulaş" formu (sadece isim + mesaj) */
+.zfContact{position:relative;padding:120px 6vw;background:#2b2420 center/cover;overflow:hidden}
+.zfContactOverlay{position:absolute;inset:0;background:linear-gradient(100deg,#000000b3 15%,#00000059 60%)}
+.zfContactGrid{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center}
+.zfContactText h2{font:500 clamp(34px,4.5vw,54px)/1.15 'Playfair Display',Georgia,serif;color:#fff;margin:0 0 18px}
+.zfContactText p{color:#ffffffcc;font-size:15px;line-height:1.8;max-width:400px}
+.zfContactForm{display:flex;flex-direction:column;gap:14px}
+.zfContactInput{border:0;border-radius:999px;padding:17px 24px;font-size:14px;font-family:inherit;background:#fff;color:var(--zf-ink)}
+.zfContactInput::placeholder{color:var(--zf-muted)}
+.zfContactTextarea{border-radius:22px;resize:vertical;min-height:110px}
+.zfContactForm .zfBtnOutline{align-self:flex-start;background:none;border:1px solid #fff9;cursor:pointer}
+.zfContactForm .zfBtnOutline:disabled{opacity:.6;cursor:not-allowed}
+.zfContactError{color:#ffb4a8;font-size:13px;margin:0}
+.zfContactSent{color:#fff;font:500 20px 'Playfair Display',Georgia,serif}
+@media(max-width:800px){.zfContactGrid{grid-template-columns:1fr}}
+
 /* Footer */
 .zfFooter{background:#2b2420;color:#f6f1e8;padding:80px 6vw 30px;border-radius:60px 60px 0 0}
 .zfFooterGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6vw}
