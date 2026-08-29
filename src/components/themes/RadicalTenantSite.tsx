@@ -632,7 +632,8 @@ function Zarafet(p:P){
       <a className="zfNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
 
-    <section className="zfHero" style={b.cover_url?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+    <section className="zfHero" style={b.cover_url&&b.cover_type!=='video'?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+      {b.cover_url&&b.cover_type==='video'&&<video className="zfHeroVideo" src={b.cover_url} autoPlay muted loop playsInline/>}
       <div className="zfHeroOverlay"/>
       <div className="zfHeroInner">
         <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
