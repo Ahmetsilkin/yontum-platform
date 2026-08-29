@@ -677,9 +677,14 @@ function Zarafet(p:P){
       {(b.description||dec(b,'zf_missionText',''))&&<Reveal i={2}><p>{b.description||dec(b,'zf_missionText','')}</p></Reveal>}
       {missionPhotos.length>0&&<Reveal i={3} className="zfMissionArchWrap">
         <ZfOrnament/>
-        <div className="zfMissionArchRow">
-          {missionPhotos.map((src:string,i:number)=><div key={i} className="zfMissionArch"><img src={src} alt={b.name}/></div>)}
-        </div>
+        {missionPhotos.length>1?
+          <div className="zfMissionArchRow zfMarqueeRow">
+            <div className="zfMarqueeTrack">
+              {[...missionPhotos,...missionPhotos].map((src:string,i:number)=><div key={i} className="zfMissionArch"><img src={src} alt={b.name}/></div>)}
+            </div>
+          </div>
+          :<div className="zfMissionArchRow"><div className="zfMissionArch"><img src={missionPhotos[0]} alt={b.name}/></div></div>
+        }
         <ZfOrnament/>
       </Reveal>}
     </section>
