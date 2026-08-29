@@ -619,7 +619,7 @@ function Zarafet(p:P){
     if(!h||!h.is_open)return false;
     return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time);
   })();
-  const missionPhoto=p.gallery?.[0]?.image_url||b.cover_url||'';
+  const missionPhoto=dec(b,'zf_missionPhoto','')||p.gallery?.[0]?.image_url||b.cover_url||'';
   return <main id="top" className="tZarafet">
     <header className="zfNav">
       <a className="zfBrand" href="#top">{b.name}</a>
@@ -642,8 +642,6 @@ function Zarafet(p:P){
     </section>
 
     <section className="zfMission">
-      <div className="zfMissionWatermark" aria-hidden="true">{b.name?.[0]}</div>
-      <Reveal><small>{dec(b,'zf_missionLabel','')||''}</small></Reveal>
       <Reveal i={1}><h2>{dec(b,'zf_missionTitle','Güzellik, yaşam biçimidir.')}</h2></Reveal>
       {(b.description||dec(b,'zf_missionText',''))&&<Reveal i={2}><p>{b.description||dec(b,'zf_missionText','')}</p></Reveal>}
       {missionPhoto&&<Reveal i={3} className="zfMissionPhotoWrap"><ZarafetBlinds src={missionPhoto} alt={b.name}/></Reveal>}
