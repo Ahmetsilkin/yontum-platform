@@ -1,6 +1,6 @@
 'use client';
 import{useState,useEffect,useRef}from'react';
-import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
+import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
 const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light'};
@@ -616,7 +616,7 @@ function ZarafetContact({businessId,bgPhoto}:{businessId:string;bgPhoto?:string}
         <p>Bir sorun mu var, özel bir isteğin mi? Adını ve mesajını bırak, sana dönelim.</p>
       </Reveal>
       <Reveal i={1} className="zfContactFormWrap">
-        {sent?<p className="zfContactSent">Mesajın iletildi, teşekkürler.</p>:
+        {sent?<div className="zfContactSent"><span>✓</span><h3>Teşekkürler.</h3><p>Mesajın iletildi, en kısa sürede sana dönüş yapacağız.</p></div>:
         <form onSubmit={submit} className="zfContactForm">
           <input className="zfContactInput" name="name" placeholder="Adın" required maxLength={80}/>
           <textarea className="zfContactInput zfContactTextarea" name="message" placeholder="Mesajın" required maxLength={1000} rows={4}/>
@@ -642,7 +642,13 @@ function Zarafet(p:P){
     if(!h||!h.is_open)return false;
     return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time);
   })();
-  const missionPhoto=dec(b,'zf_missionPhoto','')||p.gallery?.[0]?.image_url||b.cover_url||'';
+  const missionPhotos=(()=>{
+    const raw=dec(b,'zf_missionPhoto','');
+    if(!raw)return p.gallery?.[0]?.image_url?[p.gallery[0].image_url]:(b.cover_url&&b.cover_type!=='video'?[b.cover_url]:[]);
+    try{const arr=JSON.parse(raw);if(Array.isArray(arr)&&arr.length)return arr}catch{}
+    return[raw];
+  })();
+  const missionPhoto=missionPhotos[0]||'';
   return <main id="top" className="tZarafet">
     <header className="zfNav">
       <a className="zfBrand" href="#top">{b.name}</a>
@@ -669,9 +675,11 @@ function Zarafet(p:P){
       {missionPhoto&&<div className="zfMissionGhostBg" style={{backgroundImage:`url(${missionPhoto})`}} aria-hidden="true"/>}
       <Reveal i={1}><h2>{dec(b,'zf_missionTitle','Güzellik, yaşam biçimidir.')}</h2></Reveal>
       {(b.description||dec(b,'zf_missionText',''))&&<Reveal i={2}><p>{b.description||dec(b,'zf_missionText','')}</p></Reveal>}
-      {missionPhoto&&<Reveal i={3} className="zfMissionArchWrap">
+      {missionPhotos.length>0&&<Reveal i={3} className="zfMissionArchWrap">
         <ZfOrnament/>
-        <div className="zfMissionArch"><img src={missionPhoto} alt={b.name}/></div>
+        <div className="zfMissionArchRow">
+          {missionPhotos.map((src:string,i:number)=><div key={i} className="zfMissionArch"><img src={src} alt={b.name}/></div>)}
+        </div>
         <ZfOrnament/>
       </Reveal>}
     </section>
@@ -694,7 +702,7 @@ function Zarafet(p:P){
 
     <section id="randevu" className="zfBookingSection">
       <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
-      <Reveal><AtelierBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+      <Reveal><ZarafetBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
     </section>
 
     <ZarafetContact businessId={b.id} bgPhoto={missionPhoto}/>

@@ -571,9 +571,11 @@
 .zfMissionGhostBg{position:absolute;inset:-8% -15%;background-size:cover;background-position:center;filter:blur(3px) grayscale(.35) brightness(1.15);opacity:.16;z-index:0;pointer-events:none}
 .zfMissionArchWrap{display:flex;flex-direction:column;align-items:center;gap:22px;margin-top:10px}
 .zfOrnament{width:26px;height:26px;color:var(--zf-gold);opacity:.55}
-.zfMissionArch{width:min(320px,62vw);aspect-ratio:3/4;border-radius:160px 160px 6px 6px;overflow:hidden;box-shadow:0 30px 60px #0000001f}
+.zfMissionArchRow{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+.zfMissionArch{width:min(320px,62vw);aspect-ratio:3/4;border-radius:160px 160px 6px 6px;overflow:hidden;box-shadow:0 30px 60px #0000001f;flex-shrink:0}
 .zfMissionArch img{width:100%;height:100%;object-fit:cover;display:block}
-@media(max-width:640px){.zfMissionArch{width:min(240px,66vw);border-radius:120px 120px 6px 6px}}
+.zfMissionArchRow:has(.zfMissionArch~.zfMissionArch) .zfMissionArch{width:min(220px,42vw)}
+@media(max-width:640px){.zfMissionArch{width:min(240px,66vw);border-radius:120px 120px 6px 6px}.zfMissionArchRow:has(.zfMissionArch~.zfMissionArch) .zfMissionArch{width:min(150px,42vw);border-radius:80px 80px 4px 4px}}
 
 /* Hizmetler — yatay kaydırmalı karusel */
 .zfServices{padding:100px 0;background:var(--zf-surface)}
@@ -634,6 +636,61 @@
 .zfBookingSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
 .zfBookingSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
 
+/* Randevu — adımlar tek tek, kaydırılarak açılır */
+.zfBooking{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.zfBookStep{background:var(--zf-surface);border:1px solid var(--zf-line);padding:28px}
+@keyframes zfStepIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.zfBookStepIn{animation:zfStepIn .55s cubic-bezier(.2,.8,.2,1) both}
+.zfBooking>.zfBookStep>small,.zfBooking>.zfBookStep>div>small{display:block;letter-spacing:2px;font-size:10px;font-weight:700;color:var(--zf-gold);margin-bottom:16px}
+.zfBookServiceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.zfBookServiceGrid button{text-align:left;background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.zfBookServiceGrid button:hover{border-color:var(--zf-gold)}
+.zfBookServiceGrid button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px #a68a544d}
+.zfBookServiceGrid button b{display:block;font-size:13px;font-weight:700}
+.zfBookServiceGrid button em{display:block;color:var(--zf-gold);font-style:normal;font-size:12px;margin-top:4px}
+.zfBookServiceGrid button small{display:block;color:var(--zf-muted);font-size:11px;margin-top:6px}
+.zfBookStaffRow{display:flex;flex-wrap:wrap;gap:10px}
+.zfBookStaffRow button{background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:10px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.zfBookStaffRow button:hover{border-color:var(--zf-gold)}
+.zfBookStaffRow button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px #a68a544d}
+.zfBookStaffRow button b{display:block;font-size:12px;font-weight:700}
+.zfBookStaffRow button small{display:block;color:var(--zf-muted);font-size:10px;margin-top:3px}
+.zfBookDayRow{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px}
+.zfBookDayRow button{flex:0 0 52px;background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:10px 0;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.zfBookDayRow button:hover:not(:disabled){border-color:var(--zf-gold)}
+.zfBookDayRow button small{display:block;color:var(--zf-muted);font-size:9px}
+.zfBookDayRow button b{display:block;font-size:15px;margin-top:3px}
+.zfBookDayRow button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px #a68a544d}
+.zfBookDayRow button.closed{opacity:.4;text-decoration:line-through;cursor:not-allowed}
+.zfBookTimeGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.zfBookTimeGrid p{grid-column:1/-1;color:var(--zf-muted);font-size:13px}
+.zfBookTimeGrid button{background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:10px 0;font-size:13px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.zfBookTimeGrid button:hover{border-color:var(--zf-gold)}
+.zfBookTimeGrid button.selected{background:var(--zf-gold);border-color:var(--zf-gold);color:#fff;box-shadow:0 0 10px #a68a544d}
+.zfBookSummary{background:var(--zf-ink);color:#fff;padding:22px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:13px}
+.zfBookSummary>span{color:#ffffffcc}
+.zfBookSummary>b{color:var(--zf-gold-light);font:700 16px 'Playfair Display',Georgia,serif}
+.zfBookSummary>em{margin-left:auto;font-style:normal;letter-spacing:1px;font-size:11px;text-transform:uppercase;color:#fff}
+.zfBookSubmit{background:var(--zf-gold);color:#fff;border:0;padding:14px 22px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;cursor:pointer;transition:transform .15s}
+.zfBookSubmit:hover:not(:disabled){transform:translateY(-2px)}
+.zfBookSubmit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.zfBookDone{max-width:600px;margin:0 auto;text-align:center;padding:60px 6vw}
+.zfBookDone span{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--zf-gold);color:#fff;font-size:22px;margin-bottom:20px}
+.zfBookDone h3{font:500 30px 'Playfair Display',Georgia,serif;margin:0 0 10px}
+.zfBookDone p{color:var(--zf-muted);margin-bottom:20px}
+.zfBookDone a{color:var(--zf-gold);text-decoration:underline}
+.zfModalBackdrop{position:fixed;inset:0;background:#00000059;z-index:100;display:grid;place-items:center;padding:20px}
+.zfModal{width:min(440px,100%);background:var(--zf-surface);border:1px solid var(--zf-line);padding:34px 30px;position:relative}
+.zfModal h3{font:500 24px 'Playfair Display',Georgia,serif;margin:0 0 8px;color:var(--zf-ink)}
+.zfModal>p{color:var(--zf-muted);font-size:13px;margin:0 0 24px}
+.zfModalClose{position:absolute;right:12px;top:12px;background:none;border:0;color:var(--zf-muted);font-size:20px;cursor:pointer;width:36px;height:36px;border-radius:50%;transition:background .15s,color .15s}
+.zfModalClose:hover{background:#0000000d;color:var(--zf-ink)}
+.zfBookForm{width:100%;display:flex;flex-direction:column;gap:10px}
+.zfBookFormRow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.zfBookFormRow input{background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:12px}
+.zfBookError{color:#a33}
+@media(max-width:640px){.zfBookStep{padding:20px}.zfBookServiceGrid{grid-template-columns:1fr}.zfBookTimeGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.zfBookFormRow{grid-template-columns:minmax(0,1fr)}}
+
 /* İletişim — fotoğraf zeminli, sade "Bize Ulaş" formu (sadece isim + mesaj) */
 .zfContact{position:relative;padding:120px 6vw;background:#2b2420 center/cover;overflow:hidden}
 .zfContactOverlay{position:absolute;inset:0;background:linear-gradient(100deg,#000000b3 15%,#00000059 60%)}
@@ -647,11 +704,14 @@
 .zfContactForm .zfBtnOutline{align-self:flex-start;background:none;border:1px solid #fff9;cursor:pointer}
 .zfContactForm .zfBtnOutline:disabled{opacity:.6;cursor:not-allowed}
 .zfContactError{color:#ffb4a8;font-size:13px;margin:0}
-.zfContactSent{color:#fff;font:500 20px 'Playfair Display',Georgia,serif}
+.zfContactSent{display:flex;flex-direction:column;align-items:flex-start}
+.zfContactSent>span{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--zf-gold);color:#1a1206;font-size:20px;margin-bottom:14px}
+.zfContactSent h3{font:500 26px 'Playfair Display',Georgia,serif;color:#fff;margin:0}
+.zfContactSent p{color:#ffffffcc;font-size:14px;line-height:1.7;margin:8px 0 0;max-width:340px}
 @media(max-width:800px){.zfContactGrid{grid-template-columns:1fr}}
 
 /* Footer */
-.zfFooter{background:#2b2420;color:#f6f1e8;padding:80px 6vw 30px;border-radius:60px 60px 0 0}
+.zfFooter{background:#2b2420;color:#f6f1e8;padding:80px 6vw 30px}
 .zfFooterGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6vw}
 .zfFooterGrid .zfBrand{color:#f6f1e8}
 .zfFooterGrid>div:first-child p{color:#f6f1e8b3;margin-top:14px;font-size:13px;line-height:1.7;max-width:300px}
