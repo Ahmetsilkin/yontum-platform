@@ -568,13 +568,12 @@
 .zfMission>*{position:relative;z-index:1}
 .zfMission h2{font:500 clamp(28px,3.6vw,44px)/1.3;letter-spacing:-.3px;margin:10px 0 20px}
 .zfMission>p{color:var(--zf-muted);line-height:1.8;font-size:16px;margin:0 auto 50px;max-width:560px}
-.zfMissionPhotoWrap{display:block}
-.zfBlinds{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:4px}
-.zfBlinds img{width:100%;height:100%;object-fit:cover;display:block}
-.zfBlinds i{width:100%;height:100%;display:grid;place-items:center;background:var(--zf-surface);font-size:30px;font-style:normal;color:var(--zf-muted)}
-.zfBlindsBars{position:absolute;inset:0;display:flex}
-.zfBlindsBars span{flex:1;background:var(--zf-gold);transform:scaleY(1);transform-origin:top;transition:transform .8s cubic-bezier(.6,0,.2,1)}
-.zfBlindsBars span.open{transform:scaleY(0)}
+.zfMissionGhostBg{position:absolute;inset:-8% -15%;background-size:cover;background-position:center;filter:blur(3px) grayscale(.35) brightness(1.15);opacity:.16;z-index:0;pointer-events:none}
+.zfMissionArchWrap{display:flex;flex-direction:column;align-items:center;gap:22px;margin-top:10px}
+.zfOrnament{width:26px;height:26px;color:var(--zf-gold);opacity:.55}
+.zfMissionArch{width:min(320px,62vw);aspect-ratio:3/4;border-radius:160px 160px 6px 6px;overflow:hidden;box-shadow:0 30px 60px #0000001f}
+.zfMissionArch img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:640px){.zfMissionArch{width:min(240px,66vw);border-radius:120px 120px 6px 6px}}
 
 /* Hizmetler — yatay kaydırmalı karusel */
 .zfServices{padding:100px 0;background:var(--zf-surface)}

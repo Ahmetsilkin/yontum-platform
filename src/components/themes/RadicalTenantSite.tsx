@@ -537,21 +537,11 @@ function Vitrin(p:P){
 /* ================= Zarafet — ipeksi krem zemin, altın vurgulu, jaluzi-aralık geçişli, sabitlenmiş
    kademeli galeri ve dağınık yorum kartlarıyla zarif kuaför/güzellik/nail/spa teması =================
    (kuaför/güzellik/nail/spa sektörlerinin dördü de bu bileşeni paylaşır — layout_family:'zarafet') */
-function ZarafetBlinds({src,alt,bars=14}:{src?:string;alt:string;bars?:number}){
-  const ref=useRef<HTMLDivElement>(null);
-  const[shown,setShown]=useState(false);
-  useEffect(()=>{
-    const el=ref.current;if(!el)return;
-    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){setShown(true);io.unobserve(e.target)}})},{threshold:.3});
-    io.observe(el);
-    return()=>io.disconnect();
-  },[]);
-  return <div ref={ref} className="zfBlinds">
-    {src?<img src={src} alt={alt}/>:<i>✂</i>}
-    <div className="zfBlindsBars" aria-hidden="true">
-      {Array.from({length:bars}).map((_,i)=><span key={i} className={shown?'open':''} style={{transitionDelay:`${i*35}ms`}}/>)}
-    </div>
-  </div>;
+function ZfOrnament(){
+  return <svg className="zfOrnament" viewBox="0 0 40 40" aria-hidden="true">
+    <path d="M20 4v32M4 20h32M9 9l22 22M31 9L9 31" stroke="currentColor" strokeWidth="1"/>
+    <circle cx="20" cy="20" r="5" stroke="currentColor" strokeWidth="1" fill="none"/>
+  </svg>;
 }
 function ZarafetServices({p}:{p:P}){
   const scrollerRef=useRef<HTMLDivElement>(null);
@@ -643,9 +633,14 @@ function Zarafet(p:P){
     </section>
 
     <section className="zfMission">
+      {missionPhoto&&<div className="zfMissionGhostBg" style={{backgroundImage:`url(${missionPhoto})`}} aria-hidden="true"/>}
       <Reveal i={1}><h2>{dec(b,'zf_missionTitle','Güzellik, yaşam biçimidir.')}</h2></Reveal>
       {(b.description||dec(b,'zf_missionText',''))&&<Reveal i={2}><p>{b.description||dec(b,'zf_missionText','')}</p></Reveal>}
-      {missionPhoto&&<Reveal i={3} className="zfMissionPhotoWrap"><ZarafetBlinds src={missionPhoto} alt={b.name}/></Reveal>}
+      {missionPhoto&&<Reveal i={3} className="zfMissionArchWrap">
+        <ZfOrnament/>
+        <div className="zfMissionArch"><img src={missionPhoto} alt={b.name}/></div>
+        <ZfOrnament/>
+      </Reveal>}
     </section>
 
     <ZarafetServices p={p}/>
