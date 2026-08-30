@@ -864,8 +864,8 @@ function IpekFooter({b,services,hours}:{b:any;services:any[];hours:any[]}){
         <a className="ipBrand" href={`/site/${b.slug}`}><b>{b.name}</b></a>
         <p>{dec(b,'ip_footerTagline','Premium güzellik ve bakım hizmetleri sunan salonumuz.')}</p>
         <div className="ipSocial">
-          {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎</a>}
-          {waUrl&&<a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">✆</a>}
+          {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IgIcon/></a>}
+          {waUrl&&<a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WaIcon/></a>}
         </div>
       </div>
       <div><small>HIZLI LİNKLER</small><a href={`/site/${b.slug}`}>Ana Sayfa</a><a href={`/site/${b.slug}#hizmetler`}>Hizmetler</a><a href={`/site/${b.slug}#hakkimizda`}>Hakkımızda</a><a href={`/site/${b.slug}#randevu`}>Randevu</a></div>
@@ -1039,22 +1039,7 @@ function Ipek(p:P){
       </div></Reveal>
     </section>
 
-    <footer className="ipFooter">
-      <div className="ipFooterGrid">
-        <div>
-          <a className="ipBrand" href="#top"><b>{b.name}</b></a>
-          <p>{dec(b,'ip_footerTagline','Premium güzellik ve bakım hizmetleri sunan salonumuz.')}</p>
-          <div className="ipSocial">
-            {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎</a>}
-            {waUrl&&<a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">✆</a>}
-          </div>
-        </div>
-        <div><small>HIZLI LİNKLER</small><a href="#top">Ana Sayfa</a><a href="#hizmetler">Hizmetler</a><a href="#hakkimizda">Hakkımızda</a><a href="#randevu">Randevu</a></div>
-        <div><small>HİZMETLERİMİZ</small>{p.services.slice(0,8).map(s=><a key={s.id} href="#hizmetler">{s.name}</a>)}</div>
-        <div><small>İLETİŞİM <span className={`ipOpenBadge ${isOpenNow?'open':'closed'}`}>{isOpenNow?'● Şu An Açık':'● Kapalı'}</span></small>{b.phone&&<p>{b.phone}</p>}{b.address&&<p>{b.address}</p>}{hourRows.map((r,i)=><div key={i} className="ipHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
-      </div>
-      <div className="ipFooterBottom">© {new Date().getFullYear()} {b.name}. Tüm hakları saklıdır.</div>
-    </footer>
+    <IpekFooter b={b} services={p.services} hours={p.hours}/>
 
     <div className="ipMobileSticky">
       <a href="#randevu">Randevu Al</a>
@@ -1063,6 +1048,8 @@ function Ipek(p:P){
   </main>;
 }
 
+function IgIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>}
+function WaIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>}
 function WhatsApp({b}:{b:any}){if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);if(!n)return null;return <a className="rWhatsapp" href={`https://wa.me/${n}?text=${encodeURIComponent(b.whatsapp_message||'Merhaba')}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp'tan yaz"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg></a>}
 function accentHex(name:string,fallback:string){return({black:'#111111',burgundy:'#7c3157',pink:'#ed5da8',purple:'#7652a6',sage:'#6f8f78',blue:'#71849c',orange:'#d8753f',gold:'#9b7b3f'}as any)[name]||fallback||'#111111'}
 
