@@ -759,3 +759,179 @@
   .zfMobileSticky>a:first-child{flex:1;background:var(--zf-gold);color:#fff!important;text-align:center;padding:15px;font-weight:700;font-size:14px;border-radius:999px;box-shadow:0 6px 20px #a68a5440}
   .zfMobileStickyCall{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;border:1px solid var(--zf-line);border-radius:999px;color:var(--zf-ink)!important;font-size:18px}
 }
+
+/* ================= İpek — krem/altın zemin, koyu kontrastlı süreç bölümü, foto mozaik galeri,
+   yorum karuseli ve SSS akordiyonuyla kapsamlı, kurumsal güzellik salonu teması ================= */
+.tIpek{--ip-bg:#faf6ee;--ip-surface:#ffffff;--ip-line:rgba(46,38,32,.12);--ip-ink:#2e2620;--ip-muted:#8a7d6c;--ip-gold:#c9a45f;--ip-gold-light:#dbbf87;--ip-dark:#1c1f2b;--ip-dark-surface:#262a38;--accent:var(--ip-gold);--brand:var(--ip-gold);background:var(--ip-bg);color:var(--ip-ink);font-family:'Inter',Arial,Helvetica,sans-serif;
+  --zf-bg:var(--ip-bg);--zf-surface:var(--ip-surface);--zf-line:var(--ip-line);--zf-ink:var(--ip-ink);--zf-muted:var(--ip-muted);--zf-gold:var(--ip-gold);--zf-gold-light:var(--ip-gold-light);}
+.tIpek h1,.tIpek h2,.tIpek h3{font-family:'Playfair Display',Georgia,serif}
+.tIpek em{font-style:italic;color:var(--ip-gold)}
+
+/* Nav */
+.ipNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 6vw;background:#faf6eeee;backdrop-filter:blur(10px);border-bottom:1px solid var(--ip-line)}
+.ipBrand{display:flex;flex-direction:column;line-height:1.2}
+.ipBrand b{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:22px;color:var(--ip-gold);font-weight:600}
+.ipBrand small{font-size:9px;letter-spacing:2px;color:var(--ip-muted);margin-top:2px}
+.ipNav nav{display:flex;gap:32px;font-size:13px;font-weight:600;color:var(--ip-ink)}
+.ipNav nav a{transition:color .15s}
+.ipNav nav a:hover{color:var(--ip-gold)}
+.ipNavBtn{background:var(--ip-gold);color:#fff!important;padding:13px 26px;border-radius:999px;font-size:13px;font-weight:700;transition:transform .15s}
+.ipNavBtn:hover{transform:translateY(-2px)}
+@media(max-width:900px){.ipNav nav{display:none}.ipNavBtn{padding:10px 18px;font-size:12px}}
+
+/* Hero */
+.ipHero{max-width:1300px;margin:0 auto;padding:70px 6vw 100px;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center}
+.ipHeroText small{font-family:'Playfair Display',Georgia,serif;font-style:italic;color:var(--ip-gold);font-size:20px}
+.ipHeroText h1{font:800 clamp(48px,6vw,84px)/.95 'Playfair Display',Georgia,serif;margin:18px 0 22px;letter-spacing:-1px}
+.ipHeroText>p{color:var(--ip-muted);font-size:16px;line-height:1.7;max-width:460px;margin:0 0 32px}
+.ipHeroActions{display:flex;flex-wrap:wrap;gap:16px}
+.ipBtnSolid{background:var(--ip-gold);color:#fff!important;padding:16px 28px;border-radius:999px;font-weight:700;font-size:14px;transition:transform .15s}
+.ipBtnSolid:hover{transform:translateY(-2px)}
+.ipBtnOutline{border:1.5px solid var(--ip-gold);color:var(--ip-ink)!important;padding:15px 28px;border-radius:999px;font-weight:700;font-size:14px;transition:.15s}
+.ipBtnOutline:hover{background:var(--ip-gold);color:#fff!important}
+.ipHeroPhoto{aspect-ratio:4/5;border-radius:24px;overflow:hidden;box-shadow:0 40px 80px #0000001a}
+.ipHeroPhoto img,.ipHeroPhoto video{width:100%;height:100%;object-fit:cover}
+.ipHeroPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--ip-surface);font-size:40px;font-style:normal;color:var(--ip-gold)}
+@media(max-width:900px){.ipHero{grid-template-columns:1fr;padding-top:40px}}
+
+/* Hoş geldiniz / intro */
+.ipIntro{max-width:1300px;margin:0 auto;padding:60px 6vw 110px;display:grid;grid-template-columns:.9fr 1.1fr;gap:6vw;align-items:center}
+.ipIntroPhoto{aspect-ratio:4/5;border-radius:24px;overflow:hidden}
+.ipIntroPhoto img{width:100%;height:100%;object-fit:cover}
+.ipIntroPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--ip-surface);font-size:40px;font-style:normal;color:var(--ip-gold)}
+.ipIntroText small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
+.ipIntroText h2{font:500 clamp(28px,3.4vw,42px)/1.25 'Playfair Display',Georgia,serif;margin:14px 0 20px}
+.ipIntroText>p{color:var(--ip-muted);line-height:1.8;font-size:15px;margin:0 0 34px}
+.ipIntroStats{display:flex;gap:40px;border-top:1px solid var(--ip-line);padding-top:26px}
+.ipIntroStats b{display:block;font:700 30px 'Playfair Display',Georgia,serif;color:var(--ip-gold)}
+.ipIntroStats small{display:block;margin-top:4px;color:var(--ip-muted);font-size:12px}
+@media(max-width:900px){.ipIntro{grid-template-columns:1fr}.ipIntroStats{flex-wrap:wrap;gap:24px}}
+
+/* Özellik şeridi */
+.ipFeatureRow{max-width:1200px;margin:0 auto;padding:0 6vw 100px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--ip-line);border:1px solid var(--ip-line)}
+.ipFeatureRow article{background:var(--ip-surface);padding:32px 26px}
+.ipFeatureRow h3{font:700 17px 'Playfair Display',Georgia,serif;margin:0 0 10px}
+.ipFeatureRow p{color:var(--ip-muted);font-size:13px;line-height:1.7}
+@media(max-width:800px){.ipFeatureRow{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.ipFeatureRow{grid-template-columns:1fr}}
+
+/* Hizmetler — fotoğraflı kartlar */
+.ipServices{max-width:1200px;margin:0 auto;padding:0 6vw 110px}
+.ipServices>header{text-align:center;max-width:640px;margin:0 auto 50px}
+.ipServices small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
+.ipServices h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
+.ipServiceGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.ipServiceCardPhoto{aspect-ratio:4/3;border-radius:16px;overflow:hidden;margin-bottom:16px;background:var(--ip-bg)}
+.ipServiceCardPhoto img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.ipServiceGrid article:hover .ipServiceCardPhoto img{transform:scale(1.04)}
+.ipServiceCardPhoto i{width:100%;height:100%;display:grid;place-items:center;font-size:26px;font-style:normal;color:var(--ip-gold)}
+.ipServiceGrid h3{font:700 19px 'Playfair Display',Georgia,serif;margin:0 0 8px}
+.ipServiceGrid p{color:var(--ip-muted);font-size:13px;line-height:1.6;margin:0 0 12px}
+.ipServiceGrid footer{display:flex;justify-content:space-between;font-size:12px;color:var(--ip-muted)}
+.ipServiceGrid footer b{color:var(--ip-gold);font-weight:700}
+@media(max-width:900px){.ipServiceGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.ipServiceGrid{grid-template-columns:1fr}}
+
+/* Süreç — koyu kontrast bölüm */
+.ipProcess{background:var(--ip-dark);color:#f2ede3;padding:110px 6vw}
+.ipProcess>header{text-align:center;max-width:640px;margin:0 auto 50px}
+.ipProcess small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold-light)}
+.ipProcess h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0;color:#fff}
+.ipProcessGrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.ipProcessGrid article{background:var(--ip-dark-surface);border:1px solid #ffffff14;padding:30px 24px}
+.ipProcessGrid span{display:block;font:700 30px 'Playfair Display',Georgia,serif;color:#ffffff33;margin-bottom:14px}
+.ipProcessGrid h3{font:700 17px 'Playfair Display',Georgia,serif;margin:0 0 10px;color:#fff}
+.ipProcessGrid p{color:#c7c1b6;font-size:13px;line-height:1.7}
+@media(max-width:900px){.ipProcessGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.ipProcessGrid{grid-template-columns:1fr}}
+
+/* İstatistik şeridi */
+.ipStatsBand{max-width:1100px;margin:0 auto;padding:70px 6vw;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;text-align:center}
+.ipStatsBand b{display:block;font:800 42px 'Playfair Display',Georgia,serif;color:var(--ip-gold)}
+.ipStatsBand small{display:block;margin-top:6px;color:var(--ip-muted);font-size:12px;letter-spacing:.5px}
+@media(max-width:640px){.ipStatsBand{grid-template-columns:1fr 1fr;gap:30px 16px}}
+
+/* Galeri — mozaik */
+.ipGallerySection{max-width:1200px;margin:0 auto;padding:0 6vw 110px}
+.ipGallerySection>header{text-align:center;max-width:640px;margin:0 auto 40px}
+.ipGallerySection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
+.ipGallerySection h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
+.ipMasonry{column-count:4;column-gap:16px}
+.ipMasonryItem{break-inside:avoid;margin-bottom:16px;border-radius:14px;overflow:hidden}
+.ipMasonryItem img{width:100%;display:block}
+@media(max-width:900px){.ipMasonry{column-count:3}}
+@media(max-width:600px){.ipMasonry{column-count:2}}
+
+/* Yorumlar — karusel */
+.ipTestimonials{max-width:1100px;margin:0 auto;padding:0 6vw 110px}
+.ipTestimonials>header{text-align:center;max-width:640px;margin:0 auto 46px}
+.ipTestimonials small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
+.ipTestimonials h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
+.ipTestiViewport{overflow:hidden}
+.ipTestiTrack{display:flex;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.ipTestiPage{flex:0 0 100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ipTestiPage article{background:var(--ip-bg);border-radius:16px;padding:26px}
+.ipStars{color:var(--ip-gold);letter-spacing:2px;margin-bottom:10px;font-size:14px}
+.ipTestiPage p{color:var(--ip-ink);font-size:14px;line-height:1.7;margin:0 0 16px}
+.ipTestiPage b{color:var(--ip-muted);font-size:13px;font-weight:700}
+.ipTestiDots{display:flex;justify-content:center;gap:8px;margin-top:30px}
+.ipTestiDots button{width:9px;height:9px;border-radius:50%;border:0;background:var(--ip-line);cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.ipTestiDots button.active{background:var(--ip-gold);transform:scale(1.3)}
+@media(max-width:800px){.ipTestiPage{grid-template-columns:1fr}}
+
+/* SSS */
+.ipFaqSection{max-width:800px;margin:0 auto;padding:0 6vw 110px}
+.ipFaqSection>header{text-align:center;margin-bottom:46px}
+.ipFaqSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
+.ipFaqSection h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
+.ipFaqSection .ksFaqList{border-top-color:var(--ip-line)}
+.ipFaqSection .ksFaqItem{border-bottom-color:var(--ip-line)}
+.ipFaqSection .ksFaqItem>button{color:var(--ip-ink);font-family:'Inter',Arial,sans-serif}
+.ipFaqSection .ksFaqItem>button i{color:var(--ip-muted)}
+.ipFaqSection .ksFaqItem.open>button i{color:var(--ip-gold)}
+.ipFaqSection .ksFaqItem>p{color:var(--ip-muted)}
+
+/* Randevu */
+.ipBookingSection{max-width:900px;margin:0 auto;padding:0 6vw 110px}
+.ipBookingSection>header{text-align:center;max-width:600px;margin:0 auto 40px}
+.ipBookingSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
+.ipBookingSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
+
+/* Altın gradyan CTA bandı */
+.ipCtaBand{background:linear-gradient(120deg,var(--ip-gold),#a9884f);padding:100px 6vw;text-align:center}
+.ipCtaBand h2{font:500 clamp(30px,4vw,46px)/1.2 'Playfair Display',Georgia,serif;color:#fff;margin:0 0 14px}
+.ipCtaBand>p{color:#ffffffd9;font-size:15px;margin:0 0 30px}
+.ipCtaPhone{display:inline-block;font:700 clamp(28px,3.5vw,42px) 'Playfair Display',Georgia,serif;color:#fff!important;margin-bottom:30px}
+.ipCtaActions{display:flex;justify-content:center;flex-wrap:wrap;gap:16px}
+.ipCtaWa{background:#25d366;color:#fff!important;padding:16px 30px;border-radius:999px;font-weight:700;font-size:14px}
+.ipCtaCall{border:1.5px solid #fff9;color:#fff!important;padding:15px 30px;border-radius:999px;font-weight:700;font-size:14px;transition:.15s}
+.ipCtaCall:hover{background:#fff;color:var(--ip-gold)!important}
+
+/* Footer */
+.ipFooter{background:var(--ip-dark);color:#e9e4d9;padding:80px 6vw 30px}
+.ipFooterGrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:5vw}
+.ipFooterGrid .ipBrand b{color:var(--ip-gold-light);font-size:22px}
+.ipFooterGrid>div:first-child>p{color:#a39d8f;margin-top:14px;font-size:13px;line-height:1.7;max-width:280px}
+.ipSocial{display:flex;gap:10px;margin-top:18px}
+.ipSocial a{width:36px;height:36px;border-radius:50%;border:1px solid #ffffff24;display:grid;place-items:center;color:#e9e4d9!important;font-size:14px}
+.ipFooterGrid>div>small{display:flex;align-items:center;flex-wrap:wrap;gap:8px;letter-spacing:2px;font-size:11px;font-weight:700;color:var(--ip-gold-light);margin-bottom:18px}
+.ipFooterGrid>div>a{display:block;color:#c7c1b6!important;font-size:13px;margin-bottom:12px}
+.ipFooterGrid>div>a:hover{color:var(--ip-gold-light)!important}
+.ipFooterGrid>div>p{color:#c7c1b6;font-size:13px;margin:0 0 10px}
+.ipHoursRow{display:flex;justify-content:space-between;gap:16px;font-size:12px;color:#c7c1b6;padding:6px 0;border-top:1px solid #ffffff14}
+.ipHoursRow:first-of-type{border-top:0}
+.ipOpenBadge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:9px;letter-spacing:1px;font-weight:700}
+.ipOpenBadge.open{background:#22c55e26;color:#4ade80}
+.ipOpenBadge.closed{background:#ffffff14;color:#c7c1b6}
+.ipFooterBottom{max-width:1200px;margin:50px auto 0;padding-top:22px;border-top:1px solid #ffffff14;font-size:12px;color:#a39d8f;text-align:center}
+@media(max-width:900px){.ipFooterGrid{grid-template-columns:1fr 1fr;gap:40px}}
+@media(max-width:560px){.ipFooterGrid{grid-template-columns:1fr}}
+
+/* Mobil sabit randevu barı */
+.ipMobileSticky{display:none}
+@media(max-width:768px){
+  .tIpek{padding-bottom:80px}
+  .ipMobileSticky{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:10px;padding:12px 14px;background:#faf6eef2;backdrop-filter:blur(10px);border-top:1px solid var(--ip-line)}
+  .ipMobileSticky>a:first-child{flex:1;background:var(--ip-gold);color:#fff!important;text-align:center;padding:15px;font-weight:700;font-size:14px;border-radius:999px;box-shadow:0 6px 20px #c9a45f40}
+  .ipMobileStickyCall{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;border:1px solid var(--ip-line);border-radius:999px;color:var(--ip-ink)!important;font-size:18px}
+}

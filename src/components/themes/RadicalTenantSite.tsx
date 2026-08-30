@@ -3,8 +3,8 @@ import{useState,useEffect,useRef}from'react';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -760,6 +760,196 @@ function Zarafet(p:P){
     <div className="zfMobileSticky">
       <a href="#randevu">Hemen Randevu Al</a>
       {b.phone&&<a className="zfMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
+    </div>
+  </main>;
+}
+
+/* ================= İpek — krem/altın zemin, koyu kontrastlı süreç bölümü, foto mozaik galeri,
+   yorum karuseli ve SSS akordiyonuyla kapsamlı, kurumsal güzellik salonu teması =================
+   (kuaför/güzellik/nail/spa sektörlerinin dördü de bu bileşeni paylaşır — layout_family:'ipek') */
+function IpekServices({p}:{p:P}){
+  if(!p.services.length)return null;
+  return <section id="hizmetler" className="ipServices">
+    <Reveal><header><small>HİZMETLERİMİZ</small><h2>{p.b.services_title||'İhtiyacınıza uygun profesyonel çözümler.'}</h2></header></Reveal>
+    <div className="ipServiceGrid">
+      {p.services.map((s,i)=><Reveal as="article" key={s.id} i={i}>
+        <div className="ipServiceCardPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
+        <h3>{s.name}</h3>
+        {s.description&&<p>{s.description}</p>}
+        <footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</footer>
+      </Reveal>)}
+    </div>
+  </section>;
+}
+function IpekProcess({b}:{b:any}){
+  const steps=[
+    {t:dec(b,'ip_step1Title','Ücretsiz Danışmanlık'),d:dec(b,'ip_step1Text','Randevunuzun başında uzmanımız sizi dinler; yapınızı ve beklentilerinizi değerlendirir.')},
+    {t:dec(b,'ip_step2Title','Kişiye Özel Planlama'),d:dec(b,'ip_step2Text','Size özel hazırlanan bakım protokolü; hangi uygulamanın, hangi sıklıkla yapılacağını netleştirir.')},
+    {t:dec(b,'ip_step3Title','Profesyonel Uygulama'),d:dec(b,'ip_step3Text','Steril ekipman ve premium ürünlerle, deneyimli ellerde gerçekleştirilen uygulama.')},
+    {t:dec(b,'ip_step4Title','Bakım ve Takip'),d:dec(b,'ip_step4Text','Uygulama sonrası öneriler ve bir sonraki seans planıyla yanınızda olmaya devam ederiz.')},
+  ];
+  return <section className="ipProcess">
+    <Reveal><header><small>NASIL ÇALIŞIYORUZ</small><h2>{dec(b,'ip_processTitle','Randevunuzdan sonuca, adım adım.')}</h2></header></Reveal>
+    <div className="ipProcessGrid">
+      {steps.map((s,i)=><Reveal as="article" key={i} i={i}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.t}</h3><p>{s.d}</p></Reveal>)}
+    </div>
+  </section>;
+}
+function IpekStats({b}:{b:any}){
+  return <section className="ipStatsBand">
+    <div><b>{dec(b,'ip_stat1','2.500+')}</b><small>{dec(b,'ip_stat1Label','Mutlu Müşteri')}</small></div>
+    <div><b>{dec(b,'ip_stat2','11+')}</b><small>{dec(b,'ip_stat2Label','Yıllık Deneyim')}</small></div>
+    <div><b>{dec(b,'ip_stat3','12+')}</b><small>{dec(b,'ip_stat3Label','Uzman Ekip')}</small></div>
+    <div><b>{dec(b,'ip_stat4','480+')}</b><small>{dec(b,'ip_stat4Label','5 Yıldız Yorum')}</small></div>
+  </section>;
+}
+function IpekGallery({p}:{p:P}){
+  const all=[...p.gallery.map((x:any)=>x.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean);
+  if(!p.b.show_gallery||!all.length)return null;
+  return <section id="galeri" className="ipGallerySection">
+    <Reveal><header><small>GALERİ</small><h2>{dec(p.b,'ip_galleryTitle','Bizden kareler.')}</h2></header></Reveal>
+    <div className="ipMasonry">
+      {all.map((src,i)=><Reveal key={i} i={i%6} as="div" className="ipMasonryItem"><img src={src} alt=""/></Reveal>)}
+    </div>
+  </section>;
+}
+function IpekTestimonials({businessId}:{businessId:string}){
+  const[data,setData]=useState<any>(null);
+  const[page,setPage]=useState(0);
+  useEffect(()=>{fetch(`/api/ratings/${businessId}`).then(r=>r.json()).then(setData).catch(()=>{})},[businessId]);
+  if(!data?.enabled||!data.reviews?.length)return null;
+  const perPage=3;
+  const pages=Math.max(1,Math.ceil(data.reviews.length/perPage));
+  return <section className="ipTestimonials">
+    <Reveal><header><small>REFERANSLARIMIZ</small><h2>Müşterilerimiz ne diyor?</h2></header></Reveal>
+    <div className="ipTestiViewport"><div className="ipTestiTrack" style={{transform:`translateX(-${page*100}%)`}}>
+      {Array.from({length:pages}).map((_,pi)=><div className="ipTestiPage" key={pi}>
+        {data.reviews.slice(pi*perPage,pi*perPage+perPage).map((r:any,i:number)=><article key={i}>
+          <div className="ipStars">{'★'.repeat(r.stars||5)}</div>
+          <p>"{r.comment}"</p>
+          <b>{r.customer_name||'Müşterimiz'}</b>
+        </article>)}
+      </div>)}
+    </div></div>
+    {pages>1&&<div className="ipTestiDots">{Array.from({length:pages}).map((_,pi)=><button type="button" key={pi} className={page===pi?'active':''} onClick={()=>setPage(pi)} aria-label={`${pi+1}. sayfa`}/>)}</div>}
+  </section>;
+}
+function Ipek(p:P){
+  const{b}=p;
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const hourRows=groupedHourRows(p.hours||[]);
+  const faq=parseFaq(dec(b,'ip_faq',''));
+  const years=b.established_year?Math.max(1,new Date().getFullYear()-b.established_year):null;
+  const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
+  const isOpenNow=(()=>{
+    const WD:Record<string,number>={Sunday:0,Monday:1,Tuesday:2,Wednesday:3,Thursday:4,Friday:5,Saturday:6};
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',weekday:'long',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+    const weekday=parts.find(x=>x.type==='weekday')?.value||'';
+    const hh=Number(parts.find(x=>x.type==='hour')?.value||0),mm=Number(parts.find(x=>x.type==='minute')?.value||0);
+    const dayIdx=WD[weekday]??new Date().getDay(),nowMin=hh*60+mm;
+    const h=(p.hours||[]).find((x:any)=>x.day_of_week===dayIdx);
+    if(!h||!h.is_open)return false;
+    return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time);
+  })();
+  let waPhone=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');
+  if(waPhone.startsWith('0'))waPhone='90'+waPhone.slice(1);
+  const waUrl=waPhone?`https://wa.me/${waPhone}?text=${encodeURIComponent(b.whatsapp_message||'Merhaba, bilgi almak istiyorum.')}`:'';
+  return <main id="top" className="tIpek">
+    <header className="ipNav">
+      <a className="ipBrand" href="#top"><b>{b.name}</b><small>{dec(b,'ip_brandSubtitle','GÜZELLİK SALONU')}</small></a>
+      <nav>
+        <a href="#top">Ana Sayfa</a>
+        <a href="#hizmetler">Hizmetler</a>
+        <a href="#hakkimizda">Hakkımızda</a>
+      </nav>
+      <a className="ipNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="ipHero">
+      <Reveal className="ipHeroText">
+        <small>{b.name}</small>
+        <h1>{b.hero_title||'Güzellik'}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <div className="ipHeroActions">
+          <a className="ipBtnSolid" href="#hizmetler">Hizmetlerimizi Keşfet</a>
+          <a className="ipBtnOutline" href="#randevu">Randevu Al</a>
+        </div>
+      </Reveal>
+      <Reveal i={1} className="ipHeroPhoto">{b.cover_url&&b.cover_type==='video'?<video src={b.cover_url} autoPlay muted loop playsInline/>:b.cover_url?<img src={b.cover_url} alt={b.name}/>:<i>✂</i>}</Reveal>
+    </section>
+
+    <section id="hakkimizda" className="ipIntro">
+      <Reveal className="ipIntroPhoto">{(p.gallery?.[0]?.image_url||b.cover_url)?<img src={p.gallery?.[0]?.image_url||b.cover_url} alt={b.name}/>:<i>✂</i>}</Reveal>
+      <Reveal i={1} className="ipIntroText">
+        <small>HOŞ GELDİNİZ</small>
+        <h2>{dec(b,'ip_introTitle','Güzelliğin İnce Detaylarına Adanmış Bir Mekân.')}</h2>
+        <p>{b.description||dec(b,'ip_introText','Her müşterimizi kendi ihtiyaçları ve beklentileriyle dinliyor; ardından yalnızca size uygun, sonuç odaklı bir bakım planı tasarlıyoruz.')}</p>
+        <div className="ipIntroStats">
+          <div><b>{years?`${years}+`:dec(b,'ip_statYears','10+')}</b><small>Yıllık Deneyim</small></div>
+          <div><b>{visibleStaff.length||dec(b,'ip_statStaff','5+')}</b><small>Uzman Ekip</small></div>
+          <div><b>{dec(b,'ip_statRating','4.9')}</b><small>Müşteri Puanı</small></div>
+        </div>
+      </Reveal>
+    </section>
+
+    <section className="ipFeatureRow">
+      {[1,2,3,4].map(n=><Reveal as="article" key={n} i={n}>
+        <h3>{dec(b,`ip_feature${n}Title`,['Profesyonel Ekip','Özenli Hizmet','Hijyenik Ortam','Premium Ürünler'][n-1])}</h3>
+        <p>{dec(b,`ip_feature${n}Text`,[
+          'Alanında uzman, sürekli eğitim alan ekibimizle en güncel teknikleri uyguluyoruz.',
+          'Her müşterimize özel ilgi gösteriyor, ihtiyaçlarınıza uygun kişiselleştirilmiş bakım sunuyoruz.',
+          'Tek kullanımlık malzemeler ve titiz dezenfeksiyon protokolleriyle sağlığınızı koruyoruz.',
+          'Dünya çapında tanınan kaliteli markaların profesyonel ürünlerini tercih ediyoruz.',
+        ][n-1])}</p>
+      </Reveal>)}
+    </section>
+
+    <IpekServices p={p}/>
+    <IpekProcess b={b}/>
+    <IpekStats b={b}/>
+    <IpekGallery p={p}/>
+    <IpekTestimonials businessId={b.id}/>
+
+    {faq.length>0&&<section className="ipFaqSection">
+      <Reveal><header><small>SIKÇA SORULANLAR</small><h2>Merak edilenler.</h2></header></Reveal>
+      <Reveal><Faq items={faq}/></Reveal>
+    </section>}
+
+    <section id="randevu" className="ipBookingSection">
+      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
+      <Reveal><ZarafetBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <section className="ipCtaBand">
+      <Reveal><h2>Randevu Almak İster misiniz?</h2></Reveal>
+      <Reveal i={1}><p>{dec(b,'ip_ctaTagline','Güzelliğinize değer katmak için bir telefon kadar yakınız.')}</p></Reveal>
+      {b.phone&&<Reveal i={2}><a className="ipCtaPhone" href={`tel:${b.phone}`}>{b.phone}</a></Reveal>}
+      <Reveal i={3}><div className="ipCtaActions">
+        {waUrl&&<a className="ipCtaWa" href={waUrl} target="_blank" rel="noopener noreferrer">WhatsApp ile Yazın</a>}
+        {b.phone&&<a className="ipCtaCall" href={`tel:${b.phone}`}>Hemen Ara</a>}
+      </div></Reveal>
+    </section>
+
+    <footer className="ipFooter">
+      <div className="ipFooterGrid">
+        <div>
+          <a className="ipBrand" href="#top"><b>{b.name}</b></a>
+          <p>{dec(b,'ip_footerTagline','Premium güzellik ve bakım hizmetleri sunan salonumuz.')}</p>
+          <div className="ipSocial">
+            {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎</a>}
+            {waUrl&&<a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">✆</a>}
+          </div>
+        </div>
+        <div><small>HIZLI LİNKLER</small><a href="#top">Ana Sayfa</a><a href="#hizmetler">Hizmetler</a><a href="#hakkimizda">Hakkımızda</a><a href="#randevu">Randevu</a></div>
+        <div><small>HİZMETLERİMİZ</small>{p.services.slice(0,8).map(s=><a key={s.id} href="#hizmetler">{s.name}</a>)}</div>
+        <div><small>İLETİŞİM <span className={`ipOpenBadge ${isOpenNow?'open':'closed'}`}>{isOpenNow?'● Şu An Açık':'● Kapalı'}</span></small>{b.phone&&<p>{b.phone}</p>}{b.address&&<p>{b.address}</p>}{hourRows.map((r,i)=><div key={i} className="ipHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+      </div>
+      <div className="ipFooterBottom">© {new Date().getFullYear()} {b.name}. Tüm hakları saklıdır.</div>
+    </footer>
+
+    <div className="ipMobileSticky">
+      <a href="#randevu">Randevu Al</a>
+      {b.phone&&<a className="ipMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
     </div>
   </main>;
 }
