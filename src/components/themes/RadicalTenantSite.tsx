@@ -843,7 +843,8 @@ function IpekTestimonials({businessId}:{businessId:string}){
 }
 function splitLines(v?:string|null){return(v||'').split('\n').map(s=>s.trim()).filter(Boolean)}
 function IpekServiceDetail({b,service,gallery,media}:{b:any;service:any;gallery:any[];media:any[]}){
-  const photos=[...gallery.map((x:any)=>x.image_url),...media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,8);
+  const ownGallery:string[]=Array.isArray(service.detail_gallery)?service.detail_gallery.filter(Boolean):[];
+  const photos:string[]=(ownGallery.length?ownGallery:[...gallery.map((x:any)=>x.image_url),...media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean)).slice(0,12);
   const before=splitLines(service.detail_before),after=splitLines(service.detail_after);
   const hasTip=!!(service.detail_tip_title||service.detail_tip_text);
   return <main id="top" className="tIpek ipDetailPage">
