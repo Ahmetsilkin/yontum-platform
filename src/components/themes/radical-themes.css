@@ -808,7 +808,7 @@
 @media(max-width:900px){.ipIntro{grid-template-columns:1fr}.ipIntroStats{flex-wrap:wrap;gap:24px}}
 
 /* Özellik şeridi */
-.ipFeatureRow{max-width:1200px;margin:0 auto;padding:0 6vw 100px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--ip-line);border:1px solid var(--ip-line)}
+.ipFeatureRow{max-width:1200px;margin:0 auto 100px;padding:0 6vw;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--ip-line);border:1px solid var(--ip-line)}
 .ipFeatureRow article{background:var(--ip-surface);padding:32px 26px}
 .ipFeatureRow h3{font:700 17px 'Playfair Display',Georgia,serif;margin:0 0 10px}
 .ipFeatureRow p{color:var(--ip-muted);font-size:13px;line-height:1.7}
@@ -817,7 +817,7 @@
 
 /* Hizmetler — fotoğraflı kartlar */
 .ipServices{max-width:1200px;margin:0 auto;padding:0 6vw 110px}
-.ipServices>header{text-align:center;max-width:640px;margin:0 auto 50px}
+.ipServices header{text-align:center;max-width:640px;margin:0 auto 50px}
 .ipServices small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
 .ipServices h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
 .ipServiceGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
@@ -834,7 +834,7 @@
 
 /* Süreç — koyu kontrast bölüm */
 .ipProcess{background:var(--ip-dark);color:#f2ede3;padding:110px 6vw}
-.ipProcess>header{text-align:center;max-width:640px;margin:0 auto 50px}
+.ipProcess header{text-align:center;max-width:640px;margin:0 auto 50px}
 .ipProcess small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold-light)}
 .ipProcess h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0;color:#fff}
 .ipProcessGrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
@@ -853,7 +853,7 @@
 
 /* Galeri — mozaik */
 .ipGallerySection{max-width:1200px;margin:0 auto;padding:0 6vw 110px}
-.ipGallerySection>header{text-align:center;max-width:640px;margin:0 auto 40px}
+.ipGallerySection header{text-align:center;max-width:640px;margin:0 auto 40px}
 .ipGallerySection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
 .ipGallerySection h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
 .ipMasonry{column-count:4;column-gap:16px}
@@ -864,7 +864,7 @@
 
 /* Yorumlar — karusel */
 .ipTestimonials{max-width:1100px;margin:0 auto;padding:0 6vw 110px}
-.ipTestimonials>header{text-align:center;max-width:640px;margin:0 auto 46px}
+.ipTestimonials header{text-align:center;max-width:640px;margin:0 auto 46px}
 .ipTestimonials small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
 .ipTestimonials h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
 .ipTestiViewport{overflow:hidden}
@@ -881,7 +881,7 @@
 
 /* SSS */
 .ipFaqSection{max-width:800px;margin:0 auto;padding:0 6vw 110px}
-.ipFaqSection>header{text-align:center;margin-bottom:46px}
+.ipFaqSection header{text-align:center;margin-bottom:46px}
 .ipFaqSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
 .ipFaqSection h2{font:500 clamp(28px,3.4vw,40px)/1.25 'Playfair Display',Georgia,serif;margin:12px 0 0}
 .ipFaqSection .ksFaqList{border-top-color:var(--ip-line)}
@@ -893,7 +893,7 @@
 
 /* Randevu */
 .ipBookingSection{max-width:900px;margin:0 auto;padding:0 6vw 110px}
-.ipBookingSection>header{text-align:center;max-width:600px;margin:0 auto 40px}
+.ipBookingSection header{text-align:center;max-width:600px;margin:0 auto 40px}
 .ipBookingSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
 .ipBookingSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
 
