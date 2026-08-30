@@ -772,12 +772,19 @@ function IpekServices({p}:{p:P}){
   return <section id="hizmetler" className="ipServices">
     <Reveal><header><small>HİZMETLERİMİZ</small><h2>{p.b.services_title||'İhtiyacınıza uygun profesyonel çözümler.'}</h2></header></Reveal>
     <div className="ipServiceGrid">
-      {p.services.map((s,i)=><Reveal as="article" key={s.id} i={i}>
-        <div className="ipServiceCardPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
-        <h3>{s.name}</h3>
-        {s.description&&<p>{s.description}</p>}
-        <footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</footer>
-      </Reveal>)}
+      {p.services.map((s,i)=>{
+        const hasDetail=!!(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable);
+        const inner=<>
+          <div className="ipServiceCardPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
+          <h3>{s.name}</h3>
+          {s.description&&<p>{s.description}</p>}
+          <footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</footer>
+          {hasDetail&&<span className="ipServiceMore">Detaylı İncele →</span>}
+        </>;
+        return hasDetail&&s.slug
+          ?<Reveal as="article" key={s.id} i={i} className="ipServiceCardLink"><a href={`/site/${p.b.slug}/hizmet/${s.slug}`}>{inner}</a></Reveal>
+          :<Reveal as="article" key={s.id} i={i}>{inner}</Reveal>;
+      })}
     </div>
   </section>;
 }
@@ -833,6 +840,70 @@ function IpekTestimonials({businessId}:{businessId:string}){
     </div></div>
     {pages>1&&<div className="ipTestiDots">{Array.from({length:pages}).map((_,pi)=><button type="button" key={pi} className={page===pi?'active':''} onClick={()=>setPage(pi)} aria-label={`${pi+1}. sayfa`}/>)}</div>}
   </section>;
+}
+function splitLines(v?:string|null){return(v||'').split('\n').map(s=>s.trim()).filter(Boolean)}
+function IpekServiceDetail({b,service,gallery,media}:{b:any;service:any;gallery:any[];media:any[]}){
+  const photos=[...gallery.map((x:any)=>x.image_url),...media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,8);
+  const before=splitLines(service.detail_before),after=splitLines(service.detail_after);
+  const hasTip=!!(service.detail_tip_title||service.detail_tip_text);
+  return <main id="top" className="tIpek ipDetailPage">
+    <header className="ipNav">
+      <a className="ipBrand" href={`/site/${b.slug}`}><b>{b.name}</b><small>{dec(b,'ip_brandSubtitle','GÜZELLİK SALONU')}</small></a>
+      <nav>
+        <a href={`/site/${b.slug}`}>Ana Sayfa</a>
+        <a href={`/site/${b.slug}#hizmetler`}>Hizmetler</a>
+        <a href={`/site/${b.slug}#hakkimizda`}>Hakkımızda</a>
+      </nav>
+      <a className="ipNavBtn" href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <nav className="ipBreadcrumb">
+      <a href={`/site/${b.slug}`}>Ana Sayfa</a><span>/</span>
+      <a href={`/site/${b.slug}#hizmetler`}>Hizmetler</a><span>/</span>
+      <b>{service.name}</b>
+    </nav>
+
+    <section className="ipDetailHero" style={service.image_url?{backgroundImage:`linear-gradient(0deg,#1c1f2bcc,#1c1f2b66),url(${service.image_url})`}:undefined}>
+      <div>
+        <small>{service.duration_minutes} dk{b.show_prices&&service.price!=null?` · ₺${Number(service.price).toLocaleString('tr-TR')}`:''}</small>
+        <h1>{service.name}</h1>
+      </div>
+    </section>
+
+    <div className="ipDetailBody">
+      {service.detail_intro&&<Reveal className="ipDetailBlock"><h2>{service.name} Nedir?</h2><p>{service.detail_intro}</p></Reveal>}
+      {service.detail_intro&&service.detail_how&&<div className="ipDetailDivider">✧</div>}
+      {service.detail_how&&<Reveal className="ipDetailBlock"><h2>{service.name} Nasıl Uygulanır?</h2><p>{service.detail_how}</p></Reveal>}
+      {service.detail_how&&service.detail_benefits&&<div className="ipDetailDivider">✧</div>}
+      {service.detail_benefits&&<Reveal className="ipDetailBlock"><h2>Faydaları</h2><p>{service.detail_benefits}</p></Reveal>}
+
+      {hasTip&&<Reveal className="ipDetailTip"><b>{service.detail_tip_title||'Bilgi'}</b>{service.detail_tip_text&&<p>{service.detail_tip_text}</p>}</Reveal>}
+
+      {service.detail_suitable&&<Reveal className="ipDetailBlock"><h2>Kimler İçin Uygundur?</h2><p>{service.detail_suitable}</p></Reveal>}
+
+      {(before.length>0||after.length>0)&&<Reveal className="ipDetailBeforeAfter">
+        {before.length>0&&<div><h3>Öncesi</h3><ul>{before.map((t,i)=><li key={i}>{t}</li>)}</ul></div>}
+        {after.length>0&&<div><h3>Sonrası</h3><ul>{after.map((t,i)=><li key={i}>{t}</li>)}</ul></div>}
+      </Reveal>}
+
+      {photos.length>0&&<Reveal className="ipDetailGallery"><h2>Galeri</h2><div className="ipMasonry">{photos.map((src,i)=><div className="ipMasonryItem" key={i}><img src={src} alt=""/></div>)}</div></Reveal>}
+
+      <div className="ipDetailCta"><a href={`/site/${b.slug}#randevu`} className="ipNavBtn">{b.booking_button_text||'Randevu Al'} →</a></div>
+    </div>
+
+    <footer className="ipFooter">
+      <div><b>{b.name}</b>{b.footer_note&&<small>{b.footer_note}</small>}</div>
+      <div><a href={`/site/${b.slug}`}>← Tüm hizmetlere dön</a></div>
+    </footer>
+  </main>;
+}
+export function ServiceDetailSite({b,service,gallery,media}:{b:any;service:any;gallery:any[];media:any[]}){
+  const family=(b.selected_theme_id||'barber_keskin').split('_').at(-1);
+  const cfg=b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,b.primary_color);
+  const effectiveScheme=b.background_scheme&&b.background_scheme!=='theme_default'?b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;
+  const wrap=(inner:React.ReactNode)=><div className={`radical profession-${b.business_type} mode-${mode} scheme-${effectiveScheme} font-${b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}>{inner}<WhatsApp b={b}/></div>;
+  if(family==='ipek')return wrap(<IpekServiceDetail b={b} service={service} gallery={gallery} media={media}/>);
+  return wrap(<main className="genericDetailPage"><nav className="genericBreadcrumb"><a href={`/site/${b.slug}`}>← {b.name}</a></nav><h1>{service.name}</h1>{service.detail_intro&&<p>{service.detail_intro}</p>}{service.detail_how&&<><h2>Nasıl Uygulanır?</h2><p>{service.detail_how}</p></>}{service.detail_benefits&&<><h2>Faydaları</h2><p>{service.detail_benefits}</p></>}{service.detail_suitable&&<><h2>Kimler İçin Uygundur?</h2><p>{service.detail_suitable}</p></>}<a href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'} →</a></main>);
 }
 function Ipek(p:P){
   const{b}=p;
