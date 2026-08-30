@@ -808,12 +808,13 @@
 @media(max-width:900px){.ipIntro{grid-template-columns:1fr}.ipIntroStats{flex-wrap:wrap;gap:24px}}
 
 /* Özellik şeridi */
-.ipFeatureRow{max-width:1200px;margin:0 auto 100px;padding:0 6vw;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--ip-line);border:1px solid var(--ip-line)}
+.ipFeatureRow{padding:0 6vw;margin-bottom:100px}
+.ipFeatureRowGrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--ip-line);border:1px solid var(--ip-line)}
 .ipFeatureRow article{background:var(--ip-surface);padding:32px 26px}
 .ipFeatureRow h3{font:700 17px 'Playfair Display',Georgia,serif;margin:0 0 10px}
 .ipFeatureRow p{color:var(--ip-muted);font-size:13px;line-height:1.7}
-@media(max-width:800px){.ipFeatureRow{grid-template-columns:1fr 1fr}}
-@media(max-width:500px){.ipFeatureRow{grid-template-columns:1fr}}
+@media(max-width:800px){.ipFeatureRowGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.ipFeatureRowGrid{grid-template-columns:1fr}}
 
 /* Hizmetler — fotoğraflı kartlar */
 .ipServices{max-width:1200px;margin:0 auto;padding:0 6vw 110px}

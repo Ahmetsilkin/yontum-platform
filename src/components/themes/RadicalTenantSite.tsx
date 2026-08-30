@@ -892,7 +892,7 @@ function Ipek(p:P){
       </Reveal>
     </section>
 
-    <section className="ipFeatureRow">
+    <section className="ipFeatureRow"><div className="ipFeatureRowGrid">
       {[1,2,3,4].map(n=><Reveal as="article" key={n} i={n}>
         <h3>{dec(b,`ip_feature${n}Title`,['Profesyonel Ekip','Özenli Hizmet','Hijyenik Ortam','Premium Ürünler'][n-1])}</h3>
         <p>{dec(b,`ip_feature${n}Text`,[
@@ -902,7 +902,7 @@ function Ipek(p:P){
           'Dünya çapında tanınan kaliteli markaların profesyonel ürünlerini tercih ediyoruz.',
         ][n-1])}</p>
       </Reveal>)}
-    </section>
+    </div></section>
 
     <IpekServices p={p}/>
     <IpekProcess b={b}/>
