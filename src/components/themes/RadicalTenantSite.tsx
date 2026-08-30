@@ -543,6 +543,39 @@ function ZfOrnament(){
     <circle cx="20" cy="20" r="5" stroke="currentColor" strokeWidth="1" fill="none"/>
   </svg>;
 }
+/* Kendi kendine akan fotoğraf şeridi — kaç fotoğraf olursa olsun ve ekran ne kadar
+   geniş olursa olsun asla boş görünmesin diye, gerçekten render edilen bir setin
+   genişliği ölçülüp buna göre kaç kez tekrarlanması gerektiği hesaplanıyor
+   (viewport genişliği değişince de yeniden hesaplanır). Tekrar sayısı her zaman
+   çift tutuluyor ki -50% dönüş noktası piksel hassasiyetinde hizalı kalsın. */
+function ZfMarquee({photos,alt}:{photos:string[];alt:string}){
+  const trackRef=useRef<HTMLDivElement>(null);
+  const[repeats,setRepeats]=useState(2);
+  useEffect(()=>{
+    function recalc(){
+      const el=trackRef.current;if(!el)return;
+      const kids=el.children;
+      if(kids.length<photos.length*2)return;
+      const first=(kids[0] as HTMLElement).getBoundingClientRect().left;
+      const secondSetStart=(kids[photos.length] as HTMLElement).getBoundingClientRect().left;
+      const setWidth=secondSetStart-first;
+      if(!setWidth||setWidth<1)return;
+      /* Anımasyon yalnızca yarım genişlik kadar kayıyor (translateX(-50%)) — o yüzden
+         boş görünmemesi gereken, TOPLAM genişliğin YARISI, viewport'tan uzun olmalı. */
+      const needed=Math.ceil((window.innerWidth*2*1.2)/setWidth);
+      const even=Math.max(4,needed%2===0?needed:needed+1);
+      setRepeats(r=>r===even?r:even);
+    }
+    recalc();
+    window.addEventListener('resize',recalc);
+    return()=>window.removeEventListener('resize',recalc);
+  },[photos.length,repeats]);
+  return <div className="zfMissionArchRow zfMarqueeRow">
+    <div className="zfMarqueeTrack" ref={trackRef}>
+      {Array.from({length:repeats}).flatMap((_,rep)=>photos.map((src,i)=><div key={`${rep}-${i}`} className="zfMissionArch"><img src={src} alt={alt}/></div>))}
+    </div>
+  </div>;
+}
 function ZarafetServices({p}:{p:P}){
   const scrollerRef=useRef<HTMLDivElement>(null);
   const nudge=(dir:number)=>{const el=scrollerRef.current;if(!el)return;el.scrollBy({left:dir*el.clientWidth*.82,behavior:'smooth'})};
@@ -678,11 +711,7 @@ function Zarafet(p:P){
       {missionPhotos.length>0&&<Reveal i={3} className="zfMissionArchWrap">
         <ZfOrnament/>
         {missionPhotos.length>1?
-          <div className="zfMissionArchRow zfMarqueeRow">
-            <div className="zfMarqueeTrack">
-              {[...missionPhotos,...missionPhotos].map((src:string,i:number)=><div key={i} className="zfMissionArch"><img src={src} alt={b.name}/></div>)}
-            </div>
-          </div>
+          <ZfMarquee photos={missionPhotos} alt={b.name}/>
           :<div className="zfMissionArchRow"><div className="zfMissionArch"><img src={missionPhotos[0]} alt={b.name}/></div></div>
         }
         <ZfOrnament/>
