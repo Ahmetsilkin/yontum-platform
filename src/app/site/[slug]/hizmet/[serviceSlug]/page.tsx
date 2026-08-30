@@ -17,9 +17,11 @@ export default async function ServiceDetailPage({params}:{params:Promise<{slug:s
   if(!service)notFound();
   const hasDetail=!!(service.detail_intro||service.detail_how||service.detail_benefits||service.detail_suitable||service.detail_tip_title||service.detail_before||service.detail_after);
   if(!hasDetail)notFound();
-  const[{data:gallery},{data:media}]=await Promise.all([
+  const[{data:gallery},{data:media},{data:services},{data:hours}]=await Promise.all([
     db.from('gallery_images').select('*').eq('business_id',b.id).order('sort_order'),
     db.from('media_items').select('*').eq('business_id',b.id).eq('is_published',true).order('sort_order'),
+    db.from('services').select('*').eq('business_id',b.id).eq('is_active',true).order('sort_order'),
+    db.from('working_hours').select('*').eq('business_id',b.id).order('day_of_week'),
   ]);
-  return <ServiceDetailSite b={b} service={service} gallery={gallery||[]} media={media||[]}/>;
+  return <ServiceDetailSite b={b} service={service} gallery={gallery||[]} media={media||[]} services={services||[]} hours={hours||[]}/>;
 }

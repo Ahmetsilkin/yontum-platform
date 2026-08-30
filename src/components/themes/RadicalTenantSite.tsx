@@ -842,7 +842,40 @@ function IpekTestimonials({businessId}:{businessId:string}){
   </section>;
 }
 function splitLines(v?:string|null){return(v||'').split('\n').map(s=>s.trim()).filter(Boolean)}
-function IpekServiceDetail({b,service,gallery,media}:{b:any;service:any;gallery:any[];media:any[]}){
+function IpekFooter({b,services,hours}:{b:any;services:any[];hours:any[]}){
+  const hourRows=groupedHourRows(hours||[]);
+  const hmMin=(v:string)=>{const[h,m]=v.slice(0,5).split(':').map(Number);return h*60+m};
+  const isOpenNow=(()=>{
+    const WD:Record<string,number>={Sunday:0,Monday:1,Tuesday:2,Wednesday:3,Thursday:4,Friday:5,Saturday:6};
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',weekday:'long',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+    const weekday=parts.find(x=>x.type==='weekday')?.value||'';
+    const hh=Number(parts.find(x=>x.type==='hour')?.value||0),mm=Number(parts.find(x=>x.type==='minute')?.value||0);
+    const dayIdx=WD[weekday]??new Date().getDay(),nowMin=hh*60+mm;
+    const h=(hours||[]).find((x:any)=>x.day_of_week===dayIdx);
+    if(!h||!h.is_open)return false;
+    return nowMin>=hmMin(h.start_time)&&nowMin<hmMin(h.end_time);
+  })();
+  let waPhone=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');
+  if(waPhone.startsWith('0'))waPhone='90'+waPhone.slice(1);
+  const waUrl=waPhone?`https://wa.me/${waPhone}?text=${encodeURIComponent(b.whatsapp_message||'Merhaba, bilgi almak istiyorum.')}`:'';
+  return <footer className="ipFooter">
+    <div className="ipFooterGrid">
+      <div>
+        <a className="ipBrand" href={`/site/${b.slug}`}><b>{b.name}</b></a>
+        <p>{dec(b,'ip_footerTagline','Premium güzellik ve bakım hizmetleri sunan salonumuz.')}</p>
+        <div className="ipSocial">
+          {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎</a>}
+          {waUrl&&<a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">✆</a>}
+        </div>
+      </div>
+      <div><small>HIZLI LİNKLER</small><a href={`/site/${b.slug}`}>Ana Sayfa</a><a href={`/site/${b.slug}#hizmetler`}>Hizmetler</a><a href={`/site/${b.slug}#hakkimizda`}>Hakkımızda</a><a href={`/site/${b.slug}#randevu`}>Randevu</a></div>
+      <div><small>HİZMETLERİMİZ</small>{services.slice(0,8).map(s=><a key={s.id} href={`/site/${b.slug}#hizmetler`}>{s.name}</a>)}</div>
+      <div><small>İLETİŞİM <span className={`ipOpenBadge ${isOpenNow?'open':'closed'}`}>{isOpenNow?'● Şu An Açık':'● Kapalı'}</span></small>{b.phone&&<p>{b.phone}</p>}{b.address&&<p>{b.address}</p>}{hourRows.map((r,i)=><div key={i} className="ipHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+    </div>
+    <div className="ipFooterBottom">© {new Date().getFullYear()} {b.name}. Tüm hakları saklıdır.</div>
+  </footer>;
+}
+function IpekServiceDetail({b,service,gallery,media,services,hours}:{b:any;service:any;gallery:any[];media:any[];services:any[];hours:any[]}){
   const ownGallery:string[]=Array.isArray(service.detail_gallery)?service.detail_gallery.filter(Boolean):[];
   const photos:string[]=(ownGallery.length?ownGallery:[...gallery.map((x:any)=>x.image_url),...media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean)).slice(0,12);
   const before=splitLines(service.detail_before),after=splitLines(service.detail_after);
@@ -890,20 +923,23 @@ function IpekServiceDetail({b,service,gallery,media}:{b:any;service:any;gallery:
       {photos.length>0&&<Reveal className="ipDetailGallery"><h2>Galeri</h2><div className="ipMasonry">{photos.map((src,i)=><div className="ipMasonryItem" key={i}><img src={src} alt=""/></div>)}</div></Reveal>}
 
       <div className="ipDetailCta"><a href={`/site/${b.slug}#randevu`} className="ipNavBtn">{b.booking_button_text||'Randevu Al'} →</a></div>
+      <a className="ipDetailBack" href={`/site/${b.slug}#hizmetler`}>← Tüm hizmetlere dön</a>
     </div>
 
-    <footer className="ipFooter">
-      <div><b>{b.name}</b>{b.footer_note&&<small>{b.footer_note}</small>}</div>
-      <div><a href={`/site/${b.slug}`}>← Tüm hizmetlere dön</a></div>
-    </footer>
+    <IpekFooter b={b} services={services} hours={hours}/>
+
+    <div className="ipMobileSticky">
+      <a href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'}</a>
+      {b.phone&&<a className="ipMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
+    </div>
   </main>;
 }
-export function ServiceDetailSite({b,service,gallery,media}:{b:any;service:any;gallery:any[];media:any[]}){
+export function ServiceDetailSite({b,service,gallery,media,services,hours}:{b:any;service:any;gallery:any[];media:any[];services:any[];hours:any[]}){
   const family=(b.selected_theme_id||'barber_keskin').split('_').at(-1);
   const cfg=b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,b.primary_color);
   const effectiveScheme=b.background_scheme&&b.background_scheme!=='theme_default'?b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;
   const wrap=(inner:React.ReactNode)=><div className={`radical profession-${b.business_type} mode-${mode} scheme-${effectiveScheme} font-${b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}>{inner}<WhatsApp b={b}/></div>;
-  if(family==='ipek')return wrap(<IpekServiceDetail b={b} service={service} gallery={gallery} media={media}/>);
+  if(family==='ipek')return wrap(<IpekServiceDetail b={b} service={service} gallery={gallery} media={media} services={services} hours={hours}/>);
   return wrap(<main className="genericDetailPage"><nav className="genericBreadcrumb"><a href={`/site/${b.slug}`}>← {b.name}</a></nav><h1>{service.name}</h1>{service.detail_intro&&<p>{service.detail_intro}</p>}{service.detail_how&&<><h2>Nasıl Uygulanır?</h2><p>{service.detail_how}</p></>}{service.detail_benefits&&<><h2>Faydaları</h2><p>{service.detail_benefits}</p></>}{service.detail_suitable&&<><h2>Kimler İçin Uygundur?</h2><p>{service.detail_suitable}</p></>}<a href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'} →</a></main>);
 }
 function Ipek(p:P){

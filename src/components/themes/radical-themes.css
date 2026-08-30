@@ -965,7 +965,7 @@
 .ipDetailBeforeAfter li:before{content:'✓';position:absolute;left:0;color:var(--ip-gold);font-weight:700}
 .ipDetailGallery{margin-top:44px}
 .ipDetailGallery h2{font:700 24px 'Playfair Display',Georgia,serif;margin:0 0 18px}
-.ipDetailCta{text-align:center;margin-top:50px}
+.ipDetailCta{text-align:center;margin-top:50px}.ipDetailBack{display:block;text-align:center;margin-top:18px;font-size:12.5px;color:var(--ip-muted)}.ipDetailBack:hover{color:var(--ip-gold)}
 .ipDetailCta .ipNavBtn{display:inline-block}
 @media(max-width:650px){.ipDetailBody{padding:44px 6vw 70px}.ipDetailBeforeAfter{grid-template-columns:1fr}.ipDetailHero{margin:14px 4vw 0;padding:28px;min-height:260px}.ipBreadcrumb{padding:18px 4vw 0}}
 
