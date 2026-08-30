@@ -575,8 +575,9 @@
 .zfMissionArch{width:min(320px,62vw);aspect-ratio:3/4;flex-shrink:0;background:#fdfcf9;padding:12px;box-sizing:border-box;border-radius:22px;box-shadow:0 20px 45px #00000026;overflow:hidden}
 .zfMissionArch img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
 /* Birden fazla mekan fotoğrafı — kendi kendine akan, kesintisiz yatay şerit (kullanıcı müdahalesi olmadan sürekli kayar) */
-.zfMarqueeRow{justify-content:flex-start;overflow:hidden;padding:4px 0 16px;margin:0 -8vw;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8vw,#000 92vw,transparent);mask-image:linear-gradient(90deg,transparent,#000 8vw,#000 92vw,transparent)}
-.zfMarqueeTrack{display:flex;gap:24px;width:max-content;animation:zfMarquee 26s linear infinite;padding:0 8vw}
+.zfMarqueeRow{justify-content:flex-start;overflow:hidden;padding:4px 8vw 16px;margin:0 -8vw;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8vw,#000 92vw,transparent);mask-image:linear-gradient(90deg,transparent,#000 8vw,#000 92vw,transparent)}
+.zfMarqueeTrack{display:flex;width:max-content;animation:zfMarquee 26s linear infinite}
+.zfMarqueeTrack .zfMissionArch{margin-right:24px}
 .zfMarqueeRow:hover .zfMarqueeTrack{animation-play-state:paused}
 @keyframes zfMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .zfMarqueeRow .zfMissionArch{width:min(240px,55vw)}
