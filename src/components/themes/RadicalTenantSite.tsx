@@ -696,10 +696,12 @@ function Zarafet(p:P){
     {visibleStaff.length>0&&<section className="zfTeamSection">
       <Reveal><header><small>EKİP</small><h2>{dec(b,'zf_teamTitle','Ellerine güvenebileceğin ustalar.')}</h2></header></Reveal>
       <div className="zfTeamGrid">
-        {visibleStaff.map((s:any,i:number)=><Reveal as="article" key={s.id} i={i}>
+        {/* Kaydırma şeridi hiç boş kalmasın diye liste tekrarlanıyor — az çalışanı olan
+            işletmelerde bile şerit sonuna kadar kaydırınca boşluk görünmez. */}
+        {Array.from({length:3}).flatMap((_,rep)=>visibleStaff.map((s:any,i:number)=><Reveal as="article" key={`${rep}-${s.id}`} i={i}>
           <div className="zfTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
           <b>{s.name}</b><small>{s.title||'Uzman'}</small>
-        </Reveal>)}
+        </Reveal>))}
       </div>
     </section>}
 
