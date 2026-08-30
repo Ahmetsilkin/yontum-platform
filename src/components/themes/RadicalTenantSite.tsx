@@ -894,6 +894,7 @@ function Ipek(p:P){
 
     <section className="ipFeatureRow"><div className="ipFeatureRowGrid">
       {[1,2,3,4].map(n=><Reveal as="article" key={n} i={n}>
+        <i className="ipFeatureIcon" aria-hidden="true">{['★','♥','✦','♛'][n-1]}</i>
         <h3>{dec(b,`ip_feature${n}Title`,['Profesyonel Ekip','Özenli Hizmet','Hijyenik Ortam','Premium Ürünler'][n-1])}</h3>
         <p>{dec(b,`ip_feature${n}Text`,[
           'Alanında uzman, sürekli eğitim alan ekibimizle en güncel teknikleri uyguluyoruz.',
