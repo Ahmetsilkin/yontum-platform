@@ -587,7 +587,7 @@
 @media(max-width:640px){.zfMissionArch{width:min(240px,66vw)}.zfMarqueeRow .zfMissionArch{width:min(170px,60vw)}}
 
 /* Hizmetler — yatay kaydırmalı karusel */
-.zfServices{padding:100px 0;background:var(--zf-surface)}
+.zfServices{padding:100px 0;background:var(--zf-bg)}
 .zfServices>div:first-child,.zfServices header{max-width:1200px;margin:0 auto 40px;padding:0 6vw;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .zfServices header small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
 .zfServices header h2{font:500 clamp(28px,3.4vw,40px)/1.2;margin:10px 0 0}
@@ -616,7 +616,7 @@
 @media(max-width:800px){.zfCollageWrap{height:260vh}.zfCollagePhoto{width:130px}}
 
 /* Ekip */
-.zfTeamSection{padding:110px 6vw;background:var(--zf-surface)}
+.zfTeamSection{padding:110px 6vw;background:var(--zf-bg)}
 .zfTeamSection>header{max-width:600px;margin:0 auto 46px;text-align:center}
 .zfTeamSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
 .zfTeamSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
