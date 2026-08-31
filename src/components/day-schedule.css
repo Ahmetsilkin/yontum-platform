@@ -6,8 +6,10 @@
 .scheduleDayPicker button span{color:#999;font-size:10px}
 .scheduleDayPicker button.today{position:relative}
 .scheduleDayPicker button.today:after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#d4af37}
-.scheduleDayPicker button.selected{border-color:#d4af37;background:linear-gradient(135deg,#2a230f,#1a1710)}
+.scheduleDayPicker button.selected{border-color:#d4af37;background:#d4af37;box-shadow:0 4px 14px #d4af3766}
+.scheduleDayPicker button.selected small,.scheduleDayPicker button.selected b,.scheduleDayPicker button.selected span{color:#141414}
+.scheduleDayPicker button.selected.today:after{background:#141414}
 .scheduleSlotPicker{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;padding:6px 0 4px}
 .scheduleSlotPicker button{background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:9px 4px;color:#eee;cursor:pointer;font-size:13px}
-.scheduleSlotPicker button.selected{border-color:#d4af37;background:linear-gradient(135deg,#2a230f,#1a1710)}
+.scheduleSlotPicker button.selected{border-color:#d4af37;background:#d4af37;color:#141414;font-weight:700;box-shadow:0 4px 14px #d4af3766}
 .scheduleSlotPicker p{grid-column:1/-1;color:#999;font-size:13px;margin:0}
