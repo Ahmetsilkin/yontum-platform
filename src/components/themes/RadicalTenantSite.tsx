@@ -609,24 +609,6 @@ function ZarafetCollage({p}:{p:P}){
     </div>
   </section>;
 }
-function ZarafetReviews({businessId}:{businessId:string}){
-  const[data,setData]=useState<any>(null);
-  useEffect(()=>{fetch(`/api/ratings/${businessId}`).then(r=>r.json()).then(setData).catch(()=>{})},[businessId]);
-  const{ref,t}=useScrollFracPinned();
-  if(!data?.enabled||!data.reviews?.length)return null;
-  const cards=data.reviews.slice(0,4);
-  const positions=[{top:'60%',left:'6%'},{top:'8%',right:'7%'},{top:'58%',right:'4%'},{top:'10%',left:'3%'}];
-  return <section ref={ref as any} className="zfReviewsWrap">
-    <div className="zfReviewsPin">
-      <h2>{data.count}+ müşteri<br/>memnuniyetle anlatıyor.</h2>
-      {cards.map((r:any,i:number)=><div key={i} className={`zfReviewCard ${t>.15+i*.15?'in':''}`} style={positions[i]}>
-        <div className="zfReviewStars">{'★'.repeat(r.stars||5)}</div>
-        <b>{r.customer_name||'Müşterimiz'}</b>
-        <p>"{r.comment}"</p>
-      </div>)}
-    </div>
-  </section>;
-}
 function ZarafetContact({businessId,bgPhoto}:{businessId:string;bgPhoto?:string}){
   const[sent,setSent]=useState(false);
   const[sending,setSending]=useState(false);
@@ -734,7 +716,7 @@ function Zarafet(p:P){
       </div>
     </section>}
 
-    <ZarafetReviews businessId={b.id}/>
+    <IpekTestimonials businessId={b.id}/>
 
     <section id="randevu" className="zfBookingSection">
       <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>

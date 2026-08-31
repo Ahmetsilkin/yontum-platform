@@ -539,7 +539,8 @@
 /* ================= Zarafet — ipeksi krem zemin, altın vurgulu, jaluzi geçişli, sabitlenmiş kademeli
    galeri ve dağınık yorum kartlarıyla zarif kuaför/güzellik/nail/spa teması ================= */
 .tZarafet{--zf-bg:#f6f1e8;--zf-surface:#ffffff;--zf-line:rgba(43,36,32,.12);--zf-ink:#2b2420;--zf-muted:#8a7d6c;--zf-gold:#a68a54;--zf-gold-light:#c7ab72;--accent:var(--zf-gold);--brand:var(--zf-gold);background:var(--zf-bg);color:var(--zf-ink);font-family:'Inter',Arial,Helvetica,sans-serif;
-  --at-bg:var(--zf-bg);--at-surface:var(--zf-surface);--at-card-bg:var(--zf-surface);--at-line:var(--zf-line);--at-ink:var(--zf-ink);--at-muted:var(--zf-muted);--at-gold:var(--zf-gold);--at-gold-light:var(--zf-gold-light);}
+  --at-bg:var(--zf-bg);--at-surface:var(--zf-surface);--at-card-bg:var(--zf-surface);--at-line:var(--zf-line);--at-ink:var(--zf-ink);--at-muted:var(--zf-muted);--at-gold:var(--zf-gold);--at-gold-light:var(--zf-gold-light);
+  --ip-gold:var(--zf-gold);--ip-ink:var(--zf-ink);--ip-line:var(--zf-line);--ip-surface:var(--zf-surface);}
 .tZarafet h1,.tZarafet h2,.tZarafet h3{font-family:'Playfair Display',Georgia,serif}
 .tZarafet em{font-style:italic;color:var(--zf-gold)}
 
@@ -642,15 +643,15 @@
 .zfTeamGrid small{display:block;margin-top:2px;color:var(--zf-muted);font-size:12px}
 
 /* Yorumlar — sabitlenmiş dev başlık + dağınık kademeli kartlar */
-.zfReviewsWrap{position:relative;height:200vh}
-.zfReviewsPin{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--zf-surface);display:flex;align-items:center;justify-content:center;text-align:center}
-.zfReviewsPin>h2{font:500 clamp(32px,4.5vw,54px)/1.2;max-width:640px;padding:0 20px;position:relative;z-index:1}
-.zfReviewCard{position:absolute;width:min(260px,68vw);background:var(--zf-bg);border-radius:6px;padding:22px;opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 50px #0000001a;text-align:left}
-.zfReviewCard.in{opacity:1;transform:translateY(0)}
-.zfReviewStars{color:var(--zf-gold);letter-spacing:2px;margin-bottom:8px;font-size:13px}
-.zfReviewCard b{display:block;font:500 15px 'Playfair Display',Georgia,serif;margin-bottom:6px}
-.zfReviewCard p{color:var(--zf-muted);font-size:13px;line-height:1.6;margin:0}
-@media(max-width:800px){.zfReviewsWrap{height:240vh}.zfReviewCard{width:min(220px,72vw);padding:16px}}
+
+
+
+
+
+
+
+
+@media(max-width:800px){}
 
 /* Randevu */
 .zfBookingSection{padding:110px 6vw;background:var(--zf-bg)}
