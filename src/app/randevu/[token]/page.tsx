@@ -90,6 +90,7 @@ export default function AppointmentPage(){
         error&&!data?<div className="appointmentState error"><b>Randevu açılamadı</b><p>{error}</p></div>:
         done?<div className="appointmentState success"><span>✓</span><h1>{done}</h1><p>İşleminiz başarıyla kaydedildi.</p><button onClick={()=>{setDone('');setError('')}}>Randevuya Dön</button></div>:
         data.status==='cancelled'?<div className="appointmentState cancelled"><h1>Randevu iptal edilmiş.</h1><p>{data.cancellation_reason}</p></div>:
+        data.status==='completed'?<div className="appointmentState success"><span>✓</span><h1>Randevunuz tamamlanmıştır.</h1><p>Bizi tercih ettiğiniz için teşekkür ederiz!</p></div>:
         <>
           <div className="appointmentTitle"><small>RANDEVUNUZ</small><h1>{data.services?.name}</h1></div>
           {error&&<p className="formError">{error}</p>}
