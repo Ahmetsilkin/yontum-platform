@@ -21,19 +21,9 @@
 .completedBadge{display:inline-block;background:#def2e5;color:#21623e;padding:7px 10px;border-radius:999px;font-size:10px;font-weight:800}
 .publishBadge{border-radius:999px}
 .dashModal{border-radius:20px;box-shadow:0 35px 100px #0002;background:var(--admin-card);color:var(--admin-ink)}
-.loginPage,.authPage{background:var(--admin-bg);color:var(--admin-ink)}
-.authMain{background:transparent}
-.authCard{background:#fff;border:1px solid var(--admin-line);border-radius:24px;padding:40px;box-shadow:0 30px 80px #00000012;color:var(--admin-ink)}
-.authCard h2{font:700 40px Georgia;color:var(--admin-ink)}
-.authCard .input{border-radius:10px;background:#fff;color:var(--admin-ink);border:1px solid var(--admin-line)}
-.authCard .formButton{border-radius:10px;background:#111;color:#fff;font-weight:700}
-.verifiedPage{background:var(--admin-bg)!important;color:var(--admin-ink)}
-.verifiedPage section{background:#fff!important;border-color:var(--admin-line)!important;color:var(--admin-ink)}
-.verifiedPage h1{color:var(--admin-ink)}
-.verifiedPage section>p:not(.overline){color:var(--admin-muted)}
-.verifiedPage .overline{color:var(--admin-muted)}
-.verifiedIcon{background:#111!important;color:#fff!important}
-.verifiedPage a,.verifiedPage .primaryBtn,.verifiedPage .formButton{background:#111;color:#fff!important;font-weight:700}
+/* authPage/authCard/verifiedPage artık globals.css'teki yeni tanıtım sitesi
+   temasına (Apple/glassmorphism esintili) ait — burada eskiden panelle aynı
+   siyah/krem paleti zorlayan çakışan kurallar vardı, kaldırıldı. */
 .daySchedule{box-shadow:0 10px 35px #00000008}
 @media(max-width:650px){.dashboardTop h1{font-size:22px}.dashboardContent{padding-top:20px!important}.panel,.stat,.siteEditor{border-radius:12px}.stats{gap:8px}.stat b{font-size:26px}.authCard{padding:26px 20px;border-radius:16px}.appointmentTabs{padding-bottom:6px}}
 
