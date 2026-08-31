@@ -254,7 +254,7 @@ function MyProfile({staffList,currentUserId,notify,reload}:{staffList:any[];curr
   const[photoPreview,setPhotoPreview]=useState(me?.photo_url||'');
   const[photoFile,setPhotoFile]=useState<File|null>(null);
   const[busy,setBusy]=useState(false);
-  if(!me)return <main className="p-8"><p className="durationHint">Profil bilgisi bulunamadı.</p></main>;
+  if(!me)return <main className="dashboardContent"><p className="durationHint">Profil bilgisi bulunamadı.</p></main>;
   async function save(){
     setBusy(true);
     let photoUrl=me.photo_url;
@@ -270,8 +270,8 @@ function MyProfile({staffList,currentUserId,notify,reload}:{staffList:any[];curr
     notify('Profilin güncellendi.');
   }
   return (
-    <main className="p-6 sm:p-10 max-w-lg">
-      <div className="builderBlock">
+    <main className="dashboardContent">
+      <div className="panel" style={{maxWidth:560}}>
         <h3>Profilim</h3>
         <label className="myProfilePhoto">
           {photoPreview?<img src={photoPreview} alt=""/>:<span>{name?.[0]||'?'}</span>}

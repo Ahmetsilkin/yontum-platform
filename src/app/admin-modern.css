@@ -1,116 +1,179 @@
-/* ================= Panel teması: krem/beyaz zemin, ince serif başlıklar, nötr siyah vurgu — tanıtım sitesiyle aynı tema ================= */
-:root{--admin-bg:#f4f4ef;--admin-card:#ffffff;--admin-ink:#0b0d0c;--admin-muted:#6d706c;--admin-line:#d8d9d1;--admin-gold:#111111;--admin-gold-soft:#111111}
-.dashboardShell{background:var(--admin-bg);color:var(--admin-ink)}
-.dashboardShell>aside{background:#0b0d0c;border-right:1px solid #1c1c1c}
-.dashboardShell>aside button,.dashboardShell>aside a{border-radius:10px;margin:2px 0;color:#c9c9c9}
-.dashboardShell>aside .active{background:#fff;color:#0b0d0c;font-weight:800}
-.dashboardTop{background:#f4f4efed;backdrop-filter:blur(14px);border-bottom:1px solid var(--admin-line);color:var(--admin-ink)}
-.dashboardTop h1{font:700 30px Georgia;color:var(--admin-ink)}
-.dashboardContent{max-width:1500px;margin:auto}
-.panel,.stat,.dashServiceGrid article,.siteEditor{border:1px solid var(--admin-line);border-radius:16px;box-shadow:0 10px 35px #00000008;background:var(--admin-card);color:var(--admin-ink)}
-.stats{gap:16px}
-.stat{position:relative;overflow:hidden}
-.stat:after{content:'';position:absolute;width:70px;height:70px;border-radius:50%;background:#0000000a;right:-25px;top:-25px}
-.stat b{font-family:Georgia,serif;font-weight:700;color:var(--admin-ink)}
-.blackBtn{border-radius:10px;background:#111;color:#fff;font-weight:700;border:0}
-.contentHead h2,.panelTitle h2{font:700 25px Georgia;color:var(--admin-ink)}
-.dashTable th{background:#fafaf7;padding:16px 10px;color:var(--admin-muted)}
-.dashTable td{padding:16px 10px;color:var(--admin-ink);border-color:var(--admin-line)}
-.appointmentTabs button{border-radius:999px;color:var(--admin-muted);background:#f2f2ee;border-color:transparent}
-.appointmentTabs button.active{background:#111;color:#fff}
-.completedBadge{display:inline-block;background:#def2e5;color:#21623e;padding:7px 10px;border-radius:999px;font-size:10px;font-weight:800}
-.publishBadge{border-radius:999px}
-.dashModal{border-radius:20px;box-shadow:0 35px 100px #0002;background:var(--admin-card);color:var(--admin-ink)}
-/* authPage/authCard/verifiedPage artık globals.css'teki yeni tanıtım sitesi
-   temasına (Apple/glassmorphism esintili) ait — burada eskiden panelle aynı
-   siyah/krem paleti zorlayan çakışan kurallar vardı, kaldırıldı. */
-.daySchedule{box-shadow:0 10px 35px #00000008}
-@media(max-width:650px){.dashboardTop h1{font-size:22px}.dashboardContent{padding-top:20px!important}.panel,.stat,.siteEditor{border-radius:12px}.stats{gap:8px}.stat b{font-size:26px}.authCard{padding:26px 20px;border-radius:16px}.appointmentTabs{padding-bottom:6px}}
+/* ================= Esnaf Yönetim Paneli: Slate/Zinc nötr, Indigo vurgu — Squire/Boulevard/Stripe Dashboard esintili B2B SaaS tasarım sistemi =================
+   Not: Müşteri randevu vitrini (storefront) ayrı bir tema (globals.css --pub-*,
+   Apple/glassmorphism) kullanıyor — buradaki tokenlar sadece .dashboardShell
+   içinde geçerli, storefront'a sızmıyor. */
+:root{
+  --admin-bg:#f8fafc;--admin-card:#ffffff;--admin-ink:#0f172a;--admin-muted:#64748b;--admin-line:#e2e8f0;
+  --admin-primary:#4f46e5;--admin-primary-hover:#4338ca;--admin-primary-soft:#eef2ff;
+  --admin-radius:14px;--admin-radius-lg:18px;--admin-radius-sm:10px;
+  --admin-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.05);
+  --status-ok-bg:#ecfdf5;--status-ok-ink:#047857;--status-ok-line:#a7f3d0;
+  --status-warn-bg:#fffbeb;--status-warn-ink:#b45309;--status-warn-line:#fde68a;
+  --status-bad-bg:#fff1f2;--status-bad-ink:#be123c;--status-bad-line:#fecdd3;
+  --admin-gold:var(--admin-primary);--admin-gold-soft:var(--admin-primary-soft);
+}
+.dashboardShell{background:var(--admin-bg);color:var(--admin-ink);font-feature-settings:"tnum"}
+.dashboardShell,.dashboardShell input,.dashboardShell select,.dashboardShell textarea,.dashboardShell button{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
 
-.livePreviewBlock{border:1px solid var(--admin-line);border-radius:16px;background:var(--admin-card);padding:18px;box-shadow:0 10px 35px #00000008;margin-bottom:18px;max-width:100%;overflow:hidden;box-sizing:border-box}
+/* Sidebar — koyu/parlak siyahtan, ince kenarlıklı açık zemine geçti (Stripe/Linear tarzı) */
+.dashboardShell>aside{background:#fff;border-right:1px solid var(--admin-line);box-shadow:1px 0 0 rgba(15,23,42,.02)}
+.dashboardShell>aside .platformLogo{color:var(--admin-ink)!important}
+.dashboardShell>aside .platformLogo span{border-color:var(--admin-ink)!important}
+.dashboardShell>aside .platformLogo small{color:var(--admin-muted)!important}
+.dashboardShell>aside button,.dashboardShell>aside a{border-radius:var(--admin-radius-sm);margin:2px 0;color:var(--admin-muted);font-weight:600;font-size:13.5px;transition:background .15s ease,color .15s ease}
+.dashboardShell>aside button:hover,.dashboardShell>aside a:hover{background:#f1f5f9;color:var(--admin-ink)}
+.dashboardShell>aside .active{background:var(--admin-primary-soft)!important;color:var(--admin-primary)!important;font-weight:700}
+
+.dashboardTop{background:rgba(248,250,252,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--admin-line);color:var(--admin-ink)}
+.dashboardTop h1{font:700 24px/1.2 inherit;letter-spacing:-.02em;color:var(--admin-ink)}
+.dashboardContent{max-width:1400px;margin:auto}
+
+/* Kartlar — ince kenarlık + çok hafif ambient gölge + yumuşak köşe */
+.panel,.stat,.dashServiceGrid article,.siteEditor,.staffAdminGrid article,.manualReviewItem,.credBox,.analyticsGrid>div,.livePreviewBlock,.templatePreview,.reminderPanel{
+  border:1px solid var(--admin-line);border-radius:var(--admin-radius-lg);box-shadow:var(--admin-shadow);background:var(--admin-card);color:var(--admin-ink)
+}
+.stats{gap:16px}
+.stat{position:relative;overflow:hidden;padding:20px 22px!important}
+.stat:after{content:'';position:absolute;width:70px;height:70px;border-radius:50%;background:var(--admin-primary-soft);right:-25px;top:-25px}
+.stat small{color:var(--admin-muted);font-size:11.5px;font-weight:600;letter-spacing:.3px}
+.stat b{font-family:inherit;font-weight:800;font-size:28px;letter-spacing:-.02em;color:var(--admin-ink)}
+
+.contentHead h2,.panelTitle h2,.onboardingChecklist h2,.editorIntro h2{font:700 19px/1.3 inherit;letter-spacing:-.01em;color:var(--admin-ink)}
+.panelTitle p,.contentHead p,.editorIntro p{color:var(--admin-muted)}
+
+/* Butonlar */
+.blackBtn{border-radius:var(--admin-radius-sm);background:var(--admin-primary);color:#fff;font-weight:600;font-size:13.5px;border:0;box-shadow:0 1px 2px rgba(79,70,229,.25);transition:background .15s ease,transform .15s cubic-bezier(.4,0,.2,1)}
+.blackBtn:hover{background:var(--admin-primary-hover)}
+.blackBtn:active{transform:scale(.97)}
+.blackBtn:disabled{opacity:.5;cursor:default;transform:none}
+.changePasswordBtn{background:#fff;border:1px solid var(--admin-line);color:var(--admin-muted);padding:9px 16px;border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;margin:0 14px;transition:all .15s ease}
+.changePasswordBtn:hover{color:var(--admin-ink);border-color:#cbd5e1;background:#f8fafc}
+.dashboardShell .plainAction,.dashboardShell .appointmentActions button,.dashboardShell .appointmentTabs button,.dashboardShell .domainButtons>button:not(.blackBtn),.dashboardShell .credActions a,.dashboardShell .credActions button{border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line);background:#fff;color:var(--admin-ink);font-weight:600;transition:all .15s ease}
+.dashboardShell .plainAction:hover,.dashboardShell .appointmentActions button:hover{background:#f8fafc;border-color:#cbd5e1}
+.dashboardShell .appointmentActions .danger,.dashboardShell .plainAction.danger{color:var(--status-bad-ink);border-color:var(--status-bad-line);background:var(--status-bad-bg)}
+
+/* Sekmeler / durum rozetleri — muted pastel + ince kenarlık */
+.appointmentTabs{gap:6px}
+.appointmentTabs button{border-radius:999px;color:var(--admin-muted);background:#fff;border:1px solid var(--admin-line);font-weight:600;font-size:13px}
+.appointmentTabs button.active{background:var(--admin-primary);color:#fff;border-color:var(--admin-primary)}
+.completedBadge{display:inline-flex;align-items:center;gap:5px;background:var(--status-ok-bg);color:var(--status-ok-ink);border:1px solid var(--status-ok-line);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:700}
+.publishBadge{border-radius:999px;background:var(--status-warn-bg);color:var(--status-warn-ink);border:1px solid var(--status-warn-line);font-weight:700}
+.publishBadge.live{background:var(--status-ok-bg);color:var(--status-ok-ink);border-color:var(--status-ok-line)}
+.sourceBadge{background:#f1f5f9;color:var(--admin-muted);border-radius:999px;font-weight:600}
+.growthUp{color:var(--status-ok-ink)}
+.growthDown{color:var(--status-bad-ink)}
+.growthNeutral{color:var(--admin-muted)}
+.manualBadge{background:#f1f5f9;color:var(--admin-muted);border-radius:999px}
+
+.dashModal{border-radius:var(--admin-radius-lg);box-shadow:0 25px 70px rgba(15,23,42,.18);background:var(--admin-card);color:var(--admin-ink)}
+.dashModal h2{letter-spacing:-.01em}
+.daySchedule{box-shadow:var(--admin-shadow)}
+@media(max-width:650px){.dashboardTop h1{font-size:19px}.dashboardContent{padding-top:20px!important}.panel,.stat,.siteEditor{border-radius:var(--admin-radius)}.stats{gap:8px}.stat b{font-size:23px}.authCard{padding:26px 20px;border-radius:16px}.appointmentTabs{padding-bottom:6px}}
+
+.livePreviewBlock{padding:18px;margin-bottom:18px;max-width:100%;overflow:hidden;box-sizing:border-box}
 .livePreviewBlock>div:first-child{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.livePreviewBlock h3{font-size:16px;margin:0 0 3px;color:var(--admin-ink)}
+.livePreviewBlock h3{font-size:15px;margin:0 0 3px;color:var(--admin-ink);font-weight:700}
 .livePreviewBlock p{font-size:12.5px;color:var(--admin-muted);margin:0}
-.legacyDeviceButtons{display:flex;gap:6px;background:#f2f2ee;padding:4px;border-radius:999px}
-.legacyDeviceButtons button{border:0;background:transparent;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:700;color:var(--admin-muted);cursor:pointer;transition:all .15s}
-.legacyDeviceButtons button.active{background:#111;color:#fff}
-.legacyPreviewWrap{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--admin-line);background:#eeeeea;max-width:100%;width:100%}
+.legacyDeviceButtons{display:flex;gap:6px;background:#f1f5f9;padding:4px;border-radius:999px}
+.legacyDeviceButtons button{border:0;background:transparent;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;color:var(--admin-muted);cursor:pointer;transition:all .15s}
+.legacyDeviceButtons button.active{background:var(--admin-primary);color:#fff}
+.legacyPreviewWrap{position:relative;overflow:hidden;border-radius:var(--admin-radius);border:1px solid var(--admin-line);background:#f1f5f9;max-width:100%;width:100%}
 .legacyPreviewFrame{position:absolute;top:0;left:0;transform-origin:top left;background:#fff}
 .legacyPreviewFrame iframe{width:100%;height:100%;border:0;display:block}
-@media(max-width:650px){.livePreviewBlock{padding:12px;border-radius:12px}.livePreviewBlock>div:first-child{flex-direction:column;align-items:stretch}.legacyDeviceButtons{justify-content:center}}
+@media(max-width:650px){.livePreviewBlock{padding:12px;border-radius:var(--admin-radius)}.livePreviewBlock>div:first-child{flex-direction:column;align-items:stretch}.legacyDeviceButtons{justify-content:center}}
 
 .accentSwatches{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
-.accentSwatches button{width:34px;height:34px;border-radius:50%;border:2px solid var(--admin-card);box-shadow:0 0 0 1.5px var(--admin-line);cursor:pointer;padding:0;transition:transform .12s,box-shadow .12s}
+.accentSwatches button{width:32px;height:32px;border-radius:50%;border:2px solid var(--admin-card);box-shadow:0 0 0 1.5px var(--admin-line);cursor:pointer;padding:0;transition:transform .12s,box-shadow .12s}
 .accentSwatches button:hover{transform:scale(1.08)}
-.accentSwatches button.active{box-shadow:0 0 0 2px var(--admin-card),0 0 0 4px #111}
+.accentSwatches button.active{box-shadow:0 0 0 2px var(--admin-card),0 0 0 4px var(--admin-primary)}
 
-/* Genel form elemanları */
-.dashboardShell input,.dashboardShell select,.dashboardShell textarea{background:#fff;color:var(--admin-ink);border:1px solid var(--admin-line)}
-.dashboardShell input::placeholder,.dashboardShell textarea::placeholder{color:#aaaaaa}
+/* Form elemanları — slate zemin, indigo odak halkası */
+.dashboardShell input,.dashboardShell select,.dashboardShell textarea{background:#f8fafc;color:var(--admin-ink);border:1px solid #cbd5e1;border-radius:var(--admin-radius-sm);font-size:13.5px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+.dashboardShell input:focus,.dashboardShell select:focus,.dashboardShell textarea:focus{outline:0;background:#fff;border-color:var(--admin-primary);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+.dashboardShell input::placeholder,.dashboardShell textarea::placeholder{color:#94a3b8}
+.dashboardShell .field{color:var(--admin-ink);font-weight:600;font-size:12.5px}
 .dashboardShell a{color:var(--admin-ink)}
-.dashboardShell a:hover{color:#000}
+.dashboardShell a:hover{color:var(--admin-primary)}
 
 .fullTemplateGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
-.templatePreview{border:1px solid var(--admin-line);background:var(--admin-card);border-radius:12px;padding:12px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s}
-.templatePreview:hover{border-color:#111}
-.templatePreview i{display:block;height:70px;border-radius:8px;margin-bottom:10px}
-.templatePreview b{display:block;font-weight:700;font-size:14px}
+.templatePreview{padding:12px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.templatePreview:hover{border-color:#cbd5e1;transform:translateY(-1px)}
+.templatePreview i{display:block;height:70px;border-radius:var(--admin-radius-sm);margin-bottom:10px}
+.templatePreview b{display:block;font-weight:700;font-size:13.5px}
 .templatePreview small{display:block;color:var(--admin-muted);margin-top:4px;font-size:12px;line-height:1.5}
-.dashboardShell .templatePreview.active{border-color:#111!important;box-shadow:0 0 0 2px #1111111a}
+.dashboardShell .templatePreview.active{border-color:var(--admin-primary)!important;box-shadow:0 0 0 2px rgba(79,70,229,.16)}
 
-.ratingRequestBtn{display:inline-block;background:#e1f1e6;color:#23613e;padding:7px 12px;border-radius:999px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap}
-.ratingRequestBtn:hover{background:#cfe8d6}
+.ratingRequestBtn{display:inline-block;background:var(--status-ok-bg);color:var(--status-ok-ink);border:1px solid var(--status-ok-line);padding:7px 12px;border-radius:999px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .15s}
+.ratingRequestBtn:hover{background:#d4f4e2}
 .manualReviewForm{margin:14px 0}
 .manualReviewList{margin-top:18px;display:flex;flex-direction:column;gap:10px}
-.manualReviewItem{display:flex;justify-content:space-between;gap:14px;background:#fff;border:1px solid var(--admin-line);border-radius:12px;padding:14px 16px}
+.manualReviewItem{display:flex;justify-content:space-between;gap:14px;padding:14px 16px}
 .manualReviewItem b{color:var(--admin-ink);margin-right:8px}
-.manualReviewStars{color:#e8a33d;font-size:13px;letter-spacing:1px}
-.manualBadge{display:inline-block;margin-left:8px;background:#f2f2ee;color:var(--admin-muted);padding:2px 8px;border-radius:999px;font-size:10px}
-.manualReviewService{display:block;color:#9b7b3f;font-size:11px;font-weight:700;margin-top:2px}
+.manualReviewStars{color:#d97706;font-size:13px;letter-spacing:1px}
+.manualReviewService{display:block;color:var(--admin-primary);font-size:11px;font-weight:700;margin-top:2px}
 .manualReviewItem p{color:var(--admin-muted);font-size:13px;margin-top:6px;line-height:1.5}
 .newStaffModal{max-width:480px}
-.credBox{background:#f7f7f4;border:1px solid var(--admin-line);border-radius:12px;padding:16px;margin:16px 0}
+.credBox{padding:16px;margin:16px 0}
 .credBox div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--admin-line)}
 .credBox div:last-child{border-bottom:0}
 .credBox small{color:var(--admin-muted);font-size:11px}
-.credBox b{color:var(--admin-ink);font-family:monospace;font-size:14px}
+.credBox b{color:var(--admin-ink);font-family:ui-monospace,monospace;font-size:13.5px}
 .credActions{display:flex;gap:10px;margin-bottom:10px}
-.credActions a,.credActions button{flex:1;text-align:center;text-decoration:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;border:1px solid var(--admin-line);background:#fff;color:var(--admin-ink)}
-.credActions a.blackBtn{background:#111;color:#fff;border:0}
-.closeCredModal{width:100%;background:none;border:0;color:var(--admin-muted);padding:8px;cursor:pointer}
+.credActions a,.credActions button{flex:1;text-align:center;text-decoration:none;padding:12px;font-weight:600;cursor:pointer}
+.credActions a.blackBtn{border:0}
+.closeCredModal{width:100%;background:none;border:0;color:var(--admin-muted);padding:8px;cursor:pointer;border-radius:var(--admin-radius-sm)}
+.closeCredModal:hover{background:#f8fafc}
 .changePasswordModal{max-width:420px}
-.changePasswordBtn{background:#fff;border:1px solid var(--admin-line);color:var(--admin-muted);padding:9px 16px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;margin:0 14px}
-.changePasswordBtn:hover{color:var(--admin-ink);border-color:#111}
 .myProfilePhoto{display:flex;align-items:center;gap:14px;margin:16px 0;cursor:pointer}
 .myProfilePhoto img{width:64px;height:64px;border-radius:50%;object-fit:cover}
-.myProfilePhoto span{width:64px;height:64px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-weight:800;font-size:24px}
-.myProfilePhoto small{color:var(--admin-muted);text-decoration:underline}
-.dashTable .dayGroupHeader td{background:#fafaf7;color:var(--admin-ink);font-weight:800;font-size:12px;letter-spacing:.5px;padding:12px 10px;border:0}
+.myProfilePhoto span{width:64px;height:64px;border-radius:50%;background:var(--admin-primary);color:#fff;display:grid;place-items:center;font-weight:800;font-size:24px}
+.myProfilePhoto small{color:var(--admin-primary);text-decoration:underline}
+.dashTable{border-spacing:0}
+.dashTable .dayGroupHeader td{background:#f8fafc;color:var(--admin-ink);font-weight:700;font-size:11.5px;letter-spacing:.4px;padding:12px 10px;border:0}
+.dashTable th{background:#f8fafc;padding:14px 10px;color:var(--admin-muted);font-weight:600;font-size:11px;letter-spacing:.3px}
+.dashTable td{padding:14px 10px;color:var(--admin-ink);border-color:var(--admin-line);font-size:13.5px}
+.dashTable tbody tr:hover td{background:#fbfcfe}
 .analyticsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:14px}
-.analyticsGrid>div{background:#fafaf7;border:1px solid var(--admin-line);border-radius:14px;padding:18px}
-.analyticsGrid small{color:var(--admin-muted);font-size:10.5px;font-weight:700;letter-spacing:.5px}
-.analyticsGrid b{display:block;font-size:26px;margin:8px 0 6px;color:var(--admin-ink)}
+.analyticsGrid>div{padding:18px}
+.analyticsGrid small{color:var(--admin-muted);font-size:10.5px;font-weight:700;letter-spacing:.4px}
+.analyticsGrid b{display:block;font-size:24px;margin:8px 0 6px;color:var(--admin-ink);font-weight:800;letter-spacing:-.02em}
 .analyticsGrid span{display:block;font-size:11.5px}
-.growthUp{color:#1f8a4c}
-.growthDown{color:#c94444}
-.growthNeutral{color:var(--admin-muted)}
-.reminderPanel{border-color:#eadfb8}
+.reminderPanel{border-color:var(--status-warn-line)}
 .reminderRow{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--admin-line)}
 .reminderRow:last-child{border-bottom:0}
 .reminderRow small{display:block;color:var(--admin-muted);font-size:12px;margin-top:3px}
 .manualDayName{display:block;margin-top:6px;color:var(--admin-ink);font-weight:700;font-size:12px}
 .manualReviewPhoto{margin:10px 0}
 .manualReviewAvatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0}
-.manualReviewAvatarFallback{width:40px;height:40px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-weight:800;flex-shrink:0}
+.manualReviewAvatarFallback{width:40px;height:40px;border-radius:50%;background:var(--admin-primary);color:#fff;display:grid;place-items:center;font-weight:800;flex-shrink:0}
 .manualReviewItem{align-items:flex-start;gap:12px}
 .manualDayPicker{display:flex;gap:8px;overflow-x:auto;padding:6px 0 10px;margin-top:6px}
-.manualDayPicker button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:1px solid var(--admin-line);border-radius:12px;padding:10px 14px;color:var(--admin-ink);cursor:pointer;min-width:56px}
+.manualDayPicker button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:1px solid var(--admin-line);border-radius:var(--admin-radius-sm);padding:10px 14px;color:var(--admin-ink);cursor:pointer;min-width:56px;transition:all .15s}
 .manualDayPicker button small{color:var(--admin-muted);font-size:10px}
 .manualDayPicker button b{font-size:18px}
 .manualDayPicker button span{color:var(--admin-muted);font-size:10px}
-.manualDayPicker button.selected{border-color:#111;background:#f2f2ee}
+.manualDayPicker button.selected{border-color:var(--admin-primary);background:var(--admin-primary-soft)}
 .manualSlotPicker{flex-wrap:wrap}
 .manualSlotPicker button{min-width:auto}
-.scheduleTargetSelect{margin-top:8px;background:#fff;color:var(--admin-ink);border:1px solid var(--admin-line);border-radius:8px;padding:8px 12px;font-size:13px}
+.scheduleTargetSelect{margin-top:8px;padding:8px 12px;font-size:13px}
 .mediaEditor div b{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .mediaEditor div b small{font-size:10px;font-weight:600;color:var(--admin-muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* Genel yapı taşları (builderBlock, toggleField, industryCards vb. globals.css'te
+   tanımlı ama panel-özel — burada indigo/slate sistemine göre eziliyor) */
+.dashboardShell .builderBlock{border-top-color:var(--admin-line)}
+.dashboardShell .builderBlock>h3,.dashboardShell .galleryHeader h3{font-weight:700;letter-spacing:-.01em;color:var(--admin-ink)}
+.dashboardShell .builderBlock>h3:before{background:var(--admin-primary)}
+.dashboardShell .toggleField{background:#f8fafc;border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
+.dashboardShell .durationHint,.dashboardShell .serviceDurationNote{background:#f8fafc;color:var(--admin-muted);border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
+.dashboardShell .serviceDetailSection{background:var(--admin-primary-soft);border-left:3px solid var(--admin-primary);border-radius:0 var(--admin-radius-sm) var(--admin-radius-sm) 0}
+.dashboardShell .industryCards button,.dashboardShell .presetCards button{border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line);background:#fff;transition:all .15s ease}
+.dashboardShell .industryCards button:hover,.dashboardShell .presetCards button:hover{background:var(--admin-primary-soft);color:var(--admin-primary);border-color:var(--admin-primary);transform:translateY(-1px)}
+.dashboardShell .colorSetBtn,.dashboardShell .paletteChooser button{border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
+.dashboardShell .colorSetBtn.active{border-color:var(--admin-primary);box-shadow:0 0 0 1px var(--admin-primary)}
+.dashboardShell .logoUploader,.dashboardShell .simpleColorControl,.dashboardShell .paletteChooser,.dashboardShell .domainConnectCard,.dashboardShell .dnsBox{background:#f8fafc;border-radius:var(--admin-radius);border:1px solid var(--admin-line)}
+.dashboardShell .mediaEditor{background:#f8fafc;border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
+.dashboardShell .waStatusBox,.dashboardShell .waTimingRow,.dashboardShell .googleSettings,.dashboardShell .whatsappSettings{background:#f8fafc;border-radius:var(--admin-radius);border:1px solid var(--admin-line)}
+.dashboardShell .dashModalBackdrop{background:rgba(15,23,42,.45);backdrop-filter:blur(2px)}
+.dashboardShell button{transition:transform .15s cubic-bezier(.4,0,.2,1),background .15s ease,border-color .15s ease,color .15s ease}
+.dashboardShell button:active{transform:scale(.97)}
