@@ -95,6 +95,26 @@
 .dashboardShell a{color:var(--admin-ink)}
 .dashboardShell a:hover{color:var(--admin-primary)}
 
+/* Hizmet paneldeki renk etiketi (sadece panelde ayirt etmek icin, musteri tarafinda gorunmez) */
+.serviceColorRow{display:flex;flex-wrap:wrap;gap:9px;margin-top:9px}
+.serviceColorSwatch{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--admin-line);cursor:pointer;padding:0;transition:transform .12s ease,box-shadow .12s ease}
+.serviceColorSwatch:hover{transform:scale(1.1)}
+.serviceColorSwatch.selected{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--admin-primary)}
+.serviceColorSwatch.none{background:#fff;color:var(--admin-muted);font-size:12px;display:grid;place-items:center}
+.serviceColorDot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+
+/* Hizmet formundaki "Detay sayfası" alt bölümleri artık katlanır — hepsi aynı
+   anda açık durup kalabalık göstermesin diye <details> ile bölümlere ayrıldı */
+.detailAccordion{border:1px solid var(--admin-line);border-radius:var(--admin-radius-sm);background:#fff;overflow:hidden}
+.detailAccordion+.detailAccordion{margin-top:10px}
+.detailAccordion summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;align-items:baseline;gap:10px;font-weight:700;font-size:13.5px;color:var(--admin-ink)}
+.detailAccordion summary::-webkit-details-marker{display:none}
+.detailAccordion summary span{font-weight:400;color:var(--admin-muted);font-size:12px}
+.detailAccordion summary:before{content:'›';margin-left:auto;color:var(--admin-muted);transition:transform .2s ease;font-size:16px;flex-shrink:0}
+.detailAccordion[open] summary:before{transform:rotate(90deg)}
+.detailAccordion[open] summary{border-bottom:1px solid var(--admin-line)}
+.detailAccordionBody{padding:16px;display:grid;gap:12px}
+
 .fullTemplateGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
 .templatePreview{padding:12px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
 .templatePreview:hover{border-color:#cbd5e1;transform:translateY(-1px)}
