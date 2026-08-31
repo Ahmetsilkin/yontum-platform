@@ -1,11 +1,83 @@
-.daySchedule{background:#111;color:#fff;border-radius:18px;padding:24px;margin-bottom:20px}.daySchedule>header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}.daySchedule h2{font:700 27px Georgia;margin:5px 0}.daySchedule header small{letter-spacing:2px;color:#888}.daySchedule header>div:last-child{display:flex;gap:7px}.daySchedule input,.daySchedule select{background:#252525;color:#fff;border:1px solid #444;padding:9px}
-.scheduleGridScroll{overflow-x:auto}
-.scheduleGrid{border-top:1px solid #333;min-width:calc(65px + var(--staff-cols) * 150px)}
-.scheduleColHeads{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));background:#171717;border-bottom:1px solid #333;position:sticky;top:0}
-.scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:#d4af37;border-left:1px solid #292929;letter-spacing:.3px}
-.hourRow{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));min-height:55px;border-bottom:1px solid #292929}.hourRow>time{padding:14px 8px;color:#777;font-size:11px}
-.staffCell{border-left:1px solid #292929;padding:5px;display:flex;flex-direction:column;gap:5px}
-.hourRow article{position:relative;background:#252525;border-left:4px solid #65d392;padding:9px 70px 9px 10px;display:flex;flex-direction:column}.hourRow article.status-completed{border-color:#777;opacity:.7}.hourRow article.status-no_show{border-color:#d96767}.hourRow article span{font-size:12px;margin:3px 0}.hourRow article small{color:#999}.hourRow article em{position:absolute;right:8px;top:8px;font-size:9px;font-style:normal;background:#333;padding:5px}.scheduleEmpty{text-align:center;color:#777}@media(max-width:650px){.daySchedule{border-radius:0;padding:16px;margin-inline:-10px}.daySchedule>header{display:block}.daySchedule header>div:last-child{margin-top:12px;display:grid;grid-template-columns:1fr 1fr}.scheduleGrid{min-width:calc(52px + var(--staff-cols) * 130px)}.scheduleColHeads,.hourRow{grid-template-columns:52px repeat(var(--staff-cols),minmax(130px,1fr))}.hourRow article{padding-right:55px}}
+.daySchedule{background:#111;color:#fff;border-radius:18px;padding:24px;margin-bottom:20px}
+.daySchedule>header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap;gap:14px}
+.daySchedule h2{font:700 27px Georgia;margin:5px 0}
+.daySchedule header small{letter-spacing:2px;color:#888}
+
+.calBadges{display:flex;gap:10px}
+.calBadge{background:#1c1c1c;border:1px solid #2e2e2e;border-radius:12px;padding:9px 16px;display:flex;flex-direction:column;gap:2px;min-width:120px}
+.calBadge small{color:#888;font-size:9px;letter-spacing:.6px}
+.calBadge b{font:700 19px Georgia;color:#fff}
+
+.calTabsRow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.calTabs{display:flex;gap:4px;background:#1c1c1c;border:1px solid #2e2e2e;border-radius:999px;padding:4px}
+.calTabs button{border:none;background:transparent;padding:8px 16px;border-radius:999px;font:600 13px inherit;color:#999;cursor:pointer}
+.calTabs button.active{background:#d4af37;color:#141414}
+.calLegend{display:flex;flex-wrap:wrap;gap:12px}
+.calLegend span{display:flex;align-items:center;gap:6px;font-size:12px;color:#999}
+.calLegend i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+.calNav{display:flex;align-items:center;gap:10px;margin-bottom:14px;color:#eee}
+.calNav>span{font-weight:600;min-width:200px;font-size:14px}
+.calNav button{border:1px solid #2e2e2e;background:#1c1c1c;border-radius:9px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#eee}
+.calNav button.calToday{width:auto;padding:0 12px;font-size:12px;font-weight:600}
+.calNav button:hover{background:#242424}
+
+.calWrap{background:#181818;border:1px solid #2a2a2a;border-radius:14px;padding:8px;overflow-x:auto}
+.scheduleEmpty{text-align:center;color:#777;margin-top:12px}
+
+/* react-big-calendar ezmeleri — koyu tema */
+.calWrap .rbc-time-view,.calWrap .rbc-time-header,.calWrap .rbc-time-content{border-color:#2a2a2a!important;background:transparent}
+.calWrap .rbc-time-header-content,.calWrap .rbc-time-content>*+*>*{border-color:#2a2a2a!important}
+.calWrap .rbc-timeslot-group{border-color:#232323!important}
+.calWrap .rbc-day-slot .rbc-time-slot{border-color:#1e1e1e!important}
+.calWrap .rbc-today{background:#241f10!important}
+.calWrap .rbc-current-time-indicator{background:#d4af37;height:2px}
+.calWrap .rbc-header{border-color:#2a2a2a!important;padding:9px 6px;font-weight:700;color:#eee;background:#1c1c1c}
+.calWrap .rbc-label{color:#888;font-size:11px}
+.calWrap .rbc-event{border-radius:9px!important;border:none!important;padding:3px 8px!important;box-shadow:0 2px 8px #00000055}
+.calWrap .rbc-event-label{font-size:10px;opacity:.85}
+.calWrap .rbc-event-content{font-size:12px;font-weight:600}
+.calWrap .rbc-addons-dnd-resize-ns-anchor{cursor:ns-resize}
+.calWrap .rbc-slot-selection{background:#d4af3733}
+.calWrap .rbc-off-range-bg{background:#0d0d0d}
+
+@media(max-width:650px){
+  .daySchedule{border-radius:0;padding:16px;margin-inline:-10px}
+  .daySchedule>header{display:block}
+  .calBadges{margin-top:12px}
+  .calNav>span{min-width:0;flex:1;text-align:center;font-size:12px}
+}
+
+/* Onay modali + detay çekmecesi — açık renk, panelin geri kalanından bağımsız */
+.calModalBackdrop,.calDrawerBackdrop{position:fixed;inset:0;background:#00000066;display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
+.calModal{background:#fff;border-radius:18px;padding:26px;max-width:380px;width:100%;position:relative;box-shadow:0 30px 80px #0005}
+.calModal h3{font:700 20px Georgia;margin:0 0 10px;color:#141414}
+.calModal p{color:#141414;font-size:14px;line-height:1.5;margin:0 0 20px}
+.calModalActions{display:flex;flex-direction:column;gap:8px}
+.calModalX{position:absolute;top:14px;right:14px;border:none;background:#f2f1ec;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#141414}
+.calBtnPrimary,.calBtnGhost,.calBtnDanger{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:12px 16px;font:600 14px inherit;cursor:pointer;border:1px solid transparent}
+.calBtnPrimary{background:#141414;color:#fff}
+.calBtnPrimary:disabled{opacity:.6;cursor:default}
+.calBtnGhost{background:#fff;border-color:#ddd;color:#141414}
+.calBtnDanger{background:#fff;border-color:#e3b8b8;color:#b23b3b}
+.spin{animation:calSpin .8s linear infinite}
+@keyframes calSpin{to{transform:rotate(360deg)}}
+
+.calDrawerBackdrop{justify-content:flex-end}
+.calDrawer{background:#fff;height:100%;width:100%;max-width:380px;padding:28px 24px;overflow-y:auto;position:relative;box-shadow:-20px 0 60px #0005;animation:calDrawerIn .22s ease}
+@keyframes calDrawerIn{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
+.calDrawerOverline{color:#999;letter-spacing:1.5px;font-size:11px}
+.calDrawer h3{font:700 24px Georgia;margin:4px 0 18px;color:#141414}
+.calDrawerRow{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eee;font-size:14px}
+.calDrawerRow span{color:#888}
+.calDrawerRow b{color:#141414;text-align:right}
+.calDrawerNote{margin-top:14px;background:#fbf6e8;border-radius:10px;padding:10px 12px;font-size:13px;color:#5a4a1f}
+.calDrawerContact{display:flex;gap:10px;margin-top:18px}
+.calDrawerContact a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #ddd;border-radius:12px;padding:11px;text-decoration:none;color:#141414;font-size:13px;font-weight:600}
+.calDrawerActions{display:flex;flex-direction:column;gap:8px;margin-top:22px}
+
+.calToast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#141414;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;z-index:90;box-shadow:0 12px 30px #0006}
+
 .scheduleDayPicker{display:flex;gap:8px;overflow-x:auto;padding:6px 0 16px}
 .scheduleDayPicker button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;background:#141414;border:1px solid #2a2a2a;border-radius:12px;padding:10px 14px;color:#eee;cursor:pointer;min-width:56px}
 .scheduleDayPicker button small{color:#999;font-size:10px}
