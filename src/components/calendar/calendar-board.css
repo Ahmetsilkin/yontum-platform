@@ -13,7 +13,10 @@
 .calBadge small{color:var(--admin-muted);font-size:10px;letter-spacing:.6px}
 .calBadge b{font:700 22px Georgia;color:var(--admin-ink)}
 
-.calBoardNav{display:flex;align-items:center;gap:10px;color:var(--admin-ink)}
+.calBoardNav{display:flex;flex-wrap:wrap;align-items:center;gap:10px;color:var(--admin-ink)}
+.calLegend{display:flex;flex-wrap:wrap;gap:12px;margin-left:auto}
+.calLegend span{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--admin-muted)}
+.calLegend i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto}
 .calBoardNav>span{font-weight:600;min-width:210px}
 .calBoardNav button{border:1px solid var(--admin-line);background:var(--admin-card);border-radius:10px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--admin-ink)}
 .calBoardNav button.calBoardToday{width:auto;padding:0 14px;font-size:13px;font-weight:600}

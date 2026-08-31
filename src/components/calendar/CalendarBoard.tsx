@@ -15,8 +15,7 @@ import'./calendar-board.css';
 const localizer=dateFnsLocalizer({format,parse,startOfWeek:()=>startOfWeek(new Date(),{weekStartsOn:1}),getDay,locales:{tr}});
 const DnDCalendar=withDragAndDrop(Calendar as any) as any;
 const MIN_TIME=new Date(1970,0,1,8,0),MAX_TIME=new Date(1970,0,1,22,0);
-const SERVICE_COLORS=['#e0955a','#5b8c6e','#5c80bc','#c76b98','#c9a13b','#8069b0','#4bab9e','#c1666b','#4f8fb0'];
-function serviceColor(id:string){let h=0;for(let i=0;i<id.length;i++)h=(h*31+id.charCodeAt(i))>>>0;return SERVICE_COLORS[h%SERVICE_COLORS.length]}
+const SERVICE_COLORS=['#e0955a','#5b8c6e','#5c80bc','#c76b98','#c9a13b','#8069b0','#4bab9e','#c1666b','#4f8fb0','#7a9e4f','#b0724f','#5d6bc9'];
 function waPhone(raw:string){let p=String(raw||'').replace(/\D/g,'');if(p.startsWith('0'))p='90'+p.slice(1);if(p&&!p.startsWith('90')&&p.length===10)p='90'+p;return p}
 /* "Ana Takvim" işletmenin kendi otomatik takvim kaydıdır, gerçek bir çalışan
    değildir; davet gönderilmemiş (user_id'siz) gerçek çalışanlar da yanlışlıkla
@@ -66,13 +65,17 @@ export default function CalendarBoard({businessId}:{businessId:string}){
 
   const resources=useMemo(()=>visibleStaffList(staffList).map(s=>({resourceId:s.id,resourceTitle:s.name})),[staffList]);
   const events=useMemo<CalEvent[]>(()=>appointments.map(a=>({id:a.id,title:`${a.customer_first_name} ${a.customer_last_name}`,start:new Date(a.start_at),end:new Date(a.end_at),resourceId:a.staff_id||'__unassigned',appointment:a})),[appointments]);
+  // Renk, servisin id'sinden hash'lenmiyor (az sayıda renkle çakışma çok olası
+  // oluyordu) — bunun yerine işletmenin hizmet listesindeki SIRAYA göre veriliyor,
+  // böylece aynı işletmedeki farklı hizmetler palet bitene kadar hep farklı renk alır.
+  const serviceColorMap=useMemo(()=>{const m=new Map<string,string>();services.forEach((s,i)=>m.set(s.id,SERVICE_COLORS[i%SERVICE_COLORS.length]));return m},[services]);
 
   const today=new Date().toLocaleDateString('en-CA');
   const todaysAppointments=useMemo(()=>appointments.filter(a=>a.start_at.slice(0,10)===today),[appointments,today]);
   const expectedRevenue=todaysAppointments.reduce((n,a)=>n+Number(a.total_price||0),0);
 
   function eventPropGetter(event:CalEvent){
-    const bg=serviceColor(event.appointment.service_id);
+    const bg=serviceColorMap.get(event.appointment.service_id)||'#8a8a8a';
     return{style:{backgroundColor:bg,borderColor:bg,opacity:event.appointment.status==='completed'?0.55:1}};
   }
 
@@ -145,6 +148,7 @@ export default function CalendarBoard({businessId}:{businessId:string}){
       <span>{dateLabel}</span>
       <button onClick={()=>shiftDate(tabMode==='week'?7:1)} aria-label="Sonraki"><ChevronRight size={18}/></button>
       <button className="calBoardToday" onClick={()=>setDate(new Date())}>Bugün</button>
+      <div className="calLegend">{services.map(s=><span key={s.id}><i style={{background:serviceColorMap.get(s.id)}}/>{s.name}</span>)}</div>
     </div>
 
     <div className="calBoardCalendarWrap">
