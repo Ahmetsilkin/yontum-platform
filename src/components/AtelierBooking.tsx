@@ -22,7 +22,7 @@ export default function AtelierBooking({business,services,hours,staff,staffServi
     e.preventDefault();if(!service||!date||!time)return;
     setSubmitting(true);setError('');
     const f=new FormData(e.currentTarget);
-    const{ok,json:j}=await submitAppointment(business.id,{serviceId:service.id,staffId:staffId==='any'?null:staffId,date,time,firstName:String(f.get('firstName')||''),lastName:String(f.get('lastName')||''),phone:String(f.get('phone')||''),email:String(f.get('email')||''),note:''});
+    const{ok,json:j}=await submitAppointment(business.id,{serviceId:service.id,staffId:staffId==='any'?null:staffId,date,time,firstName:String(f.get('firstName')||''),lastName:String(f.get('lastName')||''),phone:String(f.get('phone')||''),email:String(f.get('email')||''),note:String(f.get('note')||'')});
     setSubmitting(false);
     if(!ok){setError(j.error)}else{setModalOpen(false);setCancelUrl(j.cancelUrl)}
   }
@@ -72,6 +72,7 @@ export default function AtelierBooking({business,services,hours,staff,staffServi
             <input name="phone" placeholder="Telefon" required={business.booking_require_phone!==false}/>
             <input name="email" type="email" placeholder="E-posta"/>
           </div>
+          {business.booking_show_note!==false&&<textarea name="note" className="atBookNote" rows={2} placeholder="Not (isteğe bağlı)"/>}
           {error&&<p className="atBookError">{error}</p>}
           <button className="atBookSubmit" disabled={submitting}>{submitting?'Gönderiliyor…':'Randevuyu Onayla →'}</button>
         </form>
