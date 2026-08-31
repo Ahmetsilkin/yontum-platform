@@ -1,8 +1,5 @@
 'use client';
-import ManualReviews from'@/components/ManualReviews';import{Fragment,useEffect,useMemo,useRef,useState}from'react';import{createClient}from'@/lib/supabase-browser';import type{Appointment,Business,Service,WorkingHour}from'@/lib/types';import SiteBuilderV8 from'@/components/site-builder/SiteBuilderV8';import dynamic from'next/dynamic';import'@/app/mobile-admin.css';import'@/app/admin-modern.css';
-// Takvim, react-big-calendar gibi ağır bir kütüphane taşıyor — panel her açılışta
-// bunu indirmesin diye sadece "Randevular" sekmesine gerçekten girildiğinde yükleniyor.
-const DaySchedule=dynamic(()=>import('@/components/DaySchedule'),{ssr:false,loading:()=><div className="daySchedule"><p style={{color:'#999'}}>Takvim yükleniyor…</p></div>});
+import ManualReviews from'@/components/ManualReviews';import{Fragment,useEffect,useMemo,useRef,useState}from'react';import{createClient}from'@/lib/supabase-browser';import type{Appointment,Business,Service,WorkingHour}from'@/lib/types';import SiteBuilderV8 from'@/components/site-builder/SiteBuilderV8';import DaySchedule from'@/components/DaySchedule';import'@/app/mobile-admin.css';import'@/app/admin-modern.css';
 const db=createClient(),dayNames=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],monthNames=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
 function groupAppointmentsByDay(list:any[]){
   const groups=new Map<string,{key:string;label:string;sortKey:string;items:any[]}>();
