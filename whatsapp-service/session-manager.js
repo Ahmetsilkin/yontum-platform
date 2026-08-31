@@ -53,12 +53,21 @@ export async function ensureSession(businessId, businessName) {
     if (connection === 'close') {
       sockets.delete(businessId);
       const statusCode = lastDisconnect?.error instanceof Boom ? lastDisconnect.error.output?.statusCode : undefined;
+      const errMsg = lastDisconnect?.error?.message || String(lastDisconnect?.error || '');
       const loggedOut = statusCode === DisconnectReason.loggedOut;
-      await reportSessionStatus(businessId, 'disconnected').catch((e) => console.error(e.message));
+      const restartRequired = statusCode === DisconnectReason.restartRequired;
+      console.log(`[${businessName || businessId}] bağlantı kapandı — statusCode=${statusCode} restartRequired=${restartRequired} mesaj="${errMsg}"`);
       if (loggedOut) {
+        await reportSessionStatus(businessId, 'disconnected').catch((e) => console.error(e.message));
         console.log(`[${businessName || businessId}] oturum kapatıldı (telefondan bağlantı kesildi) — yeniden QR gerekecek.`);
+      } else if (restartRequired) {
+        // QR üretildikten hemen sonra WhatsApp sunucusunun bilinçli olarak
+        // kapattığı, normal bir ara adım — yeni QR ÜRETMEDEN, aynı durumla
+        // hemen (bekleme olmadan) yeniden bağlanmak gerekiyor.
+        ensureSession(businessId, businessName);
       } else {
-        console.log(`[${businessName || businessId}] bağlantı koptu, yeniden denenecek…`);
+        await reportSessionStatus(businessId, 'disconnected').catch((e) => console.error(e.message));
+        console.log(`[${businessName || businessId}] bağlantı koptu, 5sn sonra yeniden denenecek…`);
         setTimeout(() => ensureSession(businessId, businessName), 5000);
       }
     }

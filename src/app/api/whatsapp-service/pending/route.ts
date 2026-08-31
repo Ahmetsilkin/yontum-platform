@@ -50,7 +50,7 @@ export async function GET(req:NextRequest){
   (reviewRows||[]).forEach((a:any)=>{
     const biz=bizById.get(a.business_id);if(!biz)return;
     const phone=waPhone(a.customer_phone);if(!phone)return;
-    const link=biz.google_place_id?`https://search.google.com/local/writereview?placeid=${biz.google_place_id}`:(biz.google_maps_url||(a.rating_token?`${site}/puan/${a.rating_token}`:''));
+    const link=biz.google_maps_url||(biz.google_place_id?`https://search.google.com/local/writereview?placeid=${biz.google_place_id}`:(a.rating_token?`${site}/puan/${a.rating_token}`:''));
     const text=`Merhaba ${a.customer_first_name}, ${biz.name}'i tercih ettiğiniz için teşekkür ederiz! Deneyiminizi 1 dakikada değerlendirir misiniz?${link?`\n${link}`:''}`;
     messages.push({businessId:a.business_id,appointmentId:a.id,type:'review',phone,text});
   });
