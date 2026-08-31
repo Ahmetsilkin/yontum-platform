@@ -5,8 +5,11 @@ const dayNames=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cum
 /* Çalışan sütunları — her çalışanın randevuları kendi sütununda üst üste,
    diğer çalışanınkiler yan sütunda gösterilir (aynı saatte karışmasınlar diye
    randevular artık ortak bir listede değil, çalışana sabit bir sütuna yazılıyor). */
+function visibleStaffList(staff:any[]){
+  return staff.filter((s:any,i:number)=>!s.is_default&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim'&&staff.findIndex((x:any)=>s.user_id?x.user_id===s.user_id:x.id===s.id)===i);
+}
 function staffColumns(staff:any[],staffId:string){
-  const visible=staff.filter((s:any,i:number)=>!s.is_default&&staff.findIndex((x:any)=>x.user_id&&x.user_id===s.user_id)===i);
+  const visible=visibleStaffList(staff);
   const base=staffId==='all'?visible:visible.filter(s=>s.id===staffId);
   return base.map(s=>({id:s.id,name:s.name,matchIds:new Set([s.id,...staff.filter((x:any)=>s.user_id&&x.user_id===s.user_id).map((x:any)=>x.id)])}));
 }
@@ -23,7 +26,7 @@ export default function DaySchedule({appointments,staff}:{appointments:Appointme
   },[appointments,date,staffId,staff]);
   const columns=useMemo(()=>staffColumns(staff,staffId),[staff,staffId]);
   const hasUnassigned=useMemo(()=>staffId==='all'&&list.some(a=>!columns.some(c=>c.matchIds.has(a.staff_id))),[list,columns,staffId]);
-  const allColumns=hasUnassigned?[...columns,{id:'__unassigned',name:'Genel',matchIds:new Set<string>()}]:columns;
+  const allColumns=hasUnassigned?[...columns,{id:'__unassigned',name:'Atanmamış',matchIds:new Set<string>()}]:columns;
   const hours=Array.from({length:15},(_,i)=>i+7);
   const pickerRef=useRef<HTMLDivElement>(null);
   useEffect(()=>{
@@ -45,7 +48,7 @@ export default function DaySchedule({appointments,staff}:{appointments:Appointme
         <div><small>GÜNLÜK AKIŞ</small><h2>Saat Takvimi</h2></div>
         <select value={staffId} onChange={e=>setStaffId(e.target.value)}>
           <option value="all">Tüm çalışanlar</option>
-          {staff.filter((s:any,i:number)=>!s.is_default&&staff.findIndex((x:any)=>x.user_id&&x.user_id===s.user_id)===i).map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
+          {visibleStaffList(staff).map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
         </select>
       </header>
       <div className="scheduleDayPicker" ref={pickerRef}>
