@@ -776,10 +776,12 @@ function IpekServices({p}:{p:P}){
         const hasDetail=!!(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable);
         const inner=<>
           <div className="ipServiceCardPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
-          <h3>{s.name}</h3>
-          {s.description&&<p>{s.description}</p>}
-          <footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</footer>
-          {hasDetail&&<span className="ipServiceMore">Detaylı İncele →</span>}
+          <div className="ipServiceCardBody">
+            <h3>{s.name}</h3>
+            {s.description&&<p>{s.description}</p>}
+            <footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</footer>
+            {hasDetail&&<span className="ipServiceMore">Detaylı İncele →</span>}
+          </div>
         </>;
         return hasDetail&&s.slug
           ?<Reveal as="article" key={s.id} i={i} className="ipServiceCardLink"><a href={`/site/${p.b.slug}/hizmet/${s.slug}`}>{inner}</a></Reveal>
@@ -1019,15 +1021,15 @@ function Ipek(p:P){
     <IpekGallery p={p}/>
     <IpekTestimonials businessId={b.id}/>
 
-    {faq.length>0&&<section className="ipFaqSection">
-      <Reveal><header><small>SIKÇA SORULANLAR</small><h2>Merak edilenler.</h2></header></Reveal>
-      <Reveal><Faq items={faq}/></Reveal>
-    </section>}
-
     <section id="randevu" className="ipBookingSection">
       <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
       <Reveal><ZarafetBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
     </section>
+
+    {faq.length>0&&<section className="ipFaqSection">
+      <Reveal><header><small>SIKÇA SORULANLAR</small><h2>Merak edilenler.</h2></header></Reveal>
+      <Reveal><Faq items={faq}/></Reveal>
+    </section>}
 
     <section className="ipCtaBand">
       <Reveal><h2>Randevu Almak İster misiniz?</h2></Reveal>
