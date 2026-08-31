@@ -19,7 +19,7 @@ export async function GET(req:NextRequest){
   const activeIds=(sessions||[]).map((s:any)=>s.business_id);
   if(!activeIds.length)return NextResponse.json({messages:[]});
 
-  const{data:businesses}=await db.from('businesses').select('id,name,google_place_id,google_maps_url').in('id',activeIds).eq('whatsapp_automation_enabled',true);
+  const{data:businesses}=await db.from('businesses').select('id,name,google_place_id,google_maps_url').in('id',activeIds).eq('whatsapp_automation_enabled',true).is('deleted_at',null);
   const bizById=new Map((businesses||[]).map((b:any)=>[b.id,b]));
   const readyIds=[...bizById.keys()];
   if(!readyIds.length)return NextResponse.json({messages:[]});
