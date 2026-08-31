@@ -14,13 +14,13 @@ export async function GET(req:NextRequest){
   if(!businessId)return NextResponse.json({error:'businessId gerekli.'},{status:400});
   if(!(await authorizedForBusiness(businessId)))return NextResponse.json({error:'Yetkiniz yok.'},{status:403});
   const db=createServiceClient();
-  const{data}=await db.from('appointment_ratings').select('id,customer_name,stars,comment,avatar_url,is_manual,created_at').eq('business_id',businessId).order('created_at',{ascending:false});
+  const{data}=await db.from('appointment_ratings').select('id,customer_name,service_label,stars,comment,avatar_url,is_manual,created_at').eq('business_id',businessId).order('created_at',{ascending:false});
   return NextResponse.json({ratings:data||[]});
 }
 
 export async function POST(req:NextRequest){
   const form=await req.formData();
-  const businessId=String(form.get('businessId')||''),customerName=String(form.get('customerName')||'').trim(),stars=Number(form.get('stars')),comment=String(form.get('comment')||'').trim(),photo=form.get('photo')as File|null;
+  const businessId=String(form.get('businessId')||''),customerName=String(form.get('customerName')||'').trim(),serviceLabel=String(form.get('serviceLabel')||'').trim(),stars=Number(form.get('stars')),comment=String(form.get('comment')||'').trim(),photo=form.get('photo')as File|null;
   if(!businessId||!customerName||!stars||stars<1||stars>5||!comment)return NextResponse.json({error:'Geçersiz veri.'},{status:400});
   if(!(await authorizedForBusiness(businessId)))return NextResponse.json({error:'Yetkiniz yok.'},{status:403});
   const db=createServiceClient();
@@ -33,6 +33,7 @@ export async function POST(req:NextRequest){
   const{error}=await db.from('appointment_ratings').insert({
     business_id:businessId,
     customer_name:customerName,
+    service_label:serviceLabel||null,
     stars,
     comment,
     avatar_url:avatarUrl,

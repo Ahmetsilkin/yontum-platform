@@ -879,10 +879,12 @@
 .ipTestiViewport{overflow:hidden}
 .ipTestiTrack{display:flex;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .ipTestiPage{flex:0 0 100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.ipTestiPage article{background:var(--ip-bg);border-radius:16px;padding:26px}
-.ipStars{color:var(--ip-gold);letter-spacing:2px;margin-bottom:10px;font-size:14px}
-.ipTestiPage p{color:var(--ip-ink);font-size:14px;line-height:1.7;margin:0 0 16px}
-.ipTestiPage b{color:var(--ip-muted);font-size:13px;font-weight:700}
+.ipTestiPage article{background:var(--ip-surface);border-radius:18px;padding:30px 28px;box-shadow:0 14px 34px #2e26200f}
+.ipStars{color:var(--ip-gold);letter-spacing:2px;margin-bottom:14px;font-size:14px}
+.ipTestiPage p{color:var(--ip-ink);font-size:14px;line-height:1.7;margin:0 0 20px}
+.ipTestiDivider{height:1px;background:var(--ip-line);margin-bottom:16px}
+.ipTestiPage b{display:block;color:var(--ip-ink);font:700 16px 'Playfair Display',Georgia,serif;margin-bottom:2px}
+.ipTestiService{display:block;color:var(--ip-gold);font-size:12px;font-weight:600}
 .ipTestiDots{display:flex;justify-content:center;gap:8px;margin-top:30px}
 .ipTestiDots button{width:9px;height:9px;border-radius:50%;border:0;background:var(--ip-line);cursor:pointer;padding:0;transition:background .2s,transform .2s}
 .ipTestiDots button.active{background:var(--ip-gold);transform:scale(1.3)}

@@ -836,7 +836,9 @@ function IpekTestimonials({businessId}:{businessId:string}){
         {data.reviews.slice(pi*perPage,pi*perPage+perPage).map((r:any,i:number)=><article key={i}>
           <div className="ipStars">{'★'.repeat(r.stars||5)}</div>
           <p>"{r.comment}"</p>
+          <div className="ipTestiDivider"/>
           <b>{r.customer_name||'Müşterimiz'}</b>
+          {r.service_label&&<span className="ipTestiService">{r.service_label}</span>}
         </article>)}
       </div>)}
     </div></div>

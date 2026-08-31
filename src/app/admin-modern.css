@@ -76,6 +76,7 @@
 .manualReviewItem b{color:var(--admin-ink);margin-right:8px}
 .manualReviewStars{color:#e8a33d;font-size:13px;letter-spacing:1px}
 .manualBadge{display:inline-block;margin-left:8px;background:#f2f2ee;color:var(--admin-muted);padding:2px 8px;border-radius:999px;font-size:10px}
+.manualReviewService{display:block;color:#9b7b3f;font-size:11px;font-weight:700;margin-top:2px}
 .manualReviewItem p{color:var(--admin-muted);font-size:13px;margin-top:6px;line-height:1.5}
 .newStaffModal{max-width:480px}
 .credBox{background:#f7f7f4;border:1px solid var(--admin-line);border-radius:12px;padding:16px;margin:16px 0}

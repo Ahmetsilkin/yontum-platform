@@ -18,7 +18,7 @@ export async function POST(req:NextRequest,{params}:{params:Promise<{token:strin
   const stars=Number(form.get('stars')),comment=String(form.get('comment')||'').trim().slice(0,600),photo=form.get('photo')as File|null;
   if(!stars||stars<1||stars>5)return NextResponse.json({error:'Geçersiz veri.'},{status:400});
   const db=createServiceClient();
-  const{data:ap}=await db.from('appointments').select('id,business_id,staff_id,customer_first_name,customer_last_name,status').eq('rating_token',token).single();
+  const{data:ap}=await db.from('appointments').select('id,business_id,staff_id,customer_first_name,customer_last_name,status,services(name)').eq('rating_token',token).single();
   if(!ap)return NextResponse.json({error:'Randevu bulunamadı.'},{status:404});
   if(ap.status!=='completed')return NextResponse.json({error:'Bu randevu henüz tamamlanmadı.'},{status:400});
   const{data:existing}=await db.from('appointment_ratings').select('id').eq('appointment_id',ap.id).maybeSingle();
@@ -37,6 +37,7 @@ export async function POST(req:NextRequest,{params}:{params:Promise<{token:strin
     stars,
     comment:comment||null,
     avatar_url:avatarUrl,
+    service_label:(ap as any).services?.name||null,
   });
   if(error)return NextResponse.json({error:'Değerlendirme kaydedilemedi.'},{status:500});
   return NextResponse.json({ok:true});

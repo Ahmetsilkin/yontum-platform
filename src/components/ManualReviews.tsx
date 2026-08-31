@@ -4,6 +4,7 @@ import{useEffect,useState}from'react';
 export default function ManualReviews({businessId}:{businessId:string}){
   const[list,setList]=useState<any[]|null>(null);
   const[name,setName]=useState('');
+  const[serviceLabel,setServiceLabel]=useState('');
   const[stars,setStars]=useState(5);
   const[comment,setComment]=useState('');
   const[photo,setPhoto]=useState<File|null>(null);
@@ -21,12 +22,13 @@ export default function ManualReviews({businessId}:{businessId:string}){
     setBusy(true);setError('');
     const fd=new FormData();
     fd.append('businessId',businessId);fd.append('customerName',name);fd.append('stars',String(stars));fd.append('comment',comment);
+    if(serviceLabel.trim())fd.append('serviceLabel',serviceLabel.trim());
     if(photo)fd.append('photo',photo);
     const r=await fetch('/api/admin/manual-review',{method:'POST',body:fd});
     const j=await r.json();
     setBusy(false);
     if(!r.ok){setError(j.error);return}
-    setName('');setComment('');setStars(5);setPhoto(null);setPhotoPreview('');
+    setName('');setServiceLabel('');setComment('');setStars(5);setPhoto(null);setPhotoPreview('');
     load();
   }
 
@@ -43,12 +45,13 @@ export default function ManualReviews({businessId}:{businessId:string}){
       <div className="manualReviewForm">
         <div className="twoCol">
           <label className="field">Müşteri adı<input className="input" value={name} onChange={e=>setName(e.target.value)} placeholder="Örn. Ahmet Y."/></label>
-          <label className="field">Puan
-            <select className="input" value={stars} onChange={e=>setStars(Number(e.target.value))}>
-              {[5,4,3,2,1].map(n=><option key={n} value={n}>{n} yıldız</option>)}
-            </select>
-          </label>
+          <label className="field">Hizmet (isteğe bağlı)<input className="input" value={serviceLabel} onChange={e=>setServiceLabel(e.target.value)} placeholder="Örn. Kalıcı Oje"/></label>
         </div>
+        <label className="field">Puan
+          <select className="input" value={stars} onChange={e=>setStars(Number(e.target.value))}>
+            {[5,4,3,2,1].map(n=><option key={n} value={n}>{n} yıldız</option>)}
+          </select>
+        </label>
         <label className="field full">Yorum metni<textarea className="input" rows={2} value={comment} onChange={e=>setComment(e.target.value.slice(0,600))} placeholder="Müşterinin yorumunu buraya yapıştırın"/></label>
         <label className="myProfilePhoto manualReviewPhoto">
           {photoPreview?<img src={photoPreview} alt=""/>:<span>{name?.[0]||'📷'}</span>}
@@ -67,6 +70,7 @@ export default function ManualReviews({businessId}:{businessId:string}){
             {r.avatar_url?<img className="manualReviewAvatar" src={r.avatar_url} alt=""/>:<span className="manualReviewAvatarFallback">{(r.customer_name||'M')[0]}</span>}
             <div>
               <b>{r.customer_name||'Müşteri'}</b>
+              {r.service_label&&<small className="manualReviewService">{r.service_label}</small>}
               <span className="manualReviewStars">{'★'.repeat(r.stars)}{'☆'.repeat(5-r.stars)}</span>
               {r.is_manual&&<small className="manualBadge">elle eklendi</small>}
               <p>{r.comment}</p>
