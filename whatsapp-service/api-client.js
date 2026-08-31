@@ -34,6 +34,17 @@ export function markMessageSent(appointmentId, type) {
   });
 }
 
+export function fetchInstantMessages() {
+  return call('/api/whatsapp-service/instant').then((j) => j.messages || []);
+}
+
+export function markInstantSent(id, ok, error) {
+  return call('/api/whatsapp-service/instant/mark-sent', {
+    method: 'POST',
+    body: JSON.stringify({ id, ok, error }),
+  });
+}
+
 export function reportSessionStatus(businessId, status, extra = {}) {
   return call('/api/whatsapp-service/session', {
     method: 'POST',

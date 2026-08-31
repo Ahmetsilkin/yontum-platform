@@ -1,8 +1,13 @@
 import 'dotenv/config';
 import { ensureSession, sendText } from './session-manager.js';
-import { fetchAutomationBusinesses, fetchPendingMessages, markMessageSent } from './api-client.js';
+import { fetchAutomationBusinesses, fetchPendingMessages, markMessageSent, fetchInstantMessages, markInstantSent } from './api-client.js';
 
 const POLL_INTERVAL_MS = Number(process.env.POLL_INTERVAL_MS || 60000);
+// Takvimden "Evet, WhatsApp Gönder" ile tetiklenen anlık mesajlar (örn. randevu
+// saati değişti bildirimi) için ayrı, çok daha sık bir kontrol döngüsü —
+// müşteri neredeyse anında mesajı alsın diye ana 60sn'lik otomasyon
+// döngüsünü beklemiyor.
+const INSTANT_POLL_INTERVAL_MS = Number(process.env.INSTANT_POLL_INTERVAL_MS || 4000);
 
 function randomDelay(minMs = 3000, maxMs = 5000) {
   return new Promise((resolve) => setTimeout(resolve, minMs + Math.random() * (maxMs - minMs)));
@@ -49,6 +54,26 @@ async function sendPendingMessages() {
   }
 }
 
+async function sendInstantMessages() {
+  let messages = [];
+  try {
+    messages = await fetchInstantMessages();
+  } catch (e) {
+    // Sessizce geç — bu döngü çok sık çalışıyor, her hatada log basmak gürültü yapar.
+    return;
+  }
+  for (const m of messages) {
+    try {
+      await sendText(m.businessId, m.phone, m.text);
+      await markInstantSent(m.id, true);
+      console.log(`  ⚡ anlık mesaj → ${m.phone}`);
+    } catch (e) {
+      console.error(`  ✗ anlık mesaj → ${m.phone}:`, e.message);
+      await markInstantSent(m.id, false, e.message).catch(() => {});
+    }
+  }
+}
+
 async function tick() {
   await ensureAllSessions();
   await sendPendingMessages();
@@ -56,6 +81,8 @@ async function tick() {
 
 console.log('Yontum WhatsApp Otomasyon Servisi başlatılıyor…');
 console.log(`Kontrol aralığı: ${POLL_INTERVAL_MS / 1000} saniye`);
+console.log(`Anlık mesaj kontrol aralığı: ${INSTANT_POLL_INTERVAL_MS / 1000} saniye`);
 
 tick();
 setInterval(tick, POLL_INTERVAL_MS);
+setInterval(sendInstantMessages, INSTANT_POLL_INTERVAL_MS);
