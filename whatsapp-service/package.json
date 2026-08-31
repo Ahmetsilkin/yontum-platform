@@ -1,0 +1,18 @@
+{
+  "name": "yontum-whatsapp-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Yontum icin lokal calisan WhatsApp otomasyon servisi (randevu onayi, hatirlatma, degerlendirme mesajlari).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc14",
+    "@hapi/boom": "^10.0.1",
+    "dotenv": "^16.4.5",
+    "pino": "^9.4.0",
+    "qrcode": "^1.5.4"
+  }
+}
