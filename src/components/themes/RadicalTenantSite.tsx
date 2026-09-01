@@ -112,16 +112,24 @@ function ScrollChars({parts,tag='h2',className}:{parts:{text:string;as?:'em'|'b'
   const ref=useRef<HTMLHeadingElement>(null);
   const[progress,setProgress]=useState(0);
   useEffect(()=>{
-    const el=ref.current;if(!el)return;
-    const onScroll=()=>{
+    let cancelled=false,st:any;
+    /* GSAP yüklenene kadar (ilk boya + dinamik import arasında) elle bir kez
+       hesaplayıp gösteriyoruz ki başlık tamamen görünmez kalmasın; GSAP hazır
+       olunca ScrollTrigger.scrub bu değeri devralıp sürekli günceller. */
+    const fallback=()=>{
+      const el=ref.current;if(!el)return;
       const rect=el.getBoundingClientRect(),vh=window.innerHeight;
       const start=vh*0.92,end=vh*0.45;
       setProgress(Math.max(0,Math.min(1,(start-rect.top)/(start-end))));
     };
-    onScroll();
-    window.addEventListener('scroll',onScroll,{passive:true});
-    window.addEventListener('resize',onScroll,{passive:true});
-    return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll)};
+    fallback();
+    window.addEventListener('scroll',fallback,{passive:true});
+    loadGsap().then(({ScrollTrigger})=>{
+      if(cancelled||!ref.current)return;
+      window.removeEventListener('scroll',fallback);
+      st=ScrollTrigger.create({trigger:ref.current,start:'top 92%',end:'top 45%',scrub:true,onUpdate:(self:any)=>setProgress(self.progress)});
+    });
+    return()=>{cancelled=true;window.removeEventListener('scroll',fallback);st?.kill?.()};
   },[]);
   const totalChars=parts.reduce((n,p)=>n+p.text.length,0);
   const revealCount=Math.round(progress*totalChars);
@@ -137,6 +145,106 @@ function ScrollChars({parts,tag='h2',className}:{parts:{text:string;as?:'em'|'b'
       return <Fragment key={pi}>{part.break&&<br/>}<InnerTag>{chars}</InnerTag></Fragment>;
     })}
   </Tag>;
+}
+
+/* ================= GSAP ScrollTrigger — SADECE Roze temasında kullanılıyor =================
+   gsap/ScrollTrigger dinamik olarak (import()) yükleniyor ki diğer temaların (Keskin,
+   Atölye, Vitrin, Zarafet, İpek) JS paketine hiç girmesin — bu dosya tüm temalar
+   arasında paylaşıldığı için üstte statik import yapmak onların da bu kütüphaneyi
+   indirmesine sebep olurdu. İlk çağrıda bir kere yüklenip önbelleğe alınıyor. */
+let gsapLoad:Promise<{gsap:any;ScrollTrigger:any}>|null=null;
+function loadGsap(){
+  if(!gsapLoad)gsapLoad=Promise.all([import('gsap'),import('gsap/ScrollTrigger')]).then(([g,st])=>{
+    const gsap=g.gsap,ScrollTrigger=st.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+    /* Hero fotoğrafı/galeri gibi resimler asenkron yüklenip sayfa yüksekliğini
+       değiştirdikçe, daha ÖNCE oluşturulmuş tetikleyicilerin start/end
+       konumları eskimiş kalabiliyor (ör. negatif bir start — ki bu da geri
+       kaydırırken tetiklenmesi gereken onLeaveBack'in hiç ateşlenmemesine
+       yol açıyordu, çünkü scrollY hiçbir zaman negatif olamıyor). Tüm resimler
+       yüklendiğinde ve birkaç gecikmeli kontrol noktasında refresh() çağırıp
+       gerçek, nihai düzene göre yeniden hesaplatıyoruz. */
+    const refresh=()=>ScrollTrigger.refresh();
+    window.addEventListener('load',refresh);
+    [400,900,1800].forEach(ms=>setTimeout(refresh,ms));
+    return{gsap,ScrollTrigger};
+  });
+  return gsapLoad;
+}
+/* Reveal'ın GSAP ScrollTrigger sürümü — aynı .ksReveal/.in CSS'ini (paylaşılan,
+   diğer temalarda da kullanılan) kullanır, sadece görünürlüğü tetikleyen motor
+   IntersectionObserver yerine ScrollTrigger'dır. İKİ YÖNLÜ: aşağı kaydırıp
+   bölüme girince görünür, yukarı kaydırıp tetikleme noktasının üstüne
+   çıkınca (onLeaveBack) tekrar gizlenir — sadece bir kere değil. */
+function RozeReveal({children,className='',i=0,as='div'}:{children:React.ReactNode;className?:string;i?:number;as?:'div'|'article'}){
+  const ref=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,st:any;
+    loadGsap().then(({ScrollTrigger})=>{
+      if(cancelled||!ref.current)return;
+      st=ScrollTrigger.create({trigger:ref.current,start:'top 92%',onEnter:()=>ref.current?.classList.add('in'),onLeaveBack:()=>ref.current?.classList.remove('in')});
+    });
+    return()=>{cancelled=true;st?.kill?.()};
+  },[]);
+  const Tag=as as any;
+  return <Tag ref={ref} className={`ksReveal ${className}`} style={{transitionDelay:`${Math.min(i,8)*70}ms`}}>{children}</Tag>;
+}
+/* Kart/liste elemanlarını (Hizmetler, Galeri, Blog) tek tek değil, birbiri
+   ardına kısa gecikmelerle (staggered) sahneye sokan konteyner kancası —
+   bu da iki yönlü: yukarı kaydırılınca kartlar aynı şekilde geri gizlenir. */
+function useRozeStagger(selector:string){
+  const ref=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,st:any;
+    loadGsap().then(({gsap,ScrollTrigger})=>{
+      if(cancelled||!ref.current)return;
+      const items=ref.current.querySelectorAll(selector);
+      if(!items.length)return;
+      gsap.set(items,{opacity:0,y:26});
+      st=ScrollTrigger.create({trigger:ref.current,start:'top 85%',onEnter:()=>gsap.to(items,{opacity:1,y:0,duration:.6,stagger:.08,ease:'power2.out',overwrite:true}),onLeaveBack:()=>gsap.to(items,{opacity:0,y:26,duration:.4,stagger:.04,ease:'power1.in',overwrite:true})});
+    });
+    return()=>{cancelled=true;st?.kill?.()};
+  },[]);
+  return ref;
+}
+/* Hero fotoğrafı/videosu, sayfa kaydırıldıkça içerikten hafifçe farklı hızda
+   hareket eder (paralaks) — Ken-Burns zoom'la (aynı elemanda değil, bu ref'in
+   sarmaladığı üst kapsayıcıda) çakışmaması için ayrı bir katmanda çalışır. */
+function useHeroParallax(){
+  const ref=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,tween:any;
+    loadGsap().then(({gsap})=>{
+      if(cancelled||!ref.current)return;
+      tween=gsap.to(ref.current,{yPercent:16,ease:'none',scrollTrigger:{trigger:ref.current,start:'top top',end:'bottom top',scrub:true}});
+    });
+    return()=>{cancelled=true;tween?.scrollTrigger?.kill?.();tween?.kill?.()};
+  },[]);
+  return ref;
+}
+/* Hakkımızda bölümü kısa bir kaydırma mesafesi boyunca ekranda sabitlenir
+   (pin) — bu sırada 3 foto-kolaj kartı sırayla (staggered) sahneye girer,
+   sonra sayfa normal akışına döner. Dar ekranlarda (≤768px) pin YOK — bu
+   bölümün mobilde masaüstüyle birebir aynı görünmesi ayrıca istenmişti ve
+   pin (ekranda kilitleme) küçük/kısa viewport'larda içeriğin taşmasına,
+   ilk turda kazanılan mobil düzenin bozulmasına yol açabilirdi; kartların
+   sırayla belirmesi orada da çalışır, sadece ekranda kilitlenme olmaz. */
+function useRozePin(){
+  const ref=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,tl:any;
+    loadGsap().then(({gsap,ScrollTrigger})=>{
+      if(cancelled||!ref.current)return;
+      const cards=ref.current.querySelectorAll('.rzAboutCard');
+      if(!cards.length)return;
+      const pinEnabled=window.innerWidth>=768;
+      gsap.set(cards,{opacity:0,y:44});
+      tl=gsap.timeline({scrollTrigger:{trigger:ref.current,start:pinEnabled?'top top+=88':'top 82%',end:pinEnabled?'+=520':undefined,pin:pinEnabled,anticipatePin:pinEnabled?1:0}});
+      tl.to(cards,{opacity:1,y:0,duration:.5,stagger:.25,ease:'power2.out'});
+    });
+    return()=>{cancelled=true;tl?.scrollTrigger?.kill?.();tl?.kill?.()};
+  },[]);
+  return ref;
 }
 /* Kaydırdıkça ileri-geri "scrub" olan berberlik klibi. Video bir blob olarak
    yüklenir (Safari/iOS'ta güvenilir currentTime araması için), poster ilk kare
@@ -807,7 +915,7 @@ function RozeHeroCards({p}:{p:P}){
 function RozeGallery({p}:{p:P}){
   const photos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const[active,setActive]=useState<number|null>(null);
-  const trackRef=useRef<HTMLDivElement>(null);
+  const trackRef=useRozeStagger('.rzGalleryCard');
   const scrollBy=(dir:number)=>{
     const el=trackRef.current;if(!el)return;
     const card=el.querySelector('.rzGalleryCard') as HTMLElement|null;
@@ -816,13 +924,13 @@ function RozeGallery({p}:{p:P}){
   };
   if(!photos.length)return null;
   return <section id="rzGallery" className="rzGallery">
-    <Reveal className="rzServicesHead">
+    <RozeReveal className="rzServicesHead">
       <div><small>GALERİ</small><ScrollChars parts={[{text:dec(p.b,'rz_galleryTitle','Bizden kareler.')}]}/></div>
       {photos.length>1&&<div className="rzServiceCarouselNav">
         <button type="button" onClick={()=>scrollBy(-1)} aria-label="Önceki">←</button>
         <button type="button" onClick={()=>scrollBy(1)} aria-label="Sonraki">→</button>
       </div>}
-    </Reveal>
+    </RozeReveal>
     <div className="rzGalleryTrack" ref={trackRef}>
       {photos.map((src,pi)=><article key={pi} className="rzGalleryCard">
         <button type="button" onClick={()=>setActive(pi)} aria-label="Fotoğrafı büyüt">
@@ -843,32 +951,33 @@ function RozeAbout({p}:{p:P}){
   const photos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const titleRaw=dec(b,'rz_missionTitle','Güzelliğin ve başarın\nBurada başlıyor!');
   const titleLines=titleRaw.split('\n');
-  return <section id="rzHakkimizda" className="rzAbout">
-    <Reveal className="rzAboutHead">
+  const pinRef=useRozePin();
+  return <section id="rzHakkimizda" className="rzAbout" ref={pinRef}>
+    <RozeReveal className="rzAboutHead">
       <ScrollChars parts={titleLines[1]?[{text:titleLines[0]},{text:titleLines[1],as:'b',break:true}]:[{text:titleLines[0]}]}/>
       <a className="rzAboutBadge" href="#rzHakkimizda"><span>↗</span>{dec(b,'rz_missionBadge','Hakkımızda')}</a>
-    </Reveal>
+    </RozeReveal>
     <div className="rzAboutGrid">
-      <Reveal as="article" i={1} className="rzAboutCard rzAboutCardMain">
+      <article className="rzAboutCard rzAboutCardMain">
         {photos[0]?<img src={photos[0]} alt={b.name}/>:<div className="rzAboutCardFallback"/>}
         <div className="rzAboutCaption">
           <p>{b.description||dec(b,'rz_missionText','Cildini ve ruhunu güzellik merkezimizde yenile.')}</p>
           <a className="rzOutlineBtn" href="#hizmetler">{dec(b,'rz_missionCta','Devamını Oku')} <span>↗</span></a>
         </div>
-      </Reveal>
-      <Reveal as="article" i={2} className="rzAboutCard rzAboutCardTall">
+      </article>
+      <article className="rzAboutCard rzAboutCardTall">
         {photos[1]?<img src={photos[1]} alt={b.name}/>:<div className="rzAboutCardFallback alt"/>}
-      </Reveal>
-      <Reveal as="article" i={3} className="rzAboutCard rzAboutCardWide">
+      </article>
+      <article className="rzAboutCard rzAboutCardWide">
         <h3>{dec(b,'rz_missionSubtitle','Güzellik potansiyelini keşfet.')}</h3>
         {photos[2]?<img src={photos[2]} alt={b.name}/>:<div className="rzAboutCardFallback"/>}
-      </Reveal>
+      </article>
     </div>
   </section>;
 }
 function RozeServices({p}:{p:P}){
   const{b}=p;
-  const trackRef=useRef<HTMLDivElement>(null);
+  const trackRef=useRozeStagger('.rzServiceSlide');
   const scrollBy=(dir:number)=>{
     const el=trackRef.current;if(!el)return;
     const card=el.querySelector('.rzServiceSlide') as HTMLElement|null;
@@ -881,10 +990,10 @@ function RozeServices({p}:{p:P}){
      içeriği hiç girilmemiş hizmetlerde bu rozet hiç görünmez. */
   const hasDetail=(s:any)=>!!(s.slug&&(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable||s.detail_tip_title||s.detail_before||s.detail_after));
   return <section id="hizmetler" className="rzServices">
-    <Reveal className="rzServicesHead">
+    <RozeReveal className="rzServicesHead">
       <div><small>{b.services_label||'HİZMETLER'}</small><ScrollChars parts={[{text:b.services_title||'Hizmetlerimiz'}]}/></div>
       <a className="rzOutlineBtn" href="#randevu">Randevu Al <span>↗</span></a>
-    </Reveal>
+    </RozeReveal>
     <div className="rzServiceCarousel" ref={trackRef}>
       {p.services.map((s,i)=><article key={s.id} className={`rzServiceSlide${i===0?' rzFeatured':''}`}>
         {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="rzServiceFallback">✿</div>}
@@ -919,7 +1028,7 @@ function RozeTestimonials({p}:{p:P}){
   const avatarBg=['#d9948f','#b7a89f','#c9a45f','#a67d8a'];
   return <section className="rzTestimonials">
     <div className="rzTestiGrid">
-      <Reveal className="rzTestiHead">
+      <RozeReveal className="rzTestiHead">
         <ScrollChars parts={[{text:'Parlayan '},{text:'Yorumlar',as:'b'}]}/>
         <p>{b.description?`${b.description.slice(0,100)}${b.description.length>100?'…':''}`:'Müşterilerimizin gerçek deneyimlerinden bir kesit.'}</p>
         <div className="rzTestiAvatars">
@@ -928,14 +1037,14 @@ function RozeTestimonials({p}:{p:P}){
           </span>)}
           {data.count>3&&<span className="rzTestiAvatar more">+{data.count-3}</span>}
         </div>
-      </Reveal>
-      {shown.map((r:any,i:number)=><Reveal as="article" i={i+1} key={`${page}-${i}`} className={`rzTestiCard slot${i} ${i%2===0?'pink':'gray'}`}>
+      </RozeReveal>
+      {shown.map((r:any,i:number)=><RozeReveal as="article" i={i+1} key={`${page}-${i}`} className={`rzTestiCard slot${i} ${i%2===0?'pink':'gray'}`}>
         <p>"{r.comment}"</p>
         <div className="rzTestiCardFooter">
           <span className="rzTestiAvatarSm" style={{background:avatarBg[i%avatarBg.length]}}>{r.avatar_url?<img src={r.avatar_url} alt={r.customer_name||''}/>:initials(r.customer_name)}</span>
           <div><b>★ {r.stars}</b><span>{r.customer_name||'Müşterimiz'}</span></div>
         </div>
-      </Reveal>)}
+      </RozeReveal>)}
     </div>
     {pages>1&&<div className="rzTestiNav">
       <button type="button" disabled={page===0} onClick={()=>setPage(v=>v-1)} aria-label="Önceki">←</button>
@@ -960,12 +1069,16 @@ function RozeBlog({p}:{p:P}){
       </div>
     </article>
   </section>;
+  return <RozeBlogGrid p={p} b={b} posts={posts} setOpenPost={setOpenPost}/>;
+}
+function RozeBlogGrid({b,posts,setOpenPost}:{p:P;b:any;posts:any[];setOpenPost:(post:any)=>void}){
+  const gridRef=useRozeStagger('.rzBlogCard');
   return <section id="rzBlog" className="rzBlog">
-    <Reveal className="rzServicesHead">
+    <RozeReveal className="rzServicesHead">
       <div><small>BLOG</small><ScrollChars parts={[{text:dec(b,'rz_blogTitle','Bakım üzerine yazılar.')}]}/></div>
-    </Reveal>
-    <div className="rzBlogGrid">
-      {posts.map((post:any,i:number)=><Reveal as="article" i={i} key={post.id} className="rzBlogCard">
+    </RozeReveal>
+    <div className="rzBlogGrid" ref={gridRef}>
+      {posts.map((post:any)=><article key={post.id} className="rzBlogCard">
         <button type="button" onClick={()=>setOpenPost(post)}>
           <div className="rzBlogCover">{post.cover_url?<img src={post.cover_url} alt={post.title}/>:<div className="rzServiceFallback">✿</div>}</div>
           <div className="rzBlogCardBody">
@@ -974,7 +1087,7 @@ function RozeBlog({p}:{p:P}){
             {post.published_at&&<span>{trDate(post.published_at)}</span>}
           </div>
         </button>
-      </Reveal>)}
+      </article>)}
     </div>
   </section>;
 }
@@ -990,6 +1103,7 @@ function Roze(p:P){
     window.addEventListener('scroll',onScroll,{passive:true});
     return()=>window.removeEventListener('scroll',onScroll);
   },[]);
+  const parallaxRef=useHeroParallax();
   return <main id="top" className="tRoze">
     <header className={`rzNav${navScrolled?' scrolled':''}`}>
       <a className="rzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
@@ -1003,11 +1117,13 @@ function Roze(p:P){
     </header>
 
     <section className="rzHero">
-      {b.cover_url&&b.cover_type==='video'
-        ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
-        :b.cover_url
-          ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
-          :<div className="rzHeroMedia rzHeroMediaFallback"/>}
+      <div className="rzHeroParallax" ref={parallaxRef}>
+        {b.cover_url&&b.cover_type==='video'
+          ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
+          :b.cover_url
+            ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
+            :<div className="rzHeroMedia rzHeroMediaFallback"/>}
+      </div>
       <div className="rzHeroOverlay"/>
       <div className="rzHeroInner">
         <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
@@ -1031,8 +1147,8 @@ function Roze(p:P){
     <RozeTestimonials p={p}/>
 
     <section id="randevu" className="rzBooking">
-      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><ScrollChars parts={[{text:b.booking_title||'Saatini ayır.'}]}/></header></Reveal>
-      <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+      <RozeReveal><header><small>{b.booking_label||'RANDEVU'}</small><ScrollChars parts={[{text:b.booking_title||'Saatini ayır.'}]}/></header></RozeReveal>
+      <RozeReveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></RozeReveal>
     </section>
 
     <GoogleReviews businessId={b.id}/>
