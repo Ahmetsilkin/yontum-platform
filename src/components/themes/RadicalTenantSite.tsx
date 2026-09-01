@@ -763,22 +763,36 @@ function RozeHeroCards({p}:{p:P}){
     <b>{s.name}</b>
   </a>)}</div>;
 }
-/* İnstagram profil ızgarası gibi: sıkı boşluklu, kare (1:1) 3 sütunlu kutucuk
-   grid'i — hem masaüstü hem mobilde aynı düzen. Bir kareye tıklayınca tam
-   boyutlu, ok'larla gezilebilen bir lightbox açılıyor (Instagram'da bir
-   gönderiye dokununca büyümesi gibi). */
+/* Kullanıcının gönderdiği referans videodaki gibi: büyük, yatay dikdörtgen
+   fotoğraf kartlarının yan yana dizildiği, sağ alttaki ok butonlarıyla (ve
+   dokunmatik/trackpad'de doğal kaydırmayla) gezilen bir şerit — Hizmetler
+   karuseliyle aynı etkileşim dili. Bir karta tıklayınca yine tam boyutlu,
+   ok'larla gezilebilen bir lightbox açılıyor. */
 function RozeGallery({p}:{p:P}){
   const photos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const[active,setActive]=useState<number|null>(null);
+  const trackRef=useRef<HTMLDivElement>(null);
+  const scrollBy=(dir:number)=>{
+    const el=trackRef.current;if(!el)return;
+    const card=el.querySelector('.rzGalleryCard') as HTMLElement|null;
+    const amount=(card?.offsetWidth||340)+20;
+    el.scrollBy({left:dir*amount,behavior:'smooth'});
+  };
   if(!photos.length)return null;
   return <section id="rzGallery" className="rzGallery">
-    <Reveal><header><small>GALERİ</small><h2>{dec(p.b,'rz_galleryTitle','Bizden kareler.')}</h2></header></Reveal>
-    <div className="rzGalleryGrid">
-      {photos.map((src,pi)=><Reveal as="article" i={pi} key={pi} className="rzGalleryItem">
+    <Reveal className="rzServicesHead">
+      <div><small>GALERİ</small><h2>{dec(p.b,'rz_galleryTitle','Bizden kareler.')}</h2></div>
+      {photos.length>1&&<div className="rzServiceCarouselNav">
+        <button type="button" onClick={()=>scrollBy(-1)} aria-label="Önceki">←</button>
+        <button type="button" onClick={()=>scrollBy(1)} aria-label="Sonraki">→</button>
+      </div>}
+    </Reveal>
+    <div className="rzGalleryTrack" ref={trackRef}>
+      {photos.map((src,pi)=><article key={pi} className="rzGalleryCard">
         <button type="button" onClick={()=>setActive(pi)} aria-label="Fotoğrafı büyüt">
           <img src={src} alt={p.b.name} loading="lazy"/>
         </button>
-      </Reveal>)}
+      </article>)}
     </div>
     {active!==null&&<div className="rzGalleryLightbox" onClick={()=>setActive(null)}>
       <button type="button" className="rzGalleryClose" onClick={()=>setActive(null)} aria-label="Kapat">✕</button>
