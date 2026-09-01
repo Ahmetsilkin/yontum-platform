@@ -988,22 +988,30 @@
 .genericDetailPage>a{display:inline-block;margin-top:34px;font-weight:700;border-bottom:1px solid;padding-bottom:2px}
 .genericBreadcrumb a{font-size:13px;opacity:.7}
 
-/* ================= Roze — pembe/gül kurusu zemin, buzlu-cam kutucuklar, video/Ken-Burns hero,
-   kayan galeri karuseli, canlı fuşya vurgusuyla lüks güzellik salonu teması (layout_family:'roze') */
-.tRoze{--rz-ink:#2b1712;--rz-muted:#8a6b63;--rz-cream:#fbf1ee;--rz-rose:#e3b3ac;--rz-rose-deep:#7a4a42;--rz-accent:#ff2d78;--rz-accent-deep:#c9165a;--rz-line:#ecd8d3;background:var(--rz-cream);color:var(--rz-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;padding-bottom:84px;overflow-x:clip}
+/* ================= Roze — beyaz zemin, ayrı buzlu-cam kutucuklardan navbar, video/Ken-Burns hero,
+   foto-kolajlı Hakkımızda, kayan galeri karuseli, nötr (beyaz/siyah) butonlarla editoryal, sade
+   lüks güzellik salonu teması (layout_family:'roze') */
+.tRoze{--rz-ink:#2b1712;--rz-muted:#8a6b63;--rz-cream:#ffffff;--rz-rose:#e3b3ac;--rz-rose-deep:#7a4a42;--rz-accent:#c96b7a;--rz-accent-deep:#a44f5c;--rz-line:#ece4e1;background:var(--rz-cream);color:var(--rz-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
 .tRoze h1,.tRoze h2,.tRoze h3{font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
 .tRoze em{font-style:normal}
 .tRoze #hizmetler,.tRoze #rzHakkimizda,.tRoze #rzGallery,.tRoze #randevu{scroll-margin-top:110px}
 
-.rzNav{position:sticky;top:16px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 4vw 0;padding:10px 10px 10px 22px;background:rgba(255,253,251,.75);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid #ffffffb0;border-radius:999px;box-shadow:0 12px 34px rgba(122,74,66,.14)}
-.rzBrand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:15px}
-.rzBrand img{width:34px;height:34px;border-radius:50%;object-fit:cover}
-.rzBrand i{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--rz-accent),var(--rz-rose-deep));color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800}
-.rzNav nav{display:flex;gap:26px}
-.rzNav nav a{font-size:13.5px;font-weight:600;color:var(--rz-ink);opacity:.75;transition:opacity .15s ease}
-.rzNav nav a:hover{opacity:1}
-.rzNavBtn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--rz-accent),var(--rz-accent-deep));color:#fff!important;font-weight:700;font-size:13px;padding:11px 20px;border-radius:999px;box-shadow:0 8px 20px rgba(255,45,120,.35);transition:transform .18s cubic-bezier(.4,0,.2,1)}
-.rzNavBtn:hover{transform:translateY(-2px)}
+/* Navbar — tek bir şerit DEĞİL: her öğe kendi ayrı buzlu-cam/dolu kutucuğu; hero üzerindeyken
+   camsı+beyaz yazı, sayfa kaydırılıp beyaz gövdeye geçilince (JS ile .scrolled) okunaklı kalması
+   için koyu yazı+soft gri cama döner */
+.rzNav{position:sticky;top:16px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:14px;margin:16px 4vw 0}
+.rzBrand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:14.5px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border:1px solid #ffffffb0;border-radius:999px;padding:6px 16px 6px 6px;box-shadow:0 8px 24px rgba(43,23,18,.1)}
+.rzBrand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.rzBrand i{width:32px;height:32px;border-radius:50%;background:var(--rz-ink);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
+.rzNav nav{display:flex;gap:10px}
+.rzNavLink{font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;transition:background .18s ease,color .18s ease,border-color .18s ease}
+.rzNavLink.solid{background:#fff;color:var(--rz-ink)!important}
+.rzNavLink:not(.solid){background:rgba(20,10,8,.3);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);border:1px solid rgba(255,255,255,.3);color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+.rzNavLink:not(.solid):hover{background:rgba(20,10,8,.45)}
+.rzNav.scrolled .rzNavLink:not(.solid){background:rgba(43,23,18,.05);border-color:var(--rz-line);color:var(--rz-ink)!important}
+.rzNav.scrolled .rzNavLink:not(.solid):hover{background:rgba(43,23,18,.09)}
+.rzNavBtn{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--rz-ink);color:var(--rz-ink)!important;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;transition:background .18s ease,color .18s ease}
+.rzNavBtn:hover{background:var(--rz-ink);color:#fff!important}
 
 .rzHero{position:relative;min-height:94vh;display:flex;align-items:flex-end;overflow:hidden;border-radius:0 0 40px 40px}
 .rzHeroMedia{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
@@ -1018,12 +1026,33 @@
 .rzHeroInner h1 em{font-weight:800;background:linear-gradient(100deg,#fff,#ffd7e6);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rzHeroDesc{color:#fbeee9;opacity:.9;font-size:15.5px;line-height:1.7;max-width:460px;margin:0 0 30px}
 .rzHeroActions{display:flex;align-items:center;gap:16px;margin-bottom:34px;flex-wrap:wrap}
-.rzHeroCta{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--rz-accent),var(--rz-accent-deep));color:#fff!important;font-weight:700;font-size:14px;padding:15px 26px;border-radius:999px;box-shadow:0 12px 28px rgba(255,45,120,.4);transition:transform .18s cubic-bezier(.4,0,.2,1)}
-.rzHeroCta:hover{transform:translateY(-2px) scale(1.02)}
+.rzHeroCta{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #fff;color:var(--rz-ink)!important;font-weight:700;font-size:14px;padding:14px 24px;border-radius:999px;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s ease,color .18s ease}
+.rzHeroCta:hover{transform:translateY(-2px);background:transparent;color:#fff!important}
 .rzHeroGhost{color:#fff!important;font-weight:600;font-size:13.5px;padding:15px 6px;border-bottom:1px solid #ffffff70}
 .rzPills{display:flex;flex-wrap:wrap;gap:10px}
-.rzPill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:12.5px;font-weight:600;padding:9px 16px 9px 12px;border-radius:999px}
-.rzPill i{width:7px;height:7px;border-radius:2px;background:var(--rz-accent);transform:rotate(45deg);flex-shrink:0}
+.rzPill{display:inline-flex;align-items:center;gap:8px;background:rgba(20,10,8,.3);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border:1px solid rgba(255,255,255,.32);color:#fff;font-size:12.5px;font-weight:600;padding:9px 16px 9px 12px;border-radius:999px;text-shadow:0 1px 3px rgba(0,0,0,.3)}
+.rzPill i{width:7px;height:7px;border-radius:2px;background:#fff;transform:rotate(45deg);flex-shrink:0}
+
+.rzAbout{padding:100px 6vw}
+.rzAboutHead{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:48px}
+.rzAboutHead h2{font-size:clamp(26px,3.4vw,42px);font-weight:400;line-height:1.18;letter-spacing:-.01em;max-width:520px;margin:0}
+.rzAboutHead h2 b{font-weight:800}
+.rzAboutBadge{flex:0 0 auto;width:104px;height:104px;border-radius:50%;background:#fbe4e6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--rz-ink)!important;text-align:center;transition:transform .2s ease}
+.rzAboutBadge:hover{transform:rotate(8deg) scale(1.04)}
+.rzAboutBadge span{font-size:18px}
+.rzAboutGrid{display:grid;grid-template-columns:1.35fr .85fr 1.35fr;gap:24px;align-items:start}
+.rzAboutCard img{width:100%;display:block;border-radius:26px;object-fit:cover}
+.rzAboutCardMain img{aspect-ratio:4/5}
+.rzAboutCardTall img{aspect-ratio:3/5;border-radius:130px 130px 26px 26px}
+.rzAboutCardWide{display:flex;flex-direction:column;gap:18px}
+.rzAboutCardWide h3{font-size:19px;font-weight:600;line-height:1.35;margin:0}
+.rzAboutCardWide img{aspect-ratio:16/11}
+.rzAboutCaption{margin-top:18px}
+.rzAboutCaption p{color:var(--rz-muted);font-size:15px;line-height:1.65;max-width:340px;margin:0 0 18px}
+.rzOutlineBtn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--rz-ink);color:var(--rz-ink)!important;font-weight:600;font-size:13.5px;padding:12px 20px;border-radius:999px;transition:background .18s ease,color .18s ease}
+.rzOutlineBtn:hover{background:var(--rz-ink);color:#fff!important}
+.rzAboutCardFallback{width:100%;aspect-ratio:4/5;border-radius:26px;background:linear-gradient(150deg,var(--rz-rose),var(--rz-rose-deep))}
+.rzAboutCardFallback.alt{aspect-ratio:3/5;border-radius:130px 130px 26px 26px}
 
 .rzHeroCards{position:absolute;right:6vw;bottom:40px;z-index:3;display:flex}
 .rzHeroCard{position:relative;width:168px;height:210px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,255,255,.4);box-shadow:0 20px 40px rgba(20,8,6,.35);margin-left:-46px;transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;align-items:flex-end}
@@ -1041,11 +1070,6 @@
 .rzHeroGalleryBtn:hover .rzHeroGalleryCircle{background:rgba(255,255,255,.18)}
 .rzHeroGalleryBtn span:last-child{font-size:10.5px;font-weight:600;text-align:center;line-height:1.3;opacity:.9}
 
-.rzMission{max-width:720px;margin:0 auto;padding:110px 6vw 90px;text-align:center}
-.rzMission small{color:var(--rz-accent);font-weight:800;letter-spacing:2.5px;font-size:11px}
-.rzMission h2{font-size:clamp(28px,3.6vw,42px);font-weight:700;letter-spacing:-.01em;margin:14px 0 20px}
-.rzMission p{color:var(--rz-muted);font-size:16px;line-height:1.75}
-
 .rzServices{padding:20px 6vw 100px}
 .rzServices>header,.rzGallery>header,.rzTeam>header,.rzBooking>header{max-width:560px;margin:0 auto 50px;text-align:center}
 .rzServices>header small,.rzGallery>header small,.rzTeam>header small,.rzBooking>header small{color:var(--rz-accent);font-weight:800;letter-spacing:2.5px;font-size:11px}
@@ -1062,9 +1086,9 @@
 .rzServiceBody p{color:var(--rz-muted);font-size:13.5px;line-height:1.6;margin:0 0 16px}
 .rzServiceBody footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px dashed var(--rz-line)}
 .rzServiceBody em{color:var(--rz-muted);font-size:12.5px;font-weight:600}
-.rzServiceBody b{color:var(--rz-accent);font-size:16px;font-weight:800}
+.rzServiceBody b{color:var(--rz-ink);font-size:16px;font-weight:800}
 
-.rzGallery{padding:20px 6vw 100px;background:linear-gradient(180deg,var(--rz-cream),#f6e3de)}
+.rzGallery{padding:20px 6vw 100px}
 .rzGalleryFrame{max-width:820px;margin:0 auto}
 .rzGalleryStage{position:relative;aspect-ratio:16/9;border-radius:32px;overflow:hidden;box-shadow:0 30px 60px rgba(122,74,66,.18)}
 .rzGalleryStage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform 6s ease}
@@ -1073,7 +1097,7 @@
 .rzGalleryBar button{width:38px;height:38px;flex:0 0 auto;border-radius:50%;border:1px solid var(--rz-line);background:#fff;color:var(--rz-ink);display:grid;place-items:center;cursor:pointer;transition:background .15s ease}
 .rzGalleryBar button:hover{background:var(--rz-cream)}
 .rzGalleryProgress{flex:1;height:4px;border-radius:999px;background:var(--rz-line);overflow:hidden}
-.rzGalleryProgress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rz-accent),var(--rz-accent-deep));border-radius:999px;animation:rzProgress 4.2s linear forwards}
+.rzGalleryProgress span{display:block;height:100%;width:0;background:var(--rz-ink);border-radius:999px;animation:rzProgress 4.2s linear forwards}
 @keyframes rzProgress{from{width:0}to{width:100%}}
 .rzGalleryIndex{font-size:12px;font-weight:700;color:var(--rz-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 
@@ -1091,11 +1115,11 @@
 .tRoze .ipTestimonials header h2{font-family:'Manrope',sans-serif;font-weight:700;letter-spacing:-.01em}
 .tRoze .ipTestiPage{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .tRoze .ipTestiPage article{background:#fff;border:1px solid var(--rz-line);border-radius:24px;padding:26px}
-.tRoze .ipStars{color:var(--rz-accent)}
+.tRoze .ipStars{color:#d4a04a}
 .tRoze .ipTestiDivider{height:1px;background:var(--rz-line);margin:16px 0}
 .tRoze .ipTestiDots{display:flex;justify-content:center;gap:8px;margin-top:24px}
 .tRoze .ipTestiDots button{width:8px;height:8px;border-radius:50%;border:0;background:var(--rz-line);cursor:pointer}
-.tRoze .ipTestiDots button.active{background:var(--rz-accent);width:22px;border-radius:999px}
+.tRoze .ipTestiDots button.active{background:var(--rz-ink);width:22px;border-radius:999px}
 
 .rzBooking{padding:20px 6vw 100px;max-width:960px;margin:0 auto}
 
@@ -1110,14 +1134,17 @@
 .rzFooterGrid p{color:#e8d6d0;font-size:13.5px;margin:8px 0}
 .rzFooterGrid a{color:#ffd7e6}
 .rzFooterActions{display:flex;gap:10px;margin-top:14px}
-.rzMapBtn,.rzCallBtn{padding:10px 16px;border-radius:999px;font-size:12.5px;font-weight:700;border:1px solid rgba(255,255,255,.3);color:#fff!important}
-.rzCallBtn{background:linear-gradient(135deg,var(--rz-accent),var(--rz-accent-deep));border:0}
+.rzMapBtn,.rzCallBtn{padding:10px 16px;border-radius:999px;font-size:12.5px;font-weight:700;border:1px solid rgba(255,255,255,.3);color:#fff!important;transition:background .18s ease,color .18s ease}
+.rzCallBtn{background:#fff;color:var(--rz-ink)!important;border-color:#fff}
+.rzCallBtn:hover{background:transparent;color:#fff!important}
 .rzFooterBottom{padding-top:24px;text-align:center;font-size:11.5px;color:#a98a82}
 
 .rzMobileSticky{display:none}
 @media(max-width:900px){
   .rzNav nav{display:none}
   .rzHeroCards{display:none}
+  .rzAboutGrid{grid-template-columns:1fr 1fr}
+  .rzAboutCardWide{grid-column:1/-1}
   .rzServiceGrid{grid-template-columns:repeat(2,1fr)}
   .tRoze .ipTestiPage{grid-template-columns:1fr 1fr}
   .rzFooterGrid{grid-template-columns:1fr 1fr}
@@ -1126,14 +1153,17 @@
   .rzHero{border-radius:0 0 28px 28px;align-items:flex-end;min-height:88vh}
   .rzHeroInner{padding:0 6vw 90px}
   .rzHeroGalleryBtn{display:none}
+  .rzAboutHead{flex-direction:column;align-items:flex-start;gap:16px}
+  .rzAboutBadge{width:80px;height:80px;font-size:10.5px}
+  .rzAboutGrid{grid-template-columns:1fr}
   .rzServiceGrid{grid-template-columns:1fr}
   .tRoze .ipTestiPage{grid-template-columns:1fr}
   .rzFooterGrid{grid-template-columns:1fr;gap:28px}
   .rzTeamPhoto{width:120px;height:120px}
-  .rzNav{margin:10px 4vw 0;padding:8px 8px 8px 16px}
+  .rzNav{margin:10px 4vw 0}
   .tRoze{padding-bottom:96px}
   .rzMobileSticky{display:flex;position:fixed;left:16px;right:16px;bottom:16px;z-index:50;gap:10px;align-items:center}
-  .rzMobileSticky a:first-child{flex:1;text-align:center;background:linear-gradient(135deg,var(--rz-accent),var(--rz-accent-deep));color:#fff!important;font-weight:700;padding:15px;border-radius:999px;box-shadow:0 14px 30px rgba(255,45,120,.4)}
-  .rzMobileStickyCall{width:52px;height:52px;flex:0 0 auto;border-radius:50%;background:#2b1712;color:#fff!important;display:grid;place-items:center;font-size:20px}
+  .rzMobileSticky a:first-child{flex:1;text-align:center;background:#fff;border:1.5px solid var(--rz-ink);color:var(--rz-ink)!important;font-weight:700;padding:13.5px;border-radius:999px;box-shadow:0 14px 30px rgba(43,23,18,.18)}
+  .rzMobileStickyCall{width:52px;height:52px;flex:0 0 auto;border-radius:50%;background:var(--rz-ink);color:#fff!important;display:grid;place-items:center;font-size:20px}
 }
 @media(prefers-reduced-motion:reduce){.rzKenBurns{animation:none}.rzGalleryStage img{transition:opacity .3s ease}.rzGalleryProgress span{animation:none;width:100%}}

@@ -788,6 +788,34 @@ function RozeGallery({p}:{p:P}){
     </Reveal>
   </section>;
 }
+function RozeAbout({p}:{p:P}){
+  const{b}=p;
+  const photos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  const titleRaw=dec(b,'rz_missionTitle','Güzelliğin ve başarın\nBurada başlıyor!');
+  const titleLines=titleRaw.split('\n');
+  return <section id="rzHakkimizda" className="rzAbout">
+    <Reveal className="rzAboutHead">
+      <h2>{titleLines[0]}{titleLines[1]&&<><br/><b>{titleLines[1]}</b></>}</h2>
+      <a className="rzAboutBadge" href="#rzHakkimizda"><span>↗</span>{dec(b,'rz_missionBadge','Hakkımızda')}</a>
+    </Reveal>
+    <div className="rzAboutGrid">
+      <Reveal as="article" i={1} className="rzAboutCard rzAboutCardMain">
+        {photos[0]?<img src={photos[0]} alt={b.name}/>:<div className="rzAboutCardFallback"/>}
+        <div className="rzAboutCaption">
+          <p>{b.description||dec(b,'rz_missionText','Cildini ve ruhunu güzellik merkezimizde yenile.')}</p>
+          <a className="rzOutlineBtn" href="#hizmetler">{dec(b,'rz_missionCta','Devamını Oku')} <span>↗</span></a>
+        </div>
+      </Reveal>
+      <Reveal as="article" i={2} className="rzAboutCard rzAboutCardTall">
+        {photos[1]?<img src={photos[1]} alt={b.name}/>:<div className="rzAboutCardFallback alt"/>}
+      </Reveal>
+      <Reveal as="article" i={3} className="rzAboutCard rzAboutCardWide">
+        <h3>{dec(b,'rz_missionSubtitle','Güzellik potansiyelini keşfet.')}</h3>
+        {photos[2]?<img src={photos[2]} alt={b.name}/>:<div className="rzAboutCardFallback"/>}
+      </Reveal>
+    </div>
+  </section>;
+}
 function RozeServices({p}:{p:P}){
   return <section id="hizmetler" className="rzServices">
     <Reveal><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetlerimiz'}</h2></header></Reveal>
@@ -807,13 +835,22 @@ function Roze(p:P){
   const{b}=p;
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const hourRows=groupedHourRows(p.hours||[]);
+  /* Nav öğeleri hero fotoğrafının üzerindeyken beyaz yazılı buzlu-cam kutucuk, sayfa kaydırılıp
+     beyaz gövdeye geçince (okunaklı kalması için) koyu yazılı soft-gri kutucuğa dönüyor. */
+  const[navScrolled,setNavScrolled]=useState(false);
+  useEffect(()=>{
+    const onScroll=()=>setNavScrolled(window.scrollY>window.innerHeight*0.55);
+    onScroll();
+    window.addEventListener('scroll',onScroll,{passive:true});
+    return()=>window.removeEventListener('scroll',onScroll);
+  },[]);
   return <main id="top" className="tRoze">
-    <header className="rzNav">
+    <header className={`rzNav${navScrolled?' scrolled':''}`}>
       <a className="rzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#top">Ana Sayfa</a>
-        <a href="#hizmetler">Hizmetler</a>
-        <a href="#rzHakkimizda">Hakkımızda</a>
+        <a className="rzNavLink solid" href="#top">Ana Sayfa</a>
+        <a className="rzNavLink" href="#hizmetler">Hizmetler</a>
+        <a className="rzNavLink" href="#rzHakkimizda">Hakkımızda</a>
       </nav>
       <a className="rzNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
     </header>
@@ -839,11 +876,7 @@ function Roze(p:P){
       <RozeHeroCards p={p}/>
     </section>
 
-    <section id="rzHakkimizda" className="rzMission">
-      <Reveal i={1}><small>{dec(b,'rz_brandSubtitle','HAKKIMIZDA')}</small></Reveal>
-      <Reveal i={2}><h2>{dec(b,'rz_missionTitle','Güzellik, kendine ayırdığın zamandır.')}</h2></Reveal>
-      {(b.description||dec(b,'rz_missionText',''))&&<Reveal i={3}><p>{b.description||dec(b,'rz_missionText','')}</p></Reveal>}
-    </section>
+    <RozeAbout p={p}/>
 
     <RozeServices p={p}/>
     <RozeGallery p={p}/>
