@@ -763,29 +763,29 @@ function RozeHeroCards({p}:{p:P}){
     <b>{s.name}</b>
   </a>)}</div>;
 }
+/* İnstagram profil ızgarası gibi: sıkı boşluklu, kare (1:1) 3 sütunlu kutucuk
+   grid'i — hem masaüstü hem mobilde aynı düzen. Bir kareye tıklayınca tam
+   boyutlu, ok'larla gezilebilen bir lightbox açılıyor (Instagram'da bir
+   gönderiye dokununca büyümesi gibi). */
 function RozeGallery({p}:{p:P}){
   const photos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
-  const[i,setI]=useState(0);
-  const[paused,setPaused]=useState(false);
-  useEffect(()=>{
-    if(photos.length<2||paused)return;
-    const t=setTimeout(()=>setI(v=>(v+1)%photos.length),4200);
-    return()=>clearTimeout(t);
-  },[i,paused,photos.length]);
+  const[active,setActive]=useState<number|null>(null);
   if(!photos.length)return null;
-  return <section id="rzGallery" className="rzGallery" onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)}>
+  return <section id="rzGallery" className="rzGallery">
     <Reveal><header><small>GALERİ</small><h2>{dec(p.b,'rz_galleryTitle','Bizden kareler.')}</h2></header></Reveal>
-    <Reveal className="rzGalleryFrame">
-      <div className="rzGalleryStage">
-        {photos.map((src,pi)=><img key={pi} src={src} alt={p.b.name} className={pi===i?'active':''}/>)}
-      </div>
-      {photos.length>1&&<div className="rzGalleryBar">
-        <button type="button" aria-label="Önceki" onClick={()=>setI(v=>(v-1+photos.length)%photos.length)}>←</button>
-        <div className="rzGalleryProgress"><span key={i} style={paused?{animationPlayState:'paused'}:undefined}/></div>
-        <span className="rzGalleryIndex">{String(i+1).padStart(2,'0')} / {String(photos.length).padStart(2,'0')}</span>
-        <button type="button" aria-label="Sonraki" onClick={()=>setI(v=>(v+1)%photos.length)}>→</button>
-      </div>}
-    </Reveal>
+    <div className="rzGalleryGrid">
+      {photos.map((src,pi)=><Reveal as="article" i={pi} key={pi} className="rzGalleryItem">
+        <button type="button" onClick={()=>setActive(pi)} aria-label="Fotoğrafı büyüt">
+          <img src={src} alt={p.b.name} loading="lazy"/>
+        </button>
+      </Reveal>)}
+    </div>
+    {active!==null&&<div className="rzGalleryLightbox" onClick={()=>setActive(null)}>
+      <button type="button" className="rzGalleryClose" onClick={()=>setActive(null)} aria-label="Kapat">✕</button>
+      {photos.length>1&&<button type="button" className="rzGalleryPrev" onClick={e=>{e.stopPropagation();setActive(v=>((v as number)-1+photos.length)%photos.length)}} aria-label="Önceki">←</button>}
+      <img src={photos[active]} alt={p.b.name} onClick={e=>e.stopPropagation()}/>
+      {photos.length>1&&<button type="button" className="rzGalleryNext" onClick={e=>{e.stopPropagation();setActive(v=>((v as number)+1)%photos.length)}} aria-label="Sonraki">→</button>}
+    </div>}
   </section>;
 }
 function RozeAbout({p}:{p:P}){
