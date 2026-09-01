@@ -1,4 +1,4 @@
-import Link from'next/link';import PlatformHeader from'@/components/PlatformHeader';
+import Link from'next/link';import PlatformHeader from'@/components/PlatformHeader';import PlatformFooter from'@/components/PlatformFooter';
 export default function Home(){return <><PlatformHeader/><main className="pubHero">
   <div className="pubHeroText">
     <p className="pubEyebrow splashIn d1">RANDEVU &amp; SİTE OTOMASYONU</p>
@@ -20,4 +20,4 @@ export default function Home(){return <><PlatformHeader/><main className="pubHer
       </div>
     </div>
   </div>
-</main><footer className="platformFooter"><div className="platformLogo inverse"><span>Y</span><b>YONTUM</b></div><p>© 2026 Yontum.</p></footer></>}
+</main><PlatformFooter/></>}
