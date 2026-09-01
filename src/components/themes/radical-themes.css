@@ -1196,6 +1196,9 @@
 .rzHoursRow:last-child{border-bottom:0}
 .rzFooterGrid p{color:var(--rz-muted);font-size:13.5px;margin:8px 0}
 .rzFooterGrid a{color:var(--rz-ink)}
+.rzContactRow{display:flex!important;align-items:center;gap:8px}
+.rzContactRow a{display:flex;align-items:center;gap:8px}
+.rzContactRow svg{flex-shrink:0;color:var(--rz-accent)}
 .rzFooterActions{display:flex;gap:10px;margin-top:14px}
 .rzMapBtn,.rzCallBtn{padding:10px 16px;border-radius:999px;font-size:12.5px;font-weight:700;background:#fff;border:1.5px solid var(--rz-ink);color:var(--rz-ink)!important;transition:background .18s ease,color .18s ease}
 .rzMapBtn:hover,.rzCallBtn:hover{background:var(--rz-ink);color:#fff!important}
@@ -1205,17 +1208,15 @@
 @media(max-width:900px){
   .rzNav nav{display:none}
   .rzHeroCards{display:none}
-  /* Foto grupları (Hakkımızda, Blog) dar ekranda alt alta YIĞILMIYOR — masaüstündeki
-     gibi yan yana kalıp Instagram gönderileri gibi yatay kaydırmalı bir şeride
-     dönüşüyor, Hizmetler karuseliyle aynı dil */
-  .rzAboutGrid{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none}
-  .rzAboutGrid::-webkit-scrollbar{display:none}
-  .rzAboutCard{flex:0 0 auto;width:78vw;max-width:340px;scroll-snap-align:start}
-  .rzAboutCardTall{width:52vw;max-width:220px}
-  .rzServiceSlide.rzFeatured{width:min(78vw,460px)}
+  /* Blog kartları dar ekranda alt alta YIĞILMIYOR — masaüstündeki gibi yan yana
+     kalıp Instagram gönderileri gibi yatay kaydırmalı bir şeride dönüşüyor,
+     Hizmetler karuseliyle aynı dil. Hakkımızda ise (kullanıcı isteğiyle) mobilde
+     de masaüstüyle BİREBİR aynı 3 sütunlu foto-kolaj düzenini koruyor — ayrı bir
+     mobil override'ı yok. */
   .rzBlogGrid{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none}
   .rzBlogGrid::-webkit-scrollbar{display:none}
   .rzBlogCard{flex:0 0 auto;width:78vw;max-width:320px;scroll-snap-align:start}
+  .rzServiceSlide.rzFeatured{width:min(78vw,460px)}
   .rzTestiGrid{grid-template-columns:1fr 1fr}
   .rzTestiHead{grid-column:1/-1;grid-row:auto}
   .rzTestiCard.slot0,.rzTestiCard.slot2{grid-row:auto}
@@ -1225,10 +1226,6 @@
 @media(max-width:650px){
   .rzHero{align-items:flex-end;min-height:100vh;min-height:100dvh}
   .rzHeroInner{padding:0 6vw 90px}
-  .rzAboutHead{flex-direction:column;align-items:flex-start;gap:16px}
-  .rzAboutBadge{width:80px;height:80px;font-size:10.5px}
-  .rzAboutCard{width:84vw}
-  .rzAboutCardTall{width:58vw}
   .rzServiceSlide.rzFeatured{width:82vw}
   .rzServiceSlide{width:200px;height:300px}
   .rzBlogCard{width:84vw}

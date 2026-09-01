@@ -1005,7 +1005,7 @@ function Roze(p:P){
       <div className="rzFooterGrid">
         <div><a className="rzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a><p>{dec(b,'rz_footerTagline','Kendine değer kat.')}</p></div>
         <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="rzHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
-        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}
+        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="rzContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="rzContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}
           <div className="rzFooterActions">
             {b.address&&<a className="rzMapBtn" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`} target="_blank" rel="noopener noreferrer">Google Maps'te Aç</a>}
             {b.phone&&<a className="rzCallBtn" href={`tel:${b.phone}`}>Hemen Ara</a>}
