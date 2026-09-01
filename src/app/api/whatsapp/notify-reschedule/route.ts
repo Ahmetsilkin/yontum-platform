@@ -33,5 +33,9 @@ export async function POST(req:NextRequest){
 
   const{error}=await db.from('whatsapp_instant_queue').insert({business_id:a.business_id,appointment_id:a.id,phone,message,status:'pending'});
   if(error)return NextResponse.json({error:error.message},{status:500});
+  // "Randevu saati değişti" mesajı zaten müşteriye güncel saati bildiriyor —
+  // ayrıca normal "randevunuz onaylandı" mesajının da (henüz gitmediyse)
+  // ayrı ayrı gitmesini istemiyoruz, tekrar/karışık gibi durur. Onu iptal ediyoruz.
+  await db.from('appointments').update({confirmation_sent_at:new Date().toISOString()}).eq('id',a.id).is('confirmation_sent_at',null);
   return NextResponse.json({ok:true});
 }
