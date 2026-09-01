@@ -416,4 +416,14 @@ function ServiceForm({service,businessId,sortOrder,onSave,onCancel}:{service:Par
 }
 function Stat({t,v}:{t:string;v:string|number}){return <div className="stat"><small>{t}</small><b>{v}</b></div>}
 function AppointmentRow({a,update}:{a:Appointment;update:(id:string,s:string)=>void}){return <div className="appointmentRow"><b>{new Date(a.start_at).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Istanbul'})}</b><span><strong>{a.customer_first_name} {a.customer_last_name}</strong><small>{a.services?.name} · {a.customer_phone}</small></span><select value={a.status} onChange={e=>update(a.id,e.target.value)}>{Object.entries(statuses).map(([k,v])=><option key={k} value={k}>{String(v)}</option>)}</select></div>}
-function collectBookingTexts(form:FormData,business:any){const keys=['serviceTitle','serviceDescription','staffTitle','staffDescription','dateTitle','dateDescription','formTitle','formDescription','firstNameLabel','lastNameLabel','phoneLabel','emailLabel','noteLabel','consentText','submitText','successTitle','successDescription','nextToStaffText','nextToDateText','nextToFormText'];return Object.fromEntries(keys.map(k=>[k,form.has(`bt_${k}`)?String(form.get(`bt_${k}`)||''):(business?.booking_texts?.[k]||'')]))}
+/* ÖNEMLİ: panelde bu alanları tek tek düzenleyen bir form/arayüz YOK (bt_* adında
+   hiçbir input hiçbir yerde render edilmiyor) — yani form.has(`bt_${k}`) HER ZAMAN
+   false döner. Eskiden bu fonksiyon o durumda boş string yazıyordu, bu da randevu
+   formunun (TenantBooking) tüm başlık/etiket/buton metinlerini SESSİZCE kalıcı
+   olarak boşaltıyordu (ör. "Randevuyu Oluştur" → "", "Ad" → "") — ilk kayıtta
+   business.booking_texts henüz ayarlanmamışsa (varsayılan '{}') veya daha önce bu
+   bug'dan geçmişse. Artık: sadece gerçekten gönderilen alanlar yazılıyor, önceden
+   ayarlanmış gerçek bir değer varsa o korunuyor, hiçbiri yoksa anahtar tamamen
+   atlanıyor — böylece TenantBooking'in kendi Türkçe varsayılanları (ör. "Ad",
+   "Randevuyu Oluştur") devreye girebiliyor. */
+function collectBookingTexts(form:FormData,business:any){const keys=['serviceTitle','serviceDescription','staffTitle','staffDescription','dateTitle','dateDescription','formTitle','formDescription','firstNameLabel','lastNameLabel','phoneLabel','emailLabel','noteLabel','consentText','submitText','successTitle','successDescription','nextToStaffText','nextToDateText','nextToFormText'];const existing=business?.booking_texts||{};const out:Record<string,string>={};keys.forEach(k=>{if(form.has(`bt_${k}`)){const v=String(form.get(`bt_${k}`)||'');if(v)out[k]=v}else if(existing[k]){out[k]=existing[k]}});return out}
