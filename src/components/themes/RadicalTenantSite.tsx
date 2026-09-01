@@ -228,21 +228,25 @@ function useHeroParallax(){
    bölümün mobilde masaüstüyle birebir aynı görünmesi ayrıca istenmişti ve
    pin (ekranda kilitleme) küçük/kısa viewport'larda içeriğin taşmasına,
    ilk turda kazanılan mobil düzenin bozulmasına yol açabilirdi; kartların
-   sırayla belirmesi orada da çalışır, sadece ekranda kilitlenme olmaz. */
+   sırayla belirmesi orada da çalışır, sadece ekranda kilitlenme olmaz.
+   İKİ YÖNLÜ: onEnter/onLeaveBack ile açıkça sürülüyor (gsap.timeline'ın
+   ScrollTrigger'a bağlı örtük play/reverse davranışına güvenmek yerine) —
+   yukarı kaydırılınca fotoğraflar ve yazılar da aynı şekilde geri gizlenir. */
 function useRozePin(){
   const ref=useRef<any>(null);
   useEffect(()=>{
-    let cancelled=false,tl:any;
+    let cancelled=false,st:any;
     loadGsap().then(({gsap,ScrollTrigger})=>{
       if(cancelled||!ref.current)return;
       const cards=ref.current.querySelectorAll('.rzAboutCard');
       if(!cards.length)return;
       const pinEnabled=window.innerWidth>=768;
       gsap.set(cards,{opacity:0,y:44});
-      tl=gsap.timeline({scrollTrigger:{trigger:ref.current,start:pinEnabled?'top top+=88':'top 82%',end:pinEnabled?'+=520':undefined,pin:pinEnabled,anticipatePin:pinEnabled?1:0}});
-      tl.to(cards,{opacity:1,y:0,duration:.5,stagger:.25,ease:'power2.out'});
+      const show=()=>gsap.to(cards,{opacity:1,y:0,duration:.5,stagger:.15,ease:'power2.out',overwrite:true});
+      const hide=()=>gsap.to(cards,{opacity:0,y:44,duration:.35,stagger:.06,ease:'power1.in',overwrite:true});
+      st=ScrollTrigger.create({trigger:ref.current,start:pinEnabled?'top top+=88':'top 80%',end:pinEnabled?'+=520':'bottom 20%',pin:pinEnabled,anticipatePin:pinEnabled?1:0,onEnter:show,onLeaveBack:hide});
     });
-    return()=>{cancelled=true;tl?.scrollTrigger?.kill?.();tl?.kill?.()};
+    return()=>{cancelled=true;st?.kill?.()};
   },[]);
   return ref;
 }
