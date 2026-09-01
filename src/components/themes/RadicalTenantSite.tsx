@@ -825,20 +825,25 @@ function RozeServices({p}:{p:P}){
     const amount=(card?.offsetWidth||280)+24;
     el.scrollBy({left:dir*amount,behavior:'smooth'});
   };
+  /* Hizmetin kendi detay sayfası (panelde "Detay sayfası" bölümüne bir şey
+     girildiyse) varsa kartın üzerinde "Detayları İncele" rozeti gösterilir —
+     hizmetin /site/{slug}/hizmet/{serviceSlug} sayfasına götürür. Detay
+     içeriği hiç girilmemiş hizmetlerde bu rozet hiç görünmez. */
+  const hasDetail=(s:any)=>!!(s.slug&&(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable||s.detail_tip_title||s.detail_before||s.detail_after));
   return <section id="hizmetler" className="rzServices">
     <Reveal className="rzServicesHead">
       <div><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Hizmetlerimiz'}</h2></div>
       <a className="rzOutlineBtn" href="#randevu">Randevu Al <span>↗</span></a>
     </Reveal>
     <div className="rzServiceCarousel" ref={trackRef}>
-      {p.services.map((s,i)=><article key={s.id} className={`rzServiceSlide${i===0?' featured':''}`}>
+      {p.services.map((s,i)=><article key={s.id} className={`rzServiceSlide${i===0?' rzFeatured':''}`}>
         {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="rzServiceFallback">✿</div>}
         <div className="rzServiceSlideOverlay"/>
         <div className="rzServiceSlideBody">
           <b>{s.name}</b>
           <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
         </div>
-        {i===0&&<a className="rzServiceDetailBadge" href="#randevu"><span>↗</span>Randevu Al</a>}
+        {hasDetail(s)&&<a className="rzServiceDetailBadge" href={`/site/${b.slug}/hizmet/${s.slug}`}><span>↗</span>Detayları<br/>İncele</a>}
       </article>)}
     </div>
     {p.services.length>1&&<div className="rzServiceCarouselNav">
@@ -925,7 +930,6 @@ function RozeBlog({p}:{p:P}){
 }
 function Roze(p:P){
   const{b}=p;
-  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const hourRows=groupedHourRows(p.hours||[]);
   /* Nav öğeleri hero fotoğrafının üzerindeyken beyaz yazılı buzlu-cam kutucuk, sayfa kaydırılıp
      beyaz gövdeye geçince (okunaklı kalması için) koyu yazılı soft-gri kutucuğa dönüyor. */
@@ -973,16 +977,6 @@ function Roze(p:P){
     <RozeServices p={p}/>
     <RozeGallery p={p}/>
     <RozeBlog p={p}/>
-
-    {visibleStaff.length>0&&<section className="rzTeam">
-      <Reveal><header><small>EKİBİMİZ</small><h2>{dec(b,'rz_teamTitle','Uzman ellerde bakım.')}</h2></header></Reveal>
-      <div className="rzTeamGrid">
-        {visibleStaff.map((s:any,i:number)=><Reveal as="article" i={i} key={s.id}>
-          <div className="rzTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
-          <b>{s.name}</b><small>{s.title||'Uzman'}</small>
-        </Reveal>)}
-      </div>
-    </section>}
 
     <RozeTestimonials p={p}/>
 

@@ -82,7 +82,6 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'rz_missionCta',label:"Hakkımızda buton yazısı",placeholder:'Devamını Oku'},
     {key:'rz_missionSubtitle',label:'Hakkımızda 3. kutucuk başlığı',placeholder:'Güzellik potansiyelini keşfet.'},
     {key:'rz_galleryTitle',label:'Galeri başlığı',placeholder:'Bizden kareler.'},
-    {key:'rz_teamTitle',label:'Ekip başlığı',placeholder:'Uzman ellerde bakım.'},
     {key:'rz_footerTagline',label:'Footer alt yazısı',type:'textarea',placeholder:'Kendine değer kat.'},
     {key:'rz_blogTitle',label:'Blog bölümü başlığı',placeholder:'Bakım üzerine yazılar.'},
   ],
