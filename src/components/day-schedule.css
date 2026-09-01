@@ -17,7 +17,7 @@
 .scheduleGridScroll{overflow-x:auto}
 .scheduleGrid{border-top:1px solid #333;min-width:calc(65px + var(--staff-cols) * 150px)}
 .scheduleColHeads{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));background:#171717;border-bottom:1px solid #333;position:sticky;top:0}
-.scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:#d4af37;border-left:1px solid #292929;letter-spacing:.3px}
+.scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:#ff8040;border-left:1px solid #292929;letter-spacing:.3px}
 .hourRow{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));min-height:55px;border-bottom:1px solid #292929}.hourRow>time{padding:14px 8px;color:#777;font-size:11px}
 .staffCell{border-left:1px solid #292929;padding:5px;display:flex;flex-direction:column;gap:5px}
 .hourRow article{position:relative;background:#252525;border-left:4px solid #65d392;padding:9px 70px 9px 10px;display:flex;flex-direction:column;cursor:grab;touch-action:none}
@@ -33,24 +33,24 @@
 .scheduleDayPicker button b{font-size:18px}
 .scheduleDayPicker button span{color:#999;font-size:10px}
 .scheduleDayPicker button.today{position:relative}
-.scheduleDayPicker button.today:after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#d4af37}
-.scheduleDayPicker button.selected{border-color:#d4af37;background:#d4af37;box-shadow:0 4px 14px #d4af3766}
+.scheduleDayPicker button.today:after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#ff8040}
+.scheduleDayPicker button.selected{border-color:#ff8040;background:#ff8040;box-shadow:0 4px 14px #ff804066}
 .scheduleDayPicker button.selected small,.scheduleDayPicker button.selected b,.scheduleDayPicker button.selected span{color:#141414}
 .scheduleDayPicker button.selected.today:after{background:#141414}
 .scheduleSlotPicker{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;padding:6px 0 4px}
 .scheduleSlotPicker button{background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:9px 4px;color:#eee;cursor:pointer;font-size:13px}
-.scheduleSlotPicker button.selected{border-color:#d4af37;background:#d4af37;color:#141414;font-weight:700;box-shadow:0 4px 14px #d4af3766}
+.scheduleSlotPicker button.selected{border-color:#ff8040;background:#ff8040;color:#141414;font-weight:700;box-shadow:0 4px 14px #ff804066}
 .scheduleSlotPicker p{grid-column:1/-1;color:#999;font-size:13px;margin:0}
 
 /* Onay modali + detay çekmecesi — açık renk, panelin geri kalanından bağımsız */
 .calModalBackdrop,.calDrawerBackdrop{position:fixed;inset:0;background:#00000066;display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
-.calModal{background:#fff;border-radius:18px;padding:26px;max-width:380px;width:100%;position:relative;box-shadow:0 30px 80px #0005}
+.calModal{background:#fff;border-radius:26px;padding:26px;max-width:380px;width:100%;position:relative;box-shadow:0 30px 80px #0005}
 .calModal h3{font:700 20px Georgia;margin:0 0 10px;color:#141414}
 .calModal p{color:#141414;font-size:14px;line-height:1.5;margin:0 0 20px}
 .calModalActions{display:flex;flex-direction:column;gap:8px}
 .calModalX{position:absolute;top:14px;right:14px;border:none;background:#f2f1ec;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#141414}
-.calBtnPrimary,.calBtnGhost,.calBtnDanger{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:12px 16px;font:600 14px inherit;cursor:pointer;border:1px solid transparent}
-.calBtnPrimary{background:#141414;color:#fff}
+.calBtnPrimary,.calBtnGhost,.calBtnDanger{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;padding:12px 16px;font:600 14px inherit;cursor:pointer;border:1px solid transparent}
+.calBtnPrimary{background:var(--admin-primary,#0046ff);color:#fff}
 .calBtnPrimary:disabled{opacity:.6;cursor:default}
 .calBtnGhost{background:#fff;border-color:#ddd;color:#141414}
 .calBtnDanger{background:#fff;border-color:#e3b8b8;color:#b23b3b}
@@ -67,7 +67,7 @@
 .calDrawerRow b{color:#141414;text-align:right}
 .calDrawerNote{margin-top:14px;background:#fbf6e8;border-radius:10px;padding:10px 12px;font-size:13px;color:#5a4a1f}
 .calDrawerContact{display:flex;gap:10px;margin-top:18px}
-.calDrawerContact a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #ddd;border-radius:12px;padding:11px;text-decoration:none;color:#141414;font-size:13px;font-weight:600}
+.calDrawerContact a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #ddd;border-radius:16px;padding:11px;text-decoration:none;color:#141414;font-size:13px;font-weight:600}
 .calDrawerActions{display:flex;flex-direction:column;gap:8px;margin-top:22px}
 
 .calToast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#141414;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;z-index:90;box-shadow:0 12px 30px #0006}

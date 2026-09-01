@@ -3,7 +3,6 @@ export default function Home(){return <><PlatformHeader/><main className="pubHer
   <div className="pubHeroText">
     <p className="pubEyebrow splashIn d1">RANDEVU &amp; SİTE OTOMASYONU</p>
     <h1 className="splashIn d2">Randevularını<br/><em>otomatiğe bağla.</em></h1>
-    <p className="pubHeroSub splashIn d3">Berberin, kuaförün ya da salonun için kendi web siten, online randevu sistemin ve WhatsApp hatırlatmaların dakikalar içinde hazır.</p>
     <div className="pubHeroActions splashIn d4">
       <Link className="navCta pub-tap" href="/kayit">Ücretsiz Başla <b>→</b></Link>
       <Link className="pubTextLink pub-tap" href="/giris">Giriş Yap</Link>
