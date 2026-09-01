@@ -994,6 +994,11 @@
 .tRoze{--rz-ink:#2b1712;--rz-muted:#8a6b63;--rz-cream:#ffffff;--rz-rose:#e3b3ac;--rz-rose-deep:#7a4a42;--rz-accent:#c96b7a;--rz-accent-deep:#a44f5c;--rz-line:#ece4e1;background:var(--rz-cream);color:var(--rz-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
 .tRoze h1,.tRoze h2,.tRoze h3{font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
 .tRoze em{font-style:normal}
+/* Scroll-Linked Text Reveal — her karakter kendi <span>'ında, aşağı kaydırdıkça
+   (bir kerelik değil, sürekli scroll pozisyonuna bağlı) tek tek belirginleşiyor */
+.rzScrollChars span{opacity:.14;transition:opacity .05s linear}
+.rzScrollChars span.in{opacity:1}
+@media(prefers-reduced-motion:reduce){.rzScrollChars span{opacity:1!important;transition:none}}
 .tRoze #hizmetler,.tRoze #rzHakkimizda,.tRoze #rzGallery,.tRoze #randevu,.tRoze #rzBlog{scroll-margin-top:110px}
 
 /* Navbar — tek bir şerit DEĞİL: her öğe kendi ayrı buzlu-cam/dolu kutucuğu; hero üzerindeyken
@@ -1025,7 +1030,8 @@
 .rzHeroEyebrow{display:inline-flex;align-items:center;gap:8px;color:#fff;font-size:11px;letter-spacing:2.5px;font-weight:700;opacity:.9;margin:0 0 18px}
 .rzHeroEyebrow i{width:7px;height:7px;border-radius:50%;background:var(--rz-accent)}
 .rzHeroInner h1{color:#fff;font-size:clamp(38px,5.6vw,64px);line-height:1.05;font-weight:500;letter-spacing:-.02em;margin:0 0 20px}
-.rzHeroInner h1 em{font-weight:800;background:linear-gradient(100deg,#fff,#ffd7e6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rzHeroInner h1 em{font-weight:800;font-style:normal}
+.rzHeroInner h1 em span{background:linear-gradient(100deg,#fff,#ffd7e6);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rzHeroDesc{color:#fbeee9;opacity:.9;font-size:15.5px;line-height:1.7;max-width:460px;margin:0 0 30px}
 .rzHeroActions{display:flex;align-items:center;gap:16px;margin-bottom:34px;flex-wrap:wrap}
 .rzHeroCta{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #fff;color:var(--rz-ink)!important;font-weight:700;font-size:14px;padding:14px 24px;border-radius:999px;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s ease,color .18s ease}
@@ -1187,7 +1193,7 @@
 .tRoze.tRoze .tenantBooking .tenantStep.active i{background:var(--rz-ink)!important;border-color:var(--rz-ink)!important;color:#fff!important}
 .tRoze.tRoze .tenantBooking .tenantStepLine.active{background:var(--rz-ink)!important}
 
-.rzFooter{background:#fff;color:var(--rz-ink);border-top:1px solid var(--rz-line);padding:70px 6vw 30px;margin-top:20px}
+.rzFooter{background:#f2ede9;color:var(--rz-ink);padding:70px 6vw 30px;margin-top:20px}
 .rzFooter .rzBrand{color:var(--rz-ink);margin-bottom:14px}
 .rzFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--rz-line)}
 .rzFooterGrid>div>p{color:var(--rz-muted);font-size:14px;line-height:1.7;max-width:280px}

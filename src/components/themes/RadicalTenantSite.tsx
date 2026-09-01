@@ -1,5 +1,5 @@
 'use client';
-import{useState,useEffect,useRef}from'react';
+import{useState,useEffect,useRef,Fragment}from'react';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
@@ -101,6 +101,42 @@ function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;c
   },[]);
   const Tag=as as any;
   return <Tag ref={ref} className={`ksReveal ${shown?'in':''} ${className}`} style={{transitionDelay:`${Math.min(i,8)*70}ms`}}>{children}</Tag>;
+}
+/* Scroll-Linked Text Reveal — Roze'de büyük başlıklar (h1/h2) sayfa aşağı
+   kaydırıldıkça harf harf "belirir": her karakter kendi <span>'ında, başlığın
+   viewport içindeki konumuna göre (bir kerelik tetiklenen Reveal'ın aksine,
+   sürekli scroll pozisyonuna bağlı/scrubbed) opaklığı ayrı ayrı artar.
+   `parts`: sıralı metin parçaları — `as` ile <em>/<b> gibi bir alt etiket,
+   `break` ile öncesine <br/> eklenebilir (ör. iki satırlı başlıklar için). */
+function ScrollChars({parts,tag='h2',className}:{parts:{text:string;as?:'em'|'b';break?:boolean}[];tag?:'h1'|'h2';className?:string}){
+  const ref=useRef<HTMLHeadingElement>(null);
+  const[progress,setProgress]=useState(0);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    const onScroll=()=>{
+      const rect=el.getBoundingClientRect(),vh=window.innerHeight;
+      const start=vh*0.92,end=vh*0.45;
+      setProgress(Math.max(0,Math.min(1,(start-rect.top)/(start-end))));
+    };
+    onScroll();
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll,{passive:true});
+    return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll)};
+  },[]);
+  const totalChars=parts.reduce((n,p)=>n+p.text.length,0);
+  const revealCount=Math.round(progress*totalChars);
+  let counter=0;
+  const Tag=tag as any;
+  return <Tag ref={ref} className={`rzScrollChars ${className||''}`}>
+    {parts.map((part,pi)=>{
+      const InnerTag=(part.as||'span') as any;
+      const chars=part.text.split('').map((ch,ci)=>{
+        const idx=counter++;
+        return <span key={ci} className={idx<revealCount?'in':''}>{ch}</span>;
+      });
+      return <Fragment key={pi}>{part.break&&<br/>}<InnerTag>{chars}</InnerTag></Fragment>;
+    })}
+  </Tag>;
 }
 /* Kaydırdıkça ileri-geri "scrub" olan berberlik klibi. Video bir blob olarak
    yüklenir (Safari/iOS'ta güvenilir currentTime araması için), poster ilk kare
@@ -781,7 +817,7 @@ function RozeGallery({p}:{p:P}){
   if(!photos.length)return null;
   return <section id="rzGallery" className="rzGallery">
     <Reveal className="rzServicesHead">
-      <div><small>GALERİ</small><h2>{dec(p.b,'rz_galleryTitle','Bizden kareler.')}</h2></div>
+      <div><small>GALERİ</small><ScrollChars parts={[{text:dec(p.b,'rz_galleryTitle','Bizden kareler.')}]}/></div>
       {photos.length>1&&<div className="rzServiceCarouselNav">
         <button type="button" onClick={()=>scrollBy(-1)} aria-label="Önceki">←</button>
         <button type="button" onClick={()=>scrollBy(1)} aria-label="Sonraki">→</button>
@@ -809,7 +845,7 @@ function RozeAbout({p}:{p:P}){
   const titleLines=titleRaw.split('\n');
   return <section id="rzHakkimizda" className="rzAbout">
     <Reveal className="rzAboutHead">
-      <h2>{titleLines[0]}{titleLines[1]&&<><br/><b>{titleLines[1]}</b></>}</h2>
+      <ScrollChars parts={titleLines[1]?[{text:titleLines[0]},{text:titleLines[1],as:'b',break:true}]:[{text:titleLines[0]}]}/>
       <a className="rzAboutBadge" href="#rzHakkimizda"><span>↗</span>{dec(b,'rz_missionBadge','Hakkımızda')}</a>
     </Reveal>
     <div className="rzAboutGrid">
@@ -846,7 +882,7 @@ function RozeServices({p}:{p:P}){
   const hasDetail=(s:any)=>!!(s.slug&&(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable||s.detail_tip_title||s.detail_before||s.detail_after));
   return <section id="hizmetler" className="rzServices">
     <Reveal className="rzServicesHead">
-      <div><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Hizmetlerimiz'}</h2></div>
+      <div><small>{b.services_label||'HİZMETLER'}</small><ScrollChars parts={[{text:b.services_title||'Hizmetlerimiz'}]}/></div>
       <a className="rzOutlineBtn" href="#randevu">Randevu Al <span>↗</span></a>
     </Reveal>
     <div className="rzServiceCarousel" ref={trackRef}>
@@ -884,7 +920,7 @@ function RozeTestimonials({p}:{p:P}){
   return <section className="rzTestimonials">
     <div className="rzTestiGrid">
       <Reveal className="rzTestiHead">
-        <h2>Parlayan <b>Yorumlar</b></h2>
+        <ScrollChars parts={[{text:'Parlayan '},{text:'Yorumlar',as:'b'}]}/>
         <p>{b.description?`${b.description.slice(0,100)}${b.description.length>100?'…':''}`:'Müşterilerimizin gerçek deneyimlerinden bir kesit.'}</p>
         <div className="rzTestiAvatars">
           {data.reviews.slice(0,3).map((r:any,i:number)=><span key={i} className="rzTestiAvatar" style={{zIndex:3-i,background:avatarBg[i%avatarBg.length]}}>
@@ -926,7 +962,7 @@ function RozeBlog({p}:{p:P}){
   </section>;
   return <section id="rzBlog" className="rzBlog">
     <Reveal className="rzServicesHead">
-      <div><small>BLOG</small><h2>{dec(b,'rz_blogTitle','Bakım üzerine yazılar.')}</h2></div>
+      <div><small>BLOG</small><ScrollChars parts={[{text:dec(b,'rz_blogTitle','Bakım üzerine yazılar.')}]}/></div>
     </Reveal>
     <div className="rzBlogGrid">
       {posts.map((post:any,i:number)=><Reveal as="article" i={i} key={post.id} className="rzBlogCard">
@@ -975,7 +1011,7 @@ function Roze(p:P){
       <div className="rzHeroOverlay"/>
       <div className="rzHeroInner">
         <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
-        <h1>{b.hero_title||'Güzelliğini'} <em>{b.hero_highlight||'ortaya çıkar'}</em></h1>
+        <ScrollChars tag="h1" parts={[{text:`${b.hero_title||'Güzelliğini'} `},{text:b.hero_highlight||'ortaya çıkar',as:'em'}]}/>
         {b.hero_description&&<p className="rzHeroDesc">{b.hero_description}</p>}
         <div className="rzHeroActions">
           <a className="rzHeroCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
@@ -995,7 +1031,7 @@ function Roze(p:P){
     <RozeTestimonials p={p}/>
 
     <section id="randevu" className="rzBooking">
-      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
+      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><ScrollChars parts={[{text:b.booking_title||'Saatini ayır.'}]}/></header></Reveal>
       <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
     </section>
 
