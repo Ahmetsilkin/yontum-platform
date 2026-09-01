@@ -20,8 +20,10 @@
 .scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:#d4af37;border-left:1px solid #292929;letter-spacing:.3px}
 .hourRow{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));min-height:55px;border-bottom:1px solid #292929}.hourRow>time{padding:14px 8px;color:#777;font-size:11px}
 .staffCell{border-left:1px solid #292929;padding:5px;display:flex;flex-direction:column;gap:5px}
-.hourRow article{position:relative;background:#252525;border-left:4px solid #65d392;padding:9px 70px 9px 10px;display:flex;flex-direction:column;cursor:grab}
+.hourRow article{position:relative;background:#252525;border-left:4px solid #65d392;padding:9px 70px 9px 10px;display:flex;flex-direction:column;cursor:grab;touch-action:none}
 .hourRow article:active{cursor:grabbing}
+.hourRow article.touchDragging{opacity:.4}
+.staffCell.touchHover{background:#2a2f24;outline:2px dashed #65d392;outline-offset:-2px}
 .hourRow article.status-completed{border-color:#777;opacity:.7}.hourRow article.status-no_show{border-color:#d96767}.hourRow article span{font-size:12px;margin:3px 0}.hourRow article small{color:#999}.hourRow article em{position:absolute;right:8px;top:8px;font-size:9px;font-style:normal;background:#333;padding:5px}.scheduleEmpty{text-align:center;color:#777}
 @media(max-width:650px){.daySchedule{border-radius:0;padding:16px;margin-inline:-10px}.daySchedule>header{display:block}.daySchedule header>div:last-child{margin-top:12px;display:grid;grid-template-columns:1fr 1fr}.calBadges{margin:10px 0}.scheduleGrid{min-width:calc(52px + var(--staff-cols) * 130px)}.scheduleColHeads,.hourRow{grid-template-columns:52px repeat(var(--staff-cols),minmax(130px,1fr))}.hourRow article{padding-right:55px}}
 
@@ -41,7 +43,7 @@
 .scheduleSlotPicker p{grid-column:1/-1;color:#999;font-size:13px;margin:0}
 
 /* Onay modali + detay çekmecesi — açık renk, panelin geri kalanından bağımsız */
-.calModalBackdrop,.calDrawerBackdrop{position:fixed;inset:0;background:#00000066;display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
+.calModalBackdrop,.calDrawerBackdrop{position:fixed;inset:0;background:#00000066;display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
 .calModal{background:#fff;border-radius:18px;padding:26px;max-width:380px;width:100%;position:relative;box-shadow:0 30px 80px #0005}
 .calModal h3{font:700 20px Georgia;margin:0 0 10px;color:#141414}
 .calModal p{color:#141414;font-size:14px;line-height:1.5;margin:0 0 20px}

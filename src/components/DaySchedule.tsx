@@ -55,6 +55,11 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   const toastTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
   function toast(t:string){setToastMsg(t);if(toastTimer.current)clearTimeout(toastTimer.current);toastTimer.current=setTimeout(()=>setToastMsg(''),3200)}
   const dragRef=useRef<{id:string;durationMs:number}|null>(null);
+  // Dokunmatik (mobil) sürükleme — native HTML5 draggable/onDrop parmakla
+  // çalışmıyor, bu yüzden touchstart/move/end'i kendimiz yönetiyoruz.
+  const touchRef=useRef<{id:string;durationMs:number;startX:number;startY:number;dragging:boolean}|null>(null);
+  const[touchDragId,setTouchDragId]=useState<string|null>(null);
+  const[touchHoverKey,setTouchHoverKey]=useState<string|null>(null);
 
   function applyOptimistic(id:string,startAt:string,endAt:string,newStaffId:string|null){
     setLocalAppts(prev=>prev.map(a=>a.id===id?{...a,start_at:startAt,end_at:endAt,staff_id:newStaffId??a.staff_id}:a));
@@ -62,23 +67,60 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   function revertPending(p:Pending){applyOptimistic(p.appointmentId,p.oldStart.toISOString(),p.oldEnd.toISOString(),p.oldResourceId!=='__unassigned'?p.oldResourceId:null)}
   function cancelPending(){if(pending)revertPending(pending);setPending(null)}
 
-  function onDrop(e:React.DragEvent<HTMLDivElement>,columnId:string,hour:number){
-    e.preventDefault();
-    const drag=dragRef.current;dragRef.current=null;
-    if(!drag)return;
-    const a=localAppts.find(x=>x.id===drag.id);
-    if(!a)return;
-    const rect=(e.currentTarget as HTMLDivElement).getBoundingClientRect();
-    const offsetY=Math.min(Math.max(e.clientY-rect.top,0),rect.height);
-    const minuteInHour=Math.round((offsetY/rect.height)*60/15)*15;
+  function computeNewStart(hour:number,offsetY:number,cellHeight:number){
+    const minuteInHour=Math.round((offsetY/cellHeight)*60/15)*15;
     const newStart=new Date(`${date}T${String(hour).padStart(2,'0')}:00:00+03:00`);
     newStart.setMinutes(minuteInHour===60?0:minuteInHour);
     if(minuteInHour===60)newStart.setHours(newStart.getHours()+1);
-    const newEnd=new Date(newStart.getTime()+drag.durationMs);
+    return newStart;
+  }
+  function finalizeMove(id:string,columnId:string,newStart:Date,durationMs:number){
+    const a=localAppts.find(x=>x.id===id);
+    if(!a)return;
+    const newEnd=new Date(newStart.getTime()+durationMs);
     const oldStart=new Date(a.start_at),oldEnd=new Date(a.end_at),oldResourceId=a.staff_id||'__unassigned';
     if(newStart.getTime()===oldStart.getTime()&&columnId===oldResourceId)return;
     applyOptimistic(a.id,newStart.toISOString(),newEnd.toISOString(),columnId!=='__unassigned'?columnId:null);
     setPending({appointmentId:a.id,oldStart,oldEnd,oldResourceId,newStart,newEnd,newResourceId:columnId});
+  }
+
+  function onDrop(e:React.DragEvent<HTMLDivElement>,columnId:string,hour:number){
+    e.preventDefault();
+    const drag=dragRef.current;dragRef.current=null;
+    if(!drag)return;
+    const rect=(e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    const offsetY=Math.min(Math.max(e.clientY-rect.top,0),rect.height);
+    finalizeMove(drag.id,columnId,computeNewStart(hour,offsetY,rect.height),drag.durationMs);
+  }
+
+  function onCardTouchStart(e:React.TouchEvent,a:Appointment){
+    const t=e.touches[0];
+    touchRef.current={id:a.id,durationMs:new Date(a.end_at).getTime()-new Date(a.start_at).getTime(),startX:t.clientX,startY:t.clientY,dragging:false};
+  }
+  function onCardTouchMove(e:React.TouchEvent){
+    const st=touchRef.current;if(!st)return;
+    const t=e.touches[0];
+    if(!st.dragging){
+      if(Math.abs(t.clientX-st.startX)<10&&Math.abs(t.clientY-st.startY)<10)return;
+      st.dragging=true;setTouchDragId(st.id);
+    }
+    e.preventDefault();
+    const el=document.elementFromPoint(t.clientX,t.clientY);
+    const cell=el?.closest<HTMLElement>('.staffCell');
+    setTouchHoverKey(cell?`${cell.dataset.col}|${cell.dataset.hour}`:null);
+  }
+  function onCardTouchEnd(e:React.TouchEvent){
+    const st=touchRef.current;touchRef.current=null;
+    setTouchDragId(null);setTouchHoverKey(null);
+    if(!st||!st.dragging)return;
+    const t=e.changedTouches[0];
+    const el=document.elementFromPoint(t.clientX,t.clientY);
+    const cell=el?.closest<HTMLElement>('.staffCell');
+    if(!cell)return;
+    const columnId=cell.dataset.col||'__unassigned',hour=Number(cell.dataset.hour);
+    const rect=cell.getBoundingClientRect();
+    const offsetY=Math.min(Math.max(t.clientY-rect.top,0),rect.height);
+    finalizeMove(st.id,columnId,computeNewStart(hour,offsetY,rect.height),st.durationMs);
   }
 
   async function commitPending(sendWhatsapp:boolean){
@@ -111,8 +153,9 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
 
   function apptCard(a:Appointment){
     const bg=serviceColorMap.get(a.service_id);
-    return <article key={a.id} className={`status-${a.status}`} style={bg?{borderLeftColor:bg}:undefined}
+    return <article key={a.id} className={`status-${a.status}${touchDragId===a.id?' touchDragging':''}`} style={bg?{borderLeftColor:bg}:undefined}
       draggable onDragStart={()=>{dragRef.current={id:a.id,durationMs:new Date(a.end_at).getTime()-new Date(a.start_at).getTime()}}}
+      onTouchStart={e=>onCardTouchStart(e,a)} onTouchMove={onCardTouchMove} onTouchEnd={onCardTouchEnd}
       onClick={()=>setSelected(a)}>
       <b>{new Date(a.start_at).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})}–{new Date(a.end_at).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})}</b>
       <span>{a.customer_first_name} {a.customer_last_name}</span>
@@ -155,10 +198,10 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
             <div className="hourRow" key={h}>
               <time>{String(h).padStart(2,'0')}:00</time>
               {allColumns.length>1?allColumns.map(c=>
-                <div className="staffCell" key={c.id} onDragOver={e=>e.preventDefault()} onDrop={e=>onDrop(e,c.id,h)}>
+                <div className={`staffCell${touchHoverKey===`${c.id}|${h}`?' touchHover':''}`} key={c.id} data-col={c.id} data-hour={h} onDragOver={e=>e.preventDefault()} onDrop={e=>onDrop(e,c.id,h)}>
                   {list.filter(a=>new Date(a.start_at).getHours()===h&&(c.id==='__unassigned'?!columns.some(cc=>cc.matchIds.has(a.staff_id)):c.matchIds.has(a.staff_id))).map(apptCard)}
                 </div>
-              ):<div className="staffCell" onDragOver={e=>e.preventDefault()} onDrop={e=>onDrop(e,columns[0]?.id||'__unassigned',h)}>{list.filter(a=>new Date(a.start_at).getHours()===h).map(apptCard)}</div>}
+              ):<div className={`staffCell${touchHoverKey===`${columns[0]?.id||'__unassigned'}|${h}`?' touchHover':''}`} data-col={columns[0]?.id||'__unassigned'} data-hour={h} onDragOver={e=>e.preventDefault()} onDrop={e=>onDrop(e,columns[0]?.id||'__unassigned',h)}>{list.filter(a=>new Date(a.start_at).getHours()===h).map(apptCard)}</div>}
             </div>
           )}
         </div>
