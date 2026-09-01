@@ -999,7 +999,7 @@
 /* Navbar — tek bir şerit DEĞİL: her öğe kendi ayrı buzlu-cam/dolu kutucuğu; hero üzerindeyken
    camsı+beyaz yazı, sayfa kaydırılıp beyaz gövdeye geçilince (JS ile .scrolled) okunaklı kalması
    için koyu yazı+soft gri cama döner */
-.rzNav{position:sticky;top:16px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:14px;margin:16px 4vw 0}
+.rzNav{position:fixed;top:16px;left:4vw;right:4vw;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:14px}
 .rzBrand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:14.5px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border:1px solid #ffffffb0;border-radius:999px;padding:6px 16px 6px 6px;box-shadow:0 8px 24px rgba(43,23,18,.1)}
 .rzBrand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
 .rzBrand i{width:32px;height:32px;border-radius:50%;background:var(--rz-ink);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
@@ -1043,7 +1043,7 @@
 .rzAboutGrid{display:grid;grid-template-columns:1.35fr .85fr 1.35fr;gap:24px;align-items:start}
 .rzAboutCard img{width:100%;display:block;border-radius:26px;object-fit:cover}
 .rzAboutCardMain img{aspect-ratio:4/5}
-.rzAboutCardTall img{aspect-ratio:3/5;border-radius:130px 130px 26px 26px}
+.rzAboutCardTall img{aspect-ratio:3/5;border-radius:26px}
 .rzAboutCardWide{display:flex;flex-direction:column;gap:18px}
 .rzAboutCardWide h3{font-size:19px;font-weight:600;line-height:1.35;margin:0}
 .rzAboutCardWide img{aspect-ratio:16/11}
@@ -1052,7 +1052,7 @@
 .rzOutlineBtn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--rz-ink);color:var(--rz-ink)!important;font-weight:600;font-size:13.5px;padding:12px 20px;border-radius:999px;transition:background .18s ease,color .18s ease}
 .rzOutlineBtn:hover{background:var(--rz-ink);color:#fff!important}
 .rzAboutCardFallback{width:100%;aspect-ratio:4/5;border-radius:26px;background:linear-gradient(150deg,var(--rz-rose),var(--rz-rose-deep))}
-.rzAboutCardFallback.alt{aspect-ratio:3/5;border-radius:130px 130px 26px 26px}
+.rzAboutCardFallback.alt{aspect-ratio:3/5}
 
 .rzHeroCards{position:absolute;right:6vw;bottom:40px;z-index:3;display:flex}
 .rzHeroCard{position:relative;width:168px;height:210px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,255,255,.4);box-shadow:0 20px 40px rgba(20,8,6,.35);margin-left:-46px;transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;align-items:flex-end}
@@ -1110,16 +1110,36 @@
 .rzTeamGrid b{display:block;font-size:14.5px;font-weight:700}
 .rzTeamGrid small{color:var(--rz-muted);font-size:12px}
 
-.tRoze .ipTestimonials{padding:20px 6vw 100px;background:none}
-.tRoze .ipTestimonials header small{color:var(--rz-accent);font-weight:800;letter-spacing:2.5px}
-.tRoze .ipTestimonials header h2{font-family:'Manrope',sans-serif;font-weight:700;letter-spacing:-.01em}
-.tRoze .ipTestiPage{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.tRoze .ipTestiPage article{background:#fff;border:1px solid var(--rz-line);border-radius:24px;padding:26px}
-.tRoze .ipStars{color:#d4a04a}
-.tRoze .ipTestiDivider{height:1px;background:var(--rz-line);margin:16px 0}
-.tRoze .ipTestiDots{display:flex;justify-content:center;gap:8px;margin-top:24px}
-.tRoze .ipTestiDots button{width:8px;height:8px;border-radius:50%;border:0;background:var(--rz-line);cursor:pointer}
-.tRoze .ipTestiDots button.active{background:var(--rz-ink);width:22px;border-radius:999px}
+.rzTestimonials{padding:100px 6vw 120px;position:relative}
+.rzTestiGrid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:24px}
+.rzTestiHead{grid-column:1;grid-row:1/3}
+.rzTestiHead h2{font-size:clamp(28px,3.4vw,40px);font-weight:400;letter-spacing:-.01em;margin:0 0 16px}
+.rzTestiHead h2 b{font-weight:800}
+.rzTestiHead>p{color:var(--rz-muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:300px}
+.rzTestiAvatars{display:flex;align-items:center}
+.rzTestiAvatar{width:52px;height:52px;border-radius:50%;border:3px solid #fff;margin-left:-14px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px;overflow:hidden}
+.rzTestiAvatar:first-child{margin-left:0}
+.rzTestiAvatar img{width:100%;height:100%;object-fit:cover}
+.rzTestiAvatar.more{background:var(--rz-ink)!important;font-size:12px}
+.rzTestiCard{border-radius:24px;padding:26px}
+.rzTestiCard.pink{background:#fbe9ea}
+.rzTestiCard.gray{background:#f2f0ec}
+.rzTestiCard.slot0{grid-column:2;grid-row:1}
+.rzTestiCard.slot1{grid-column:2;grid-row:2;margin-top:26px}
+.rzTestiCard.slot2{grid-column:3;grid-row:1}
+.rzTestiCard.slot3{grid-column:3;grid-row:2}
+.rzTestiCard p{font-size:14.5px;line-height:1.55;color:var(--rz-ink);margin:0 0 22px}
+.rzTestiCardFooter{display:flex;align-items:center;gap:12px}
+.rzTestiAvatarSm{width:44px;height:44px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.rzTestiAvatarSm img{width:100%;height:100%;object-fit:cover}
+.rzTestiCardFooter div{display:flex;flex-direction:column;gap:2px}
+.rzTestiCardFooter b{font-size:13px;font-weight:700;color:var(--rz-ink)}
+.rzTestiCardFooter span{font-size:14px;font-weight:700}
+.rzTestiNav{position:absolute;right:6vw;bottom:36px;display:flex;gap:10px}
+.rzTestiNav button{width:44px;height:44px;border-radius:50%;border:0;display:grid;place-items:center;font-size:15px;cursor:pointer;transition:opacity .15s ease}
+.rzTestiNav button:first-child{background:var(--rz-line);color:var(--rz-ink)}
+.rzTestiNav button:last-child{background:var(--rz-ink);color:#fff}
+.rzTestiNav button:disabled{opacity:.35;cursor:default}
 
 .rzBooking{padding:20px 6vw 100px;max-width:960px;margin:0 auto}
 
@@ -1146,7 +1166,10 @@
   .rzAboutGrid{grid-template-columns:1fr 1fr}
   .rzAboutCardWide{grid-column:1/-1}
   .rzServiceGrid{grid-template-columns:repeat(2,1fr)}
-  .tRoze .ipTestiPage{grid-template-columns:1fr 1fr}
+  .rzTestiGrid{grid-template-columns:1fr 1fr}
+  .rzTestiHead{grid-column:1/-1;grid-row:auto}
+  .rzTestiCard.slot0,.rzTestiCard.slot2{grid-row:auto}
+  .rzTestiCard.slot1,.rzTestiCard.slot3{grid-row:auto;margin-top:0}
   .rzFooterGrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:650px){
@@ -1157,10 +1180,12 @@
   .rzAboutBadge{width:80px;height:80px;font-size:10.5px}
   .rzAboutGrid{grid-template-columns:1fr}
   .rzServiceGrid{grid-template-columns:1fr}
-  .tRoze .ipTestiPage{grid-template-columns:1fr}
+  .rzTestiGrid{grid-template-columns:1fr}
+  .rzTestiCard{grid-column:1!important}
+  .rzTestiNav{position:static;justify-content:flex-end;margin-top:16px}
   .rzFooterGrid{grid-template-columns:1fr;gap:28px}
   .rzTeamPhoto{width:120px;height:120px}
-  .rzNav{margin:10px 4vw 0}
+  .rzNav{top:10px}
   .tRoze{padding-bottom:96px}
   .rzMobileSticky{display:flex;position:fixed;left:16px;right:16px;bottom:16px;z-index:50;gap:10px;align-items:center}
   .rzMobileSticky a:first-child{flex:1;text-align:center;background:#fff;border:1.5px solid var(--rz-ink);color:var(--rz-ink)!important;font-weight:700;padding:13.5px;border-radius:999px;box-shadow:0 14px 30px rgba(43,23,18,.18)}

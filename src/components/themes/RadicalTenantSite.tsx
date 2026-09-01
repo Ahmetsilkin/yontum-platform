@@ -831,6 +831,47 @@ function RozeServices({p}:{p:P}){
     </div>
   </section>;
 }
+/* Roze'nin kendi yorum bölümü — İpek'in paylaşılan "sayfa sayfa kaydırma"
+   karuselinden farklı olarak, kullanıcının gönderdiği referans görseldeki
+   gibi solda başlık+avatar yığını, sağda pembe/gri dönüşümlü kademeli
+   kart ızgarası ve sağ altta ok navigasyonu kullanır. */
+function RozeTestimonials({p}:{p:P}){
+  const{b}=p;
+  const[data,setData]=useState<any>(null);
+  const[page,setPage]=useState(0);
+  useEffect(()=>{fetch(`/api/ratings/${b.id}`).then(r=>r.json()).then(setData).catch(()=>{})},[b.id]);
+  if(!data?.enabled||!data.reviews?.length)return null;
+  const perPage=4;
+  const pages=Math.max(1,Math.ceil(data.reviews.length/perPage));
+  const shown=data.reviews.slice(page*perPage,page*perPage+perPage);
+  const initials=(n:string)=>(n||'?').trim().charAt(0).toUpperCase();
+  const avatarBg=['#d9948f','#b7a89f','#c9a45f','#a67d8a'];
+  return <section className="rzTestimonials">
+    <div className="rzTestiGrid">
+      <Reveal className="rzTestiHead">
+        <h2>Parlayan <b>Yorumlar</b></h2>
+        <p>{b.description?`${b.description.slice(0,100)}${b.description.length>100?'…':''}`:'Müşterilerimizin gerçek deneyimlerinden bir kesit.'}</p>
+        <div className="rzTestiAvatars">
+          {data.reviews.slice(0,3).map((r:any,i:number)=><span key={i} className="rzTestiAvatar" style={{zIndex:3-i,background:avatarBg[i%avatarBg.length]}}>
+            {r.avatar_url?<img src={r.avatar_url} alt={r.customer_name||''}/>:initials(r.customer_name)}
+          </span>)}
+          {data.count>3&&<span className="rzTestiAvatar more">+{data.count-3}</span>}
+        </div>
+      </Reveal>
+      {shown.map((r:any,i:number)=><Reveal as="article" i={i+1} key={`${page}-${i}`} className={`rzTestiCard slot${i} ${i%2===0?'pink':'gray'}`}>
+        <p>"{r.comment}"</p>
+        <div className="rzTestiCardFooter">
+          <span className="rzTestiAvatarSm" style={{background:avatarBg[i%avatarBg.length]}}>{r.avatar_url?<img src={r.avatar_url} alt={r.customer_name||''}/>:initials(r.customer_name)}</span>
+          <div><b>★ {r.stars}</b><span>{r.customer_name||'Müşterimiz'}</span></div>
+        </div>
+      </Reveal>)}
+    </div>
+    {pages>1&&<div className="rzTestiNav">
+      <button type="button" disabled={page===0} onClick={()=>setPage(v=>v-1)} aria-label="Önceki">←</button>
+      <button type="button" disabled={page===pages-1} onClick={()=>setPage(v=>v+1)} aria-label="Sonraki">→</button>
+    </div>}
+  </section>;
+}
 function Roze(p:P){
   const{b}=p;
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
@@ -891,7 +932,7 @@ function Roze(p:P){
       </div>
     </section>}
 
-    <IpekTestimonials businessId={b.id}/>
+    <RozeTestimonials p={p}/>
 
     <section id="randevu" className="rzBooking">
       <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
