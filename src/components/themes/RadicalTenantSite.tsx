@@ -903,7 +903,6 @@ function Roze(p:P){
           ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
           :<div className="rzHeroMedia rzHeroMediaFallback"/>}
       <div className="rzHeroOverlay"/>
-      {p.gallery?.length>0&&<a className="rzHeroGalleryBtn" href="#rzGallery"><span className="rzHeroGalleryCircle">▶</span><span>Galeriyi<br/>Gör</span></a>}
       <div className="rzHeroInner">
         <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
         <h1>{b.hero_title||'Güzelliğini'} <em>{b.hero_highlight||'ortaya çıkar'}</em></h1>
