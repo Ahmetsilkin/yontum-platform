@@ -1142,22 +1142,36 @@
 .rzTestiNav button:disabled{opacity:.35;cursor:default}
 
 .rzBooking{padding:20px 6vw 100px;max-width:960px;margin:0 auto}
+/* TenantBooking (paylaşılan randevu bileşeni) --brand/--accent'i işletmenin kendi
+   primary_color'ından alır — bazı işletmelerde bu çok soluk/kontrastsız bir pembe
+   çıkabiliyor (beyaz yazı okunmaz hale geliyor). Roze içinde bunu köke mürekkep
+   siyahına sabitliyoruz, buton da ayrıca beyaz zemin + siyah kenarlığa çekiliyor. */
+.tRoze{--brand:var(--rz-ink);--accent:var(--rz-ink)}
+/* .tenantBooking.action-style-solid .tenantNext (tenant.css) beyaz yazıyı !important
+   ile zorluyor ve özgüllüğü bizimkiyle eşit — sıra şansına bırakmamak için .tRoze
+   iki kez yazılarak özgüllük kasıtlı olarak yükseltiliyor, her koşulda üstün geliyor. */
+.tRoze.tRoze .tenantBooking .tenantNext{background:#fff!important;border:1.5px solid var(--rz-ink)!important;color:var(--rz-ink)!important;-webkit-text-fill-color:var(--rz-ink)!important;box-shadow:none!important;border-radius:999px}
+.tRoze.tRoze .tenantBooking .tenantNext:hover:not(:disabled){background:var(--rz-ink)!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.tRoze.tRoze .tenantBooking .tenantNext:disabled{opacity:.4!important}
+.tRoze.tRoze .tenantBooking .tbServices button.selected,.tRoze.tRoze .tenantBooking .staffOptions button.selected{border-color:var(--rz-ink)!important;box-shadow:inset 4px 0 var(--rz-ink)!important}
+.tRoze.tRoze .tenantBooking .tbServices button.selected>i{border-color:var(--rz-ink)!important}
+.tRoze.tRoze .tenantBooking .tbDays button.selected,.tRoze.tRoze .tenantBooking .tbSlots button.selected{background:#fff!important;border:1.5px solid var(--rz-ink)!important;color:var(--rz-ink)!important;-webkit-text-fill-color:var(--rz-ink)!important;box-shadow:none!important}
+.tRoze.tRoze .tenantBooking .tenantStep.active i{background:var(--rz-ink)!important;border-color:var(--rz-ink)!important;color:#fff!important}
+.tRoze.tRoze .tenantBooking .tenantStepLine.active{background:var(--rz-ink)!important}
 
-.rzFooter{background:linear-gradient(160deg,#2b1712,#4a2620);color:#f6e6df;border-radius:40px 40px 0 0;padding:70px 6vw 30px;margin-top:20px}
-.rzFooter .rzBrand{color:#fff;margin-bottom:14px}
-.rzFooter .rzBrand i{background:linear-gradient(135deg,var(--rz-accent),#ffb199)}
-.rzFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12)}
-.rzFooterGrid>div>p{color:#d8b9b0;font-size:14px;line-height:1.7;max-width:280px}
-.rzFooterGrid small{color:#e59fb0;font-weight:800;letter-spacing:2px;font-size:10.5px}
-.rzHoursRow{display:flex;justify-content:space-between;font-size:13px;color:#e8d6d0;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.rzFooter{background:#fff;color:var(--rz-ink);border-top:1px solid var(--rz-line);padding:70px 6vw 30px;margin-top:20px}
+.rzFooter .rzBrand{color:var(--rz-ink);margin-bottom:14px}
+.rzFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--rz-line)}
+.rzFooterGrid>div>p{color:var(--rz-muted);font-size:14px;line-height:1.7;max-width:280px}
+.rzFooterGrid small{color:var(--rz-muted);font-weight:800;letter-spacing:2px;font-size:10.5px}
+.rzHoursRow{display:flex;justify-content:space-between;font-size:13px;color:var(--rz-ink);padding:8px 0;border-bottom:1px solid var(--rz-line)}
 .rzHoursRow:last-child{border-bottom:0}
-.rzFooterGrid p{color:#e8d6d0;font-size:13.5px;margin:8px 0}
-.rzFooterGrid a{color:#ffd7e6}
+.rzFooterGrid p{color:var(--rz-muted);font-size:13.5px;margin:8px 0}
+.rzFooterGrid a{color:var(--rz-ink)}
 .rzFooterActions{display:flex;gap:10px;margin-top:14px}
-.rzMapBtn,.rzCallBtn{padding:10px 16px;border-radius:999px;font-size:12.5px;font-weight:700;border:1px solid rgba(255,255,255,.3);color:#fff!important;transition:background .18s ease,color .18s ease}
-.rzCallBtn{background:#fff;color:var(--rz-ink)!important;border-color:#fff}
-.rzCallBtn:hover{background:transparent;color:#fff!important}
-.rzFooterBottom{padding-top:24px;text-align:center;font-size:11.5px;color:#a98a82}
+.rzMapBtn,.rzCallBtn{padding:10px 16px;border-radius:999px;font-size:12.5px;font-weight:700;background:#fff;border:1.5px solid var(--rz-ink);color:var(--rz-ink)!important;transition:background .18s ease,color .18s ease}
+.rzMapBtn:hover,.rzCallBtn:hover{background:var(--rz-ink);color:#fff!important}
+.rzFooterBottom{padding-top:24px;text-align:center;font-size:11.5px;color:var(--rz-muted)}
 
 .rzMobileSticky{display:none}
 @media(max-width:900px){
