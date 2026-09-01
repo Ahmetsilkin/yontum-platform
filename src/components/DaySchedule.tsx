@@ -44,7 +44,10 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   },[]);
   const gridStyle={'--staff-cols':allColumns.length||1}as React.CSSProperties;
 
-  const serviceColorMap=useMemo(()=>{const m=new Map<string,string>();services.forEach((s,i)=>m.set(s.id,SERVICE_COLORS[i%SERVICE_COLORS.length]));return m},[services]);
+  // Hizmet formunda seçilen "panel etiket rengi" varsa öncelik onda — yoksa
+  // otomatik sıralı paletten düşüyor. Eskiden burada hep otomatik palet
+  // kullanılıyordu, kullanıcı renk seçse bile takvimde hiç yansımıyordu.
+  const serviceColorMap=useMemo(()=>{const m=new Map<string,string>();services.forEach((s,i)=>m.set(s.id,s.color||SERVICE_COLORS[i%SERVICE_COLORS.length]));return m},[services]);
   const todaysAppointments=useMemo(()=>localAppts.filter(a=>a.status!=='cancelled'&&a.start_at.slice(0,10)===today),[localAppts,today]);
   const todaysRevenue=todaysAppointments.reduce((n,a)=>n+Number(a.total_price||0),0);
 
