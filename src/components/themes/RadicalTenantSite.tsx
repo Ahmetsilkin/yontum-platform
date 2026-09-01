@@ -817,18 +817,34 @@ function RozeAbout({p}:{p:P}){
   </section>;
 }
 function RozeServices({p}:{p:P}){
+  const{b}=p;
+  const trackRef=useRef<HTMLDivElement>(null);
+  const scrollBy=(dir:number)=>{
+    const el=trackRef.current;if(!el)return;
+    const card=el.querySelector('.rzServiceSlide') as HTMLElement|null;
+    const amount=(card?.offsetWidth||280)+24;
+    el.scrollBy({left:dir*amount,behavior:'smooth'});
+  };
   return <section id="hizmetler" className="rzServices">
-    <Reveal><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetlerimiz'}</h2></header></Reveal>
-    <div className="rzServiceGrid">
-      {p.services.map((s,i)=><Reveal as="article" i={i} key={s.id}>
-        <div className="rzServiceImg">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i className="rzServiceFallback"/>}</div>
-        <div className="rzServiceBody">
-          <h3>{s.name}</h3>
-          {s.description&&<p>{s.description}</p>}
-          <footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer>
+    <Reveal className="rzServicesHead">
+      <div><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Hizmetlerimiz'}</h2></div>
+      <a className="rzOutlineBtn" href="#randevu">Randevu Al <span>↗</span></a>
+    </Reveal>
+    <div className="rzServiceCarousel" ref={trackRef}>
+      {p.services.map((s,i)=><article key={s.id} className={`rzServiceSlide${i===0?' featured':''}`}>
+        {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="rzServiceFallback">✿</div>}
+        <div className="rzServiceSlideOverlay"/>
+        <div className="rzServiceSlideBody">
+          <b>{s.name}</b>
+          <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
         </div>
-      </Reveal>)}
+        {i===0&&<a className="rzServiceDetailBadge" href="#randevu"><span>↗</span>Randevu Al</a>}
+      </article>)}
     </div>
+    {p.services.length>1&&<div className="rzServiceCarouselNav">
+      <button type="button" onClick={()=>scrollBy(-1)} aria-label="Önceki">←</button>
+      <button type="button" onClick={()=>scrollBy(1)} aria-label="Sonraki">→</button>
+    </div>}
   </section>;
 }
 /* Roze'nin kendi yorum bölümü — İpek'in paylaşılan "sayfa sayfa kaydırma"
@@ -872,6 +888,41 @@ function RozeTestimonials({p}:{p:P}){
     </div>}
   </section>;
 }
+/* İpek/Atölye'deki gibi, işletme panelden blog yazısı eklediyse (blogPosts) gösterilen
+   dergi tarzı bölüm — kart seçilince aynı sayfada (route değişmeden) tam yazıya döner. */
+function RozeBlog({p}:{p:P}){
+  const{b}=p;
+  const posts=p.blogPosts||[];
+  const[openPost,setOpenPost]=useState<any>(null);
+  if(!posts.length)return null;
+  if(openPost)return <section id="rzBlog" className="rzBlog">
+    <button type="button" className="rzBlogBack" onClick={()=>setOpenPost(null)}>← Yazılara dön</button>
+    <article className="rzPostArticle">
+      <div className="rzPostHead"><h1>{openPost.title}</h1>{openPost.published_at&&<span>{trDate(openPost.published_at)}</span>}</div>
+      {openPost.cover_url&&<div className="rzPostCover"><img src={openPost.cover_url} alt={openPost.title}/></div>}
+      <div className="rzPostBody">
+        {(openPost.content||openPost.excerpt||'').split(/\n{2,}/).map((t:string)=>t.trim()).filter(Boolean).map((par:string,i:number)=><p key={i}>{par}</p>)}
+      </div>
+    </article>
+  </section>;
+  return <section id="rzBlog" className="rzBlog">
+    <Reveal className="rzServicesHead">
+      <div><small>BLOG</small><h2>{dec(b,'rz_blogTitle','Bakım üzerine yazılar.')}</h2></div>
+    </Reveal>
+    <div className="rzBlogGrid">
+      {posts.map((post:any,i:number)=><Reveal as="article" i={i} key={post.id} className="rzBlogCard">
+        <button type="button" onClick={()=>setOpenPost(post)}>
+          <div className="rzBlogCover">{post.cover_url?<img src={post.cover_url} alt={post.title}/>:<div className="rzServiceFallback">✿</div>}</div>
+          <div className="rzBlogCardBody">
+            {post.category&&<small>{post.category}</small>}
+            <b>{post.title}</b>
+            {post.published_at&&<span>{trDate(post.published_at)}</span>}
+          </div>
+        </button>
+      </Reveal>)}
+    </div>
+  </section>;
+}
 function Roze(p:P){
   const{b}=p;
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
@@ -892,6 +943,7 @@ function Roze(p:P){
         <a className="rzNavLink solid" href="#top">Ana Sayfa</a>
         <a className="rzNavLink" href="#hizmetler">Hizmetler</a>
         <a className="rzNavLink" href="#rzHakkimizda">Hakkımızda</a>
+        {(p.blogPosts||[]).length>0&&<a className="rzNavLink" href="#rzBlog">Blog</a>}
       </nav>
       <a className="rzNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
     </header>
@@ -920,6 +972,7 @@ function Roze(p:P){
 
     <RozeServices p={p}/>
     <RozeGallery p={p}/>
+    <RozeBlog p={p}/>
 
     {visibleStaff.length>0&&<section className="rzTeam">
       <Reveal><header><small>EKİBİMİZ</small><h2>{dec(b,'rz_teamTitle','Uzman ellerde bakım.')}</h2></header></Reveal>
