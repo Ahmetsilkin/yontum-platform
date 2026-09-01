@@ -1,6 +1,6 @@
 .daySchedule{background:#111;color:#fff;border-radius:18px;padding:24px;margin-bottom:20px}
 .daySchedule>header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:12px}
-.daySchedule h2{font:700 27px Georgia;margin:5px 0}
+.daySchedule h2{font:700 27px var(--font-display,Georgia);margin:5px 0}
 .daySchedule header small{letter-spacing:2px;color:#888}
 .daySchedule header>div:last-child{display:flex;gap:7px}
 .daySchedule input,.daySchedule select{background:#252525;color:#fff;border:1px solid #444;padding:9px}
@@ -8,7 +8,7 @@
 .calBadges{display:flex;gap:10px}
 .calBadge{background:#1c1c1c;border:1px solid #2e2e2e;border-radius:12px;padding:9px 16px;display:flex;flex-direction:column;gap:2px;min-width:120px}
 .calBadge small{color:#888;font-size:9px;letter-spacing:.6px}
-.calBadge b{font:700 19px Georgia;color:#fff}
+.calBadge b{font:700 19px var(--font-display,Georgia);color:#fff}
 
 .calLegend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
 .calLegend span{display:flex;align-items:center;gap:6px;font-size:12px;color:#999}
@@ -17,7 +17,7 @@
 .scheduleGridScroll{overflow-x:auto}
 .scheduleGrid{border-top:1px solid #333;min-width:calc(65px + var(--staff-cols) * 150px)}
 .scheduleColHeads{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));background:#171717;border-bottom:1px solid #333;position:sticky;top:0}
-.scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:#ff8040;border-left:1px solid #292929;letter-spacing:.3px}
+.scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:var(--admin-pop,#7c5cff);border-left:1px solid #292929;letter-spacing:.3px}
 .hourRow{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));min-height:55px;border-bottom:1px solid #292929}.hourRow>time{padding:14px 8px;color:#777;font-size:11px}
 .staffCell{border-left:1px solid #292929;padding:5px;display:flex;flex-direction:column;gap:5px}
 .hourRow article{position:relative;background:#252525;border-left:4px solid #65d392;padding:9px 70px 9px 10px;display:flex;flex-direction:column;cursor:grab;touch-action:none}
@@ -33,24 +33,24 @@
 .scheduleDayPicker button b{font-size:18px}
 .scheduleDayPicker button span{color:#999;font-size:10px}
 .scheduleDayPicker button.today{position:relative}
-.scheduleDayPicker button.today:after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#ff8040}
-.scheduleDayPicker button.selected{border-color:#ff8040;background:#ff8040;box-shadow:0 4px 14px #ff804066}
+.scheduleDayPicker button.today:after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--admin-pop,#7c5cff)}
+.scheduleDayPicker button.selected{border-color:var(--admin-pop,#7c5cff);background:var(--admin-pop,#7c5cff);box-shadow:0 4px 14px #7c5cff40}
 .scheduleDayPicker button.selected small,.scheduleDayPicker button.selected b,.scheduleDayPicker button.selected span{color:#141414}
 .scheduleDayPicker button.selected.today:after{background:#141414}
 .scheduleSlotPicker{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;padding:6px 0 4px}
 .scheduleSlotPicker button{background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:9px 4px;color:#eee;cursor:pointer;font-size:13px}
-.scheduleSlotPicker button.selected{border-color:#ff8040;background:#ff8040;color:#141414;font-weight:700;box-shadow:0 4px 14px #ff804066}
+.scheduleSlotPicker button.selected{border-color:var(--admin-pop,#7c5cff);background:var(--admin-pop,#7c5cff);color:#141414;font-weight:700;box-shadow:0 4px 14px #7c5cff40}
 .scheduleSlotPicker p{grid-column:1/-1;color:#999;font-size:13px;margin:0}
 
 /* Onay modali + detay çekmecesi — açık renk, panelin geri kalanından bağımsız */
 .calModalBackdrop,.calDrawerBackdrop{position:fixed;inset:0;background:#00000066;display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
 .calModal{background:#fff;border-radius:26px;padding:26px;max-width:380px;width:100%;position:relative;box-shadow:0 30px 80px #0005}
-.calModal h3{font:700 20px Georgia;margin:0 0 10px;color:#141414}
+.calModal h3{font:700 20px var(--font-display,Georgia);margin:0 0 10px;color:#141414}
 .calModal p{color:#141414;font-size:14px;line-height:1.5;margin:0 0 20px}
 .calModalActions{display:flex;flex-direction:column;gap:8px}
 .calModalX{position:absolute;top:14px;right:14px;border:none;background:#f2f1ec;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#141414}
 .calBtnPrimary,.calBtnGhost,.calBtnDanger{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;padding:12px 16px;font:600 14px inherit;cursor:pointer;border:1px solid transparent}
-.calBtnPrimary{background:var(--admin-primary,#0046ff);color:#fff}
+.calBtnPrimary{background:var(--admin-primary,#141414);color:#fff}
 .calBtnPrimary:disabled{opacity:.6;cursor:default}
 .calBtnGhost{background:#fff;border-color:#ddd;color:#141414}
 .calBtnDanger{background:#fff;border-color:#e3b8b8;color:#b23b3b}
@@ -61,7 +61,7 @@
 .calDrawer{background:#fff;height:100%;width:100%;max-width:380px;padding:28px 24px;overflow-y:auto;position:relative;box-shadow:-20px 0 60px #0005;animation:calDrawerIn .22s ease}
 @keyframes calDrawerIn{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
 .calDrawerOverline{color:#999;letter-spacing:1.5px;font-size:11px}
-.calDrawer h3{font:700 24px Georgia;margin:4px 0 18px;color:#141414}
+.calDrawer h3{font:700 24px var(--font-display,Georgia);margin:4px 0 18px;color:#141414}
 .calDrawerRow{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eee;font-size:14px}
 .calDrawerRow span{color:#888}
 .calDrawerRow b{color:#141414;text-align:right}

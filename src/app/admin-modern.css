@@ -1,33 +1,31 @@
-/* ================= Esnaf Yönetim Paneli: Yontum marka paleti (koyu lacivert +
-   canlı mavi + turuncu vurgu, açık gri zemin), Apple kadar yumuşak köşeler =================
-   Not: Müşteri randevu vitrini (storefront) ayrı bir tema (globals.css --pub-*,
-   aynı paleti kullanıyor) — buradaki tokenlar sadece .dashboardShell içinde
-   geçerli, storefront'un kendi sınıflarını etkilemiyor. */
+/* ================= Esnaf Yönetim Paneli: giriş/anasayfa ile AYNI marka teması
+   (krem zemin + mürekkep siyahı + mor "el çizimi" vurgu), Space Grotesk başlıklar =================
+   Not: Bu tokenlar globals.css'teki --pub-* aile ile aynı paletten türetildi,
+   panel artık storefront/giriş sayfasıyla tek bir görsel dil paylaşıyor. */
 :root{
-  --admin-bg:#e9e9e9;--admin-card:#ffffff;--admin-ink:#12131a;--admin-muted:#68686f;--admin-line:#dcdcdc;
-  --admin-primary:#0046ff;--admin-primary-hover:#001bb7;--admin-primary-soft:#e5ecff;
-  --admin-pop:#ff8040;--admin-pop-soft:#fff0e6;
+  --admin-bg:#f7f3e8;--admin-card:#fffdf7;--admin-ink:#16150f;--admin-muted:#6b6a5c;--admin-line:#e6e0cd;
+  --admin-soft:#efe8d6;--admin-soft-line:#d9d2b8;
+  --admin-primary:#141414;--admin-primary-hover:#000000;--admin-primary-soft:#efe9ff;
+  --admin-pop:#7c5cff;--admin-pop-soft:#efe9ff;
   --admin-radius:20px;--admin-radius-lg:28px;--admin-radius-sm:14px;
-  --admin-shadow:0 1px 2px rgba(15,23,42,.04),0 10px 30px rgba(15,23,42,.06);
-  --status-ok-bg:#ecfdf5;--status-ok-ink:#047857;--status-ok-line:#a7f3d0;
-  --status-warn-bg:#fffbeb;--status-warn-ink:#b45309;--status-warn-line:#fde68a;
-  --status-bad-bg:#fff1f2;--status-bad-ink:#be123c;--status-bad-line:#fecdd3;
-  --admin-gold:var(--admin-primary);--admin-gold-soft:var(--admin-primary-soft);
+  --admin-shadow:0 1px 2px rgba(22,21,15,.05),0 10px 30px rgba(22,21,15,.07);
+  --status-ok-bg:#eaf6ec;--status-ok-ink:#2f7d49;--status-ok-line:#bfe3c8;
+  --status-warn-bg:#fdf6e3;--status-warn-ink:#a3690c;--status-warn-line:#f0dfa8;
+  --status-bad-bg:#fbeaea;--status-bad-ink:#b23b3b;--status-bad-line:#e9c3c3;
+  --admin-gold:var(--admin-pop);--admin-gold-soft:var(--admin-pop-soft);
 }
 .dashboardShell{background:var(--admin-bg);color:var(--admin-ink);font-feature-settings:"tnum"}
 .dashboardShell,.dashboardShell input,.dashboardShell select,.dashboardShell textarea,.dashboardShell button{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
+.dashboardTop h1,.contentHead h2,.panelTitle h2,.onboardingChecklist h2,.editorIntro h2,.dashModal h2,.stat b,.analyticsGrid b{font-family:var(--font-display),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
 
-/* Sidebar — marka rengi koyu lacivert, üstünde beyaz aktif-sekme "hapı" */
-.dashboardShell>aside{background:radial-gradient(700px 420px at 10% 100%,#0033e0 0%,transparent 55%),linear-gradient(170deg,var(--admin-primary-hover),#000c4d);border-right:0;box-shadow:2px 0 20px rgba(0,10,60,.12)}
-.dashboardShell>aside .platformLogo{color:#fff!important}
-.dashboardShell>aside .platformLogo span{border-color:#fff!important}
-.dashboardShell>aside .platformLogo small{color:#aab4ff!important}
-.dashboardShell>aside button,.dashboardShell>aside a{border-radius:999px;margin:2px 0;color:rgba(255,255,255,.72);font-weight:600;font-size:13.5px;transition:background .15s ease,color .15s ease}
-.dashboardShell>aside button:hover,.dashboardShell>aside a:hover{background:rgba(255,255,255,.1);color:#fff}
-.dashboardShell>aside .active{background:#fff!important;color:var(--admin-primary)!important;font-weight:700}
+/* Sidebar — krem zemin, mürekkep kenarlık, aktif sekme dolu siyah "hap" (giriş sayfasındaki authSide ile aynı dil) */
+.dashboardShell>aside{background:var(--admin-bg);background-image:radial-gradient(rgba(22,21,15,.14) 1.2px,transparent 1.2px);background-size:20px 20px;border-right:2px solid var(--admin-ink);box-shadow:none}
+.dashboardShell>aside button,.dashboardShell>aside a{border-radius:999px;margin:2px 0;color:var(--admin-ink);font-weight:600;font-size:13.5px;transition:background .15s ease,color .15s ease}
+.dashboardShell>aside button:hover,.dashboardShell>aside a:hover{background:rgba(22,21,15,.08);color:var(--admin-ink)}
+.dashboardShell>aside .active{background:var(--admin-primary)!important;color:#fff!important;font-weight:700}
 
-.dashboardTop{background:rgba(233,233,233,.82);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--admin-line);color:var(--admin-ink)}
-.dashboardTop h1{font:700 24px/1.2 inherit;letter-spacing:-.02em;color:var(--admin-ink)}
+.dashboardTop{background:var(--admin-bg);border-bottom:2px solid var(--admin-ink);color:var(--admin-ink)}
+.dashboardTop h1{font:700 24px/1.2 var(--font-display);letter-spacing:-.02em;color:var(--admin-ink)}
 .dashboardContent{max-width:1400px;margin:auto}
 
 /* Kartlar — ince kenarlık + çok hafif ambient gölge + yumuşak köşe */
@@ -38,20 +36,20 @@
 .stat{position:relative;overflow:hidden;padding:20px 22px!important}
 .stat:after{content:'';position:absolute;width:70px;height:70px;border-radius:50%;background:var(--admin-primary-soft);right:-25px;top:-25px}
 .stat small{color:var(--admin-muted);font-size:11.5px;font-weight:600;letter-spacing:.3px}
-.stat b{font-family:inherit;font-weight:800;font-size:28px;letter-spacing:-.02em;color:var(--admin-ink)}
+.stat b{font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:-.02em;color:var(--admin-ink)}
 
-.contentHead h2,.panelTitle h2,.onboardingChecklist h2,.editorIntro h2{font:700 19px/1.3 inherit;letter-spacing:-.01em;color:var(--admin-ink)}
+.contentHead h2,.panelTitle h2,.onboardingChecklist h2,.editorIntro h2{font:700 19px/1.3 var(--font-display);letter-spacing:-.01em;color:var(--admin-ink)}
 .panelTitle p,.contentHead p,.editorIntro p{color:var(--admin-muted)}
 
 /* Butonlar */
-.blackBtn{border-radius:var(--admin-radius-sm);background:var(--admin-primary);color:#fff;font-weight:600;font-size:13.5px;border:0;box-shadow:0 2px 8px rgba(0,70,255,.3);transition:background .15s ease,transform .15s cubic-bezier(.4,0,.2,1)}
+.blackBtn{border-radius:var(--admin-radius-sm);background:var(--admin-primary);color:#fff;font-weight:600;font-size:13.5px;border:0;box-shadow:0 2px 8px rgba(22,21,15,.22);transition:background .15s ease,transform .15s cubic-bezier(.4,0,.2,1)}
 .blackBtn:hover{background:var(--admin-primary-hover)}
 .blackBtn:active{transform:scale(.97)}
 .blackBtn:disabled{opacity:.5;cursor:default;transform:none}
 .changePasswordBtn{background:#fff;border:1px solid var(--admin-line);color:var(--admin-muted);padding:9px 16px;border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;margin:0 14px;transition:all .15s ease}
-.changePasswordBtn:hover{color:var(--admin-ink);border-color:#d0d0d0;background:#f2f2f2}
+.changePasswordBtn:hover{color:var(--admin-ink);border-color:var(--admin-soft-line);background:var(--admin-soft)}
 .dashboardShell .plainAction,.dashboardShell .appointmentActions button,.dashboardShell .appointmentTabs button,.dashboardShell .domainButtons>button:not(.blackBtn),.dashboardShell .credActions a,.dashboardShell .credActions button{border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line);background:#fff;color:var(--admin-ink);font-weight:600;transition:all .15s ease}
-.dashboardShell .plainAction:hover,.dashboardShell .appointmentActions button:hover{background:#f2f2f2;border-color:#d0d0d0}
+.dashboardShell .plainAction:hover,.dashboardShell .appointmentActions button:hover{background:var(--admin-soft);border-color:var(--admin-soft-line)}
 .dashboardShell .appointmentActions .danger,.dashboardShell .plainAction.danger{color:var(--status-bad-ink);border-color:var(--status-bad-line);background:var(--status-bad-bg)}
 
 /* Sekmeler / durum rozetleri — muted pastel + ince kenarlık */
@@ -61,13 +59,13 @@
 .completedBadge{display:inline-flex;align-items:center;gap:5px;background:var(--status-ok-bg);color:var(--status-ok-ink);border:1px solid var(--status-ok-line);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:700}
 .publishBadge{border-radius:999px;background:var(--status-warn-bg);color:var(--status-warn-ink);border:1px solid var(--status-warn-line);font-weight:700}
 .publishBadge.live{background:var(--status-ok-bg);color:var(--status-ok-ink);border-color:var(--status-ok-line)}
-.sourceBadge{background:#ececec;color:var(--admin-muted);border-radius:999px;font-weight:600}
+.sourceBadge{background:var(--admin-soft);color:var(--admin-muted);border-radius:999px;font-weight:600}
 .growthUp{color:var(--status-ok-ink)}
 .growthDown{color:var(--status-bad-ink)}
 .growthNeutral{color:var(--admin-muted)}
-.manualBadge{background:#ececec;color:var(--admin-muted);border-radius:999px}
+.manualBadge{background:var(--admin-soft);color:var(--admin-muted);border-radius:999px}
 
-.dashModal{border-radius:var(--admin-radius-lg);box-shadow:0 25px 70px rgba(15,23,42,.18);background:var(--admin-card);color:var(--admin-ink)}
+.dashModal{border-radius:var(--admin-radius-lg);box-shadow:0 25px 70px rgba(22,21,15,.18);background:var(--admin-card);color:var(--admin-ink)}
 .dashModal h2{letter-spacing:-.01em}
 .daySchedule{box-shadow:var(--admin-shadow)}
 @media(max-width:650px){.dashboardTop h1{font-size:19px}.dashboardContent{padding-top:20px!important}.panel,.stat,.siteEditor{border-radius:var(--admin-radius)}.stats{gap:8px}.stat b{font-size:23px}.authCard{padding:26px 20px;border-radius:16px}.appointmentTabs{padding-bottom:6px}}
@@ -76,10 +74,10 @@
 .livePreviewBlock>div:first-child{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .livePreviewBlock h3{font-size:15px;margin:0 0 3px;color:var(--admin-ink);font-weight:700}
 .livePreviewBlock p{font-size:12.5px;color:var(--admin-muted);margin:0}
-.legacyDeviceButtons{display:flex;gap:6px;background:#ececec;padding:4px;border-radius:999px}
+.legacyDeviceButtons{display:flex;gap:6px;background:var(--admin-soft);padding:4px;border-radius:999px}
 .legacyDeviceButtons button{border:0;background:transparent;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;color:var(--admin-muted);cursor:pointer;transition:all .15s}
 .legacyDeviceButtons button.active{background:var(--admin-primary);color:#fff}
-.legacyPreviewWrap{position:relative;overflow:hidden;border-radius:var(--admin-radius);border:1px solid var(--admin-line);background:#ececec;max-width:100%;width:100%}
+.legacyPreviewWrap{position:relative;overflow:hidden;border-radius:var(--admin-radius);border:1px solid var(--admin-line);background:var(--admin-soft);max-width:100%;width:100%}
 .legacyPreviewFrame{position:absolute;top:0;left:0;transform-origin:top left;background:#fff}
 .legacyPreviewFrame iframe{width:100%;height:100%;border:0;display:block}
 @media(max-width:650px){.livePreviewBlock{padding:12px;border-radius:var(--admin-radius)}.livePreviewBlock>div:first-child{flex-direction:column;align-items:stretch}.legacyDeviceButtons{justify-content:center}}
@@ -90,9 +88,9 @@
 .accentSwatches button.active{box-shadow:0 0 0 2px var(--admin-card),0 0 0 4px var(--admin-primary)}
 
 /* Form elemanları — slate zemin, indigo odak halkası */
-.dashboardShell input,.dashboardShell select,.dashboardShell textarea{background:#f2f2f2;color:var(--admin-ink);border:1px solid #d0d0d0;border-radius:var(--admin-radius-sm);font-size:13.5px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
-.dashboardShell input:focus,.dashboardShell select:focus,.dashboardShell textarea:focus{outline:0;background:#fff;border-color:var(--admin-primary);box-shadow:0 0 0 3px rgba(0,70,255,.15)}
-.dashboardShell input::placeholder,.dashboardShell textarea::placeholder{color:#9a9a9a}
+.dashboardShell input,.dashboardShell select,.dashboardShell textarea{background:var(--admin-soft);color:var(--admin-ink);border:1px solid var(--admin-soft-line);border-radius:var(--admin-radius-sm);font-size:13.5px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+.dashboardShell input:focus,.dashboardShell select:focus,.dashboardShell textarea:focus{outline:0;background:#fff;border-color:var(--admin-pop);box-shadow:0 0 0 3px rgba(124,92,255,.18)}
+.dashboardShell input::placeholder,.dashboardShell textarea::placeholder{color:var(--admin-muted)}
 .dashboardShell .field{color:var(--admin-ink);font-weight:600;font-size:12.5px}
 .dashboardShell a{color:var(--admin-ink)}
 .dashboardShell a:hover{color:var(--admin-primary)}
@@ -119,11 +117,11 @@
 
 .fullTemplateGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
 .templatePreview{padding:12px;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
-.templatePreview:hover{border-color:#d0d0d0;transform:translateY(-1px)}
+.templatePreview:hover{border-color:var(--admin-soft-line);transform:translateY(-1px)}
 .templatePreview i{display:block;height:70px;border-radius:var(--admin-radius-sm);margin-bottom:10px}
 .templatePreview b{display:block;font-weight:700;font-size:13.5px}
 .templatePreview small{display:block;color:var(--admin-muted);margin-top:4px;font-size:12px;line-height:1.5}
-.dashboardShell .templatePreview.active{border-color:var(--admin-primary)!important;box-shadow:0 0 0 2px rgba(0,70,255,.16)}
+.dashboardShell .templatePreview.active{border-color:var(--admin-pop)!important;box-shadow:0 0 0 2px rgba(124,92,255,.16)}
 
 .ratingRequestBtn{display:inline-block;background:var(--status-ok-bg);color:var(--status-ok-ink);border:1px solid var(--status-ok-line);padding:7px 12px;border-radius:999px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .15s}
 .ratingRequestBtn:hover{background:#d4f4e2}
@@ -144,15 +142,15 @@
 .credActions a,.credActions button{flex:1;text-align:center;text-decoration:none;padding:12px;font-weight:600;cursor:pointer}
 .credActions a.blackBtn{border:0}
 .closeCredModal{width:100%;background:none;border:0;color:var(--admin-muted);padding:8px;cursor:pointer;border-radius:var(--admin-radius-sm)}
-.closeCredModal:hover{background:#f2f2f2}
+.closeCredModal:hover{background:var(--admin-soft)}
 .changePasswordModal{max-width:420px}
 .myProfilePhoto{display:flex;align-items:center;gap:14px;margin:16px 0;cursor:pointer}
 .myProfilePhoto img{width:64px;height:64px;border-radius:50%;object-fit:cover}
 .myProfilePhoto span{width:64px;height:64px;border-radius:50%;background:var(--admin-primary);color:#fff;display:grid;place-items:center;font-weight:800;font-size:24px}
 .myProfilePhoto small{color:var(--admin-primary);text-decoration:underline}
 .dashTable{border-spacing:0}
-.dashTable .dayGroupHeader td{background:#f2f2f2;color:var(--admin-ink);font-weight:700;font-size:11.5px;letter-spacing:.4px;padding:12px 10px;border:0}
-.dashTable th{background:#f2f2f2;padding:14px 10px;color:var(--admin-muted);font-weight:600;font-size:11px;letter-spacing:.3px}
+.dashTable .dayGroupHeader td{background:var(--admin-soft);color:var(--admin-ink);font-weight:700;font-size:11.5px;letter-spacing:.4px;padding:12px 10px;border:0}
+.dashTable th{background:var(--admin-soft);padding:14px 10px;color:var(--admin-muted);font-weight:600;font-size:11px;letter-spacing:.3px}
 .dashTable td{padding:14px 10px;color:var(--admin-ink);border-color:var(--admin-line);font-size:13.5px}
 .dashTable tbody tr:hover td{background:#fbfcfe}
 .analyticsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:14px}
@@ -186,16 +184,16 @@
 .dashboardShell .builderBlock{border-top-color:var(--admin-line)}
 .dashboardShell .builderBlock>h3,.dashboardShell .galleryHeader h3{font-weight:700;letter-spacing:-.01em;color:var(--admin-ink)}
 .dashboardShell .builderBlock>h3:before{background:var(--admin-primary)}
-.dashboardShell .toggleField{background:#f2f2f2;border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
-.dashboardShell .durationHint,.dashboardShell .serviceDurationNote{background:#f2f2f2;color:var(--admin-muted);border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
+.dashboardShell .toggleField{background:var(--admin-soft);border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
+.dashboardShell .durationHint,.dashboardShell .serviceDurationNote{background:var(--admin-soft);color:var(--admin-muted);border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
 .dashboardShell .serviceDetailSection{background:var(--admin-primary-soft);border-left:3px solid var(--admin-primary);border-radius:0 var(--admin-radius-sm) var(--admin-radius-sm) 0}
 .dashboardShell .industryCards button,.dashboardShell .presetCards button{border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line);background:#fff;transition:all .15s ease}
 .dashboardShell .industryCards button:hover,.dashboardShell .presetCards button:hover{background:var(--admin-primary-soft);color:var(--admin-primary);border-color:var(--admin-primary);transform:translateY(-1px)}
 .dashboardShell .colorSetBtn,.dashboardShell .paletteChooser button{border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
 .dashboardShell .colorSetBtn.active{border-color:var(--admin-primary);box-shadow:0 0 0 1px var(--admin-primary)}
-.dashboardShell .logoUploader,.dashboardShell .simpleColorControl,.dashboardShell .paletteChooser,.dashboardShell .domainConnectCard,.dashboardShell .dnsBox{background:#f2f2f2;border-radius:var(--admin-radius);border:1px solid var(--admin-line)}
-.dashboardShell .mediaEditor{background:#f2f2f2;border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
-.dashboardShell .waStatusBox,.dashboardShell .waTimingRow,.dashboardShell .googleSettings,.dashboardShell .whatsappSettings{background:#f2f2f2;border-radius:var(--admin-radius);border:1px solid var(--admin-line)}
-.dashboardShell .dashModalBackdrop{background:rgba(15,23,42,.45);backdrop-filter:blur(2px)}
+.dashboardShell .logoUploader,.dashboardShell .simpleColorControl,.dashboardShell .paletteChooser,.dashboardShell .domainConnectCard,.dashboardShell .dnsBox{background:var(--admin-soft);border-radius:var(--admin-radius);border:1px solid var(--admin-line)}
+.dashboardShell .mediaEditor{background:var(--admin-soft);border-radius:var(--admin-radius-sm);border:1px solid var(--admin-line)}
+.dashboardShell .waStatusBox,.dashboardShell .waTimingRow,.dashboardShell .googleSettings,.dashboardShell .whatsappSettings{background:var(--admin-soft);border-radius:var(--admin-radius);border:1px solid var(--admin-line)}
+.dashboardShell .dashModalBackdrop{background:rgba(22,21,15,.45);backdrop-filter:blur(2px)}
 .dashboardShell button{transition:transform .15s cubic-bezier(.4,0,.2,1),background .15s ease,border-color .15s ease,color .15s ease}
 .dashboardShell button:active{transform:scale(.97)}
