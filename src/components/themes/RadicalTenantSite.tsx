@@ -979,28 +979,22 @@ function Roze(p:P){
       <a className="rzNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
     </header>
 
-    <section className="rzHero rzHeroWindow">
-      <div className="rzHeroWindowStage">
-        <div className="rzHeroInner rzHeroInnerCard">
-          <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
-          <WordsDrop tag="h1" parts={[{text:`${b.hero_title||'Güzelliğini'} `},{text:b.hero_highlight||'ortaya çıkar',as:'em'}]}/>
-          {b.hero_description&&<p className="rzHeroDesc">{b.hero_description}</p>}
+    <section className="rzHero">
+      {b.cover_url&&b.cover_type==='video'
+        ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
+        :b.cover_url
+          ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
+          :<div className="rzHeroMedia rzHeroMediaFallback"/>}
+      <div className="rzHeroOverlay"/>
+      <div className="rzHeroInner">
+        <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
+        <WordsDrop tag="h1" parts={[{text:`${b.hero_title||'Güzelliğini'} `},{text:b.hero_highlight||'ortaya çıkar',as:'em'}]}/>
+        {b.hero_description&&<p className="rzHeroDesc">{b.hero_description}</p>}
+        <div className="rzHeroActions">
+          <a className="rzHeroCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+          <a className="rzHeroGhost" href="#hizmetler">Hizmetleri Gör</a>
         </div>
-        <div className="rzHeroMediaCard">
-          {b.cover_url&&b.cover_type==='video'
-            ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
-            :b.cover_url
-              ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
-              :<div className="rzHeroMedia rzHeroMediaFallback"/>}
-          <div className="rzHeroOverlay"/>
-        </div>
-        <div className="rzHeroWindowActions">
-          <div className="rzHeroActions">
-            <a className="rzHeroCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
-            <a className="rzHeroGhost" href="#hizmetler">Hizmetleri Gör</a>
-          </div>
-          <RozePills p={p}/>
-        </div>
+        <RozePills p={p}/>
       </div>
     </section>
 
