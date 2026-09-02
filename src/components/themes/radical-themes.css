@@ -994,11 +994,12 @@
 .tRoze{--rz-ink:#2b1712;--rz-muted:#8a6b63;--rz-cream:#ffffff;--rz-rose:#e3b3ac;--rz-rose-deep:#7a4a42;--rz-accent:#c96b7a;--rz-accent-deep:#a44f5c;--rz-line:#ece4e1;background:var(--rz-cream);color:var(--rz-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
 .tRoze h1,.tRoze h2,.tRoze h3{font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
 .tRoze em{font-style:normal}
-/* Scroll-Linked Text Reveal — her karakter kendi <span>'ında, aşağı kaydırdıkça
-   (bir kerelik değil, sürekli scroll pozisyonuna bağlı) tek tek belirginleşiyor */
-.rzScrollChars span{opacity:.14;transition:opacity .05s linear}
-.rzScrollChars span.in{opacity:1}
-@media(prefers-reduced-motion:reduce){.rzScrollChars span{opacity:1!important;transition:none}}
+/* Kelimeler yukarıdan düşerek yerine oturur — başlık ekrana girince bir kere
+   tetiklenir (IntersectionObserver, .in sınıfı eklenince). Her kelime kendi
+   <span>'ında, sırayla (transitionDelay ile) düşer. */
+.rzWordsDrop span{display:inline-block;opacity:0;transform:translateY(-22px);transition:opacity .5s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.rzWordsDrop.in span{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.rzWordsDrop span{opacity:1!important;transform:none!important;transition:none}}
 .tRoze #hizmetler,.tRoze #rzHakkimizda,.tRoze #rzGallery,.tRoze #randevu,.tRoze #rzBlog{scroll-margin-top:110px}
 
 /* Navbar — tek bir şerit DEĞİL: her öğe kendi ayrı buzlu-cam/dolu kutucuğu; hero üzerindeyken
@@ -1050,8 +1051,11 @@
    zincirlenip yüksek özgüllükte tutuluyor ki eski tekli-sınıf kuralları
    (ör. mobil medya sorgusundaki `.rzHeroInner{padding:...}`) hiçbir zaman
    üzerine yazmasın. */
-.rzHero.rzHeroWindow{align-items:center;justify-content:center;flex-direction:column;background:var(--rz-cream)}
-.rzHeroWindowStage{position:relative;width:100%;height:100%}
+.rzHero.rzHeroWindow{align-items:stretch;justify-content:center;flex-direction:column;background:var(--rz-cream)}
+/* flex:1 (not height:100%) — a percentage height on a column-flex child whose
+   own container's height comes from min-height (not height) resolves to 0 in
+   some browsers; flex-grow reliably fills the available space instead. */
+.rzHeroWindowStage{position:relative;width:100%;flex:1 1 auto}
 .rzHeroMediaCard{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(460px,84vw);height:min(66vh,620px);border-radius:32px;overflow:hidden;box-shadow:0 40px 90px rgba(43,23,18,.22);z-index:1;will-change:width,height,border-radius}
 .rzHeroMediaCard .rzHeroMedia{position:absolute;inset:0}
 .rzHeroWindow .rzHeroInnerCard{position:absolute;top:64px;left:0;right:0;z-index:2;max-width:none;padding:0 6vw;text-align:center;margin:0 auto}
