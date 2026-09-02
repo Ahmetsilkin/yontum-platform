@@ -171,6 +171,34 @@ function loadGsap(){
   });
   return gsapLoad;
 }
+/* Lenis: sayfa geneline "buttery smooth" (yumuşak, ataletli) scroll kazandırır —
+   native tarayıcı scroll'u fare tekerleği/trackpad'de sert/aniden zıplayan
+   hissedebiliyor, Lenis bunu yumuşak bir ivmeyle yumuşatıp GSAP ScrollTrigger'ın
+   okuduğu scroll konumunu da (ticker+ScrollTrigger.update ile) senkron tutuyor,
+   böylece scrub'lı efektler de aynı yumuşaklıkla akıyor. Sadece Roze'da
+   (bileşen mount'ken) çalışır, diğer temaları etkilemez; unmount'ta yok edilir. */
+let lenisLoad:Promise<any>|null=null;
+function loadLenis(){
+  if(!lenisLoad)lenisLoad=import('lenis').then(m=>m.default);
+  return lenisLoad;
+}
+function useRozeLenis(){
+  useEffect(()=>{
+    let cancelled=false,lenis:any,tickFn:any;
+    Promise.all([loadLenis(),loadGsap()]).then(([Lenis,{gsap,ScrollTrigger}])=>{
+      if(cancelled)return;
+      lenis=new Lenis({duration:1.05,easing:(t:number)=>1-Math.pow(1-t,3),smoothWheel:true});
+      lenis.on('scroll',ScrollTrigger.update);
+      tickFn=(time:number)=>lenis.raf(time*1000);
+      gsap.ticker.add(tickFn);
+      gsap.ticker.lagSmoothing(0);
+    });
+    return()=>{cancelled=true;if(tickFn)gsapTickerRemove(tickFn);lenis?.destroy?.()};
+  },[]);
+}
+function gsapTickerRemove(fn:any){
+  loadGsap().then(({gsap})=>gsap.ticker.remove(fn));
+}
 /* Reveal'ın GSAP ScrollTrigger sürümü — aynı .ksReveal/.in CSS'ini (paylaşılan,
    diğer temalarda da kullanılan) kullanır, sadece görünürlüğü tetikleyen motor
    IntersectionObserver yerine ScrollTrigger'dır. İKİ YÖNLÜ: aşağı kaydırıp
@@ -221,6 +249,33 @@ function useHeroParallax(){
     return()=>{cancelled=true;tween?.scrollTrigger?.kill?.();tween?.kill?.()};
   },[]);
   return ref;
+}
+/* Hero girişine eklenen scroll efekti: kullanıcı aşağı kaydırmaya başlayınca
+   hero kısa bir mesafe boyunca ekranda sabitlenir (pin) — bu sırada üstteki
+   yazı/CTA içeriği (rzHeroInner + rzHeroCards) yumuşakça bulanıklaşıp (blur)
+   solarak kaybolur, medya (foto/video) olduğu gibi kalır (köşe yarıçapı ve
+   arka plan DEĞİŞMİYOR — kullanıcı özellikle şu anki görünümün korunmasını
+   istedi, sadece bir giriş hareketi eklendi). İçerik tamamen kaybolunca pin
+   çözülür, sayfa Hakkımızda'ya akar. scrub kullanıldığı için doğası gereği
+   iki yönlüdür: yukarı kaydırınca yazı/CTA aynı şekilde geri belirir — ayrı
+   bir onEnter/onLeaveBack gerekmez. Dar ekranlarda (≤768px) pin YOK (taşma
+   riski), sadece içerik doğal akışta kalır. */
+function useRozeHeroPin(){
+  const sectionRef=useRef<any>(null);
+  const innerRef=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,st:any;
+    loadGsap().then(({gsap,ScrollTrigger})=>{
+      if(cancelled||!sectionRef.current)return;
+      const pinEnabled=window.innerWidth>=768;
+      if(!pinEnabled)return;
+      const targets=[innerRef.current,sectionRef.current.querySelector('.rzHeroCards')].filter(Boolean);
+      if(!targets.length)return;
+      st=gsap.to(targets,{opacity:0,filter:'blur(14px)',y:-34,ease:'none',scrollTrigger:{trigger:sectionRef.current,start:'top top',end:'+=440',pin:true,anticipatePin:1,scrub:1}});
+    });
+    return()=>{cancelled=true;st?.scrollTrigger?.kill?.();st?.kill?.()};
+  },[]);
+  return{sectionRef,innerRef};
 }
 /* Hakkımızda bölümü kısa bir kaydırma mesafesi boyunca ekranda sabitlenir
    (pin) — bu sırada 3 foto-kolaj kartı sırayla (staggered) sahneye girer,
@@ -1108,6 +1163,8 @@ function Roze(p:P){
     return()=>window.removeEventListener('scroll',onScroll);
   },[]);
   const parallaxRef=useHeroParallax();
+  const{sectionRef:heroSectionRef,innerRef:heroInnerRef}=useRozeHeroPin();
+  useRozeLenis();
   return <main id="top" className="tRoze">
     <header className={`rzNav${navScrolled?' scrolled':''}`}>
       <a className="rzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
@@ -1120,7 +1177,7 @@ function Roze(p:P){
       <a className="rzNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
     </header>
 
-    <section className="rzHero">
+    <section className="rzHero" ref={heroSectionRef}>
       <div className="rzHeroParallax" ref={parallaxRef}>
         {b.cover_url&&b.cover_type==='video'
           ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
@@ -1129,7 +1186,7 @@ function Roze(p:P){
             :<div className="rzHeroMedia rzHeroMediaFallback"/>}
       </div>
       <div className="rzHeroOverlay"/>
-      <div className="rzHeroInner">
+      <div className="rzHeroInner" ref={heroInnerRef}>
         <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
         <ScrollChars tag="h1" parts={[{text:`${b.hero_title||'Güzelliğini'} `},{text:b.hero_highlight||'ortaya çıkar',as:'em'}]}/>
         {b.hero_description&&<p className="rzHeroDesc">{b.hero_description}</p>}
