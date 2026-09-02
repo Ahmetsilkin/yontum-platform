@@ -860,6 +860,12 @@ function RozeAbout({p}:{p:P}){
     </div>
   </section>;
 }
+/* Videodaki referans (sunaluxury.com) gibi iki sütun: solda başlık+açıklama+
+   CTA — masaüstünde position:sticky ile sağdaki kartlar kayarken yerinde
+   sabit durur; sağda numaralı (1,2,3…), büyük fotoğraflı kart listesi. Dar
+   ekranlarda (≤900px) sticky YOK, sütunlar alt alta düz akışta durur —
+   yan yana durmayan bir düzende "sabitlenmiş" bir metin görsel olarak
+   anlamsız/kafa karıştırıcı olurdu. */
 function RozeServices({p}:{p:P}){
   const{b}=p;
   /* Hizmetin kendi detay sayfası (panelde "Detay sayfası" bölümüne bir şey
@@ -868,20 +874,25 @@ function RozeServices({p}:{p:P}){
      içeriği hiç girilmemiş hizmetlerde bu rozet hiç görünmez. */
   const hasDetail=(s:any)=>!!(s.slug&&(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable||s.detail_tip_title||s.detail_before||s.detail_after));
   return <section id="hizmetler" className="rzServices rzServicesStack">
-    <Reveal className="rzServicesHead">
-      <div><small>{b.services_label||'HİZMETLER'}</small><WordsDrop parts={[{text:b.services_title||'Hizmetlerimiz'}]}/></div>
-      <a className="rzOutlineBtn" href="#randevu">Randevu Al <span>↗</span></a>
-    </Reveal>
-    <div className="rzServiceStackList">
-      {p.services.map((s,i)=><article key={s.id} className="rzServiceStackCard" style={{zIndex:i+1}}>
-        {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="rzServiceFallback">✿</div>}
-        <div className="rzServiceSlideOverlay"/>
-        <div className="rzServiceSlideBody">
-          <b>{s.name}</b>
-          <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
-        </div>
-        {hasDetail(s)&&<a className="rzServiceDetailBadge" href={`/site/${b.slug}/hizmet/${s.slug}`}><span>↗</span>Detayları<br/>İncele</a>}
-      </article>)}
+    <div className="rzServicesSplitGrid">
+      <Reveal className="rzServicesSplitIntro">
+        <small>{b.services_label||'HİZMETLER'}</small>
+        <WordsDrop parts={[{text:b.services_title||'Hizmetlerimiz'}]}/>
+        {b.description&&<p>{b.description}</p>}
+        <a className="rzOutlineBtn" href="#randevu">Randevu Al <span>↗</span></a>
+      </Reveal>
+      <div className="rzServiceStackList">
+        {p.services.map((s,i)=><article key={s.id} className="rzServiceStackCard">
+          <span className="rzServiceStackNum">{i+1}</span>
+          {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="rzServiceFallback">✿</div>}
+          <div className="rzServiceSlideOverlay"/>
+          <div className="rzServiceSlideBody">
+            <b>{s.name}</b>
+            <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
+          </div>
+          {hasDetail(s)&&<a className="rzServiceDetailBadge" href={`/site/${b.slug}/hizmet/${s.slug}`}><span>↗</span>Detayları<br/>İncele</a>}
+        </article>)}
+      </div>
     </div>
   </section>;
 }
