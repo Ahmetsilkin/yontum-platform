@@ -157,6 +157,18 @@ function loadGsap(){
   if(!gsapLoad)gsapLoad=Promise.all([import('gsap'),import('gsap/ScrollTrigger')]).then(([g,st])=>{
     const gsap=g.gsap,ScrollTrigger=st.ScrollTrigger;
     gsap.registerPlugin(ScrollTrigger);
+    /* GSAP ScrollTrigger, KENDİ İÇİNDE, bizim kodumuzdan bağımsız olarak,
+       varsayılan `autoRefreshEvents` ayarıyla window 'load' / 'resize' /
+       'visibilitychange' olaylarında OTOMATİK refresh() çağırıyor. Bu da
+       tam olarak aşağıdaki tek-seferlik-erken-refresh çözümümüzü delip
+       geçiyordu: GoogleReviews/Blog gibi asenkron veri çeken bölümler
+       (ör. yorumcu fotoğrafları) sayfa açıldıktan SANİYELER SONRA yükleniyor,
+       tarayıcının 'load' olayı ancak o zaman ateşleniyor, kullanıcı o an
+       zaten Hakkımızda'ya inmiş oluyor, ve GSAP'ın kendi otomatik refresh'i
+       hero pin'ini bir anlığına doğal konumuna (=Hakkımızda'nın üzerine)
+       döndürüp yeniden ölçüyordu — aynı "durduk yere yenilenme" sıçraması.
+       Bunu tamamen kapatıp yenilemeyi SADECE kendi kontrollümüze bırakıyoruz. */
+    ScrollTrigger.config({autoRefreshEvents:'DOMContentLoaded'});
     /* Hero fotoğrafı/galeri gibi resimler asenkron yüklenip sayfa yüksekliğini
        değiştirdikçe, daha ÖNCE oluşturulmuş tetikleyicilerin start/end
        konumları eskimiş kalabiliyor (ör. negatif bir start — ki bu da geri
