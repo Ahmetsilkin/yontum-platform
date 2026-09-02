@@ -161,12 +161,31 @@ function loadGsap(){
        değiştirdikçe, daha ÖNCE oluşturulmuş tetikleyicilerin start/end
        konumları eskimiş kalabiliyor (ör. negatif bir start — ki bu da geri
        kaydırırken tetiklenmesi gereken onLeaveBack'in hiç ateşlenmemesine
-       yol açıyordu, çünkü scrollY hiçbir zaman negatif olamıyor). Tüm resimler
-       yüklendiğinde ve birkaç gecikmeli kontrol noktasında refresh() çağırıp
-       gerçek, nihai düzene göre yeniden hesaplatıyoruz. */
-    const refresh=()=>ScrollTrigger.refresh();
-    window.addEventListener('load',refresh);
-    [400,900,1800].forEach(ms=>setTimeout(refresh,ms));
+       yol açıyordu, çünkü scrollY hiçbir zaman negatif olamıyor). Bunu
+       düzeltmek için TEK SEFERLİK bir refresh() çağırıyoruz — ama bunu
+       sabit gecikmelerle (ör. 400/900/1800ms) körlemesine YAPMIYORUZ:
+       kullanıcı o sırada zaten aşağı kaydırıp hero'yu geçmiş, hatta
+       Hakkımızda'ya inmiş olabiliyordu — refresh() ScrollTrigger'ın TÜM
+       pin'lerini anlık olarak doğal akışa döndürüp yeniden ölçüyor, bu da
+       hero fotoğrafının Hakkımızda'nın üzerine bir anlığına "geri gelip"
+       sonra kaybolması gibi rahatsız edici bir görsel sıçramaya yol
+       açıyordu (kullanıcı bunu "durduk yere yenileniyor" diye bildirdi).
+       Çözüm: sabit zamanlayıcılar yerine gerçek resim yükleme olaylarını
+       dinleyip, TÜM resimler yüklenir yüklenmez (veya zaten yüklenmişse
+       hemen) BİR KEZ refresh() çağırıyoruz — böylece bu neredeyse her
+       zaman kullanıcı henüz kaydırmaya başlamadan/hero'dayken olur. */
+    let refreshed=false;
+    const refresh=()=>{if(refreshed)return;refreshed=true;ScrollTrigger.refresh();};
+    const imgs=Array.from(document.images);
+    const pending=imgs.filter(img=>!img.complete);
+    if(pending.length){
+      let remaining=pending.length;
+      const done=()=>{remaining--;if(remaining<=0)refresh();};
+      pending.forEach(img=>{img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});});
+      setTimeout(refresh,2500);
+    }else{
+      requestAnimationFrame(()=>requestAnimationFrame(refresh));
+    }
     return{gsap,ScrollTrigger};
   });
   return gsapLoad;
