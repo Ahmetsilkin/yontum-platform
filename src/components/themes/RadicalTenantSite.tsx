@@ -281,32 +281,85 @@ function useHeroParallax(){
   },[]);
   return ref;
 }
-/* Hero girişine eklenen scroll efekti: kullanıcı aşağı kaydırmaya başlayınca
-   hero kısa bir mesafe boyunca ekranda sabitlenir (pin) — bu sırada üstteki
-   yazı/CTA içeriği (rzHeroInner + rzHeroCards) yumuşakça bulanıklaşıp (blur)
-   solarak kaybolur, medya (foto/video) olduğu gibi kalır (köşe yarıçapı ve
-   arka plan DEĞİŞMİYOR — kullanıcı özellikle şu anki görünümün korunmasını
-   istedi, sadece bir giriş hareketi eklendi). İçerik tamamen kaybolunca pin
-   çözülür, sayfa Hakkımızda'ya akar. scrub kullanıldığı için doğası gereği
-   iki yönlüdür: yukarı kaydırınca yazı/CTA aynı şekilde geri belirir — ayrı
-   bir onEnter/onLeaveBack gerekmez. Dar ekranlarda (≤768px) pin YOK (taşma
-   riski), sadece içerik doğal akışta kalır. */
+/* "Window view" hero: ortada küçük, yuvarlak köşeli dikey bir kart olarak
+   başlayan medya (foto/video), kullanıcı aşağı kaydırdıkça hero ekranda
+   sabitlenip (pin) kartı yumuşakça büyüterek tam ekranı (100vw/100vh)
+   kaplıyor, köşe yarıçapı 0'a iniyor; bu sırada üstteki/alttaki yazı-CTA
+   (textRef + actionsRef) yukarı kayıp bulanıklaşarak (blur) kayboluyor.
+   Kart tam ekranı kaplayınca pin çözülür, sayfa Hakkımızda'ya akar.
+   scrub kullanıldığı için doğası gereği iki yönlüdür: yukarı kaydırınca
+   kart küçülüp yazı geri belirir. Kartın büyüme hedefi (window.innerWidth/
+   innerHeight) piksel cinsinden hesaplanır — GSAP'ın vw/vh string'lerini
+   yorumlamasına güvenmek yerine daha güvenilir. Dar ekranlarda (≤768px)
+   pin YOK (taşma riski), kart sabit boyutta statik kalır. */
 function useRozeHeroPin(){
   const sectionRef=useRef<any>(null);
-  const innerRef=useRef<any>(null);
+  const textRef=useRef<any>(null);
+  const cardRef=useRef<any>(null);
+  const actionsRef=useRef<any>(null);
   useEffect(()=>{
     let cancelled=false,st:any;
     loadGsap().then(({gsap,ScrollTrigger})=>{
-      if(cancelled||!sectionRef.current)return;
+      if(cancelled||!sectionRef.current||!cardRef.current)return;
       const pinEnabled=window.innerWidth>=768;
       if(!pinEnabled)return;
-      const targets=[innerRef.current,sectionRef.current.querySelector('.rzHeroCards')].filter(Boolean);
-      if(!targets.length)return;
-      st=gsap.to(targets,{opacity:0,filter:'blur(14px)',y:-34,ease:'none',scrollTrigger:{trigger:sectionRef.current,start:'top top',end:'+=440',pin:true,anticipatePin:1,scrub:1}});
+      const fadeTargets=[textRef.current,actionsRef.current].filter(Boolean);
+      const tl=gsap.timeline({scrollTrigger:{trigger:sectionRef.current,start:'top top',end:'+=900',pin:true,anticipatePin:1,scrub:1}});
+      if(fadeTargets.length)tl.to(fadeTargets,{opacity:0,filter:'blur(14px)',y:-34,ease:'none'},0);
+      tl.to(cardRef.current,{width:window.innerWidth,height:window.innerHeight,borderRadius:0,ease:'none'},0);
+      st=tl.scrollTrigger;
+    });
+    return()=>{cancelled=true;st?.kill?.()};
+  },[]);
+  return{sectionRef,textRef,cardRef,actionsRef};
+}
+/* Hizmetler: kartlar artık yatay değil dikey — her biri position:sticky ile
+   aynı noktada üst üste "kadife gibi" birikiyor. Her kartın KENDİ aralığı
+   boyunca (kartın kendisi sticky konuma "yapışıp" bir sonraki kart onun
+   üzerine gelene kadar) scale 1→0.93 ve opacity 1→0.55'e iniyor — böylece
+   alttaki kart üste gelirken üsttekiler hafifçe küçülüp geri çekiliyormuş
+   hissi veriyor. Sadece masaüstü (≥768px); mobilde sticky/scale YOK, kartlar
+   düz akışta alt alta durur (taşma ve okunabilirlik riskine karşı). */
+function useRozeServiceStack(){
+  const ref=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false;const triggers:any[]=[];
+    loadGsap().then(({gsap,ScrollTrigger})=>{
+      if(cancelled||!ref.current)return;
+      if(window.innerWidth<768)return;
+      const cards=Array.from(ref.current.querySelectorAll('.rzServiceStackCard')) as HTMLElement[];
+      cards.forEach((card,i)=>{
+        if(i===cards.length-1)return;
+        const st=ScrollTrigger.create({trigger:card,start:'top top+=96',end:'bottom top+=96',scrub:true,onUpdate:(self:any)=>{gsap.set(card,{scale:1-self.progress*.07,opacity:1-self.progress*.45});}});
+        triggers.push(st);
+      });
+    });
+    return()=>{cancelled=true;triggers.forEach(t=>t.kill())};
+  },[]);
+  return ref;
+}
+/* Galeri: dikey scroll'u kısa bir mesafe boyunca kilitleyip (pin), o mesafe
+   içinde yatay foto şeridini (.rzGalleryTrack) soldan sağa kaydırıyor —
+   kullanıcı fare tekerleğiyle DİKEY kaydırmaya devam ederken görsel olarak
+   YATAY bir galeri gibi akıyor. scrub olduğu için iki yönlü. Sadece
+   masaüstü (≥768px); mobilde galeri zaten kendi yatay dokunmatik kaydırması
+   ile çalışıyor, pin gerekmiyor/taşma riski taşıyor. */
+function useRozeGalleryPin(){
+  const sectionRef=useRef<any>(null);
+  const trackRef=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,st:any;
+    loadGsap().then(({gsap,ScrollTrigger})=>{
+      if(cancelled||!sectionRef.current||!trackRef.current)return;
+      if(window.innerWidth<768)return;
+      const track=trackRef.current;
+      const distance=track.scrollWidth-track.clientWidth;
+      if(distance<=0)return;
+      st=gsap.to(track,{scrollLeft:distance,ease:'none',scrollTrigger:{trigger:sectionRef.current,start:'top top',end:()=>'+='+Math.max(distance,300),pin:true,anticipatePin:1,scrub:1,invalidateOnRefresh:true}});
     });
     return()=>{cancelled=true;st?.scrollTrigger?.kill?.();st?.kill?.()};
   },[]);
-  return{sectionRef,innerRef};
+  return{sectionRef,trackRef};
 }
 /* Hakkımızda bölümü kısa bir kaydırma mesafesi boyunca ekranda sabitlenir
    (pin) — bu sırada 3 foto-kolaj kartı sırayla (staggered) sahneye girer,
@@ -1005,7 +1058,7 @@ function RozeHeroCards({p}:{p:P}){
 function RozeGallery({p}:{p:P}){
   const photos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const[active,setActive]=useState<number|null>(null);
-  const trackRef=useRozeStagger('.rzGalleryCard');
+  const{sectionRef,trackRef}=useRozeGalleryPin();
   const scrollBy=(dir:number)=>{
     const el=trackRef.current;if(!el)return;
     const card=el.querySelector('.rzGalleryCard') as HTMLElement|null;
@@ -1013,7 +1066,7 @@ function RozeGallery({p}:{p:P}){
     el.scrollBy({left:dir*amount,behavior:'smooth'});
   };
   if(!photos.length)return null;
-  return <section id="rzGallery" className="rzGallery">
+  return <section id="rzGallery" className="rzGallery" ref={sectionRef}>
     <RozeReveal className="rzServicesHead">
       <div><small>GALERİ</small><ScrollChars parts={[{text:dec(p.b,'rz_galleryTitle','Bizden kareler.')}]}/></div>
       {photos.length>1&&<div className="rzServiceCarouselNav">
@@ -1067,25 +1120,19 @@ function RozeAbout({p}:{p:P}){
 }
 function RozeServices({p}:{p:P}){
   const{b}=p;
-  const trackRef=useRozeStagger('.rzServiceSlide');
-  const scrollBy=(dir:number)=>{
-    const el=trackRef.current;if(!el)return;
-    const card=el.querySelector('.rzServiceSlide') as HTMLElement|null;
-    const amount=(card?.offsetWidth||280)+24;
-    el.scrollBy({left:dir*amount,behavior:'smooth'});
-  };
+  const stackRef=useRozeServiceStack();
   /* Hizmetin kendi detay sayfası (panelde "Detay sayfası" bölümüne bir şey
      girildiyse) varsa kartın üzerinde "Detayları İncele" rozeti gösterilir —
      hizmetin /site/{slug}/hizmet/{serviceSlug} sayfasına götürür. Detay
      içeriği hiç girilmemiş hizmetlerde bu rozet hiç görünmez. */
   const hasDetail=(s:any)=>!!(s.slug&&(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable||s.detail_tip_title||s.detail_before||s.detail_after));
-  return <section id="hizmetler" className="rzServices">
+  return <section id="hizmetler" className="rzServices rzServicesStack">
     <RozeReveal className="rzServicesHead">
       <div><small>{b.services_label||'HİZMETLER'}</small><ScrollChars parts={[{text:b.services_title||'Hizmetlerimiz'}]}/></div>
       <a className="rzOutlineBtn" href="#randevu">Randevu Al <span>↗</span></a>
     </RozeReveal>
-    <div className="rzServiceCarousel" ref={trackRef}>
-      {p.services.map((s,i)=><article key={s.id} className={`rzServiceSlide${i===0?' rzFeatured':''}`}>
+    <div className="rzServiceStackList" ref={stackRef}>
+      {p.services.map((s,i)=><article key={s.id} className="rzServiceStackCard" style={{zIndex:i+1}}>
         {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="rzServiceFallback">✿</div>}
         <div className="rzServiceSlideOverlay"/>
         <div className="rzServiceSlideBody">
@@ -1095,10 +1142,6 @@ function RozeServices({p}:{p:P}){
         {hasDetail(s)&&<a className="rzServiceDetailBadge" href={`/site/${b.slug}/hizmet/${s.slug}`}><span>↗</span>Detayları<br/>İncele</a>}
       </article>)}
     </div>
-    {p.services.length>1&&<div className="rzServiceCarouselNav">
-      <button type="button" onClick={()=>scrollBy(-1)} aria-label="Önceki">←</button>
-      <button type="button" onClick={()=>scrollBy(1)} aria-label="Sonraki">→</button>
-    </div>}
   </section>;
 }
 /* Roze'nin kendi yorum bölümü — İpek'in paylaşılan "sayfa sayfa kaydırma"
@@ -1184,20 +1227,10 @@ function RozeBlogGrid({b,posts,setOpenPost}:{p:P;b:any;posts:any[];setOpenPost:(
 function Roze(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
-  /* Nav öğeleri hero fotoğrafının üzerindeyken beyaz yazılı buzlu-cam kutucuk, sayfa kaydırılıp
-     beyaz gövdeye geçince (okunaklı kalması için) koyu yazılı soft-gri kutucuğa dönüyor. */
-  const[navScrolled,setNavScrolled]=useState(false);
-  useEffect(()=>{
-    const onScroll=()=>setNavScrolled(window.scrollY>window.innerHeight*0.55);
-    onScroll();
-    window.addEventListener('scroll',onScroll,{passive:true});
-    return()=>window.removeEventListener('scroll',onScroll);
-  },[]);
-  const parallaxRef=useHeroParallax();
-  const{sectionRef:heroSectionRef,innerRef:heroInnerRef}=useRozeHeroPin();
+  const{sectionRef:heroSectionRef,textRef:heroTextRef,cardRef:heroCardRef,actionsRef:heroActionsRef}=useRozeHeroPin();
   useRozeLenis();
   return <main id="top" className="tRoze">
-    <header className={`rzNav${navScrolled?' scrolled':''}`}>
+    <header className="rzNav scrolled">
       <a className="rzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
         <a className="rzNavLink solid" href="#top">Ana Sayfa</a>
@@ -1208,26 +1241,29 @@ function Roze(p:P){
       <a className="rzNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
     </header>
 
-    <section className="rzHero" ref={heroSectionRef}>
-      <div className="rzHeroParallax" ref={parallaxRef}>
-        {b.cover_url&&b.cover_type==='video'
-          ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
-          :b.cover_url
-            ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
-            :<div className="rzHeroMedia rzHeroMediaFallback"/>}
-      </div>
-      <div className="rzHeroOverlay"/>
-      <div className="rzHeroInner" ref={heroInnerRef}>
-        <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
-        <ScrollChars tag="h1" parts={[{text:`${b.hero_title||'Güzelliğini'} `},{text:b.hero_highlight||'ortaya çıkar',as:'em'}]}/>
-        {b.hero_description&&<p className="rzHeroDesc">{b.hero_description}</p>}
-        <div className="rzHeroActions">
-          <a className="rzHeroCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
-          <a className="rzHeroGhost" href="#hizmetler">Hizmetleri Gör</a>
+    <section className="rzHero rzHeroWindow" ref={heroSectionRef}>
+      <div className="rzHeroWindowStage">
+        <div className="rzHeroInner rzHeroInnerCard" ref={heroTextRef}>
+          <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
+          <ScrollChars tag="h1" parts={[{text:`${b.hero_title||'Güzelliğini'} `},{text:b.hero_highlight||'ortaya çıkar',as:'em'}]}/>
+          {b.hero_description&&<p className="rzHeroDesc">{b.hero_description}</p>}
         </div>
-        <RozePills p={p}/>
+        <div className="rzHeroMediaCard" ref={heroCardRef}>
+          {b.cover_url&&b.cover_type==='video'
+            ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
+            :b.cover_url
+              ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
+              :<div className="rzHeroMedia rzHeroMediaFallback"/>}
+          <div className="rzHeroOverlay"/>
+        </div>
+        <div className="rzHeroWindowActions" ref={heroActionsRef}>
+          <div className="rzHeroActions">
+            <a className="rzHeroCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+            <a className="rzHeroGhost" href="#hizmetler">Hizmetleri Gör</a>
+          </div>
+          <RozePills p={p}/>
+        </div>
       </div>
-      <RozeHeroCards p={p}/>
     </section>
 
     <RozeAbout p={p}/>

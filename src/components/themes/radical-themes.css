@@ -1042,6 +1042,38 @@
 .rzPill{display:inline-flex;align-items:center;gap:8px;background:rgba(20,10,8,.3);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border:1px solid rgba(255,255,255,.32);color:#fff;font-size:12.5px;font-weight:600;padding:9px 16px 9px 12px;border-radius:999px;text-shadow:0 1px 3px rgba(0,0,0,.3)}
 .rzPill i{width:7px;height:7px;border-radius:2px;background:#fff;transform:rotate(45deg);flex-shrink:0}
 
+/* "Window view" hero — ortada küçük, dikey, yuvarlak köşeli bir kart olarak
+   duran medya; kullanıcı kaydırdıkça (useRozeHeroPin) tam ekrana büyüyüp
+   köşesi keskinleşiyor. Zemin krem (var(--rz-cream)) olduğu için üstteki/
+   alttaki yazı ve CTA'lar artık koyu mürekkep rengiyle okunuyor (eskiden
+   koyu foto üzerinde beyazdı). Tüm kurallar `.rzHeroWindow` atasıyla
+   zincirlenip yüksek özgüllükte tutuluyor ki eski tekli-sınıf kuralları
+   (ör. mobil medya sorgusundaki `.rzHeroInner{padding:...}`) hiçbir zaman
+   üzerine yazmasın. */
+.rzHero.rzHeroWindow{align-items:center;justify-content:center;flex-direction:column;background:var(--rz-cream)}
+.rzHeroWindowStage{position:relative;width:100%;height:100%}
+.rzHeroMediaCard{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(460px,84vw);height:min(66vh,620px);border-radius:32px;overflow:hidden;box-shadow:0 40px 90px rgba(43,23,18,.22);z-index:1;will-change:width,height,border-radius}
+.rzHeroMediaCard .rzHeroMedia{position:absolute;inset:0}
+.rzHeroWindow .rzHeroInnerCard{position:absolute;top:64px;left:0;right:0;z-index:2;max-width:none;padding:0 6vw;text-align:center;margin:0 auto}
+.rzHeroWindow .rzHeroInnerCard .rzHeroEyebrow{color:var(--rz-accent);justify-content:center}
+.rzHeroWindow .rzHeroInnerCard h1{color:var(--rz-ink)}
+.rzHeroWindow .rzHeroInnerCard h1 em span{background:linear-gradient(100deg,var(--rz-accent),var(--rz-rose-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
+.rzHeroWindow .rzHeroInnerCard .rzHeroDesc{color:var(--rz-muted);margin:0 auto;max-width:460px}
+.rzHeroWindowActions{position:absolute;bottom:56px;left:0;right:0;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px}
+.rzHeroWindowActions .rzHeroActions{margin-bottom:0;justify-content:center}
+.rzHeroWindowActions .rzHeroCta{border-color:var(--rz-line)}
+.rzHeroWindowActions .rzHeroGhost{color:var(--rz-ink)!important;border-bottom-color:var(--rz-line)}
+.rzHeroWindowActions .rzPills{justify-content:center}
+.rzHeroWindowActions .rzPill{background:rgba(43,23,18,.06);border-color:var(--rz-line);color:var(--rz-ink);text-shadow:none}
+.rzHeroWindowActions .rzPill i{background:var(--rz-accent)}
+
+/* Hizmetler: yatay karusel yerine dikey, üst üste yığılan (stacking) kartlar.
+   Her kart position:sticky ile aynı noktada (nav'ın altında) yapışıyor, bir
+   sonraki kart üzerine gelirken JS (useRozeServiceStack) küçülüp soluyor. */
+.rzServicesStack .rzServiceStackList{position:relative;display:flex;flex-direction:column;padding-bottom:36vh}
+.rzServiceStackCard{position:sticky;top:96px;height:72vh;min-height:400px;max-height:620px;border-radius:32px;overflow:hidden;margin-bottom:26px;background:linear-gradient(150deg,var(--rz-rose),var(--rz-rose-deep));box-shadow:0 30px 70px rgba(43,23,18,.2)}
+.rzServiceStackCard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
 .rzAbout{padding:100px 6vw}
 .rzAboutHead{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:48px}
 .rzAboutHead h2{font-size:clamp(26px,3.4vw,42px);font-weight:400;line-height:1.18;letter-spacing:-.01em;max-width:520px;margin:0}
@@ -1224,6 +1256,8 @@
   .rzBlogGrid::-webkit-scrollbar{display:none}
   .rzBlogCard{flex:0 0 auto;width:78vw;max-width:320px;scroll-snap-align:start}
   .rzServiceSlide.rzFeatured{width:min(78vw,460px)}
+  .rzServiceStackCard{top:76px;height:64vh}
+  .rzHeroMediaCard{height:56vh}
   .rzTestiGrid{grid-template-columns:1fr 1fr}
   .rzTestiHead{grid-column:1/-1;grid-row:auto}
   .rzTestiCard.slot0,.rzTestiCard.slot2{grid-row:auto}
@@ -1233,8 +1267,13 @@
 @media(max-width:650px){
   .rzHero{align-items:flex-end;min-height:100vh;min-height:100dvh}
   .rzHeroInner{padding:0 6vw 90px}
+  .rzHeroWindow .rzHeroInnerCard{top:88px;padding:0 6vw}
+  .rzHeroWindow .rzHeroInnerCard h1{font-size:clamp(30px,8.4vw,40px)}
+  .rzHeroMediaCard{width:90vw;height:50vh}
+  .rzHeroWindowActions{bottom:26px;gap:12px}
   .rzServiceSlide.rzFeatured{width:82vw}
   .rzServiceSlide{width:200px;height:300px}
+  .rzServiceStackCard{top:64px;height:58vh;min-height:340px;border-radius:24px}
   .rzBlogCard{width:84vw}
   .rzTestiGrid{grid-template-columns:1fr}
   .rzTestiCard{grid-column:1!important}
