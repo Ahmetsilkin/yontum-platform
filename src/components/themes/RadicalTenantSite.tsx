@@ -234,6 +234,7 @@ function Keskin(p:P){
             <div className="ksServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
             {s.description&&<p>{s.description}</p>}
             <small>🕐 {s.duration_minutes} dk</small>
+            {hasServiceDetail(s)&&<a className="ksServiceDetailLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
           </div>
         </Reveal>)}
       </div>
@@ -360,6 +361,7 @@ function Atelier(p:P){
           <div className="atServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
           {s.description&&<p>{s.description}</p>}
           <small>🕐 {s.duration_minutes} dk</small>
+          {hasServiceDetail(s)&&<a className="atServiceDetailLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
         </Reveal>)}
       </div>
     </section>
@@ -523,6 +525,7 @@ function Vitrin(p:P){
           <h3>{s.name}</h3>
           {s.description&&<p>{s.description}</p>}
           <footer><em>{s.duration_minutes} dk</em>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</footer>
+          {hasServiceDetail(s)&&<a className="vtServiceDetailLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
         </Reveal>)}
       </div>
     </section>
@@ -620,6 +623,7 @@ function ZarafetServices({p}:{p:P}){
         <div className="zfServiceCardPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
         <h3>{s.name}</h3>
         <div className="zfServiceCardFoot"><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
+        {hasServiceDetail(s)&&<a className="zfServiceDetailLink" href={`/site/${p.b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
       </article>)}
     </div>
   </section>;
@@ -1408,10 +1412,16 @@ function OnixManifestoText({text}:{text:string}){
 }
 /* İmza an: Hizmetler bölümü kısa bir dikey mesafe boyunca ekranda kilitlenir
    (pin), o mesafede fare tekerleği yatay foto şeridini kaydırır — "sinematik
-   film şeridi". Roze'nin galeri scroll-jack'inde bu oturumda kanıtlanmış,
-   production'da doğrulanmış AYNI teknik (gsap.to(track,{scrollLeft}) DOM
-   property'si doğrudan tween ediliyor). Sadece masaüstü (≥900px); mobilde
-   şerit kendi dokunmatik yatay kaydırmasıyla çalışır, pin yok. */
+   film şeridi". İLK sürüm native `scrollLeft`'i JS ile sürüklüyordu — bu her
+   karede tarayıcıya senkron bir "reflow" (yeniden düzen) hesaplattırıyor,
+   kullanıcı bunu "kasıyor" diye bildirdi. Düzeltme: artık `scrollLeft` değil
+   `x` (CSS transform:translateX) tween ediliyor — GPU'da compositor katmanında
+   çalışır, reflow tetiklemez, kayma hızından bağımsız pürüzsüz kalır (gerçek
+   Awwwards sitelerinin kullandığı standart "horizontal scroll section"
+   deseni). Bunun için şerit artık scroll edilebilir bir kutu DEĞİL — dışarıda
+   `overflow:hidden` bir "clip" kapsayıcı, içeride `width:max-content` bir
+   şerit var; masaüstünde şerit transform ile kaydırılıyor, mobilde (pin YOK)
+   CSS clip kutusunun kendisi native dokunmatik scroll kutusu oluyor. */
 function useOnixFilmstrip(){
   const sectionRef=useRef<any>(null);
   const trackRef=useRef<any>(null);
@@ -1421,9 +1431,10 @@ function useOnixFilmstrip(){
       if(cancelled||!sectionRef.current||!trackRef.current)return;
       if(window.innerWidth<900)return;
       const track=trackRef.current;
-      const distance=track.scrollWidth-track.clientWidth;
+      const clip=track.parentElement;
+      const distance=track.scrollWidth-(clip?.clientWidth||track.clientWidth);
       if(distance<=0)return;
-      st=gsap.to(track,{scrollLeft:distance,ease:'none',scrollTrigger:{trigger:sectionRef.current,start:'top top',end:()=>'+='+Math.max(distance,300),pin:true,anticipatePin:1,scrub:1,invalidateOnRefresh:true}});
+      st=gsap.to(track,{x:-distance,ease:'none',scrollTrigger:{trigger:sectionRef.current,start:'top top',end:()=>'+='+Math.max(distance,300),pin:true,anticipatePin:1,scrub:1,invalidateOnRefresh:true}});
     });
     return()=>{cancelled=true;st?.scrollTrigger?.kill?.();st?.kill?.()};
   },[]);
@@ -1483,15 +1494,18 @@ function Onix(p:P){
         <small>{b.services_label||'HİZMETLER'}</small>
         <h2>{b.services_title||'Sanat seviyesinde bakım.'}</h2>
       </Reveal>
-      <div className="oxFilmTrack" ref={filmTrack}>
-        {p.services.map((s,i)=><article key={s.id} className="oxFilmCard">
-          <span className="oxFilmNum">{String(i+1).padStart(2,'0')}</span>
-          {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="oxFilmFallback"/>}
-          <div className="oxFilmBody">
-            <b>{s.name}</b>
-            <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
-          </div>
-        </article>)}
+      <div className="oxFilmClip">
+        <div className="oxFilmTrack" ref={filmTrack}>
+          {p.services.map((s,i)=><article key={s.id} className="oxFilmCard">
+            <span className="oxFilmNum">{String(i+1).padStart(2,'0')}</span>
+            {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="oxFilmFallback"/>}
+            <div className="oxFilmBody">
+              <b>{s.name}</b>
+              <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
+            </div>
+            {hasServiceDetail(s)&&<a className="oxFilmDetailBadge" href={`/site/${b.slug}/hizmet/${s.slug}`}><span>↗</span>Detaylı<br/>İncele</a>}
+          </article>)}
+        </div>
       </div>
     </section>
 
@@ -1511,7 +1525,7 @@ function Onix(p:P){
         <h2>{dec(b,'ox_galleryTitle','Bizden kareler.')}</h2>
       </Reveal>
       <div className="oxGalleryGrid">
-        {galleryPhotos.map((src,i)=><Reveal i={i} key={i} className="oxGalleryItem">
+        {galleryPhotos.map((src,i)=><Reveal i={i} key={i} className={`oxGalleryItem oxBento${i%5}`}>
           <button type="button" onClick={()=>setLightbox(i)}><img src={src} alt={b.name}/><span className="oxGalleryIndex">{String(i+1).padStart(2,'0')}</span></button>
         </Reveal>)}
       </div>
@@ -1548,3 +1562,10 @@ function WhatsApp({b}:{b:any}){if(!b.whatsapp_enabled)return null;let n=String(b
 function accentHex(name:string,fallback:string){return({black:'#111111',burgundy:'#7c3157',pink:'#ed5da8',purple:'#7652a6',sage:'#6f8f78',blue:'#71849c',orange:'#d8753f',gold:'#9b7b3f'}as any)[name]||fallback||'#111111'}
 
 function dec(b:any,key:string,fallback:string){const d=b.theme_decorations||{};return Object.prototype.hasOwnProperty.call(d,key)?d[key]:fallback}
+/* Hizmetin kendi detay sayfası (panelde "Detay sayfası" bölümüne bir şey
+   girildiyse) varsa Hizmetler kartında "Detaylı İncele" görünür — hizmetin
+   /site/{slug}/hizmet/{serviceSlug} sayfasına götürür. Önceden sadece Roze
+   ve İpek'te vardı; artık TÜM temalarda (Keskin, Atelier, Vitrin, Zarafet,
+   Onix) tutarlı şekilde kullanılan paylaşılan kontrol. Detay içeriği hiç
+   girilmemiş hizmetlerde hiç görünmez. */
+function hasServiceDetail(s:any){return!!(s.slug&&(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable||s.detail_tip_title||s.detail_before||s.detail_after))}
