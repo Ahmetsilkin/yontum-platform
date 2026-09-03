@@ -1,10 +1,16 @@
 'use client';
 import{useState,useEffect,useRef,Fragment}from'react';
+import dynamic from'next/dynamic';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
+/* Nova'nın 3D sahnesi (@react-three/fiber) sunucuda render edilemez (WebGL
+   canvas/tarayıcı API'lerine ihtiyaç duyar) — bu yüzden ssr:false ile sadece
+   istemcide, ayrı bir JS parçası (chunk) olarak yükleniyor. Diğer temaların
+   paketini büyütmüyor: sadece Nova temasını kullanan işletmelerde indiriliyor. */
+const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -1940,6 +1946,83 @@ function Lumina(p:P){
         <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="lmContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="lmContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
       </div>
       <div className="lmFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+
+/* ================= NOVA — kullanıcının paylaştığı "3D Orbit Gallery" (React
+   Three Fiber) referansının BİREBİR aynısını hero'da kullanan tema: toz
+   parçacıklarından bir küre, etrafında dönen fotoğraf halkası, sürükle-çevir/
+   yakınlaştır kamera kontrolü. Sahnenin kendisi ayrı bir dosyada (NovaScene.tsx,
+   ssr:false dinamik import) — bkz. oradaki yorum için performans/güvenlik
+   notları (InstancedMesh, pan kapalı). */
+function Nova(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const manifesto=dec(b,'nv_manifesto','Her yüz kendi ışığını taşır. Biz sadece onu görünür kılarız.');
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  const novaPhotos=(galleryPhotos.length?galleryPhotos:LUMINA_DEFAULT_PHOTOS).slice(0,24);
+  return <main id="top" className="tNova">
+    <header className="nvNav">
+      <a className="nvBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#randevu">Randevu</a>
+      </nav>
+      <a className="nvNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="nvHero">
+      <div className="nvHeroScene"><NovaScene photos={novaPhotos}/></div>
+      <div className="nvHeroOverlay"/>
+      <div className="nvHeroInner">
+        <p className="nvEyebrow"><i/>{b.hero_label||'PREMIUM GÜZELLİK SALONU'}</p>
+        <h1 className="nvHeroTitle">{b.hero_title||'Güzelliğin'} <em>{b.hero_highlight||'yörüngesi.'}</em></h1>
+        {b.hero_description&&<p className="nvHeroDesc">{b.hero_description}</p>}
+        <div className="nvHeroActions">
+          <a className="nvBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+          <a className="nvBtnGhost" href="#hizmetler">Hizmetleri Keşfet</a>
+        </div>
+      </div>
+      <div className="nvDragHint"><i/>Sürükle · Yakınlaştır</div>
+    </section>
+
+    <section className="nvManifesto">
+      <Reveal><p className="nvManifestoText">{manifesto}</p></Reveal>
+    </section>
+
+    <section id="hizmetler" className="nvServices">
+      <Reveal className="nvSectionHead">
+        <small>{b.services_label||'HİZMETLER'}</small>
+        <h2>{b.services_title||'Sanat seviyesinde bakım.'}</h2>
+      </Reveal>
+      <div className="nvServiceGrid">
+        {p.services.map((s,i)=><Reveal as="article" i={i} key={s.id} className="nvServiceCard">
+          <div className="nvServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
+          {s.description&&<p>{s.description}</p>}
+          <small>🕐 {s.duration_minutes} dk</small>
+          {hasServiceDetail(s)&&<a className="nvServiceDetailLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
+        </Reveal>)}
+      </div>
+    </section>
+
+    <section id="randevu" className="nvBooking">
+      <Reveal className="nvSectionHead">
+        <small>{b.booking_label||'RANDEVU'}</small>
+        <h2>{b.booking_title||'Saatini ayır.'}</h2>
+      </Reveal>
+      <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <GoogleReviews businessId={b.id}/>
+
+    <footer className="nvFooter">
+      <div className="nvFooterGrid">
+        <div><a className="nvBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a><p>{dec(b,'nv_footerTagline','Zamanın en değerli hâli: kendine ayırdığın an.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="nvHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="nvContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="nvContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
+      </div>
+      <div className="nvFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }

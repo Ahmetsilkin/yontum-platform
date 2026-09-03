@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500&family=Cormorant+Garamond:wght@500;600&family=Plus+Jakarta+Sans:wght@700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,600&family=Manrope:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500&family=Cormorant+Garamond:wght@500;600&family=Plus+Jakarta+Sans:wght@700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,600&family=Manrope:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&display=swap');
 .radical{--accent:#111;--bg:#f5f3ee;--surface:#fff;--text:#111;--muted:#777;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}.radical.mode-dark{--bg:#0d0d0d;--surface:#171717;--text:#f7f4ed;--muted:#aaa}.radical a{color:inherit;text-decoration:none}.rBrand{display:flex;align-items:center;gap:12px;text-transform:uppercase;letter-spacing:2px}.rBrand img,.rBrand i{width:44px;height:44px;object-fit:cover;background:var(--accent);color:#fff;display:grid;place-items:center;font-style:normal}.rCta{display:inline-block;background:var(--accent);color:#fff!important;padding:14px 20px;font-weight:800;transition:.2s}.cta-outline .rCta{background:transparent;color:var(--accent)!important;border:2px solid var(--accent)}.cta-pill .rCta{border-radius:999px}.cta-underline .rCta{background:transparent;color:var(--text)!important;border-bottom:3px solid var(--accent);padding-inline:0}.cta-floating .rCta{border-radius:14px;box-shadow:8px 8px 0 color-mix(in srgb,var(--accent) 30%,#111);transform:translateY(-3px)}.rHero small,.rServices>header small,.rAbout>small,.rStaff>small,.rBooking>header small{letter-spacing:3px;font-size:10px}.rHero h1{font-size:clamp(55px,9vw,130px);line-height:.86;margin:25px 0;letter-spacing:-.06em}.rHero h1 em{display:block;color:color-mix(in srgb,var(--accent) 65%,var(--text) 35%);font-style:normal}.rHero p{max-width:620px;color:var(--muted);line-height:1.7;font-size:17px}.rServices{padding:100px 7vw}.rServices h2,.rAbout h2,.rBooking h2{font:700 46px Georgia}.rServices>div{display:grid;grid-template-columns:repeat(3,1fr)}.rServices article{padding:25px;border:1px solid #aaa4}.rServices article>span{font:italic 25px Georgia;color:var(--muted)}.rServices h3{font-size:23px}.rServices p{color:var(--muted)}.rServices footer{display:flex;justify-content:space-between;margin-top:25px}.rServices em{font-style:normal}.rStaff{padding:80px 7vw}.rStaff>div{display:flex;gap:20px;overflow-x:auto}.rStaff article{min-width:220px}.rStaff img,.rStaff article>i{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:60px}.rGallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-flow:dense;gap:0;overflow:hidden}.rGallery>*{min-width:0;display:block}.rGallery img,.rGallery video{width:100%;height:340px;object-fit:cover}.rGallery.media-count-1{grid-template-columns:1fr}.rGallery.media-count-2{grid-template-columns:repeat(2,1fr)}.rGallery.media-count-3{grid-template-columns:repeat(3,1fr)}.rGallery.media-count-4{grid-template-columns:repeat(2,1fr)}.rGallery.media-count-5,.rGallery.media-count-6{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.rGallery.media-count-1>*,.rGallery.media-count-2>*,.rGallery.media-count-3>*,.rGallery.media-count-4>*,.rGallery.media-count-5>*,.rGallery.media-count-6>*{height:auto!important;aspect-ratio:4/3;grid-column:auto!important;grid-row:auto!important;object-fit:cover}.rGallery video{background:#000}
 .rBooking .input{background:var(--bg)!important;color:var(--text)!important;border-color:color-mix(in srgb,var(--text) 18%,transparent)!important}.googleReviews{padding:90px 7vw;background:var(--surface);color:var(--text)}.googleReviews>header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:35px}.googleReviews h2{font:700 42px Georgia;margin:8px 0}.googleReviews h2 span,.googleReviewGrid article span{color:#f5a623;letter-spacing:2px}.googleReviews header p{color:var(--muted)}.googleReviews header>a{border-bottom:1px solid}.googleReviewGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.googleReviewGrid article{border:1px solid color-mix(in srgb,var(--text) 14%,transparent);padding:18px;display:grid;grid-template-columns:44px 1fr;gap:10px}.googleReviewGrid img,.googleReviewGrid article>i{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--accent);color:#fff;display:grid;place-items:center;font-style:normal}.googleReviewGrid article>div{display:flex;flex-direction:column}.googleReviewGrid small{color:var(--muted)}.googleReviewGrid article>p,.googleReviewGrid article>a{grid-column:1/-1}.googleReviewGrid article>p{line-height:1.6}.googleReviewGrid article>a{font-size:11px;text-decoration:underline}.googleReviews>footer{margin-top:18px;font-size:10px;color:var(--muted)}.rContact{padding:55px 7vw;background:#0b0b0b;color:#fff;display:grid;grid-template-columns:2fr repeat(3,1fr);gap:25px}.rContact div small{display:block;color:#888}.rWhatsapp{position:fixed;right:22px;bottom:22px;width:58px;height:58px;display:grid;place-items:center;background:#D4AF37!important;color:#000!important;border-radius:50%;z-index:50;box-shadow:0 8px 24px #00000059;transition:transform .2s}.rWhatsapp:hover{transform:translateY(-3px) scale(1.05)}.rWhatsapp svg{width:27px;height:27px;fill:#000}@media(max-width:640px){.rWhatsapp{right:16px;bottom:16px;width:52px;height:52px}.rWhatsapp svg{width:24px;height:24px}}
 .cta-anim-pulse .rCta{animation:ctaPulse 2s ease-in-out infinite}.cta-anim-float .rCta{animation:ctaFloat 2.4s ease-in-out infinite}.cta-anim-shine .rCta{position:relative;overflow:hidden}.cta-anim-shine .rCta:after{content:'';position:absolute;inset:-40% auto -40% -35%;width:25%;background:#fff8;transform:rotate(20deg);animation:ctaShine 2.8s ease-in-out infinite}.cta-anim-bounce .rCta{animation:ctaBounce 2.2s ease infinite}@keyframes ctaPulse{50%{transform:scale(1.045);box-shadow:0 8px 25px color-mix(in srgb,var(--accent) 35%,transparent)}}@keyframes ctaFloat{50%{transform:translateY(-7px)}}@keyframes ctaShine{55%,100%{left:125%}}@keyframes ctaBounce{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-7px)}90%{transform:translateY(-3px)}}
@@ -1594,3 +1594,114 @@
   .lmFooterGrid{grid-template-columns:1fr;gap:26px}
 }
 @media(prefers-reduced-motion:reduce){.lmHeroCss img{transition:none}}
+
+/* ================= NOVA — pürüzsüz siyah zemin, toz parçacıklarından bir küre
+   ve etrafında dönen fotoğraf halkasıyla (React Three Fiber, bkz. NovaScene.tsx)
+   "kozmik sergi salonu" havasında premium tema. Onix (sıcak altın + bento) ve
+   Lumina'dan (buz mavisi + cam) bilinçli olarak farklı: tamamen SAF siyah
+   (#000 — referanstaki bg-black ile birebir) + parçacıkların kendi sıcak
+   amber tonu. Başlık fontu da ayrı bir kimlik: Bodoni Moda — yüksek kontrastlı,
+   sergi/galeri afişi havasında bir display serif. */
+.tNova{--nv-bg:#000000;--nv-bg2:#0d0d0d;--nv-bg3:#171717;--nv-ink:#f5f4f2;--nv-muted:#9a978f;--nv-amber:#e8a24d;--nv-amber-deep:#a8681f;--nv-line:rgba(245,244,242,.14);background:var(--nv-bg);color:var(--nv-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
+.tNova h1,.tNova h2,.tNova h3{font-family:'Bodoni Moda',Georgia,'Times New Roman',serif;letter-spacing:-.01em}
+.tNova em{font-style:italic;color:var(--nv-amber)}
+
+.nvNav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:22px 6vw;background:linear-gradient(180deg,rgba(0,0,0,.65),transparent)}
+.nvBrand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.005em;font-size:14.5px;color:var(--nv-ink);font-family:'Inter',sans-serif}
+.nvBrand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.nvBrand i{width:32px;height:32px;border-radius:50%;background:var(--nv-amber);color:#100b04;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
+.nvNav nav{display:flex;gap:32px}
+.nvNav nav a{color:var(--nv-muted);font-size:13px;font-weight:500;transition:color .18s ease}
+.nvNav nav a:hover{color:var(--nv-ink)}
+.nvNavBtn{border:1px solid var(--nv-amber);color:var(--nv-amber)!important;font-weight:600;font-size:13px;padding:10px 20px;border-radius:999px;transition:background .18s ease,color .18s ease}
+.nvNavBtn:hover{background:var(--nv-amber);color:#100b04!important}
+
+/* Hero — 3D sahne tam ekran arka plan, üstünde metin katmanı. Metin
+   kutusunun `pointer-events:none` olması ÖNEMLİ: aksi hâlde ziyaretçi tam da
+   başlığın olduğu orta bölgede sahneyi sürükleyip döndüremezdi — sadece
+   gerçek tıklanabilir öğeler (CTA linkleri) `pointer-events:auto` ile geri
+   açılıyor. */
+.nvHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000}
+.nvHeroScene{position:absolute;inset:0;z-index:0}
+.nvHeroScene canvas{display:block;width:100%!important;height:100%!important;touch-action:none}
+.nvHeroOverlay{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at center,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.88) 100%);pointer-events:none}
+.nvHeroInner{position:relative;z-index:2;text-align:center;max-width:760px;padding:0 6vw;pointer-events:none}
+.nvHeroInner a{pointer-events:auto}
+.nvEyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--nv-amber);font-size:11px;letter-spacing:3px;font-weight:700;margin:0 0 22px;font-family:'Inter',sans-serif}
+.nvEyebrow i{width:6px;height:6px;border-radius:50%;background:var(--nv-amber);box-shadow:0 0 12px var(--nv-amber)}
+.nvHeroTitle{color:var(--nv-ink);font-size:clamp(38px,6vw,80px);line-height:1.05;font-weight:500;margin:0 0 24px}
+.nvHeroDesc{color:var(--nv-muted);font-size:16px;line-height:1.7;max-width:480px;margin:0 auto 34px;font-family:'Inter',sans-serif}
+.nvHeroActions{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+.nvBtnSolid{display:inline-flex;align-items:center;gap:8px;background:var(--nv-amber);color:#100b04!important;font-weight:700;font-size:14px;padding:15px 26px;border-radius:999px;transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s ease}
+.nvBtnSolid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(232,162,77,.35)}
+.nvBtnGhost{color:var(--nv-ink)!important;font-weight:600;font-size:14px;padding:15px 4px;border-bottom:1px solid var(--nv-line);transition:border-color .18s ease}
+.nvBtnGhost:hover{border-color:var(--nv-amber)}
+.nvDragHint{position:absolute;left:50%;bottom:32px;transform:translateX(-50%);z-index:2;display:flex;align-items:center;gap:8px;color:var(--nv-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;pointer-events:none}
+.nvDragHint i{width:16px;height:16px;border:1px solid var(--nv-muted);border-radius:4px;display:inline-block}
+
+.nvManifesto{padding:min(20vh,190px) 8vw;max-width:900px;margin:0 auto;text-align:center}
+.nvManifestoText{font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(24px,3.4vw,40px);line-height:1.35;font-weight:500;color:var(--nv-ink);margin:0}
+
+.nvSectionHead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:0 6vw 44px;flex-wrap:wrap}
+.nvSectionHead small{color:var(--nv-amber);font-weight:800;letter-spacing:2.5px;font-size:11px;font-family:'Inter',sans-serif}
+.nvSectionHead h2{font-size:clamp(28px,3.4vw,42px);font-weight:500;margin:12px 0 0;color:var(--nv-ink)}
+
+.nvServices{padding:80px 6vw 100px}
+.nvServiceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--nv-line);border:1px solid var(--nv-line);border-radius:18px;overflow:hidden}
+.nvServiceCard{background:var(--nv-bg2);padding:32px 26px}
+.nvServiceHead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.nvServiceHead h3{margin:0;font-size:19px;font-weight:500;color:var(--nv-ink)}
+.nvServiceHead b{color:var(--nv-amber);font-size:15px;white-space:nowrap;font-family:'Inter',sans-serif}
+.nvServiceCard p{color:var(--nv-muted);font-size:13.5px;line-height:1.6;margin:10px 0}
+.nvServiceCard small{color:var(--nv-muted);font-size:12px}
+.nvServiceDetailLink{display:block;margin-top:12px;color:var(--nv-amber)!important;font-size:12.5px;font-weight:600;border-bottom:1px solid var(--nv-amber-deep);width:fit-content}
+
+.nvBooking{padding:100px 6vw 60px}
+.nvBooking .nvSectionHead{margin-left:0;margin-right:0;max-width:800px;margin-inline:auto;text-align:center;justify-content:center}
+.tNova.tNova.tNova .tenantBooking{background:var(--nv-bg2);border:1px solid var(--nv-line);border-radius:20px;color:var(--nv-ink);box-shadow:0 40px 90px rgba(0,0,0,.5)}
+.tNova.tNova.tNova .tenantBooking h4{border-top-color:var(--nv-line);color:var(--nv-ink)}
+.tNova.tNova.tNova .tenantStep i{background:transparent;border-color:var(--nv-line);color:var(--nv-muted)}
+.tNova.tNova.tNova .tenantStep.active i{border-color:var(--nv-amber);color:#100b04;background:var(--nv-amber)}
+.tNova.tNova.tNova .tenantStep span{color:var(--nv-muted)}
+.tNova.tNova.tNova .tenantStep.active span{color:var(--nv-ink)}
+.tNova.tNova.tNova .tenantStepLine{background:var(--nv-line)}
+.tNova.tNova.tNova .tenantStepLine.active{background:var(--nv-amber)}
+.tNova.tNova.tNova .tbTitle span{color:var(--nv-amber)}
+.tNova.tNova.tNova .tbTitle h3{color:var(--nv-ink)}
+.tNova.tNova.tNova .tbTitle p{color:var(--nv-muted)}
+.tNova.tNova.tNova .tbServices button,.tNova.tNova.tNova .staffOptions button,.tNova.tNova.tNova .tbDays button,.tNova.tNova.tNova .tbSlots button{background:transparent!important;border-color:var(--nv-line);color:var(--nv-ink)!important;-webkit-text-fill-color:var(--nv-ink)!important}
+.tNova.tNova.tNova .tbServices button.selected,.tNova.tNova.tNova .staffOptions button.selected{border-color:var(--nv-amber);box-shadow:inset 4px 0 var(--nv-amber)}
+.tNova.tNova.tNova .tbServices small,.tNova.tNova.tNova .staffOptions small{color:var(--nv-muted)}
+.tNova.tNova.tNova .tbDays button.selected,.tNova.tNova.tNova .tbSlots button.selected{background:var(--nv-amber)!important;color:#100b04!important;-webkit-text-fill-color:#100b04!important}
+.tNova.tNova.tNova .tbDays button.closed{opacity:.25}
+.tNova.tNova.tNova .tenantNext{background:var(--nv-amber)!important;color:#100b04!important;-webkit-text-fill-color:#100b04!important;border-radius:999px}
+.tNova.tNova.tNova .tenantNext:disabled{opacity:.3!important}
+.tNova.tNova.tNova .tbBack{color:var(--nv-muted)}
+.tNova.tNova.tNova .tenantBooking input,.tNova.tNova.tNova .tenantBooking textarea{background:rgba(255,255,255,.04);border:1px solid var(--nv-line);color:var(--nv-ink)}
+.tNova.tNova.tNova .tenantError{background:rgba(200,60,60,.15);color:#ff9d9d}
+.tNova.tNova.tNova .tbDone>span{border-color:var(--nv-amber);color:var(--nv-amber)}
+.tNova.tNova.tNova .tbDone h3{color:var(--nv-ink)}
+.tNova.tNova.tNova .tbDone p{color:var(--nv-muted)}
+.tNova.tNova.tNova .tbDone button{border-color:var(--nv-line);background:transparent;color:var(--nv-ink)}
+.tNova.tNova.tNova .cancelManageLink{color:var(--nv-amber)}
+
+.nvFooter{background:var(--nv-bg2);padding:70px 6vw 30px;margin-top:20px;border-top:1px solid var(--nv-line)}
+.nvFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--nv-line)}
+.nvFooterGrid p{color:var(--nv-muted);font-size:14px;line-height:1.6;margin-top:14px;max-width:280px}
+.nvFooterGrid small{color:var(--nv-amber);font-weight:800;letter-spacing:2px;font-size:10.5px}
+.nvHoursRow{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--nv-muted);padding:8px 0;border-bottom:1px solid var(--nv-line)}
+.nvHoursRow:first-of-type{margin-top:14px}
+.nvContactRow{display:flex!important;align-items:center;gap:8px;color:var(--nv-muted);font-size:13.5px;margin-top:14px}
+.nvContactRow a{display:flex;align-items:center;gap:8px;color:var(--nv-muted)}
+.nvContactRow svg{flex-shrink:0;color:var(--nv-amber)}
+.nvFooterBottom{padding-top:24px;text-align:center;font-size:11.5px;color:var(--nv-muted)}
+
+@media(max-width:900px){
+  .nvNav nav{display:none}
+  .nvManifesto{padding:14vh 6vw}
+  .nvServiceGrid{grid-template-columns:1fr}
+  .nvFooterGrid{grid-template-columns:1fr 1fr;gap:24px}
+}
+@media(max-width:650px){
+  .nvFooterGrid{grid-template-columns:1fr;gap:26px}
+}
