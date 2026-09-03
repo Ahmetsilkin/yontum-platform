@@ -1710,15 +1710,24 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
           vertexShader:LUMINA_VERT,fragmentShader:LUMINA_FRAG
         });
         scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
+        /* ÖNEMLİ (performans): burada eskiden requestAnimationFrame içinde
+           SONSUZA DEK, saniyede 60 kez `renderer.render()` çağıran bir döngü
+           vardı — kare tamamen durağanken bile (geçiş bittikten, hatta
+           kullanıcı sayfanın çok aşağısına indikten SONRA bile) sürekli GPU
+           işi yapıyordu. Bu, "scrollda kasma" şikayetinin asıl kaynağıydı.
+           Artık SADECE gerektiğinde çiziliyor: kurulumda bir kere, pencere
+           yeniden boyutlanınca bir kere, bir de aktif geçiş sırasında (goTo
+           içindeki adım döngüsü kendi render'ını tetikliyor) — döngü bittiği
+           anda duruyor, arkaplanda hiçbir şey çalışmıyor. */
+        const renderOnce=()=>renderer.render(scene,camera);
+        renderOnce();
         const onResize=()=>{
           const nw=wrap.clientWidth||window.innerWidth,nh=wrap.clientHeight||window.innerHeight;
           renderer.setSize(nw,nh);material.uniforms.uResolution.value.set(nw,nh);
+          renderOnce();
         };
         window.addEventListener('resize',onResize);
-        let raf=0;
-        const render=()=>{raf=requestAnimationFrame(render);renderer.render(scene,camera)};
-        render();
-        stateRef.current={renderer,material,textures,currentIdx:0,cleanup:()=>{window.removeEventListener('resize',onResize);cancelAnimationFrame(raf);renderer.dispose()}};
+        stateRef.current={renderer,material,textures,currentIdx:0,renderOnce,cleanup:()=>{window.removeEventListener('resize',onResize);renderer.dispose()}};
         setWebglOn(true);
       }catch(e){console.warn('Lumina: WebGL hero başlatılamadı, statik geçişe düşüldü.',e)}
     })();
@@ -1757,8 +1766,9 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
           const step=(now:number)=>{
             const t=Math.min(1,(now-start)/TRANSITION_MS);
             st.material.uniforms.uProgress.value=easeInOutCubic(t);
+            st.renderOnce();
             if(t<1)requestAnimationFrame(step);
-            else{st.material.uniforms.uProgress.value=0;st.currentIdx=next;lr.busy=false}
+            else{st.material.uniforms.uProgress.value=0;st.currentIdx=next;lr.busy=false;st.renderOnce()}
           };
           requestAnimationFrame(step);
           return;
@@ -1768,26 +1778,29 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
     };
     /* Sayfanın kendisi artık (satır içi script sayesinde) fiziksel olarak
        kayamadığı için burada `window.scrollY` kontrolüne hiç gerek yok —
-       tek koşul `exhausted` olup olmadığı. */
+       tek koşul `exhausted` olup olmadığı. Geri (yukarı kaydırarak önceki
+       fotoğrafa dönme) desteği BİLEREK kaldırıldı: trackpad momentum
+       kuyruğu, aşağı kaydırmanın hemen ardından ufak, ters işaretli
+       (negatif deltaY) kalıntı sinyaller gönderebiliyor — bu, kullanıcının
+       hiç yukarı kaydırmadığı hâlde "eski fotoğrafa dönme" hatasına yol
+       açıyordu. Artık sadece aşağı yön anlamlı: yukarı gelen her sinyal
+       sessizce yok sayılıyor (zaten sayfa kilitliyken yukarı gidecek bir
+       yer de yok). */
     const onWheel=(e:WheelEvent)=>{
-      if(lr.exhausted)return;
-      if(Math.abs(e.deltaY)<4)return;
+      if(lr.exhausted||e.deltaY<=0)return;
+      if(e.deltaY<4)return;
       if(performance.now()<lr.cooldownUntil||lr.busy){e.preventDefault();return}
-      if(e.deltaY>0){
-        if(lr.idx<photos.length-1){e.preventDefault();goTo(lr.idx+1)}
-        else exhaust();
-      }else if(e.deltaY<0&&lr.idx>0){e.preventDefault();goTo(lr.idx-1)}
+      if(lr.idx<photos.length-1){e.preventDefault();goTo(lr.idx+1)}
+      else exhaust();
     };
     const onTouchStart=(e:TouchEvent)=>{lr.touchY=lr.exhausted?null:e.touches[0].clientY};
     const onTouchMove=(e:TouchEvent)=>{
       if(lr.exhausted||lr.touchY==null)return;
       if(performance.now()<lr.cooldownUntil||lr.busy){e.preventDefault();return}
       const dy=lr.touchY-e.touches[0].clientY;
-      if(Math.abs(dy)<40)return;
-      if(dy>0){
-        if(lr.idx<photos.length-1){e.preventDefault();lr.touchY=e.touches[0].clientY;goTo(lr.idx+1)}
-        else exhaust();
-      }else if(lr.idx>0){e.preventDefault();lr.touchY=e.touches[0].clientY;goTo(lr.idx-1)}
+      if(dy<40)return;
+      if(lr.idx<photos.length-1){e.preventDefault();lr.touchY=e.touches[0].clientY;goTo(lr.idx+1)}
+      else exhaust();
     };
     window.addEventListener('wheel',onWheel,{passive:false});
     window.addEventListener('touchstart',onTouchStart,{passive:true});
@@ -1823,8 +1836,6 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
 const LUMINA_DEFAULT_PHOTOS=[
   'https://images.unsplash.com/photo-1771919005587-d49d985daa0b?q=80&w=1920&auto=format&fit=crop',
   'https://images.unsplash.com/photo-1581182815808-b6eb627a8798?q=80&w=1920&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1551184451-76b762941ad6?q=80&w=1920&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1760124146286-2e1eb3e9f906?q=80&w=1920&auto=format&fit=crop',
 ];
 function LuminaHeroMedia({b}:{b:any}){
   if(b.cover_url)return <div className="lmHeroMediaWrap">{b.cover_type==='video'?<video className="lmHeroStatic" src={b.cover_url} autoPlay muted loop playsInline/>:<img className="lmHeroStatic" src={b.cover_url} alt={b.name}/>}</div>;
