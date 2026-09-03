@@ -3,8 +3,8 @@ import{useState,useEffect,useRef,Fragment}from'react';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -1523,6 +1523,297 @@ function Onix(p:P){
         <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="oxContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="oxContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
       </div>
       <div className="oxFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+
+/* ================= LUMINA — "ışık ve cam" temalı, hero'da WebGL cam-kırılması
+   geçişli slider'a sahip premium güzellik salonu teması. Onix'ten (sıcak altın
+   + bento) bilinçli olarak farklı: soğuk ışıltılı vurgu + buzlu cam (glassmorphism)
+   panelli Hizmetler + snap'li yatay Galeri. Onix'in kendi yükleyicilerine
+   (loadOnixGsap, useOnixParallax…) dokunmadan tamamen ayrı, kendi kendine yeten
+   bir alt sistem — iki tema birbirinden bağımsız kalsın diye kod tekrarı kasıtlı. */
+let luminaThreeLoad:Promise<any>|null=null;
+function loadLuminaThree(){
+  if(!luminaThreeLoad)luminaThreeLoad=import('three');
+  return luminaThreeLoad;
+}
+let luminaGsapLoad:Promise<any>|null=null;
+function loadLuminaGsap(){
+  if(!luminaGsapLoad)luminaGsapLoad=Promise.all([import('gsap'),import('gsap/ScrollTrigger')]).then(([g,st])=>{
+    const gsap=g.gsap,ScrollTrigger=st.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({autoRefreshEvents:'DOMContentLoaded'});
+    let refreshed=false;
+    const refresh=()=>{if(refreshed)return;refreshed=true;ScrollTrigger.refresh();};
+    const imgs=Array.from(document.images);
+    const pending=imgs.filter(img=>!img.complete);
+    if(pending.length){
+      let remaining=pending.length;
+      const done=()=>{remaining--;if(remaining<=0)refresh();};
+      pending.forEach(img=>{img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});});
+      setTimeout(refresh,2500);
+    }else{
+      requestAnimationFrame(()=>requestAnimationFrame(refresh));
+    }
+    return{gsap,ScrollTrigger};
+  });
+  return luminaGsapLoad;
+}
+/* Manifesto metni: Onix'teki (OnixManifestoText) ile birebir aynı teknik —
+   kelimeler scroll pozisyonuna bağlı belirir. */
+function LuminaManifestoText({text}:{text:string}){
+  const ref=useRef<HTMLParagraphElement>(null);
+  const[progress,setProgress]=useState(0);
+  useEffect(()=>{
+    let cancelled=false,st:any;
+    const fallback=()=>{
+      const el=ref.current;if(!el)return;
+      const rect=el.getBoundingClientRect(),vh=window.innerHeight;
+      const start=vh*0.85,end=vh*0.25;
+      setProgress(Math.max(0,Math.min(1,(start-rect.top)/(start-end))));
+    };
+    fallback();
+    window.addEventListener('scroll',fallback,{passive:true});
+    loadLuminaGsap().then(({ScrollTrigger})=>{
+      if(cancelled||!ref.current)return;
+      window.removeEventListener('scroll',fallback);
+      st=ScrollTrigger.create({trigger:ref.current,start:'top 85%',end:'top 20%',scrub:true,onUpdate:(self:any)=>setProgress(self.progress)});
+    });
+    return()=>{cancelled=true;window.removeEventListener('scroll',fallback);st?.kill?.()};
+  },[]);
+  const words=text.split(' ');
+  const revealCount=Math.round(progress*words.length);
+  return <p className="lmManifestoText" ref={ref}>{words.map((w,i)=><span key={i} className={i<revealCount?'in':''}>{w}{i<words.length-1?' ':''}</span>)}</p>;
+}
+
+/* --- Hero: WebGL cam-kırılması (dairesel iris + kromatik sapma) geçişli slider ---
+   Taban katman her zaman düz CSS crossfade ile çalışır; WebGL sadece başarıyla
+   kurulursa üstüne binen bir "geliştirme" katmanıdır. three.js yüklenemezse,
+   GPU/context oluşturulamazsa veya herhangi bir adımda hata olursa canvas boş/
+   saydam kalır ve CSS crossfade olduğu gibi görünmeye devam eder — hero hiçbir
+   koşulda kırık kalmaz. */
+const LUMINA_VERT=`varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
+const LUMINA_FRAG=`
+  uniform sampler2D uTexture1, uTexture2;
+  uniform float uProgress;
+  uniform vec2 uResolution, uTexture1Size, uTexture2Size;
+  varying vec2 vUv;
+  vec2 coverUV(vec2 uv, vec2 texSize){
+    vec2 s=uResolution/texSize;
+    float scale=max(s.x,s.y);
+    vec2 scaledSize=texSize*scale;
+    vec2 offset=(uResolution-scaledSize)*0.5;
+    return (uv*uResolution-offset)/scaledSize;
+  }
+  void main(){
+    vec2 uv1=coverUV(vUv,uTexture1Size);
+    vec2 uv2=coverUV(vUv,uTexture2Size);
+    float maxR=length(uResolution)*0.85;
+    float br=uProgress*maxR;
+    vec2 p=vUv*uResolution;
+    vec2 c=uResolution*0.5;
+    float d=length(p-c);
+    float nd=d/max(br,0.001);
+    float param=smoothstep(br+3.0,br-3.0,d);
+    vec4 img;
+    if(param>0.0){
+      float ro=0.09*pow(smoothstep(0.3,1.0,nd),1.5);
+      vec2 dir=(d>0.0)?(p-c)/d:vec2(0.0);
+      vec2 distUV=uv2-dir*ro;
+      float ca=0.022*pow(smoothstep(0.3,1.0,nd),1.2);
+      img=vec4(
+        texture2D(uTexture2,distUV+dir*ca*1.2).r,
+        texture2D(uTexture2,distUV+dir*ca*0.2).g,
+        texture2D(uTexture2,distUV-dir*ca*0.8).b,
+        1.0
+      );
+      float rim=smoothstep(0.95,1.0,nd)*(1.0-smoothstep(1.0,1.01,nd));
+      img.rgb+=rim*0.1;
+    }else{
+      img=texture2D(uTexture2,uv2);
+    }
+    vec4 oldImg=texture2D(uTexture1,uv1);
+    gl_FragColor=mix(oldImg,img,param);
+  }
+`;
+function easeInOutCubic(t:number){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+function LuminaHeroSlider({photos}:{photos:string[]}){
+  const canvasRef=useRef<HTMLCanvasElement>(null);
+  const wrapRef=useRef<HTMLDivElement>(null);
+  const[idx,setIdx]=useState(0);
+  const[webglOn,setWebglOn]=useState(false);
+  const stateRef=useRef<any>({});
+  useEffect(()=>{
+    if(photos.length<2)return;
+    let cancelled=false;
+    (async()=>{
+      let THREE:any;
+      try{THREE=await loadLuminaThree()}catch{return}
+      if(cancelled)return;
+      const canvas=canvasRef.current,wrap=wrapRef.current;if(!canvas||!wrap)return;
+      try{
+        const w=wrap.clientWidth||window.innerWidth,h=wrap.clientHeight||window.innerHeight;
+        const renderer=new THREE.WebGLRenderer({canvas,antialias:false,alpha:true});
+        if(!renderer.getContext())throw new Error('no-webgl-context');
+        renderer.setSize(w,h);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+        const scene=new THREE.Scene();
+        const camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+        const loader=new THREE.TextureLoader();
+        const textures=await Promise.all(photos.map((src:string)=>new Promise<any>((res,rej)=>{
+          loader.load(src,(t:any)=>{t.minFilter=t.magFilter=THREE.LinearFilter;t.userData={size:new THREE.Vector2(t.image.width,t.image.height)};res(t)},undefined,rej);
+        })));
+        if(cancelled)return;
+        const material=new THREE.ShaderMaterial({
+          uniforms:{
+            uTexture1:{value:textures[0]},uTexture2:{value:textures[0]},uProgress:{value:0},
+            uResolution:{value:new THREE.Vector2(w,h)},
+            uTexture1Size:{value:textures[0].userData.size},uTexture2Size:{value:textures[0].userData.size}
+          },
+          vertexShader:LUMINA_VERT,fragmentShader:LUMINA_FRAG
+        });
+        scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
+        const onResize=()=>{
+          const nw=wrap.clientWidth||window.innerWidth,nh=wrap.clientHeight||window.innerHeight;
+          renderer.setSize(nw,nh);material.uniforms.uResolution.value.set(nw,nh);
+        };
+        window.addEventListener('resize',onResize);
+        let raf=0;
+        const render=()=>{raf=requestAnimationFrame(render);renderer.render(scene,camera)};
+        render();
+        stateRef.current={renderer,material,textures,currentIdx:0,transitioning:false,cleanup:()=>{window.removeEventListener('resize',onResize);cancelAnimationFrame(raf);renderer.dispose()}};
+        setWebglOn(true);
+      }catch(e){console.warn('Lumina: WebGL hero başlatılamadı, statik geçişe düşüldü.',e)}
+    })();
+    return()=>{cancelled=true;stateRef.current?.cleanup?.()};
+  },[photos.join('|')]);
+  useEffect(()=>{
+    if(photos.length<2)return;
+    const timer=setInterval(()=>{
+      setIdx(i=>{
+        const next=(i+1)%photos.length;
+        const st=stateRef.current;
+        if(webglOn&&st.material&&!st.transitioning){
+          const fromTex=st.textures[st.currentIdx],toTex=st.textures[next];
+          if(fromTex&&toTex){
+            st.material.uniforms.uTexture1.value=fromTex;st.material.uniforms.uTexture1Size.value=fromTex.userData.size;
+            st.material.uniforms.uTexture2.value=toTex;st.material.uniforms.uTexture2Size.value=toTex.userData.size;
+            st.transitioning=true;
+            const start=performance.now(),dur=1400;
+            const step=(now:number)=>{
+              const t=Math.min(1,(now-start)/dur);
+              st.material.uniforms.uProgress.value=easeInOutCubic(t);
+              if(t<1)requestAnimationFrame(step);
+              else{st.transitioning=false;st.material.uniforms.uProgress.value=0;st.currentIdx=next}
+            };
+            requestAnimationFrame(step);
+          }
+        }
+        return next;
+      });
+    },5000);
+    return()=>clearInterval(timer);
+  },[photos.length,webglOn]);
+  return <div className="lmHeroMediaWrap" ref={wrapRef}>
+    <div className="lmHeroCss" aria-hidden="true">
+      {photos.map((src,i)=><img key={src+i} src={src} alt="" className={i===idx?'lmActive':''}/>)}
+    </div>
+    <canvas className="lmHeroCanvas" ref={canvasRef}/>
+  </div>;
+}
+function LuminaHeroMedia({b,photos}:{b:any;photos:string[]}){
+  if(photos.length>=2)return <LuminaHeroSlider photos={photos}/>;
+  if(photos.length===1)return <div className="lmHeroMediaWrap"><img className="lmHeroStatic" src={photos[0]} alt={b.name}/></div>;
+  if(b.cover_url)return <div className="lmHeroMediaWrap">{b.cover_type==='video'?<video className="lmHeroStatic" src={b.cover_url} autoPlay muted loop playsInline/>:<img className="lmHeroStatic" src={b.cover_url} alt={b.name}/>}</div>;
+  return <div className="lmHeroMediaWrap"><div className="lmHeroStatic lmHeroFallback"/></div>;
+}
+
+function Lumina(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const[lightbox,setLightbox]=useState<number|null>(null);
+  const manifesto=dec(b,'lm_manifesto','Işık, camdan geçerken kırılır ve çoğalır. Güzellik de böyledir — doğru elde, doğru anda, katbekat açığa çıkar.');
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  const heroPhotos=galleryPhotos.slice(0,6);
+  return <main id="top" className="tLumina">
+    <header className="lmNav">
+      <a className="lmBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
+        <a href="#randevu">Randevu</a>
+      </nav>
+      <a className="lmNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="lmHero">
+      <LuminaHeroMedia b={b} photos={heroPhotos}/>
+      <div className="lmHeroOverlay"/>
+      <div className="lmHeroInner">
+        <p className="lmEyebrow"><i/>{b.hero_label||'PREMIUM GÜZELLİK SALONU'}</p>
+        <h1 className="lmHeroTitle">{b.hero_title||'Cildinize'} <em>{b.hero_highlight||'ışık düşür.'}</em></h1>
+        {b.hero_description&&<p className="lmHeroDesc">{b.hero_description}</p>}
+        <div className="lmHeroActions">
+          <a className="lmBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+          <a className="lmBtnGhost" href="#hizmetler">Hizmetleri Keşfet</a>
+        </div>
+      </div>
+      <div className="lmScrollHint"><span/>Kaydır</div>
+    </section>
+
+    <section className="lmManifesto">
+      <LuminaManifestoText text={manifesto}/>
+    </section>
+
+    <section id="hizmetler" className="lmServices">
+      <Reveal className="lmSectionHead">
+        <small>{b.services_label||'HİZMETLER'}</small>
+        <h2>{b.services_title||'Her ışık, size göre kırılır.'}</h2>
+      </Reveal>
+      <div className="lmGlassGrid">
+        {p.services.map((s,i)=><Reveal as="article" i={i} key={s.id} className="lmGlassCard">
+          {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="lmGlassCardFallback"/>}
+          <div className="lmGlassCardPanel">
+            <b>{s.name}</b>
+            <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
+            {hasServiceDetail(s)&&<a className="lmServiceDetailLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
+          </div>
+        </Reveal>)}
+      </div>
+    </section>
+
+    {galleryPhotos.length>0&&<section id="galeri" className="lmGallery">
+      <Reveal className="lmSectionHead">
+        <small>GALERİ</small>
+        <h2>{dec(b,'lm_galleryTitle','Bizden kareler.')}</h2>
+      </Reveal>
+      <div className="lmGalleryStrip">
+        {galleryPhotos.map((src,i)=><button type="button" key={i} className="lmGalleryItem" onClick={()=>setLightbox(i)}><img src={src} alt={b.name} loading="lazy"/></button>)}
+      </div>
+      {lightbox!==null&&<div className="lmLightbox" onClick={()=>setLightbox(null)}>
+        <button type="button" className="lmLightboxClose" onClick={()=>setLightbox(null)} aria-label="Kapat">✕</button>
+        <img src={galleryPhotos[lightbox]} alt={b.name} onClick={e=>e.stopPropagation()}/>
+      </div>}
+    </section>}
+
+    <section id="randevu" className="lmBooking">
+      <Reveal className="lmSectionHead">
+        <small>{b.booking_label||'RANDEVU'}</small>
+        <h2>{b.booking_title||'Saatini ayır.'}</h2>
+      </Reveal>
+      <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <GoogleReviews businessId={b.id}/>
+
+    <footer className="lmFooter">
+      <div className="lmFooterGrid">
+        <div><a className="lmBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a><p>{dec(b,'lm_footerTagline','Kendine ayırdığın zaman, en berrak hâlin.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="lmHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="lmContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="lmContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
+      </div>
+      <div className="lmFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }
