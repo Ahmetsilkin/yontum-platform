@@ -1728,11 +1728,18 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
     <canvas className="lmHeroCanvas" ref={canvasRef}/>
   </div>;
 }
+/* İşletme henüz galeri fotoğrafı/kapak fotoğrafı yüklemediyse boş bir
+   gradyanla açılış yapmak yerine, temanın "ışık ve cam" kimliğine uygun,
+   ticari kullanıma serbest (Unsplash Lisansı) bir başlangıç fotoğrafı
+   gösteriyoruz — kullanıcının beğendiği referanstaki gibi sıcak/dramatik ışıklı
+   bir yakın portre. İşletme kendi fotoğrafını (galeri veya kapak) eklediği anda
+   bu otomatik olarak devre dışı kalır, yerini gerçek fotoğrafa bırakır. */
+const LUMINA_DEFAULT_PHOTO='https://images.unsplash.com/photo-1771919005587-d49d985daa0b?q=80&w=1920&auto=format&fit=crop';
 function LuminaHeroMedia({b,photos}:{b:any;photos:string[]}){
   if(photos.length>=2)return <LuminaHeroSlider photos={photos}/>;
   if(photos.length===1)return <div className="lmHeroMediaWrap"><img className="lmHeroStatic" src={photos[0]} alt={b.name}/></div>;
   if(b.cover_url)return <div className="lmHeroMediaWrap">{b.cover_type==='video'?<video className="lmHeroStatic" src={b.cover_url} autoPlay muted loop playsInline/>:<img className="lmHeroStatic" src={b.cover_url} alt={b.name}/>}</div>;
-  return <div className="lmHeroMediaWrap"><div className="lmHeroStatic lmHeroFallback"/></div>;
+  return <div className="lmHeroMediaWrap"><img className="lmHeroStatic" src={LUMINA_DEFAULT_PHOTO} alt=""/></div>;
 }
 
 function Lumina(p:P){

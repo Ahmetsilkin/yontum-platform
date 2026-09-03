@@ -1459,13 +1459,12 @@
 
 /* Hero — WebGL cam geçişli slider (geliştirme katmanı) + CSS crossfade (taban katman) */
 .lmHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;overflow:hidden}
-.lmHeroMediaWrap{position:absolute;inset:0;z-index:0;overflow:hidden}
+.lmHeroMediaWrap{position:absolute;inset:0;z-index:0;overflow:hidden;background:linear-gradient(150deg,#151822,#07070a 60%)}
 .lmHeroCss{position:absolute;inset:0}
 .lmHeroCss img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.3s ease;filter:saturate(.9) brightness(.8)}
 .lmHeroCss img.lmActive{opacity:1}
 .lmHeroCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .lmHeroStatic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.8)}
-.lmHeroFallback{background:linear-gradient(150deg,#151822,#07070a 60%)}
 /* Sıcak-soğuk (split-tone) renk aktarımı — referans görseldeki "Golden Hour"
    çekiminin imzası olan turuncu→camgöbeği ışık geçişini, YÜKLENEN FOTOĞRAF NE
    OLURSA OLSUN üstüne bindiriyor. mix-blend-mode:color, arkadaki fotoğrafın
