@@ -1644,12 +1644,21 @@ const LUMINA_FRAG=`
   }
 `;
 function easeInOutCubic(t:number){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+/* Demo fotoğraf dizisi kaydırma (wheel/dokunma) ile ilerliyor: sayfa
+   kaymıyor, her kaydırma denemesi bir sonraki fotoğrafa cam geçişiyle
+   geçiyor. Son (4.) fotoğrafa gelindikten sonraki bir kaydırma denemesi
+   kilidi açıyor ve sayfa normal şekilde aşağı akmaya devam ediyor. Yalnızca
+   sayfa henüz kaydırılmamışken (window.scrollY≈0) aktif. prefers-reduced-
+   motion'da hiç kilitlenmiyor. Olası bir mantık hatası ziyaretçiyi sonsuza
+   dek kilitlemesin diye 18 saniyelik koşulsuz bir güvenlik zaman aşımı var —
+   süre dolunca kilit kendiliğinden açılır. */
 function LuminaHeroSlider({photos}:{photos:string[]}){
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const wrapRef=useRef<HTMLDivElement>(null);
   const[idx,setIdx]=useState(0);
   const[webglOn,setWebglOn]=useState(false);
   const stateRef=useRef<any>({});
+  const lockRef=useRef<{exhausted:boolean;idx:number;busy:boolean;touchY:number|null;lockStart:number}>({exhausted:false,idx:0,busy:false,touchY:null,lockStart:0});
   useEffect(()=>{
     if(photos.length<2)return;
     let cancelled=false;
@@ -1688,7 +1697,7 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
         let raf=0;
         const render=()=>{raf=requestAnimationFrame(render);renderer.render(scene,camera)};
         render();
-        stateRef.current={renderer,material,textures,currentIdx:0,transitioning:false,cleanup:()=>{window.removeEventListener('resize',onResize);cancelAnimationFrame(raf);renderer.dispose()}};
+        stateRef.current={renderer,material,textures,currentIdx:0,cleanup:()=>{window.removeEventListener('resize',onResize);cancelAnimationFrame(raf);renderer.dispose()}};
         setWebglOn(true);
       }catch(e){console.warn('Lumina: WebGL hero başlatılamadı, statik geçişe düşüldü.',e)}
     })();
@@ -1696,50 +1705,87 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
   },[photos.join('|')]);
   useEffect(()=>{
     if(photos.length<2)return;
-    const timer=setInterval(()=>{
-      setIdx(i=>{
-        const next=(i+1)%photos.length;
-        const st=stateRef.current;
-        if(webglOn&&st.material&&!st.transitioning){
-          const fromTex=st.textures[st.currentIdx],toTex=st.textures[next];
-          if(fromTex&&toTex){
-            st.material.uniforms.uTexture1.value=fromTex;st.material.uniforms.uTexture1Size.value=fromTex.userData.size;
-            st.material.uniforms.uTexture2.value=toTex;st.material.uniforms.uTexture2Size.value=toTex.userData.size;
-            st.transitioning=true;
-            const start=performance.now(),dur=1400;
-            const step=(now:number)=>{
-              const t=Math.min(1,(now-start)/dur);
-              st.material.uniforms.uProgress.value=easeInOutCubic(t);
-              if(t<1)requestAnimationFrame(step);
-              else{st.transitioning=false;st.material.uniforms.uProgress.value=0;st.currentIdx=next}
-            };
-            requestAnimationFrame(step);
-          }
+    const lr=lockRef.current;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced){lr.exhausted=true;return}
+    if(!lr.lockStart)lr.lockStart=Date.now();
+    const safety=setTimeout(()=>{lr.exhausted=true},Math.max(0,18000-(Date.now()-lr.lockStart)));
+    const goTo=(next:number)=>{
+      if(next===lr.idx||lr.busy)return;
+      lr.busy=true;lr.idx=next;
+      setIdx(next);
+      const st=stateRef.current;
+      if(webglOn&&st.material){
+        const fromTex=st.textures[st.currentIdx],toTex=st.textures[next];
+        if(fromTex&&toTex){
+          st.material.uniforms.uTexture1.value=fromTex;st.material.uniforms.uTexture1Size.value=fromTex.userData.size;
+          st.material.uniforms.uTexture2.value=toTex;st.material.uniforms.uTexture2Size.value=toTex.userData.size;
+          const start=performance.now(),dur=1400;
+          const step=(now:number)=>{
+            const t=Math.min(1,(now-start)/dur);
+            st.material.uniforms.uProgress.value=easeInOutCubic(t);
+            if(t<1)requestAnimationFrame(step);
+            else{st.material.uniforms.uProgress.value=0;st.currentIdx=next;lr.busy=false}
+          };
+          requestAnimationFrame(step);
+          return;
         }
-        return next;
-      });
-    },5000);
-    return()=>clearInterval(timer);
+      }
+      setTimeout(()=>{lr.busy=false},1000);
+    };
+    const onWheel=(e:WheelEvent)=>{
+      if(lr.exhausted||window.scrollY>2||lr.busy)return;
+      if(e.deltaY>0){
+        if(lr.idx<photos.length-1){e.preventDefault();goTo(lr.idx+1)}
+        else lr.exhausted=true;
+      }else if(e.deltaY<0&&lr.idx>0){e.preventDefault();goTo(lr.idx-1)}
+    };
+    const onTouchStart=(e:TouchEvent)=>{lr.touchY=(lr.exhausted||window.scrollY>2)?null:e.touches[0].clientY};
+    const onTouchMove=(e:TouchEvent)=>{
+      if(lr.exhausted||lr.touchY==null||window.scrollY>2)return;
+      if(lr.busy){e.preventDefault();return}
+      const dy=lr.touchY-e.touches[0].clientY;
+      if(Math.abs(dy)<40)return;
+      if(dy>0){
+        if(lr.idx<photos.length-1){e.preventDefault();lr.touchY=e.touches[0].clientY;goTo(lr.idx+1)}
+        else lr.exhausted=true;
+      }else if(lr.idx>0){e.preventDefault();lr.touchY=e.touches[0].clientY;goTo(lr.idx-1)}
+    };
+    window.addEventListener('wheel',onWheel,{passive:false});
+    window.addEventListener('touchstart',onTouchStart,{passive:true});
+    window.addEventListener('touchmove',onTouchMove,{passive:false});
+    return()=>{
+      clearTimeout(safety);
+      window.removeEventListener('wheel',onWheel);
+      window.removeEventListener('touchstart',onTouchStart);
+      window.removeEventListener('touchmove',onTouchMove);
+    };
   },[photos.length,webglOn]);
   return <div className="lmHeroMediaWrap" ref={wrapRef}>
     <div className="lmHeroCss" aria-hidden="true">
       {photos.map((src,i)=><img key={src+i} src={src} alt="" className={i===idx?'lmActive':''}/>)}
     </div>
     <canvas className="lmHeroCanvas" ref={canvasRef}/>
+    <div className="lmHeroDots" aria-hidden="true">
+      {photos.map((_,i)=><span key={i} className={i===idx?'lmActive':''}/>)}
+    </div>
   </div>;
 }
-/* İşletme henüz galeri fotoğrafı/kapak fotoğrafı yüklemediyse boş bir
-   gradyanla açılış yapmak yerine, temanın "ışık ve cam" kimliğine uygun,
-   ticari kullanıma serbest (Unsplash Lisansı) bir başlangıç fotoğrafı
-   gösteriyoruz — kullanıcının beğendiği referanstaki gibi sıcak/dramatik ışıklı
-   bir yakın portre. İşletme kendi fotoğrafını (galeri veya kapak) eklediği anda
-   bu otomatik olarak devre dışı kalır, yerini gerçek fotoğrafa bırakır. */
-const LUMINA_DEFAULT_PHOTO='https://images.unsplash.com/photo-1771919005587-d49d985daa0b?q=80&w=1920&auto=format&fit=crop';
-function LuminaHeroMedia({b,photos}:{b:any;photos:string[]}){
-  if(photos.length>=2)return <LuminaHeroSlider photos={photos}/>;
-  if(photos.length===1)return <div className="lmHeroMediaWrap"><img className="lmHeroStatic" src={photos[0]} alt={b.name}/></div>;
+/* İşletme henüz kapak fotoğrafı yüklemediyse (galerisi olsa bile) temanın
+   "ışık ve cam" kimliğine uygun, ticari kullanıma serbest (Unsplash Lisansı)
+   4 fotoğraflık bir demo dizisi gösteriyoruz — kullanıcının beğendiği
+   referanstaki gibi sıcak/dramatik ışıklı yakın portreler, kaydırınca cam
+   geçişiyle değişiyor. İşletme kapak fotoğrafını eklediği anda bu otomatik
+   olarak devre dışı kalır, yerini gerçek fotoğrafa bırakır. */
+const LUMINA_DEFAULT_PHOTOS=[
+  'https://images.unsplash.com/photo-1771919005587-d49d985daa0b?q=80&w=1920&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1581182815808-b6eb627a8798?q=80&w=1920&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1551184451-76b762941ad6?q=80&w=1920&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1760124146286-2e1eb3e9f906?q=80&w=1920&auto=format&fit=crop',
+];
+function LuminaHeroMedia({b}:{b:any}){
   if(b.cover_url)return <div className="lmHeroMediaWrap">{b.cover_type==='video'?<video className="lmHeroStatic" src={b.cover_url} autoPlay muted loop playsInline/>:<img className="lmHeroStatic" src={b.cover_url} alt={b.name}/>}</div>;
-  return <div className="lmHeroMediaWrap"><img className="lmHeroStatic" src={LUMINA_DEFAULT_PHOTO} alt=""/></div>;
+  return <LuminaHeroSlider photos={LUMINA_DEFAULT_PHOTOS}/>;
 }
 
 function Lumina(p:P){
@@ -1748,7 +1794,6 @@ function Lumina(p:P){
   const[lightbox,setLightbox]=useState<number|null>(null);
   const manifesto=dec(b,'lm_manifesto','Işık, camdan geçerken kırılır ve çoğalır. Güzellik de böyledir — doğru elde, doğru anda, katbekat açığa çıkar.');
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
-  const heroPhotos=galleryPhotos.slice(0,6);
   return <main id="top" className="tLumina">
     <header className="lmNav">
       <a className="lmBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
@@ -1761,7 +1806,7 @@ function Lumina(p:P){
     </header>
 
     <section className="lmHero">
-      <LuminaHeroMedia b={b} photos={heroPhotos}/>
+      <LuminaHeroMedia b={b}/>
       <div className="lmHeroGrade"/>
       <div className="lmHeroOverlay"/>
       <div className="lmHeroInner">

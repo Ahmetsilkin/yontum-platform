@@ -1485,6 +1485,11 @@
 .lmBtnGhost:hover{border-color:var(--lm-glow)}
 .lmScrollHint{position:absolute;right:6vw;bottom:40px;z-index:3;display:flex;align-items:center;gap:10px;color:var(--lm-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase}
 .lmScrollHint span{width:1px;height:34px;background:linear-gradient(180deg,var(--lm-glow),transparent)}
+/* Demo fotoğraf dizisinde hangi karede olunduğunu gösteren küçük noktalar —
+   kaydırma kilidinin ne zaman biteceğini sezdiren sessiz bir ipucu. */
+.lmHeroDots{position:absolute;left:6vw;bottom:40px;z-index:3;display:flex;gap:8px}
+.lmHeroDots span{width:5px;height:5px;border-radius:50%;background:rgba(244,245,248,.35);transition:background .3s ease,transform .3s ease}
+.lmHeroDots span.lmActive{background:var(--lm-glow);transform:scale(1.5)}
 
 /* Manifesto — büyük italik editoryal metin, kelimeler scroll'a bağlı belirir (Onix'teki tekniğin aynısı) */
 .lmManifesto{padding:min(22vh,220px) 8vw;max-width:1200px;margin:0 auto}
