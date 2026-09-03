@@ -1768,7 +1768,19 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
             st.material.uniforms.uProgress.value=easeInOutCubic(t);
             st.renderOnce();
             if(t<1)requestAnimationFrame(step);
-            else{st.material.uniforms.uProgress.value=0;st.currentIdx=next;lr.busy=false;st.renderOnce()}
+            else{
+              /* KRİTİK: geçiş bitip uProgress 0'a dönünce shader yine
+                 uTexture1'i gösteriyor (bkz. LUMINA_FRAG — param≈0 olduğunda
+                 mix(oldImg,img,param) çıktısı oldImg'ye, yani uTexture1'e
+                 eşit). uTexture1'i burada YENİ fotoğrafa güncellemezsek,
+                 geçiş tam bitmişken ekran sessizce ESKİ fotoğrafa dönüyordu
+                 — kullanıcının bildirdiği "eski görsele scrollsuz dönme"
+                 hatasının asıl kaynağı buydu. */
+              st.material.uniforms.uProgress.value=0;
+              st.material.uniforms.uTexture1.value=toTex;
+              st.material.uniforms.uTexture1Size.value=toTex.userData.size;
+              st.currentIdx=next;lr.busy=false;st.renderOnce();
+            }
           };
           requestAnimationFrame(step);
           return;
