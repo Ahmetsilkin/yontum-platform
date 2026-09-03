@@ -1652,6 +1652,27 @@ function easeInOutCubic(t:number){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
    motion'da hiç kilitlenmiyor. Olası bir mantık hatası ziyaretçiyi sonsuza
    dek kilitlemesin diye 18 saniyelik koşulsuz bir güvenlik zaman aşımı var —
    süre dolunca kilit kendiliğinden açılır. */
+/* Sayfa yeni açılmışken, React hydrate OLMADAN önce kullanıcı bir kaydırma
+   hareketi yaparsa (yavaş bir bağlantıda bunun için bolca zaman var), o
+   kaydırma hiçbir wheel/touch dinleyicisi tarafından yakalanamıyordu — sayfa
+   sessizce birkaç yüz piksel kayıyor, sonra kilit "zaten sayfa kaymış"
+   sanıp bir daha hiç devreye girmiyordu (kullanıcının bildirdiği tam olarak
+   buydu: ilk denemede kilit atlanıyor, ancak yukarı geri kaydırılıp tekrar
+   denenince çalışıyordu). Kalıcı çözüm: sayfanın HTML'i tarayıcıya ulaşır
+   ulaşmaz (React/JS paketi yüklenmeden ÇOK önce) senkron çalışan bu satır içi
+   script, `<html>` üzerine `overflow:hidden` koyuyor — artık kaydırma
+   FİZİKSEL olarak imkansız, bir "yarış" durumu yok. Kilit React tarafında
+   normal şekilde açılınca (releaseLuminaScrollLock) bu satır kaldırılıyor. */
+function LuminaScrollLockInit(){
+  return <script dangerouslySetInnerHTML={{__html:"try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.overflow='hidden';document.documentElement.style.overscrollBehavior='none';document.body.style.overflow='hidden'}}catch(e){}"}}/>;
+}
+function releaseLuminaScrollLock(){
+  try{
+    document.documentElement.style.overflow='';
+    document.documentElement.style.overscrollBehavior='';
+    document.body.style.overflow='';
+  }catch{}
+}
 function LuminaHeroSlider({photos}:{photos:string[]}){
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const wrapRef=useRef<HTMLDivElement>(null);
@@ -1709,7 +1730,8 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced){lr.exhausted=true;return}
     if(!lr.lockStart)lr.lockStart=Date.now();
-    const safety=setTimeout(()=>{lr.exhausted=true},Math.max(0,18000-(Date.now()-lr.lockStart)));
+    const exhaust=()=>{lr.exhausted=true;releaseLuminaScrollLock()};
+    const safety=setTimeout(exhaust,Math.max(0,18000-(Date.now()-lr.lockStart)));
     /* Trackpad/mouse tekerleği TEK bir fiziksel kaydırma hareketinde onlarca
        ayrı 'wheel' olayı üretir (momentum/inertia) — sadece o an animasyon
        oynarken engelleyen eski `busy` kilidi yetersizdi: momentum kuyruğu,
@@ -1744,24 +1766,27 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
       }
       setTimeout(()=>{lr.busy=false},TRANSITION_MS);
     };
+    /* Sayfanın kendisi artık (satır içi script sayesinde) fiziksel olarak
+       kayamadığı için burada `window.scrollY` kontrolüne hiç gerek yok —
+       tek koşul `exhausted` olup olmadığı. */
     const onWheel=(e:WheelEvent)=>{
-      if(lr.exhausted||window.scrollY>2)return;
+      if(lr.exhausted)return;
       if(Math.abs(e.deltaY)<4)return;
       if(performance.now()<lr.cooldownUntil||lr.busy){e.preventDefault();return}
       if(e.deltaY>0){
         if(lr.idx<photos.length-1){e.preventDefault();goTo(lr.idx+1)}
-        else lr.exhausted=true;
+        else exhaust();
       }else if(e.deltaY<0&&lr.idx>0){e.preventDefault();goTo(lr.idx-1)}
     };
-    const onTouchStart=(e:TouchEvent)=>{lr.touchY=(lr.exhausted||window.scrollY>2)?null:e.touches[0].clientY};
+    const onTouchStart=(e:TouchEvent)=>{lr.touchY=lr.exhausted?null:e.touches[0].clientY};
     const onTouchMove=(e:TouchEvent)=>{
-      if(lr.exhausted||lr.touchY==null||window.scrollY>2)return;
+      if(lr.exhausted||lr.touchY==null)return;
       if(performance.now()<lr.cooldownUntil||lr.busy){e.preventDefault();return}
       const dy=lr.touchY-e.touches[0].clientY;
       if(Math.abs(dy)<40)return;
       if(dy>0){
         if(lr.idx<photos.length-1){e.preventDefault();lr.touchY=e.touches[0].clientY;goTo(lr.idx+1)}
-        else lr.exhausted=true;
+        else exhaust();
       }else if(lr.idx>0){e.preventDefault();lr.touchY=e.touches[0].clientY;goTo(lr.idx-1)}
     };
     window.addEventListener('wheel',onWheel,{passive:false});
@@ -1773,7 +1798,12 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
       window.removeEventListener('touchstart',onTouchStart);
       window.removeEventListener('touchmove',onTouchMove);
     };
+    /* NOT: bu effect `webglOn` false→true olunca bir kez daha çalışır (temiz-
+       leme + yeniden bağlama) — kilidi burada AÇMIYORUZ ki bu geçişte yanlış-
+       lıkla erken serbest bırakılmasın; kesin kapanışta serbest bırakma ayrı,
+       boş bağımlılıklı bir effect'te (aşağıda) yapılıyor. */
   },[photos.length,webglOn]);
+  useEffect(()=>()=>releaseLuminaScrollLock(),[]);
   return <div className="lmHeroMediaWrap" ref={wrapRef}>
     <div className="lmHeroCss" aria-hidden="true">
       {photos.map((src,i)=><img key={src+i} src={src} alt="" className={i===idx?'lmActive':''}/>)}
@@ -1808,6 +1838,7 @@ function Lumina(p:P){
   const manifesto=dec(b,'lm_manifesto','Işık, camdan geçerken kırılır ve çoğalır. Güzellik de böyledir — doğru elde, doğru anda, katbekat açığa çıkar.');
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   return <main id="top" className="tLumina">
+    {!b.cover_url&&<LuminaScrollLockInit/>}
     <header className="lmNav">
       <a className="lmBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
