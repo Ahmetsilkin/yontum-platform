@@ -1658,7 +1658,7 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
   const[idx,setIdx]=useState(0);
   const[webglOn,setWebglOn]=useState(false);
   const stateRef=useRef<any>({});
-  const lockRef=useRef<{exhausted:boolean;idx:number;busy:boolean;touchY:number|null;lockStart:number}>({exhausted:false,idx:0,busy:false,touchY:null,lockStart:0});
+  const lockRef=useRef<{exhausted:boolean;idx:number;busy:boolean;touchY:number|null;lockStart:number;cooldownUntil:number}>({exhausted:false,idx:0,busy:false,touchY:null,lockStart:0,cooldownUntil:0});
   useEffect(()=>{
     if(photos.length<2)return;
     let cancelled=false;
@@ -1710,9 +1710,20 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
     if(reduced){lr.exhausted=true;return}
     if(!lr.lockStart)lr.lockStart=Date.now();
     const safety=setTimeout(()=>{lr.exhausted=true},Math.max(0,18000-(Date.now()-lr.lockStart)));
+    /* Trackpad/mouse tekerleği TEK bir fiziksel kaydırma hareketinde onlarca
+       ayrı 'wheel' olayı üretir (momentum/inertia) — sadece o an animasyon
+       oynarken engelleyen eski `busy` kilidi yetersizdi: momentum kuyruğu,
+       geçiş bitip kilit açıldıktan SONRA da olay göndermeye devam edebiliyor
+       ve bu, aynı hareketle art arda birden fazla (hatta bazen ileri-geri,
+       "2 fotoğraf arasında sıkışmış" görünümü veren) adım atılmasına yol
+       açıyordu. Çözüm: geçiş süresinden belirgin şekilde UZUN, kendi başına
+       işleyen bir "soğuma" penceresi — kabul edilen her adımdan sonra bu süre
+       boyunca gelen TÜM wheel/touch olayları (momentum kuyruğu dahil)
+       tamamen yok sayılıyor. */
+    const TRANSITION_MS=2000,COOLDOWN_MS=2400;
     const goTo=(next:number)=>{
       if(next===lr.idx||lr.busy)return;
-      lr.busy=true;lr.idx=next;
+      lr.busy=true;lr.idx=next;lr.cooldownUntil=performance.now()+COOLDOWN_MS;
       setIdx(next);
       const st=stateRef.current;
       if(webglOn&&st.material){
@@ -1720,9 +1731,9 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
         if(fromTex&&toTex){
           st.material.uniforms.uTexture1.value=fromTex;st.material.uniforms.uTexture1Size.value=fromTex.userData.size;
           st.material.uniforms.uTexture2.value=toTex;st.material.uniforms.uTexture2Size.value=toTex.userData.size;
-          const start=performance.now(),dur=1400;
+          const start=performance.now();
           const step=(now:number)=>{
-            const t=Math.min(1,(now-start)/dur);
+            const t=Math.min(1,(now-start)/TRANSITION_MS);
             st.material.uniforms.uProgress.value=easeInOutCubic(t);
             if(t<1)requestAnimationFrame(step);
             else{st.material.uniforms.uProgress.value=0;st.currentIdx=next;lr.busy=false}
@@ -1731,10 +1742,12 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
           return;
         }
       }
-      setTimeout(()=>{lr.busy=false},1000);
+      setTimeout(()=>{lr.busy=false},TRANSITION_MS);
     };
     const onWheel=(e:WheelEvent)=>{
-      if(lr.exhausted||window.scrollY>2||lr.busy)return;
+      if(lr.exhausted||window.scrollY>2)return;
+      if(Math.abs(e.deltaY)<4)return;
+      if(performance.now()<lr.cooldownUntil||lr.busy){e.preventDefault();return}
       if(e.deltaY>0){
         if(lr.idx<photos.length-1){e.preventDefault();goTo(lr.idx+1)}
         else lr.exhausted=true;
@@ -1743,7 +1756,7 @@ function LuminaHeroSlider({photos}:{photos:string[]}){
     const onTouchStart=(e:TouchEvent)=>{lr.touchY=(lr.exhausted||window.scrollY>2)?null:e.touches[0].clientY};
     const onTouchMove=(e:TouchEvent)=>{
       if(lr.exhausted||lr.touchY==null||window.scrollY>2)return;
-      if(lr.busy){e.preventDefault();return}
+      if(performance.now()<lr.cooldownUntil||lr.busy){e.preventDefault();return}
       const dy=lr.touchY-e.touches[0].clientY;
       if(Math.abs(dy)<40)return;
       if(dy>0){
