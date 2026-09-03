@@ -1269,3 +1269,149 @@
   .rzMobileStickyCall{width:52px;height:52px;flex:0 0 auto;border-radius:50%;background:var(--rz-ink);color:#fff!important;display:grid;place-items:center;font-size:20px}
 }
 @media(prefers-reduced-motion:reduce){.rzKenBurns{animation:none}}
+
+/* ================= ONIX — premium siyah, Awwwards tarzı etkileşimli scroll
+   mimarisine sahip güzellik salonu teması. Roze'nin tam tersi bir istekle
+   doğdu: burada scroll animasyonu İSTENEN, imza özellik. --ox-* token'ları
+   Roze'nin --rz-* düzenini izliyor (paylaşılan mantık, ayrı isim alanı). */
+.tOnix{--ox-bg:#0a0a0a;--ox-bg2:#161512;--ox-bg3:#1f1c17;--ox-ink:#f5f1ea;--ox-muted:#a39c8f;--ox-gold:#c9a961;--ox-gold-deep:#8f7038;--ox-line:rgba(245,241,234,.14);--ox-light:#f5f1ea;--ox-light-ink:#14120f;background:var(--ox-bg);color:var(--ox-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
+.tOnix h1,.tOnix h2,.tOnix h3{font-family:'Space Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;letter-spacing:-.02em}
+.tOnix em{font-style:normal}
+
+/* Nav — ince, saydam, altın vurgulu tek buton */
+.oxNav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:22px 6vw;background:linear-gradient(180deg,rgba(10,10,10,.7),transparent)}
+.oxBrand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;font-size:14.5px;color:var(--ox-ink)}
+.oxBrand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.oxBrand i{width:32px;height:32px;border-radius:50%;background:var(--ox-gold);color:var(--ox-bg);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
+.oxNav nav{display:flex;gap:32px}
+.oxNav nav a{color:var(--ox-muted);font-size:13px;font-weight:500;transition:color .18s ease}
+.oxNav nav a:hover{color:var(--ox-ink)}
+.oxNavBtn{border:1px solid var(--ox-gold);color:var(--ox-gold)!important;font-weight:600;font-size:13px;padding:10px 20px;border-radius:999px;transition:background .18s ease,color .18s ease}
+.oxNavBtn:hover{background:var(--ox-gold);color:var(--ox-bg)!important}
+
+/* Hero — tam ekran atmosferik foto/video, dev başlık, hafif paralaks */
+.oxHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;overflow:hidden}
+.oxHeroMediaWrap{position:absolute;top:-8%;left:0;right:0;height:116%;z-index:0;overflow:hidden}
+.oxHeroMedia{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.92) brightness(.82)}
+.oxHeroMediaFallback{background:linear-gradient(150deg,#2a2620,#0a0a0a 60%)}
+.oxHeroOverlay{position:absolute;inset:0;background:linear-gradient(190deg,rgba(10,10,10,.1) 10%,rgba(10,10,10,.6) 65%,rgba(10,10,10,.92) 100%)}
+.oxHeroInner{position:relative;z-index:2;max-width:800px;padding:0 6vw 130px}
+.oxEyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--ox-gold);font-size:11px;letter-spacing:3px;font-weight:700;margin:0 0 22px}
+.oxEyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ox-gold)}
+.oxHeroTitle{color:var(--ox-ink);font-size:clamp(44px,7vw,92px);line-height:.98;font-weight:700;letter-spacing:-.03em;margin:0 0 24px}
+.oxHeroTitle em{color:var(--ox-gold)}
+.oxHeroDesc{color:var(--ox-muted);font-size:16px;line-height:1.7;max-width:480px;margin:0 0 34px}
+.oxHeroActions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.oxBtnSolid{display:inline-flex;align-items:center;gap:8px;background:var(--ox-gold);color:var(--ox-bg)!important;font-weight:700;font-size:14px;padding:15px 26px;border-radius:999px;transition:transform .18s cubic-bezier(.4,0,.2,1),background .18s ease}
+.oxBtnSolid:hover{transform:translateY(-2px);background:#ddbd7f}
+.oxBtnGhost{color:var(--ox-ink)!important;font-weight:600;font-size:14px;padding:15px 4px;border-bottom:1px solid var(--ox-line);transition:border-color .18s ease}
+.oxBtnGhost:hover{border-color:var(--ox-gold)}
+.oxScrollHint{position:absolute;right:6vw;bottom:40px;z-index:2;display:flex;align-items:center;gap:10px;color:var(--ox-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.oxScrollHint span{width:1px;height:34px;background:linear-gradient(180deg,var(--ox-gold),transparent)}
+
+/* Manifesto — büyük editoryal metin, kelimeler scroll'a bağlı belirir */
+.oxManifesto{padding:min(22vh,220px) 8vw;max-width:1280px;margin:0 auto}
+.oxManifestoText{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,4.2vw,52px);line-height:1.28;font-weight:500;letter-spacing:-.01em;margin:0}
+.oxManifestoText span{opacity:.16;transition:opacity .4s ease}
+.oxManifestoText span.in{opacity:1}
+@media(prefers-reduced-motion:reduce){.oxManifestoText span{opacity:1!important;transition:none}}
+
+/* Ortak bölüm başlığı */
+.oxSectionHead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:0 6vw 44px;flex-wrap:wrap}
+.oxSectionHead small{color:var(--ox-gold);font-weight:800;letter-spacing:2.5px;font-size:11px}
+.oxSectionHead h2{font-size:clamp(28px,3.6vw,44px);font-weight:700;letter-spacing:-.01em;margin:12px 0 0;color:var(--ox-ink)}
+.oxSectionHeadLight small{color:var(--ox-gold-deep)}
+.oxSectionHeadLight h2{color:var(--ox-light-ink)}
+
+/* Hizmetler — imza an: kısa süreliğine kilitlenen sinematik film şeridi */
+.oxServices{padding:80px 0 100px}
+.oxFilmTrack{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 6vw 10px;scrollbar-width:none}
+.oxFilmTrack::-webkit-scrollbar{display:none}
+.oxFilmCard{position:relative;flex:0 0 auto;width:min(62vw,420px);height:64vh;min-height:400px;max-height:600px;border-radius:6px;overflow:hidden;scroll-snap-align:start;background:linear-gradient(150deg,var(--ox-bg3),var(--ox-bg))}
+.oxFilmCard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.oxFilmFallback{position:absolute;inset:0;background:linear-gradient(150deg,var(--ox-bg3),var(--ox-bg))}
+.oxFilmCard:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,6,5,.85) 0%,rgba(6,6,5,.15) 45%,transparent 70%)}
+.oxFilmNum{position:absolute;top:20px;left:20px;z-index:2;color:var(--ox-gold);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px}
+.oxFilmBody{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:26px}
+.oxFilmBody b{display:block;color:var(--ox-ink);font-size:21px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em}
+.oxFilmBody span{color:var(--ox-muted);font-size:13px}
+
+/* Sonuçlar — öncesi/sonrası büyük fotoğraf vitrini, açık zeminde (ritim molası) */
+.oxResults{background:var(--ox-light);color:var(--ox-light-ink);padding:110px 0}
+.oxResultsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:0 6vw}
+.oxResultsPhoto{position:relative;aspect-ratio:3/4;overflow:hidden}
+.oxResultsPhoto img{width:100%;height:100%;object-fit:cover;display:block}
+.oxResultsPhoto span{position:absolute;bottom:14px;left:14px;color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+
+/* Galeri — numaralandırılmış büyük fotoğraflar */
+.oxGallery{padding:100px 6vw}
+.oxGalleryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.oxGalleryItem button{display:block;position:relative;width:100%;aspect-ratio:4/5;padding:0;border:0;background:var(--ox-bg2);cursor:pointer;overflow:hidden}
+.oxGalleryItem img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s cubic-bezier(.4,0,.2,1);filter:saturate(.9) brightness(.9)}
+.oxGalleryItem button:hover img{transform:scale(1.05)}
+.oxGalleryIndex{position:absolute;top:14px;left:14px;color:var(--ox-gold);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px}
+.oxLightbox{position:fixed;inset:0;z-index:100;background:rgba(6,6,5,.96);display:flex;align-items:center;justify-content:center;padding:60px 80px;cursor:zoom-out}
+.oxLightbox img{max-width:min(880px,90vw);max-height:82vh;object-fit:contain;cursor:default}
+.oxLightboxClose{position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--ox-line);color:var(--ox-ink);font-size:16px;cursor:pointer;transition:background .15s ease}
+.oxLightboxClose:hover{background:rgba(255,255,255,.16)}
+
+/* Randevu */
+.oxBooking{padding:100px 6vw 60px}
+.oxBooking .oxSectionHead{margin-left:0;margin-right:0;max-width:800px;margin-inline:auto;text-align:center;justify-content:center}
+/* .tOnix.tOnix (aynı sınıfı iki kez eşleştirme) — Roze'de de kullanılan
+   kanıtlanmış özgüllük hilesi: paylaşılan tenant.css'teki
+   `.tenantSite .tenantNext{color:#fff!important}` gibi kurallarla AYNI
+   özgüllükte (.X .Y) olduğumuz için, olası dosya sırası şansına bırakmadan
+   kesin kazanmamızı sağlıyor. */
+.tOnix.tOnix.tOnix .tenantBooking{background:var(--ox-bg2);border:1px solid var(--ox-line);border-radius:20px;color:var(--ox-ink);box-shadow:0 40px 90px rgba(0,0,0,.5)}
+.tOnix.tOnix.tOnix .tenantBooking h4{border-top-color:var(--ox-line);color:var(--ox-ink)}
+.tOnix.tOnix.tOnix .tenantStep i{background:transparent;border-color:var(--ox-line);color:var(--ox-muted)}
+.tOnix.tOnix.tOnix .tenantStep.active i{border-color:var(--ox-gold);color:var(--ox-bg);background:var(--ox-gold)}
+.tOnix.tOnix.tOnix .tenantStep span{color:var(--ox-muted)}
+.tOnix.tOnix.tOnix .tenantStep.active span{color:var(--ox-ink)}
+.tOnix.tOnix.tOnix .tenantStepLine{background:var(--ox-line)}
+.tOnix.tOnix.tOnix .tenantStepLine.active{background:var(--ox-gold)}
+.tOnix.tOnix.tOnix .tbTitle span{color:var(--ox-gold)}
+.tOnix.tOnix.tOnix .tbTitle h3{color:var(--ox-ink)}
+.tOnix.tOnix.tOnix .tbTitle p{color:var(--ox-muted)}
+.tOnix.tOnix.tOnix .tbServices button,.tOnix.tOnix.tOnix .staffOptions button,.tOnix.tOnix.tOnix .tbDays button,.tOnix.tOnix.tOnix .tbSlots button{background:transparent!important;border-color:var(--ox-line);color:var(--ox-ink)!important;-webkit-text-fill-color:var(--ox-ink)!important}
+.tOnix.tOnix.tOnix .tbServices button.selected,.tOnix.tOnix.tOnix .staffOptions button.selected{border-color:var(--ox-gold);box-shadow:inset 4px 0 var(--ox-gold)}
+.tOnix.tOnix.tOnix .tbServices small,.tOnix.tOnix.tOnix .staffOptions small{color:var(--ox-muted)}
+.tOnix.tOnix.tOnix .tbDays button.selected,.tOnix.tOnix.tOnix .tbSlots button.selected{background:var(--ox-gold)!important;color:var(--ox-bg)!important;-webkit-text-fill-color:var(--ox-bg)!important}
+.tOnix.tOnix.tOnix .tbDays button.closed{opacity:.25}
+.tOnix.tOnix.tOnix .tenantNext{background:var(--ox-gold)!important;color:var(--ox-bg)!important;-webkit-text-fill-color:var(--ox-bg)!important;border-radius:999px}
+.tOnix.tOnix.tOnix .tenantNext:disabled{opacity:.3!important}
+.tOnix.tOnix.tOnix .tbBack{color:var(--ox-muted)}
+.tOnix.tOnix.tOnix .tenantBooking input,.tOnix.tOnix.tOnix .tenantBooking textarea{background:rgba(255,255,255,.04);border:1px solid var(--ox-line);color:var(--ox-ink)}
+.tOnix.tOnix.tOnix .tenantError{background:rgba(200,60,60,.15);color:#ff9d9d}
+.tOnix.tOnix.tOnix .tbDone>span{border-color:var(--ox-gold);color:var(--ox-gold)}
+.tOnix.tOnix.tOnix .tbDone h3{color:var(--ox-ink)}
+.tOnix.tOnix.tOnix .tbDone p{color:var(--ox-muted)}
+.tOnix.tOnix.tOnix .tbDone button{border-color:var(--ox-line);background:transparent;color:var(--ox-ink)}
+.tOnix.tOnix.tOnix .cancelManageLink{color:var(--ox-gold)}
+
+/* Footer */
+.oxFooter{background:var(--ox-bg2);padding:70px 6vw 30px;margin-top:20px;border-top:1px solid var(--ox-line)}
+.oxFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--ox-line)}
+.oxFooterGrid p{color:var(--ox-muted);font-size:14px;line-height:1.6;margin-top:14px;max-width:280px}
+.oxFooterGrid small{color:var(--ox-gold);font-weight:800;letter-spacing:2px;font-size:10.5px}
+.oxHoursRow{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--ox-muted);padding:8px 0;border-bottom:1px solid var(--ox-line)}
+.oxHoursRow:first-of-type{margin-top:14px}
+.oxContactRow{display:flex!important;align-items:center;gap:8px;color:var(--ox-muted);font-size:13.5px;margin-top:14px}
+.oxContactRow a{display:flex;align-items:center;gap:8px;color:var(--ox-muted)}
+.oxContactRow svg{flex-shrink:0;color:var(--ox-gold)}
+.oxFooterBottom{padding-top:24px;text-align:center;font-size:11.5px;color:var(--ox-muted)}
+
+@media(max-width:900px){
+  .oxNav nav{display:none}
+  .oxManifesto{padding:14vh 6vw}
+  .oxResultsGrid{grid-template-columns:repeat(2,1fr)}
+  .oxGalleryGrid{grid-template-columns:repeat(2,1fr)}
+  .oxFooterGrid{grid-template-columns:1fr 1fr;gap:24px}
+}
+@media(max-width:650px){
+  .oxHeroInner{padding:0 6vw 90px}
+  .oxFilmCard{width:80vw;height:56vh;min-height:340px}
+  .oxResultsGrid{grid-template-columns:1fr 1fr}
+  .oxFooterGrid{grid-template-columns:1fr;gap:26px}
+}

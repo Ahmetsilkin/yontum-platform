@@ -3,8 +3,8 @@ import{useState,useEffect,useRef,Fragment}from'react';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -1330,6 +1330,215 @@ function Ipek(p:P){
       <a href="#randevu">Randevu Al</a>
       {b.phone&&<a className="ipMobileStickyCall" href={`tel:${b.phone}`} aria-label="Hemen ara">📞</a>}
     </div>
+  </main>;
+}
+
+/* ================= Onix — SADECE bu temada kullanılan GSAP altyapısı =================
+   Roze'de bu oturumda GSAP/ScrollTrigger TAMAMEN kaldırıldı (kullanıcı scroll
+   efektlerini "kötü" bulmuştu). Onix ise tam tersi bir istekle doğdu: "Awwwards
+   tarzı etkileşimli scroll mimarisi" — bu yüzden GSAP burada YENİDEN, ama bu
+   oturumda öğrenilen tüm derslerle (autoRefreshEvents kapatma, körlemesine
+   zamanlayıcı yerine tek seferlik gerçek resim-yükleme tetikli refresh, flex
+   içinde height:100% yerine flex:1 kullanma) sağlam şekilde kuruluyor. Dinamik
+   import() ile SADECE Onix render edildiğinde yükleniyor — diğer hiçbir tema
+   (Roze dahil) bunu hiç indirmiyor. */
+let onixGsapLoad:Promise<{gsap:any;ScrollTrigger:any}>|null=null;
+function loadOnixGsap(){
+  if(!onixGsapLoad)onixGsapLoad=Promise.all([import('gsap'),import('gsap/ScrollTrigger')]).then(([g,st])=>{
+    const gsap=g.gsap,ScrollTrigger=st.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({autoRefreshEvents:'DOMContentLoaded'});
+    let refreshed=false;
+    const refresh=()=>{if(refreshed)return;refreshed=true;ScrollTrigger.refresh();};
+    const imgs=Array.from(document.images);
+    const pending=imgs.filter(img=>!img.complete);
+    if(pending.length){
+      let remaining=pending.length;
+      const done=()=>{remaining--;if(remaining<=0)refresh();};
+      pending.forEach(img=>{img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});});
+      setTimeout(refresh,2500);
+    }else{
+      requestAnimationFrame(()=>requestAnimationFrame(refresh));
+    }
+    return{gsap,ScrollTrigger};
+  });
+  return onixGsapLoad;
+}
+/* Hero fotoğrafı, sayfa kaydırıldıkça içerikten hafifçe farklı hızda hareket
+   eder (paralaks) — scrub, dolayısıyla doğası gereği iki yönlü. */
+function useOnixParallax(){
+  const ref=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,tween:any;
+    loadOnixGsap().then(({gsap})=>{
+      if(cancelled||!ref.current)return;
+      tween=gsap.to(ref.current,{yPercent:14,ease:'none',scrollTrigger:{trigger:ref.current,start:'top top',end:'bottom top',scrub:true}});
+    });
+    return()=>{cancelled=true;tween?.scrollTrigger?.kill?.();tween?.kill?.()};
+  },[]);
+  return ref;
+}
+/* Manifesto metni: kelimeler, bölüm ekranda ilerledikçe (bir kerelik değil,
+   sürekli scroll pozisyonuna bağlı/scrubbed) tek tek belirginleşir — "okurken
+   kaydırma" hissi. GSAP hazır olana kadar (ilk boya + dinamik import arasında)
+   elle bir kez hesaplanan bir fallback var ki metin tamamen görünmez kalmasın. */
+function OnixManifestoText({text}:{text:string}){
+  const ref=useRef<HTMLParagraphElement>(null);
+  const[progress,setProgress]=useState(0);
+  useEffect(()=>{
+    let cancelled=false,st:any;
+    const fallback=()=>{
+      const el=ref.current;if(!el)return;
+      const rect=el.getBoundingClientRect(),vh=window.innerHeight;
+      const start=vh*0.85,end=vh*0.25;
+      setProgress(Math.max(0,Math.min(1,(start-rect.top)/(start-end))));
+    };
+    fallback();
+    window.addEventListener('scroll',fallback,{passive:true});
+    loadOnixGsap().then(({ScrollTrigger})=>{
+      if(cancelled||!ref.current)return;
+      window.removeEventListener('scroll',fallback);
+      st=ScrollTrigger.create({trigger:ref.current,start:'top 85%',end:'top 20%',scrub:true,onUpdate:(self:any)=>setProgress(self.progress)});
+    });
+    return()=>{cancelled=true;window.removeEventListener('scroll',fallback);st?.kill?.()};
+  },[]);
+  const words=text.split(' ');
+  const revealCount=Math.round(progress*words.length);
+  return <p className="oxManifestoText" ref={ref}>{words.map((w,i)=><span key={i} className={i<revealCount?'in':''}>{w}{i<words.length-1?' ':''}</span>)}</p>;
+}
+/* İmza an: Hizmetler bölümü kısa bir dikey mesafe boyunca ekranda kilitlenir
+   (pin), o mesafede fare tekerleği yatay foto şeridini kaydırır — "sinematik
+   film şeridi". Roze'nin galeri scroll-jack'inde bu oturumda kanıtlanmış,
+   production'da doğrulanmış AYNI teknik (gsap.to(track,{scrollLeft}) DOM
+   property'si doğrudan tween ediliyor). Sadece masaüstü (≥900px); mobilde
+   şerit kendi dokunmatik yatay kaydırmasıyla çalışır, pin yok. */
+function useOnixFilmstrip(){
+  const sectionRef=useRef<any>(null);
+  const trackRef=useRef<any>(null);
+  useEffect(()=>{
+    let cancelled=false,st:any;
+    loadOnixGsap().then(({gsap,ScrollTrigger})=>{
+      if(cancelled||!sectionRef.current||!trackRef.current)return;
+      if(window.innerWidth<900)return;
+      const track=trackRef.current;
+      const distance=track.scrollWidth-track.clientWidth;
+      if(distance<=0)return;
+      st=gsap.to(track,{scrollLeft:distance,ease:'none',scrollTrigger:{trigger:sectionRef.current,start:'top top',end:()=>'+='+Math.max(distance,300),pin:true,anticipatePin:1,scrub:1,invalidateOnRefresh:true}});
+    });
+    return()=>{cancelled=true;st?.scrollTrigger?.kill?.();st?.kill?.()};
+  },[]);
+  return{sectionRef,trackRef};
+}
+function Onix(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const heroRef=useOnixParallax();
+  const{sectionRef:filmSection,trackRef:filmTrack}=useOnixFilmstrip();
+  const[lightbox,setLightbox]=useState<number|null>(null);
+  const manifesto=dec(b,'ox_manifesto','Güzellik, acele etmeyen ellerde saklıdır. Her randevu, size ayrılmış sessiz bir zaman dilimidir — telaşsız, özenli, tamamen size özel.');
+  const resultsPhotos=(()=>{
+    const raw=dec(b,'ox_resultsImages','');
+    if(!raw)return[];
+    try{const arr=JSON.parse(raw);return Array.isArray(arr)?arr:[]}catch{return[]}
+  })();
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  return <main id="top" className="tOnix">
+    <header className="oxNav">
+      <a className="oxBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hizmetler">Hizmetler</a>
+        {resultsPhotos.length>0&&<a href="#sonuclar">Sonuçlar</a>}
+        {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
+        <a href="#randevu">Randevu</a>
+      </nav>
+      <a className="oxNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="oxHero">
+      <div className="oxHeroMediaWrap" ref={heroRef}>
+        {b.cover_url&&b.cover_type==='video'
+          ?<video className="oxHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
+          :b.cover_url?<img className="oxHeroMedia" src={b.cover_url} alt={b.name}/>
+          :<div className="oxHeroMedia oxHeroMediaFallback"/>}
+      </div>
+      <div className="oxHeroOverlay"/>
+      <div className="oxHeroInner">
+        <p className="oxEyebrow"><i/>{b.hero_label||'PREMIUM GÜZELLİK SALONU'}</p>
+        <h1 className="oxHeroTitle">{b.hero_title||'Güzelliğin'} <em>{b.hero_highlight||'zirvesi.'}</em></h1>
+        {b.hero_description&&<p className="oxHeroDesc">{b.hero_description}</p>}
+        <div className="oxHeroActions">
+          <a className="oxBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+          <a className="oxBtnGhost" href="#hizmetler">Hizmetleri Keşfet</a>
+        </div>
+      </div>
+      <div className="oxScrollHint"><span/>Kaydır</div>
+    </section>
+
+    <section className="oxManifesto">
+      <OnixManifestoText text={manifesto}/>
+    </section>
+
+    <section id="hizmetler" className="oxServices" ref={filmSection}>
+      <Reveal className="oxSectionHead">
+        <small>{b.services_label||'HİZMETLER'}</small>
+        <h2>{b.services_title||'Sanat seviyesinde bakım.'}</h2>
+      </Reveal>
+      <div className="oxFilmTrack" ref={filmTrack}>
+        {p.services.map((s,i)=><article key={s.id} className="oxFilmCard">
+          <span className="oxFilmNum">{String(i+1).padStart(2,'0')}</span>
+          {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="oxFilmFallback"/>}
+          <div className="oxFilmBody">
+            <b>{s.name}</b>
+            <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
+          </div>
+        </article>)}
+      </div>
+    </section>
+
+    {resultsPhotos.length>0&&<section id="sonuclar" className="oxResults">
+      <Reveal className="oxSectionHead oxSectionHeadLight">
+        <small>SONUÇLAR</small>
+        <h2>{dec(b,'ox_resultsTitle','Öncesi. Sonrası. Fark.')}</h2>
+      </Reveal>
+      <div className="oxResultsGrid">
+        {resultsPhotos.map((src:string,i:number)=><Reveal i={i} key={i} className="oxResultsPhoto"><img src={src} alt=""/><span>{i%2===0?'Önce':'Sonra'}</span></Reveal>)}
+      </div>
+    </section>}
+
+    {galleryPhotos.length>0&&<section id="galeri" className="oxGallery">
+      <Reveal className="oxSectionHead">
+        <small>GALERİ</small>
+        <h2>{dec(b,'ox_galleryTitle','Bizden kareler.')}</h2>
+      </Reveal>
+      <div className="oxGalleryGrid">
+        {galleryPhotos.map((src,i)=><Reveal i={i} key={i} className="oxGalleryItem">
+          <button type="button" onClick={()=>setLightbox(i)}><img src={src} alt={b.name}/><span className="oxGalleryIndex">{String(i+1).padStart(2,'0')}</span></button>
+        </Reveal>)}
+      </div>
+      {lightbox!==null&&<div className="oxLightbox" onClick={()=>setLightbox(null)}>
+        <button type="button" className="oxLightboxClose" onClick={()=>setLightbox(null)} aria-label="Kapat">✕</button>
+        <img src={galleryPhotos[lightbox]} alt={b.name} onClick={e=>e.stopPropagation()}/>
+      </div>}
+    </section>}
+
+    <section id="randevu" className="oxBooking">
+      <Reveal className="oxSectionHead">
+        <small>{b.booking_label||'RANDEVU'}</small>
+        <h2>{b.booking_title||'Saatini ayır.'}</h2>
+      </Reveal>
+      <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <GoogleReviews businessId={b.id}/>
+
+    <footer className="oxFooter">
+      <div className="oxFooterGrid">
+        <div><a className="oxBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a><p>{dec(b,'ox_footerTagline','Zamanın en değerli hâli: kendine ayırdığın an.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="oxHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="oxContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="oxContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
+      </div>
+      <div className="oxFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
   </main>;
 }
 
