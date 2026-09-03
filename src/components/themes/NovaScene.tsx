@@ -1,15 +1,13 @@
 'use client';
 /* Nova temasının imza hero'su: kullanıcının 21st.dev'den paylaştığı "3D Orbit
    Gallery" referansının BİREBİR aynısı — toz parçacıklarından oluşan bir küre,
-   etrafında dönen fotoğraf halkası, sürükle-çevir/yakınlaştır kamera kontrolü.
-   İki bilinçli fark: (1) 1500 parçacık artık referanstaki gibi 1500 ayrı
-   <mesh> değil, TEK bir <instancedMesh> — görsel olarak birebir aynı ama
-   1500 ayrı çizim komutu yerine tek çizim komutu (bu oturumda WebGL
-   performansıyla defalarca uğraştık, aynı hatayı bilerek tekrar etmedim).
-   (2) OrbitControls'te enablePan kapalı — sürükleyip döndürme ve yakınlaştırma
-   referansla birebir aynı, ama serbest kaydırma (pan) kapalı, çünkü bu gerçek
-   bir işletmenin CANLI randevu sitesi: pan açıkken ziyaretçi sahneyi kolayca
-   merkezden kaydırıp "kaybolmuş" bir görünüme sürükleyebiliyordu. */
+   etrafında dönen fotoğraf halkası, sürükle-çevir/yakınlaştır/kaydır (pan)
+   kamera kontrolü — OrbitControls referansla tıpatıp aynı (enablePan dahil,
+   kullanıcının açık isteği). Tek bilinçli fark: 1500 parçacık artık
+   referanstaki gibi 1500 ayrı <mesh> değil, TEK bir <instancedMesh> — görsel
+   olarak birebir aynı ama 1500 ayrı çizim komutu yerine tek çizim komutu (bu
+   oturumda WebGL performansıyla defalarca uğraştık, aynı hatayı bilerek
+   tekrar etmedim). */
 import{useRef,useMemo,useEffect,Suspense}from'react';
 import{Canvas,useFrame}from'@react-three/fiber';
 import{OrbitControls,useTexture}from'@react-three/drei';
@@ -100,6 +98,6 @@ export default function NovaScene({photos}:{photos:string[]}){
     <ambientLight intensity={0.5}/>
     <pointLight position={[10,10,10]} intensity={1}/>
     <NovaGroup photos={photos}/>
-    <OrbitControls enablePan={false} enableZoom enableRotate minDistance={6} maxDistance={22} enableDamping dampingFactor={0.06}/>
+    <OrbitControls enablePan enableZoom enableRotate enableDamping dampingFactor={0.06}/>
   </Canvas>;
 }
