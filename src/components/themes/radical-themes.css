@@ -1442,7 +1442,7 @@
    olduğu gibi görünür — hero hiçbir koşulda kırık kalmaz. --lm-* token'ları
    Onix'in --ox-* düzenini izliyor ama paleti bilinçli olarak farklı: sıcak
    altın yerine soğuk, ışıltılı bir "buz mavisi" vurgu. */
-.tLumina{--lm-bg:#07070a;--lm-bg2:#111218;--lm-bg3:#191b22;--lm-ink:#f4f5f8;--lm-muted:#9497a3;--lm-glow:#8fe3ff;--lm-glow-deep:#4fa8c2;--lm-line:rgba(244,245,248,.14);--lm-light:#f4f5f8;--lm-light-ink:#0d0e12;background:var(--lm-bg);color:var(--lm-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
+.tLumina{--lm-bg:#07070a;--lm-bg2:#111218;--lm-bg3:#191b22;--lm-ink:#f4f5f8;--lm-muted:#9497a3;--lm-glow:#8fe3ff;--lm-glow-deep:#4fa8c2;--lm-warm:#e8935a;--lm-warm-deep:#a85f2e;--lm-line:rgba(244,245,248,.14);--lm-light:#f4f5f8;--lm-light-ink:#0d0e12;background:var(--lm-bg);color:var(--lm-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
 .tLumina h1,.tLumina h2,.tLumina h3{font-family:'Fraunces',Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-.005em}
 .tLumina em{font-style:italic;color:var(--lm-glow)}
 
@@ -1466,8 +1466,15 @@
 .lmHeroCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .lmHeroStatic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.8)}
 .lmHeroFallback{background:linear-gradient(150deg,#151822,#07070a 60%)}
-.lmHeroOverlay{position:absolute;inset:0;z-index:1;background:linear-gradient(190deg,rgba(7,7,10,.1) 10%,rgba(7,7,10,.55) 65%,rgba(7,7,10,.94) 100%)}
-.lmHeroInner{position:relative;z-index:2;max-width:820px;padding:0 6vw 130px}
+/* Sıcak-soğuk (split-tone) renk aktarımı — referans görseldeki "Golden Hour"
+   çekiminin imzası olan turuncu→camgöbeği ışık geçişini, YÜKLENEN FOTOĞRAF NE
+   OLURSA OLSUN üstüne bindiriyor. mix-blend-mode:color, arkadaki fotoğrafın
+   parlaklığını (luminosity) koruyup sadece rengini (hue/sat) bu degradeyle
+   değiştirir — bu yüzden hangi fotoğraf yüklenirse yüklensin aynı premium,
+   tutarlı ışık karakterini alır. */
+.lmHeroGrade{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:color;opacity:.5;background:linear-gradient(120deg,var(--lm-warm) 0%,transparent 42%,transparent 58%,var(--lm-glow-deep) 100%)}
+.lmHeroOverlay{position:absolute;inset:0;z-index:2;background:linear-gradient(190deg,rgba(7,7,10,.1) 10%,rgba(7,7,10,.55) 65%,rgba(7,7,10,.94) 100%)}
+.lmHeroInner{position:relative;z-index:3;max-width:820px;padding:0 6vw 130px}
 .lmEyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--lm-glow);font-size:11px;letter-spacing:3px;font-weight:700;margin:0 0 22px}
 .lmEyebrow i{width:6px;height:6px;border-radius:50%;background:var(--lm-glow);box-shadow:0 0 12px var(--lm-glow)}
 .lmHeroTitle{color:var(--lm-ink);font-size:clamp(42px,6.6vw,88px);line-height:1.03;margin:0 0 24px}
@@ -1477,7 +1484,7 @@
 .lmBtnSolid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(143,227,255,.3)}
 .lmBtnGhost{color:var(--lm-ink)!important;font-weight:600;font-size:14px;padding:15px 4px;border-bottom:1px solid var(--lm-line);transition:border-color .18s ease}
 .lmBtnGhost:hover{border-color:var(--lm-glow)}
-.lmScrollHint{position:absolute;right:6vw;bottom:40px;z-index:2;display:flex;align-items:center;gap:10px;color:var(--lm-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.lmScrollHint{position:absolute;right:6vw;bottom:40px;z-index:3;display:flex;align-items:center;gap:10px;color:var(--lm-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase}
 .lmScrollHint span{width:1px;height:34px;background:linear-gradient(180deg,var(--lm-glow),transparent)}
 
 /* Manifesto — büyük italik editoryal metin, kelimeler scroll'a bağlı belirir (Onix'teki tekniğin aynısı) */
@@ -1499,6 +1506,9 @@
 .lmServices{padding:80px 6vw 100px}
 .lmGlassGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .lmGlassCard{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:3/4;background:var(--lm-bg2)}
+/* Hero'daki aynı sıcak-soğuk aktarımın daha hafif hâli — tüm site boyunca
+   tutarlı bir "premium ışık" karakteri için Hizmetler kartlarında da var. */
+.lmGlassCard::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:color;opacity:.32;background:linear-gradient(135deg,var(--lm-warm) 0%,transparent 55%,var(--lm-glow-deep) 100%)}
 .lmGlassCard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.78);transition:transform .6s cubic-bezier(.4,0,.2,1)}
 .lmGlassCard:hover img{transform:scale(1.06)}
 .lmGlassCardFallback{position:absolute;inset:0;background:linear-gradient(150deg,var(--lm-bg3),var(--lm-bg))}
@@ -1513,8 +1523,9 @@
 .lmGallery .lmSectionHead{padding:0 6vw}
 .lmGalleryStrip{display:flex;gap:16px;overflow-x:auto;padding:0 6vw 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .lmGalleryStrip::-webkit-scrollbar{display:none}
-.lmGalleryItem{flex:0 0 auto;width:min(320px,72vw);aspect-ratio:3/4;border-radius:18px;overflow:hidden;scroll-snap-align:start;border:1px solid var(--lm-line);cursor:zoom-in;padding:0}
-.lmGalleryItem img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.lmGalleryItem{position:relative;flex:0 0 auto;width:min(320px,72vw);aspect-ratio:3/4;border-radius:18px;overflow:hidden;scroll-snap-align:start;border:1px solid var(--lm-line);cursor:zoom-in;padding:0}
+.lmGalleryItem img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.95);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.lmGalleryItem::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:color;opacity:.22;background:linear-gradient(135deg,var(--lm-warm) 0%,transparent 55%,var(--lm-glow-deep) 100%)}
 .lmGalleryItem:hover img{transform:scale(1.05)}
 .lmLightbox{position:fixed;inset:0;z-index:100;background:rgba(4,4,6,.96);display:flex;align-items:center;justify-content:center;padding:60px 80px;cursor:zoom-out}
 .lmLightbox img{max-width:min(880px,90vw);max-height:82vh;object-fit:contain;cursor:default;border-radius:8px}

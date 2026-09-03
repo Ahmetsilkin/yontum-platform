@@ -1618,18 +1618,24 @@ const LUMINA_FRAG=`
     float param=smoothstep(br+3.0,br-3.0,d);
     vec4 img;
     if(param>0.0){
-      float ro=0.09*pow(smoothstep(0.3,1.0,nd),1.5);
+      float ro=0.1*pow(smoothstep(0.3,1.0,nd),1.5);
       vec2 dir=(d>0.0)?(p-c)/d:vec2(0.0);
       vec2 distUV=uv2-dir*ro;
-      float ca=0.022*pow(smoothstep(0.3,1.0,nd),1.2);
+      float ca=0.03*pow(smoothstep(0.3,1.0,nd),1.2);
       img=vec4(
         texture2D(uTexture2,distUV+dir*ca*1.2).r,
         texture2D(uTexture2,distUV+dir*ca*0.2).g,
         texture2D(uTexture2,distUV-dir*ca*0.8).b,
         1.0
       );
+      /* Cam kenarındaki parıltı, referans görüntüdeki sıcak (turuncu) - soğuk
+         (camgöbeği) ışık ayrımını taklit eden yönlü bir renkle boyanıyor —
+         dairenin sağa açılan tarafı sıcak, sola açılan tarafı soğuk parlar. */
       float rim=smoothstep(0.95,1.0,nd)*(1.0-smoothstep(1.0,1.01,nd));
-      img.rgb+=rim*0.1;
+      vec3 warm=vec3(0.91,0.576,0.353);
+      vec3 cool=vec3(0.435,0.839,0.906);
+      vec3 rimColor=mix(cool,warm,smoothstep(-1.0,1.0,dir.x));
+      img.rgb+=rim*rimColor*0.32;
     }else{
       img=texture2D(uTexture2,uv2);
     }
@@ -1749,6 +1755,7 @@ function Lumina(p:P){
 
     <section className="lmHero">
       <LuminaHeroMedia b={b} photos={heroPhotos}/>
+      <div className="lmHeroGrade"/>
       <div className="lmHeroOverlay"/>
       <div className="lmHeroInner">
         <p className="lmEyebrow"><i/>{b.hero_label||'PREMIUM GÜZELLİK SALONU'}</p>
