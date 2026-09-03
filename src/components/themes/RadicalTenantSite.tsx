@@ -1410,41 +1410,14 @@ function OnixManifestoText({text}:{text:string}){
   const revealCount=Math.round(progress*words.length);
   return <p className="oxManifestoText" ref={ref}>{words.map((w,i)=><span key={i} className={i<revealCount?'in':''}>{w}{i<words.length-1?' ':''}</span>)}</p>;
 }
-/* İmza an: Hizmetler bölümü kısa bir dikey mesafe boyunca ekranda kilitlenir
-   (pin), o mesafede fare tekerleği yatay foto şeridini kaydırır — "sinematik
-   film şeridi". İLK sürüm native `scrollLeft`'i JS ile sürüklüyordu — bu her
-   karede tarayıcıya senkron bir "reflow" (yeniden düzen) hesaplattırıyor,
-   kullanıcı bunu "kasıyor" diye bildirdi. Düzeltme: artık `scrollLeft` değil
-   `x` (CSS transform:translateX) tween ediliyor — GPU'da compositor katmanında
-   çalışır, reflow tetiklemez, kayma hızından bağımsız pürüzsüz kalır (gerçek
-   Awwwards sitelerinin kullandığı standart "horizontal scroll section"
-   deseni). Bunun için şerit artık scroll edilebilir bir kutu DEĞİL — dışarıda
-   `overflow:hidden` bir "clip" kapsayıcı, içeride `width:max-content` bir
-   şerit var; masaüstünde şerit transform ile kaydırılıyor, mobilde (pin YOK)
-   CSS clip kutusunun kendisi native dokunmatik scroll kutusu oluyor. */
-function useOnixFilmstrip(){
-  const sectionRef=useRef<any>(null);
-  const trackRef=useRef<any>(null);
-  useEffect(()=>{
-    let cancelled=false,st:any;
-    loadOnixGsap().then(({gsap,ScrollTrigger})=>{
-      if(cancelled||!sectionRef.current||!trackRef.current)return;
-      if(window.innerWidth<900)return;
-      const track=trackRef.current;
-      const clip=track.parentElement;
-      const distance=track.scrollWidth-(clip?.clientWidth||track.clientWidth);
-      if(distance<=0)return;
-      st=gsap.to(track,{x:-distance,ease:'none',scrollTrigger:{trigger:sectionRef.current,start:'top top',end:()=>'+='+Math.max(distance,300),pin:true,anticipatePin:1,scrub:1,invalidateOnRefresh:true}});
-    });
-    return()=>{cancelled=true;st?.scrollTrigger?.kill?.();st?.kill?.()};
-  },[]);
-  return{sectionRef,trackRef};
-}
+/* Küçük ok simgesi — bento kartlarının sağ altındaki dairesel "aç/incele"
+   rozetinde kullanılıyor (Hizmetler + Galeri, ikisi de aynı kart dilini
+   paylaşıyor). */
+function OxChevron(){return <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>}
 function Onix(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const heroRef=useOnixParallax();
-  const{sectionRef:filmSection,trackRef:filmTrack}=useOnixFilmstrip();
   const[lightbox,setLightbox]=useState<number|null>(null);
   const manifesto=dec(b,'ox_manifesto','Güzellik, acele etmeyen ellerde saklıdır. Her randevu, size ayrılmış sessiz bir zaman dilimidir — telaşsız, özenli, tamamen size özel.');
   const resultsPhotos=(()=>{
@@ -1489,23 +1462,20 @@ function Onix(p:P){
       <OnixManifestoText text={manifesto}/>
     </section>
 
-    <section id="hizmetler" className="oxServices" ref={filmSection}>
+    <section id="hizmetler" className="oxServices">
       <Reveal className="oxSectionHead">
         <small>{b.services_label||'HİZMETLER'}</small>
         <h2>{b.services_title||'Sanat seviyesinde bakım.'}</h2>
       </Reveal>
-      <div className="oxFilmClip">
-        <div className="oxFilmTrack" ref={filmTrack}>
-          {p.services.map((s,i)=><article key={s.id} className="oxFilmCard">
-            <span className="oxFilmNum">{String(i+1).padStart(2,'0')}</span>
-            {s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="oxFilmFallback"/>}
-            <div className="oxFilmBody">
-              <b>{s.name}</b>
-              <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
-            </div>
-            {hasServiceDetail(s)&&<a className="oxFilmDetailBadge" href={`/site/${b.slug}/hizmet/${s.slug}`}><span>↗</span>Detaylı<br/>İncele</a>}
-          </article>)}
-        </div>
+      <div className="oxBentoGrid">
+        {p.services.map((s,i)=><Reveal as="article" i={i} key={s.id} className="oxBentoCard">
+          <div className="oxBentoLabel">
+            <b>{s.name}</b>
+            <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
+          </div>
+          <div className="oxBentoPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="oxBentoPhotoFallback"/>}</div>
+          {hasServiceDetail(s)&&<a className="oxBentoExpand" href={`/site/${b.slug}/hizmet/${s.slug}`} aria-label="Detaylı incele"><OxChevron/></a>}
+        </Reveal>)}
       </div>
     </section>
 
@@ -1524,9 +1494,10 @@ function Onix(p:P){
         <small>GALERİ</small>
         <h2>{dec(b,'ox_galleryTitle','Bizden kareler.')}</h2>
       </Reveal>
-      <div className="oxGalleryGrid">
-        {galleryPhotos.map((src,i)=><Reveal i={i} key={i} className={`oxGalleryItem oxBento${i%5}`}>
-          <button type="button" onClick={()=>setLightbox(i)}><img src={src} alt={b.name}/><span className="oxGalleryIndex">{String(i+1).padStart(2,'0')}</span></button>
+      <div className="oxBentoGrid">
+        {galleryPhotos.map((src,i)=><Reveal as="article" i={i} key={i} className="oxBentoCard oxBentoCardPhoto">
+          <div className="oxBentoPhoto"><img src={src} alt={b.name}/></div>
+          <button type="button" className="oxBentoExpand" onClick={()=>setLightbox(i)} aria-label="Fotoğrafı büyüt"><OxChevron/></button>
         </Reveal>)}
       </div>
       {lightbox!==null&&<div className="oxLightbox" onClick={()=>setLightbox(null)}>

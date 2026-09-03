@@ -1327,26 +1327,30 @@
 .oxSectionHeadLight small{color:var(--ox-gold-deep)}
 .oxSectionHeadLight h2{color:var(--ox-light-ink)}
 
-/* Hizmetler — imza an: kısa süreliğine kilitlenen sinematik film şeridi.
-   `.oxFilmClip` dışarıda kırpan (overflow:hidden) sabit kutu, `.oxFilmTrack`
-   içeride width:max-content bir şerit — masaüstünde JS bunu native scrollLeft
-   DEĞİL transform:translateX ile kaydırır (GPU, reflow yok, "kasıyor"
-   şikayetinin düzeltmesi). Mobilde (pin yok) `.oxFilmClip`'in kendisi native
-   dokunmatik yatay scroll kutusu olur — aşağıdaki @media(max-width:900px). */
-.oxServices{padding:80px 0 100px}
-.oxFilmClip{overflow:hidden;padding-bottom:10px}
-.oxFilmTrack{display:flex;gap:22px;padding:0 6vw;width:max-content}
-.oxFilmCard{position:relative;flex:0 0 auto;width:min(62vw,420px);height:64vh;min-height:400px;max-height:600px;border-radius:6px;overflow:hidden;background:linear-gradient(150deg,var(--ox-bg3),var(--ox-bg))}
-.oxFilmCard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.oxFilmFallback{position:absolute;inset:0;background:linear-gradient(150deg,var(--ox-bg3),var(--ox-bg))}
-.oxFilmCard:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,6,5,.85) 0%,rgba(6,6,5,.15) 45%,transparent 70%)}
-.oxFilmNum{position:absolute;top:20px;left:20px;z-index:2;color:var(--ox-gold);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px}
-.oxFilmBody{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:26px}
-.oxFilmBody b{display:block;color:var(--ox-ink);font-size:21px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em}
-.oxFilmBody span{color:var(--ox-muted);font-size:13px}
-.oxFilmDetailBadge{position:absolute;top:16px;right:16px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:76px;height:76px;border-radius:50%;background:rgba(10,10,10,.5);border:1px solid var(--ox-gold);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ox-gold)!important;font-size:10.5px;font-weight:700;text-align:center;line-height:1.25;transition:transform .2s ease,background .2s ease}
-.oxFilmDetailBadge:hover{background:rgba(10,10,10,.75);transform:rotate(8deg) scale(1.05)}
-.oxFilmDetailBadge span{font-size:15px;color:var(--ox-gold)}
+/* Hizmetler + Galeri — kullanıcının gönderdiği referans görseldeki (ürün
+   özellik vitrin sayfası) gibi PAYLAŞILAN bir bento kart dili: 3 sütun,
+   sütun başına üstte uzun + altta kısa kart çifti (grid-template-rows'a
+   verilen iki değer, ihtiyaç oldukça kendini tekrar eder — 3. satır yine
+   uzun, 4. yine kısa, vs. — bu yüzden herhangi bir öğe sayısında çalışır,
+   eski sabit ızgaradaki gibi son satırda çirkin boş kutucuk kalmaz). Kart
+   anatomisi de referansla aynı: üstte kalın etiket yazısı (Hizmetler'de
+   var, Galeri'de fotoğrafın kendisi konuştuğu için yok), altında fotoğraf,
+   sağ altta dairesel "aç/incele" oku. Roze'nin yatay kaydırmalı şeridinden
+   ve İpek'in CSS-columns masonry'sinden BİLİNÇLİ olarak farklı. */
+.oxServices{padding:80px 6vw 100px}
+.oxBentoGrid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:300px 190px;gap:18px}
+.oxBentoCard{position:relative;display:flex;flex-direction:column;border-radius:22px;overflow:hidden;background:var(--ox-bg2);border:1px solid var(--ox-line)}
+.oxBentoLabel{padding:22px 22px 0;z-index:2}
+.oxBentoLabel b{display:block;color:var(--ox-ink);font-size:17px;font-weight:700;letter-spacing:-.01em}
+.oxBentoLabel span{display:block;color:var(--ox-muted);font-size:12px;margin-top:4px}
+.oxBentoPhoto{flex:1;position:relative;margin-top:14px;overflow:hidden}
+.oxBentoPhoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) brightness(.94);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.oxBentoCard:hover .oxBentoPhoto img{transform:scale(1.05)}
+.oxBentoPhotoFallback{position:absolute;inset:0;background:linear-gradient(150deg,var(--ox-bg3),var(--ox-bg))}
+.oxBentoExpand{position:absolute;right:16px;bottom:16px;z-index:3;width:34px;height:34px;border-radius:50%;background:rgba(10,10,10,.55);border:1px solid var(--ox-line);color:var(--ox-gold);display:grid;place-items:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .18s ease,transform .18s ease}
+.oxBentoExpand:hover{background:rgba(10,10,10,.8);transform:scale(1.08)}
+/* Galeri kartlarında etiket yok — fotoğraf kartın tamamını kaplar */
+.oxBentoCardPhoto .oxBentoPhoto{margin-top:0;position:absolute;inset:0}
 
 /* Sonuçlar — öncesi/sonrası büyük fotoğraf vitrini, açık zeminde (ritim molası) */
 .oxResults{background:var(--ox-light);color:var(--ox-light-ink);padding:110px 0}
@@ -1355,25 +1359,7 @@
 .oxResultsPhoto img{width:100%;height:100%;object-fit:cover;display:block}
 .oxResultsPhoto span{position:absolute;bottom:14px;left:14px;color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 
-/* Galeri — asimetrik "bento" mozaik (diğer HİÇBİR temada yok: Roze yatay
-   kaydırmalı şerit, İpek CSS-columns masonry kullanıyor — bu, GSAP.com gibi
-   sitelerin kullandığı düzensiz-boyutlu editoryal ızgara). Her fotoğraf
-   index%5'e göre 5 farklı hücre boyutundan birini alıyor (oxBento0..4);
-   grid-auto-flow:dense boşlukları otomatik dolduruyor — eski sabit 3 sütunlu
-   ızgaradaki "son satırda boş kutucuk kalması" sorunu da böylece ortadan
-   kalkıyor. */
 .oxGallery{padding:100px 6vw}
-.oxGalleryGrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;grid-auto-flow:dense;gap:6px}
-.oxGalleryItem{position:relative}
-.oxGalleryItem button{display:block;position:relative;width:100%;height:100%;padding:0;border:0;background:var(--ox-bg2);cursor:pointer;overflow:hidden}
-.oxGalleryItem img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.4,0,.2,1);filter:saturate(.9) brightness(.9)}
-.oxGalleryItem button:hover img{transform:scale(1.06)}
-.oxGalleryIndex{position:absolute;top:14px;left:14px;color:var(--ox-gold);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px}
-.oxBento0{grid-column:span 2;grid-row:span 2}
-.oxBento1{grid-column:span 1;grid-row:span 1}
-.oxBento2{grid-column:span 1;grid-row:span 2}
-.oxBento3{grid-column:span 2;grid-row:span 1}
-.oxBento4{grid-column:span 1;grid-row:span 1}
 .oxLightbox{position:fixed;inset:0;z-index:100;background:rgba(6,6,5,.96);display:flex;align-items:center;justify-content:center;padding:60px 80px;cursor:zoom-out}
 .oxLightbox img{max-width:min(880px,90vw);max-height:82vh;object-fit:contain;cursor:default}
 .oxLightboxClose{position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--ox-line);color:var(--ox-ink);font-size:16px;cursor:pointer;transition:background .15s ease}
@@ -1430,20 +1416,14 @@
   .oxNav nav{display:none}
   .oxManifesto{padding:14vh 6vw}
   .oxResultsGrid{grid-template-columns:repeat(2,1fr)}
-  /* Pin sadece ≥900px'te çalışıyor (JS'te aynı eşik) — burada clip kutusu
-     kendisi native dokunmatik yatay scroll kutusuna dönüşüyor. */
-  .oxFilmClip{overflow-x:auto;scrollbar-width:none}
-  .oxFilmClip::-webkit-scrollbar{display:none}
-  /* Bento asimetrisi dar ekranda karmaşık durur — 2 sütuna, tekdüze
-     kare hücrelere dönüyor, sade ve güvenli. */
-  .oxGalleryGrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:220px}
-  .oxBento0,.oxBento1,.oxBento2,.oxBento3,.oxBento4{grid-column:span 1;grid-row:span 1}
+  /* Bento dar ekranda 2 sütuna, tekdüze (uzun/kısa asimetrisi olmayan)
+     kare hücrelere dönüyor — sade ve güvenli. */
+  .oxBentoGrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:230px}
   .oxFooterGrid{grid-template-columns:1fr 1fr;gap:24px}
 }
 @media(max-width:650px){
   .oxHeroInner{padding:0 6vw 90px}
-  .oxFilmCard{width:80vw;height:56vh;min-height:340px}
+  .oxBentoGrid{grid-template-columns:1fr;grid-auto-rows:220px}
   .oxResultsGrid{grid-template-columns:1fr 1fr}
-  .oxGalleryGrid{grid-auto-rows:180px}
   .oxFooterGrid{grid-template-columns:1fr;gap:26px}
 }
