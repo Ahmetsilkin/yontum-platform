@@ -1467,14 +1467,14 @@ function Onix(p:P){
         <small>{b.services_label||'HİZMETLER'}</small>
         <h2>{b.services_title||'Sanat seviyesinde bakım.'}</h2>
       </Reveal>
-      <div className="oxBentoGrid">
+      <div className="oxBentoGrid oxBentoGridEven">
         {p.services.map((s,i)=><Reveal as="article" i={i} key={s.id} className="oxBentoCard">
           <div className="oxBentoLabel">
             <b>{s.name}</b>
             <span>{s.duration_minutes} dk{b.show_prices&&s.price!=null?` · ${Number(s.price).toLocaleString('tr-TR')} ₺`:''}</span>
+            {hasServiceDetail(s)&&<a className="oxBentoDetailLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
           </div>
           <div className="oxBentoPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<div className="oxBentoPhotoFallback"/>}</div>
-          {hasServiceDetail(s)&&<a className="oxBentoExpand" href={`/site/${b.slug}/hizmet/${s.slug}`} aria-label="Detaylı incele"><OxChevron/></a>}
         </Reveal>)}
       </div>
     </section>

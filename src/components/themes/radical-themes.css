@@ -1339,10 +1339,17 @@
    ve İpek'in CSS-columns masonry'sinden BİLİNÇLİ olarak farklı. */
 .oxServices{padding:80px 6vw 100px}
 .oxBentoGrid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:300px 190px;gap:18px}
+/* Hizmetler'de uzun/kısa asimetrisi kısa kartlarda fotoğrafın yarısını
+   kırpıp kötü duruyordu — kullanıcı hepsinin eşit boy olmasını istedi. */
+.oxBentoGridEven{grid-auto-rows:280px}
 .oxBentoCard{position:relative;display:flex;flex-direction:column;border-radius:22px;overflow:hidden;background:var(--ox-bg2);border:1px solid var(--ox-line)}
 .oxBentoLabel{padding:22px 22px 0;z-index:2}
 .oxBentoLabel b{display:block;color:var(--ox-ink);font-size:17px;font-weight:700;letter-spacing:-.01em}
 .oxBentoLabel span{display:block;color:var(--ox-muted);font-size:12px;margin-top:4px}
+/* Fotoğraf üzerindeki tek başına ok simgesi kullanıcıya ne olduğunu
+   anlatmıyordu ("neden tıklayayım?") — yerine diğer temalardaki gibi
+   (Roze/İpek/Keskin…) açık, okunaklı bir metin linki geldi. */
+.oxBentoDetailLink{display:inline-block;margin-top:8px;color:var(--ox-gold)!important;font-size:12.5px;font-weight:600;border-bottom:1px solid var(--ox-gold-deep)}
 .oxBentoPhoto{flex:1;position:relative;margin-top:14px;overflow:hidden}
 .oxBentoPhoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) brightness(.94);transition:transform .5s cubic-bezier(.4,0,.2,1)}
 .oxBentoCard:hover .oxBentoPhoto img{transform:scale(1.05)}
