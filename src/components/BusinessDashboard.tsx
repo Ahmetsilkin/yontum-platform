@@ -99,6 +99,8 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
   ],
   nova:[
     {key:'nv_manifesto',label:'Manifesto metni (girişten sonraki büyük, italik yazı)',type:'textarea',placeholder:'Her yüz kendi ışığını taşır. Biz sadece onu görünür kılarız.'},
+    {key:'nv_aboutText',label:'Hakkımızda metni (açıklama girilmezse)',type:'textarea',placeholder:'Her randevu, sizin için özenle tasarlanmış bir deneyimdir — detaylara olan bağlılığımız, sonuçlarımızda kendini gösterir.'},
+    {key:'nv_galleryTitle',label:'Galeri başlığı',placeholder:'Bizden kareler.'},
     {key:'nv_footerTagline',label:'Footer alt yazısı',type:'textarea',placeholder:'Zamanın en değerli hâli: kendine ayırdığın an.'},
   ],
 };

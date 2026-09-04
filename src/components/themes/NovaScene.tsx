@@ -1,13 +1,23 @@
 'use client';
-/* Nova temasının imza hero'su: kullanıcının 21st.dev'den paylaştığı "3D Orbit
-   Gallery" referansının BİREBİR aynısı — toz parçacıklarından oluşan bir küre,
-   etrafında dönen fotoğraf halkası, sürükle-çevir/yakınlaştır/kaydır (pan)
-   kamera kontrolü — OrbitControls referansla tıpatıp aynı (enablePan dahil,
-   kullanıcının açık isteği). Tek bilinçli fark: 1500 parçacık artık
-   referanstaki gibi 1500 ayrı <mesh> değil, TEK bir <instancedMesh> — görsel
-   olarak birebir aynı ama 1500 ayrı çizim komutu yerine tek çizim komutu (bu
-   oturumda WebGL performansıyla defalarca uğraştık, aynı hatayı bilerek
-   tekrar etmedim). */
+/* Nova'nın imza görsel öğesi: kullanıcının 21st.dev'den paylaştığı "3D Orbit
+   Gallery" referansının aynısı — toz parçacıklarından oluşan bir küre,
+   etrafında dönen fotoğraf halkası, sürükleyerek döndürme + kaydırma (pan)
+   kamera kontrolü — referansla tıpatıp aynı. Hem Hero'da hem Galeri'de
+   kullanılıyor (aynı bileşen, iki kez).
+
+   İKİ bilinçli fark:
+   1) 1500 parçacık artık referanstaki gibi 1500 ayrı <mesh> değil, TEK bir
+      <instancedMesh> — görsel olarak birebir aynı ama 1500 ayrı çizim komutu
+      yerine tek çizim komutu (bu oturumda WebGL performansıyla defalarca
+      uğraştık, aynı hatayı bilerek tekrar etmedim).
+   2) enableZoom KAPALI. Three.js'in OrbitControls'ü fare tekerleğini
+      yakınlaştırma için kullanıyor — ama bu bir DEMO sayfası değil, altında
+      Hizmetler/Galeri/Randevu bölümleri olan gerçek bir site. Zoom açıkken
+      tekerlek sahneye her değdiğinde sayfa KAYMIYOR, kamera yakınlaşıyordu
+      ("aşağı kaydırınca aşağıya inmiyor" hatası buydu). Sürükleyerek
+      döndürme + kaydırma (pan) tekerlek kullanmadığı için sayfa scroll'uyla
+      hiç çakışmıyor, tamamen açık kaldı — sadece "tekerlekle yakınlaştır"
+      kapatıldı ki tekerlek her zaman sayfayı kaydırsın. */
 import{useRef,useMemo,useEffect,Suspense}from'react';
 import{Canvas,useFrame}from'@react-three/fiber';
 import{OrbitControls,useTexture}from'@react-three/drei';
@@ -98,6 +108,6 @@ export default function NovaScene({photos}:{photos:string[]}){
     <ambientLight intensity={0.5}/>
     <pointLight position={[10,10,10]} intensity={1}/>
     <NovaGroup photos={photos}/>
-    <OrbitControls enablePan enableZoom enableRotate enableDamping dampingFactor={0.06}/>
+    <OrbitControls enablePan enableZoom={false} enableRotate enableDamping dampingFactor={0.06}/>
   </Canvas>;
 }

@@ -1962,11 +1962,15 @@ function Nova(p:P){
   const manifesto=dec(b,'nv_manifesto','Her yüz kendi ışığını taşır. Biz sadece onu görünür kılarız.');
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const novaPhotos=(galleryPhotos.length?galleryPhotos:LUMINA_DEFAULT_PHOTOS).slice(0,24);
+  const aboutText=b.description||dec(b,'nv_aboutText','Her randevu, sizin için özenle tasarlanmış bir deneyimdir — detaylara olan bağlılığımız, sonuçlarımızda kendini gösterir.');
+  const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
   return <main id="top" className="tNova">
     <header className="nvNav">
       <a className="nvBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
+        <a href="#hakkimizda">{b.about_label||'Hakkımızda'}</a>
         <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
         <a href="#randevu">Randevu</a>
       </nav>
       <a className="nvNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
@@ -1984,11 +1988,20 @@ function Nova(p:P){
           <a className="nvBtnGhost" href="#hizmetler">Hizmetleri Keşfet</a>
         </div>
       </div>
-      <div className="nvDragHint"><i/>Sürükle · Yakınlaştır</div>
+      <div className="nvDragHint"><i/>Sürükle · Kaydır</div>
     </section>
 
     <section className="nvManifesto">
       <Reveal><p className="nvManifestoText">{manifesto}</p></Reveal>
+    </section>
+
+    <section id="hakkimizda" className="nvAbout">
+      <Reveal className="nvAboutPhoto">{aboutPhoto?<img src={aboutPhoto} alt={b.name}/>:<div className="nvAboutPhotoFallback"/>}</Reveal>
+      <Reveal i={1} className="nvAboutText">
+        <small>{b.about_label||'HAKKIMIZDA'}</small>
+        <h2>{b.about_title||`${b.name} hakkında`}</h2>
+        <p>{aboutText}</p>
+      </Reveal>
     </section>
 
     <section id="hizmetler" className="nvServices">
@@ -2005,6 +2018,14 @@ function Nova(p:P){
         </Reveal>)}
       </div>
     </section>
+
+    {galleryPhotos.length>0&&<section id="galeri" className="nvGallery">
+      <Reveal className="nvSectionHead">
+        <small>GALERİ</small>
+        <h2>{dec(b,'nv_galleryTitle','Bizden kareler.')}</h2>
+      </Reveal>
+      <div className="nvGalleryScene"><NovaScene photos={galleryPhotos.slice(0,24)}/></div>
+    </section>}
 
     <section id="randevu" className="nvBooking">
       <Reveal className="nvSectionHead">
