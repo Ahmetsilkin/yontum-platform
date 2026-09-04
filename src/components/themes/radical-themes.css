@@ -1602,19 +1602,19 @@
    (#000 — referanstaki bg-black ile birebir) + parçacıkların kendi sıcak
    amber tonu. Başlık fontu da ayrı bir kimlik: Bodoni Moda — yüksek kontrastlı,
    sergi/galeri afişi havasında bir display serif. */
-.tNova{--nv-bg:#000000;--nv-bg2:#0d0d0d;--nv-bg3:#171717;--nv-ink:#f5f4f2;--nv-muted:#9a978f;--nv-amber:#e8a24d;--nv-amber-deep:#a8681f;--nv-line:rgba(245,244,242,.14);background:var(--nv-bg);color:var(--nv-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
+.tNova{--nv-bg:#000000;--nv-bg2:#0d0d0d;--nv-bg3:#171717;--nv-ink:#f5f4f2;--nv-muted:#9a978f;--nv-accent:#595B83;--nv-accent-deep:#333456;--nv-line:rgba(245,244,242,.14);background:var(--nv-bg);color:var(--nv-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
 .tNova h1,.tNova h2,.tNova h3{font-family:'Bodoni Moda',Georgia,'Times New Roman',serif;letter-spacing:-.01em}
-.tNova em{font-style:italic;color:var(--nv-amber)}
+.tNova em{font-style:italic;color:var(--nv-accent)}
 
 .nvNav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:22px 6vw;background:linear-gradient(180deg,rgba(0,0,0,.65),transparent)}
 .nvBrand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.005em;font-size:14.5px;color:var(--nv-ink);font-family:'Inter',sans-serif}
 .nvBrand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
-.nvBrand i{width:32px;height:32px;border-radius:50%;background:var(--nv-amber);color:#100b04;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
+.nvBrand i{width:32px;height:32px;border-radius:50%;background:var(--nv-accent);color:var(--nv-ink);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px}
 .nvNav nav{display:flex;gap:32px}
 .nvNav nav a{color:var(--nv-muted);font-size:13px;font-weight:500;transition:color .18s ease}
 .nvNav nav a:hover{color:var(--nv-ink)}
-.nvNavBtn{border:1px solid var(--nv-amber);color:var(--nv-amber)!important;font-weight:600;font-size:13px;padding:10px 20px;border-radius:999px;transition:background .18s ease,color .18s ease}
-.nvNavBtn:hover{background:var(--nv-amber);color:#100b04!important}
+.nvNavBtn{border:1px solid var(--nv-accent);color:var(--nv-accent)!important;font-weight:600;font-size:13px;padding:10px 20px;border-radius:999px;transition:background .18s ease,color .18s ease}
+.nvNavBtn:hover{background:var(--nv-accent);color:var(--nv-ink)!important}
 
 /* Hero — 3D sahne tam ekran arka plan, üstünde metin katmanı. Metin
    kutusunun `pointer-events:none` olması ÖNEMLİ: aksi hâlde ziyaretçi tam da
@@ -1627,15 +1627,15 @@
 .nvHeroOverlay{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at center,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.88) 100%);pointer-events:none}
 .nvHeroInner{position:relative;z-index:2;text-align:center;max-width:760px;padding:0 6vw;pointer-events:none}
 .nvHeroInner a{pointer-events:auto}
-.nvEyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--nv-amber);font-size:11px;letter-spacing:3px;font-weight:700;margin:0 0 22px;font-family:'Inter',sans-serif}
-.nvEyebrow i{width:6px;height:6px;border-radius:50%;background:var(--nv-amber);box-shadow:0 0 12px var(--nv-amber)}
+.nvEyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--nv-accent);font-size:11px;letter-spacing:3px;font-weight:700;margin:0 0 22px;font-family:'Inter',sans-serif}
+.nvEyebrow i{width:6px;height:6px;border-radius:50%;background:var(--nv-accent);box-shadow:0 0 12px var(--nv-accent)}
 .nvHeroTitle{color:var(--nv-ink);font-size:clamp(38px,6vw,80px);line-height:1.05;font-weight:500;margin:0 0 24px}
 .nvHeroDesc{color:var(--nv-muted);font-size:16px;line-height:1.7;max-width:480px;margin:0 auto 34px;font-family:'Inter',sans-serif}
 .nvHeroActions{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.nvBtnSolid{display:inline-flex;align-items:center;gap:8px;background:var(--nv-amber);color:#100b04!important;font-weight:700;font-size:14px;padding:15px 26px;border-radius:999px;transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s ease}
-.nvBtnSolid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(232,162,77,.35)}
+.nvBtnSolid{display:inline-flex;align-items:center;gap:8px;background:var(--nv-accent);color:var(--nv-ink)!important;font-weight:700;font-size:14px;padding:15px 26px;border-radius:999px;transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s ease}
+.nvBtnSolid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(89,91,131,.4)}
 .nvBtnGhost{color:var(--nv-ink)!important;font-weight:600;font-size:14px;padding:15px 4px;border-bottom:1px solid var(--nv-line);transition:border-color .18s ease}
-.nvBtnGhost:hover{border-color:var(--nv-amber)}
+.nvBtnGhost:hover{border-color:var(--nv-accent)}
 .nvDragHint{position:absolute;left:50%;bottom:32px;transform:translateX(-50%);z-index:2;display:flex;align-items:center;gap:8px;color:var(--nv-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;pointer-events:none}
 .nvDragHint i{width:16px;height:16px;border:1px solid var(--nv-muted);border-radius:4px;display:inline-block}
 
@@ -1646,12 +1646,12 @@
 .nvAboutPhoto{border-radius:20px;overflow:hidden;aspect-ratio:4/5}
 .nvAboutPhoto img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.92) brightness(.9)}
 .nvAboutPhotoFallback{width:100%;height:100%;background:linear-gradient(150deg,var(--nv-bg3),var(--nv-bg))}
-.nvAboutText small{color:var(--nv-amber);font-weight:800;letter-spacing:2.5px;font-size:11px;font-family:'Inter',sans-serif}
+.nvAboutText small{color:var(--nv-accent);font-weight:800;letter-spacing:2.5px;font-size:11px;font-family:'Inter',sans-serif}
 .nvAboutText h2{font-size:clamp(28px,3.4vw,42px);font-weight:500;margin:14px 0 20px;color:var(--nv-ink)}
 .nvAboutText p{color:var(--nv-muted);font-size:15px;line-height:1.75;max-width:480px}
 
 .nvSectionHead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:0 6vw 44px;flex-wrap:wrap}
-.nvSectionHead small{color:var(--nv-amber);font-weight:800;letter-spacing:2.5px;font-size:11px;font-family:'Inter',sans-serif}
+.nvSectionHead small{color:var(--nv-accent);font-weight:800;letter-spacing:2.5px;font-size:11px;font-family:'Inter',sans-serif}
 .nvSectionHead h2{font-size:clamp(28px,3.4vw,42px);font-weight:500;margin:12px 0 0;color:var(--nv-ink)}
 
 .nvServices{padding:80px 6vw 100px}
@@ -1659,10 +1659,10 @@
 .nvServiceCard{background:var(--nv-bg2);padding:32px 26px}
 .nvServiceHead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .nvServiceHead h3{margin:0;font-size:19px;font-weight:500;color:var(--nv-ink)}
-.nvServiceHead b{color:var(--nv-amber);font-size:15px;white-space:nowrap;font-family:'Inter',sans-serif}
+.nvServiceHead b{color:var(--nv-accent);font-size:15px;white-space:nowrap;font-family:'Inter',sans-serif}
 .nvServiceCard p{color:var(--nv-muted);font-size:13.5px;line-height:1.6;margin:10px 0}
 .nvServiceCard small{color:var(--nv-muted);font-size:12px}
-.nvServiceDetailLink{display:block;margin-top:12px;color:var(--nv-amber)!important;font-size:12.5px;font-weight:600;border-bottom:1px solid var(--nv-amber-deep);width:fit-content}
+.nvServiceDetailLink{display:block;margin-top:12px;color:var(--nv-accent)!important;font-size:12.5px;font-weight:600;border-bottom:1px solid var(--nv-accent-deep);width:fit-content}
 
 /* Galeri — Hero'daki İLE AYNI 3D sahne (NovaScene), ikinci kez, işletmenin
    galeri fotoğraflarıyla besleniyor. Hero gibi tam ekran değil, kendi
@@ -1678,39 +1678,39 @@
 .tNova.tNova.tNova .tenantBooking{background:var(--nv-bg2);border:1px solid var(--nv-line);border-radius:20px;color:var(--nv-ink);box-shadow:0 40px 90px rgba(0,0,0,.5)}
 .tNova.tNova.tNova .tenantBooking h4{border-top-color:var(--nv-line);color:var(--nv-ink)}
 .tNova.tNova.tNova .tenantStep i{background:transparent;border-color:var(--nv-line);color:var(--nv-muted)}
-.tNova.tNova.tNova .tenantStep.active i{border-color:var(--nv-amber);color:#100b04;background:var(--nv-amber)}
+.tNova.tNova.tNova .tenantStep.active i{border-color:var(--nv-accent);color:var(--nv-ink);background:var(--nv-accent)}
 .tNova.tNova.tNova .tenantStep span{color:var(--nv-muted)}
 .tNova.tNova.tNova .tenantStep.active span{color:var(--nv-ink)}
 .tNova.tNova.tNova .tenantStepLine{background:var(--nv-line)}
-.tNova.tNova.tNova .tenantStepLine.active{background:var(--nv-amber)}
-.tNova.tNova.tNova .tbTitle span{color:var(--nv-amber)}
+.tNova.tNova.tNova .tenantStepLine.active{background:var(--nv-accent)}
+.tNova.tNova.tNova .tbTitle span{color:var(--nv-accent)}
 .tNova.tNova.tNova .tbTitle h3{color:var(--nv-ink)}
 .tNova.tNova.tNova .tbTitle p{color:var(--nv-muted)}
 .tNova.tNova.tNova .tbServices button,.tNova.tNova.tNova .staffOptions button,.tNova.tNova.tNova .tbDays button,.tNova.tNova.tNova .tbSlots button{background:transparent!important;border-color:var(--nv-line);color:var(--nv-ink)!important;-webkit-text-fill-color:var(--nv-ink)!important}
-.tNova.tNova.tNova .tbServices button.selected,.tNova.tNova.tNova .staffOptions button.selected{border-color:var(--nv-amber);box-shadow:inset 4px 0 var(--nv-amber)}
+.tNova.tNova.tNova .tbServices button.selected,.tNova.tNova.tNova .staffOptions button.selected{border-color:var(--nv-accent);box-shadow:inset 4px 0 var(--nv-accent)}
 .tNova.tNova.tNova .tbServices small,.tNova.tNova.tNova .staffOptions small{color:var(--nv-muted)}
-.tNova.tNova.tNova .tbDays button.selected,.tNova.tNova.tNova .tbSlots button.selected{background:var(--nv-amber)!important;color:#100b04!important;-webkit-text-fill-color:#100b04!important}
+.tNova.tNova.tNova .tbDays button.selected,.tNova.tNova.tNova .tbSlots button.selected{background:var(--nv-accent)!important;color:var(--nv-ink)!important;-webkit-text-fill-color:var(--nv-ink)!important}
 .tNova.tNova.tNova .tbDays button.closed{opacity:.25}
-.tNova.tNova.tNova .tenantNext{background:var(--nv-amber)!important;color:#100b04!important;-webkit-text-fill-color:#100b04!important;border-radius:999px}
+.tNova.tNova.tNova .tenantNext{background:var(--nv-accent)!important;color:var(--nv-ink)!important;-webkit-text-fill-color:var(--nv-ink)!important;border-radius:999px}
 .tNova.tNova.tNova .tenantNext:disabled{opacity:.3!important}
 .tNova.tNova.tNova .tbBack{color:var(--nv-muted)}
 .tNova.tNova.tNova .tenantBooking input,.tNova.tNova.tNova .tenantBooking textarea{background:rgba(255,255,255,.04);border:1px solid var(--nv-line);color:var(--nv-ink)}
 .tNova.tNova.tNova .tenantError{background:rgba(200,60,60,.15);color:#ff9d9d}
-.tNova.tNova.tNova .tbDone>span{border-color:var(--nv-amber);color:var(--nv-amber)}
+.tNova.tNova.tNova .tbDone>span{border-color:var(--nv-accent);color:var(--nv-accent)}
 .tNova.tNova.tNova .tbDone h3{color:var(--nv-ink)}
 .tNova.tNova.tNova .tbDone p{color:var(--nv-muted)}
 .tNova.tNova.tNova .tbDone button{border-color:var(--nv-line);background:transparent;color:var(--nv-ink)}
-.tNova.tNova.tNova .cancelManageLink{color:var(--nv-amber)}
+.tNova.tNova.tNova .cancelManageLink{color:var(--nv-accent)}
 
 .nvFooter{background:var(--nv-bg2);padding:70px 6vw 30px;margin-top:20px;border-top:1px solid var(--nv-line)}
 .nvFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--nv-line)}
 .nvFooterGrid p{color:var(--nv-muted);font-size:14px;line-height:1.6;margin-top:14px;max-width:280px}
-.nvFooterGrid small{color:var(--nv-amber);font-weight:800;letter-spacing:2px;font-size:10.5px}
+.nvFooterGrid small{color:var(--nv-accent);font-weight:800;letter-spacing:2px;font-size:10.5px}
 .nvHoursRow{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--nv-muted);padding:8px 0;border-bottom:1px solid var(--nv-line)}
 .nvHoursRow:first-of-type{margin-top:14px}
 .nvContactRow{display:flex!important;align-items:center;gap:8px;color:var(--nv-muted);font-size:13.5px;margin-top:14px}
 .nvContactRow a{display:flex;align-items:center;gap:8px;color:var(--nv-muted)}
-.nvContactRow svg{flex-shrink:0;color:var(--nv-amber)}
+.nvContactRow svg{flex-shrink:0;color:var(--nv-accent)}
 .nvFooterBottom{padding-top:24px;text-align:center;font-size:11.5px;color:var(--nv-muted)}
 
 @media(max-width:900px){

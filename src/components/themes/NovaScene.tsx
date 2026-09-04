@@ -42,7 +42,12 @@ function ParticleField(){
       arr.push({
         position:[x,y,z],
         scale:Math.random()*(PARTICLE_SIZE_MAX-PARTICLE_SIZE_MIN)+PARTICLE_SIZE_MIN,
-        color:new THREE.Color().setHSL(Math.random()*0.1+0.05,0.8,0.6+Math.random()*0.3)
+        /* Referanstaki sarımsı/amber ton yerine kullanıcının verdiği tema
+           renklerinin (#595B83, #333456) hue'su — ~0.66. Doygunluk/parlaklık
+           bu iki rengin ham L değerlerinden değil, siyah zeminde "ışıldayan
+           toz" gibi görünmesi için biraz daha açık tutuldu (aksi hâlde bu iki
+           renk koyu tonda olduğundan parçacıklar neredeyse görünmez olurdu). */
+        color:new THREE.Color().setHSL(0.65+Math.random()*0.04,0.32+Math.random()*0.18,0.55+Math.random()*0.25)
       });
     }
     return arr;

@@ -1963,6 +1963,12 @@ function Nova(p:P){
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const novaPhotos=(galleryPhotos.length?galleryPhotos:LUMINA_DEFAULT_PHOTOS).slice(0,24);
   const aboutText=b.description||dec(b,'nv_aboutText','Her randevu, sizin için özenle tasarlanmış bir deneyimdir — detaylara olan bağlılığımız, sonuçlarımızda kendini gösterir.');
+  /* `hero_label` sütununun veritabanı düzeyindeki VARSAYILANI (platform
+     berber-öncelikli başladığı için) 'ERKEK BAKIM · ONLINE RANDEVU' —
+     işletme bunu hiç değiştirmediyse (yeni oluşturulan her işletmede otomatik
+     dolu geliyor), güzellik salonu temasında bu metin öylece görünüyordu.
+     Bu TEK, bilinen değeri "boş" say — başka hiçbir gerçek değeri ezmiyor. */
+  const heroLabel=(b.hero_label==='ERKEK BAKIM · ONLINE RANDEVU'?'':b.hero_label)||'PREMIUM GÜZELLİK SALONU';
   const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
   return <main id="top" className="tNova">
     <header className="nvNav">
@@ -1980,7 +1986,7 @@ function Nova(p:P){
       <div className="nvHeroScene"><NovaScene photos={novaPhotos}/></div>
       <div className="nvHeroOverlay"/>
       <div className="nvHeroInner">
-        <p className="nvEyebrow"><i/>{b.hero_label||'PREMIUM GÜZELLİK SALONU'}</p>
+        <p className="nvEyebrow"><i/>{heroLabel}</p>
         <h1 className="nvHeroTitle">{b.hero_title||'Güzelliğin'} <em>{b.hero_highlight||'yörüngesi.'}</em></h1>
         {b.hero_description&&<p className="nvHeroDesc">{b.hero_description}</p>}
         <div className="nvHeroActions">
