@@ -2084,8 +2084,17 @@ function releaseCadreScrollLock(){
    senkron bağlı olduğu için izin veriyor. Yine de reddedilirse (bazı
    tarayıcı/sürümler kaydırmayı yeterli saymayabilir), sessize alıp tekrar
    deniyoruz — böylece en azından GÖRSEL oynatma hiçbir zaman engellenmiyor. */
+/* Bir 'wheel' olayı bazen sesli oynatmaya yeterli sayılıyor, bazen sayılmıyor
+   — tarayıcıların "kullanıcı jesti" tanımı kaydırma için tutarsız (bir
+   tıklama HER ZAMAN yeterli sayılır, kaydırma öyle değil). Bu yüzden "hep
+   sesli oynasın" isteğini KOD İÇİNDE tam garanti etmenin bir yolu yok — sesli
+   oynatma tarayıcı tarafından reddedilirse (needsSoundPrompt=true), küçük
+   bir "Sesi Aç" düğmesi çıkıyor; buna TIKLAMAK zaten oynayan videoyu
+   sessizden çıkarıyor ve bu, gerçek bir tıklama olduğu için HER ZAMAN
+   çalışır — yani ses her durumda en fazla bir tıkla garanti altında. */
 function useCadreVideoGate(videoRef:{current:HTMLVideoElement|null}){
   const[progress,setProgress]=useState(0);
+  const[needsSoundPrompt,setNeedsSoundPrompt]=useState(false);
   const stateRef=useRef({triggered:false,exhausted:false});
   useEffect(()=>{
     const st=stateRef.current;
@@ -2098,7 +2107,10 @@ function useCadreVideoGate(videoRef:{current:HTMLVideoElement|null}){
       const v=videoRef.current;if(!v)return;
       const playPromise=v.play();
       if(playPromise&&typeof playPromise.catch==='function'){
-        playPromise.catch(()=>{try{v.muted=true;v.play().catch(()=>{})}catch{}});
+        playPromise.catch(()=>{
+          try{v.muted=true;v.play().catch(()=>{})}catch{}
+          setNeedsSoundPrompt(true);
+        });
       }
     };
     const onEnded=()=>{st.exhausted=true;releaseCadreScrollLock()};
@@ -2133,14 +2145,19 @@ function useCadreVideoGate(videoRef:{current:HTMLVideoElement|null}){
       window.removeEventListener('touchmove',onTouchMove);
     };
   },[]);
-  return{progress};
+  const unmute=()=>{
+    const v=videoRef.current;if(!v)return;
+    v.muted=false;
+    setNeedsSoundPrompt(false);
+  };
+  return{progress,needsSoundPrompt,unmute};
 }
 
 function Cadre(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const videoRef=useRef<HTMLVideoElement>(null);
-  const{progress}=useCadreVideoGate(videoRef);
+  const{progress,needsSoundPrompt,unmute}=useCadreVideoGate(videoRef);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const aboutText=b.description||dec(b,'cd_aboutText','Her detay özenle düşünülür; her randevu, sessiz bir lüks anına dönüşür.');
   const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
@@ -2171,6 +2188,7 @@ function Cadre(p:P){
       </div>
       <div className="cdScrollHint" style={{opacity:progress>=1?0:1}}><span/>Sesli oynatmak için kaydırın</div>
       <div className="cdProgressTrack" aria-hidden="true"><div className="cdProgressFill" style={{width:`${Math.round(progress*100)}%`}}/></div>
+      {needsSoundPrompt&&<button type="button" className="cdSoundBtn" onClick={unmute}>🔊 Sesi Aç</button>}
     </section>
 
     <section id="hakkimizda" className="cdAbout">

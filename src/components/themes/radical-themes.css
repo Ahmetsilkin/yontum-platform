@@ -1782,6 +1782,15 @@
 .cdScrollHint span{width:1px;height:26px;background:var(--cd-gold)}
 .cdProgressTrack{position:absolute;left:6vw;right:6vw;bottom:20px;z-index:2;height:1px;background:rgba(74,47,44,.15)}
 .cdProgressFill{height:100%;background:var(--cd-gold);transition:width .05s linear}
+/* Taraycıların sesli otomatik oynatma politikası kaydırmayı her zaman
+   yeterli "kullanıcı jesti" saymayabiliyor — video sessize düşerse bu düğme
+   çıkıyor. Buna TIKLAMAK zaten oynayan videoyu sessizden çıkarıyor; bu
+   gerçek bir tıklama olduğu için tarayıcı tarafından her zaman izin verilir
+   — yani ses en fazla bir tıkla her durumda garanti altında. */
+.cdSoundBtn{position:absolute;right:6vw;bottom:20px;z-index:3;display:inline-flex;align-items:center;gap:8px;background:var(--cd-ink);color:var(--cd-bg);border:none;font-size:12.5px;font-weight:600;letter-spacing:.02em;padding:11px 20px;border-radius:999px;cursor:pointer;box-shadow:0 10px 28px rgba(74,47,44,.22);animation:cdSoundBtnIn .3s ease}
+.cdSoundBtn:hover{background:var(--cd-gold)}
+@keyframes cdSoundBtnIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:650px){.cdSoundBtn{right:6vw;bottom:64px}}
 
 .cdSectionHead{text-align:center;max-width:700px;margin:0 auto 50px}
 .cdSectionHead small{color:var(--cd-gold);font-weight:700;letter-spacing:2.5px;font-size:11px;text-transform:uppercase}
