@@ -2051,19 +2051,23 @@ function Nova(p:P){
 
 /* ================= CADRE — kullanıcının hazır bir yapay zeka promptuyla
    tarif ettiği "Framed" (çerçeveli), sessiz lüks (quiet luxury) tek sayfa
-   tema. İmza özellik: hero'da, kullanıcının verdiği .zip'teki 240 karelik
-   (altın serum damlası + dalga halkaları, ezgif'ten çıkarılmış) dizi,
-   kaydırmaya bağlı (scroll-scrubbed) oynuyor — sayfa dizi bitene kadar
-   kaymıyor. Diğer temaların hepsinden kasıtlı olarak farklı: tek TAM EKRAN
-   fotoğraf değil, ince bir çerçeve içinde SINIRLI/kontrollü bir görsel panel
-   (kaynak kareler 640×360 — tam ekrana gerilirse yumuşak/bulanık dururdu;
-   çerçeveli/gazete-editoryal kompozisyon hem markaya uyuyor hem bunu
-   gerektirmiyor). Lumina'da öğrenilen EN kritik ders burada da uygulandı:
-   kaydırma kilidi, React hydrate olmadan ÖNCE senkron çalışan bir <script>
-   ile başlıyor (bkz. CadreScrollLockInit) — aksi hâlde "ilk denemede kilit
-   atlanıyor" hatası tekrar ederdi. */
-const CADRE_FRAME_COUNT=192;
-const cadreFrameSrc=(i:number)=>`/cadre/frames/frame-${String(i).padStart(3,'0')}.jpg`;
+   tema. İmza özellik: hero'da kullanıcının verdiği GERÇEK video (hero.mp4 —
+   altın serum damlası + dalga halkaları, 8sn, sesli). Sayfa açılıp aşağı
+   kaydırılmaya çalışıldığı an video SESİYLE BİRLİKTE oynuyor, video bitene
+   kadar sayfa kilitli kalıyor, bitince serbest kalıyor.
+
+   Önceki iki deneme (ezgif'ten çıkarılmış 240, sonra 192 ayrı JPEG/PNG kare,
+   kaydırma miktarına göre "scrub" edilerek) hem kasma hem düşük görüntü
+   kalitesi şikayetine yol açtı — 192 ayrı dosya arasında geçiş yapmak,
+   tarayıcının native video oynatma boru hattından çok daha ağır. Kullanıcı
+   asıl videoyu paylaşınca en doğru çözüm ortaya çıktı: video dosyasını
+   OLDUĞU GİBİ, kendi doğal hızında ve SESİYLE oynat — tarayıcı bunu donanım
+   hızlandırmalı çözüp boyuyor, 656 KB (240 kareden ~6 kat küçük).
+
+   Lumina'da öğrenilen EN kritik ders burada da uygulandı: kaydırma kilidi,
+   React hydrate olmadan ÖNCE senkron çalışan bir <script> ile başlıyor (bkz.
+   CadreScrollLockInit) — aksi hâlde "ilk denemede kilit atlanıyor" hatası
+   tekrar ederdi. */
 function CadreScrollLockInit(){
   return <script dangerouslySetInnerHTML={{__html:"try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.overflow='hidden';document.documentElement.style.overscrollBehavior='none';document.body.style.overflow='hidden'}}catch(e){}"}}/>;
 }
@@ -2074,111 +2078,69 @@ function releaseCadreScrollLock(){
     document.body.style.overflow='';
   }catch{}
 }
-/* Lumina'nın "adım adım" (discrete) fotoğraf kilidinden farklı: burada
-   kaydırma miktarı doğrudan kare indeksine ORANTILI (continuous scrub) —
-   bu yüzden Lumina'yı bozan trackpad momentum/kalıntı-sinyal sınıfı hatalara
-   yapısal olarak kapalı: küçük kalıntı sinyaller sadece ilerlemeyi bir tık
-   oynatır, büyük bir "yanlış adım" sıçraması yaratmaz. */
-function useCadreFrameSequence(){
-  const[frameIdx,setFrameIdx]=useState(1);
+/* Video'yu, kullanıcının GERÇEK bir kaydırma hareketine (wheel/touchmove)
+   SENKRON yanıt olarak `play()` ile tetikliyoruz — tarayıcıların "sesli
+   otomatik oynatma" politikası genelde bunu, doğrudan bir kullanıcı jestine
+   senkron bağlı olduğu için izin veriyor. Yine de reddedilirse (bazı
+   tarayıcı/sürümler kaydırmayı yeterli saymayabilir), sessize alıp tekrar
+   deniyoruz — böylece en azından GÖRSEL oynatma hiçbir zaman engellenmiyor. */
+function useCadreVideoGate(videoRef:{current:HTMLVideoElement|null}){
   const[progress,setProgress]=useState(0);
-  const stateRef=useRef({progress:0,exhausted:false});
-  useEffect(()=>{
-    let cancelled=false;
-    for(let i=1;i<=CADRE_FRAME_COUNT;i++){
-      const img=new window.Image();
-      img.src=cadreFrameSrc(i);
-    }
-    return()=>{cancelled=true};
-  },[]);
-  /* KASITLI OLARAK burada (veya ayrı, boş bağımlılıklı bir effect'te)
-     "unmount'ta kilidi serbest bırak" satırı YOK. React Strict Mode (next dev,
-     next.config.js'te açık) her effect'i bir kere mount→cleanup→mount diye
-     ÇİFT çalıştırır — sadece geliştirmede, production'da değil. Böyle ayrı
-     bir "cleanup-only" effect eklenmişti, gerçekte hiç unmount olmadığı hâlde
-     bu çift-çalıştırma sırasında kilidi anında açıveriyordu (canlı tarayıcıda
-     test edince yakalandı — kilit hiç devreye girmemiş gibi görünüyordu).
-     Serbest bırakma zaten üç yerden garanti: reduced-motion, exhaust() (son
-     kareden sonraki kaydırma denemesi) ve aşağıdaki 45sn güvenlik zaman aşımı
-     — bu sayfa pratikte gerçek bir unmount da yaşamıyor (client-route geçişi
-     yok), o yüzden ekstra bir "unmount güvenliği" gerekmiyor. */
+  const stateRef=useRef({triggered:false,exhausted:false});
   useEffect(()=>{
     const st=stateRef.current;
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced){st.exhausted=true;releaseCadreScrollLock();return}
-    const safety=setTimeout(()=>{st.exhausted=true;releaseCadreScrollLock()},45000);
-    const TOTAL=5200;
-    /* Hızlı bir trackpad hareketi saniyede onlarca 'wheel' olayı üretebiliyor
-       — her birinde React state'ini SENKRON güncellemek (setProgress+
-       setFrameIdx) demek, saniyede onlarca yeniden render + yeni bir JPEG
-       kare çizimi demek: tam da kullanıcının bildirdiği "kasma" hissi. Artık
-       matematik (st.progress) her olayda anında güncelleniyor ama EKRANA
-       YANSITMA (state güncellemesi) ekranın kendi yenileme hızına (rAF) göre,
-       en fazla saniyede bir kez gruplanıyor — arada kaç wheel olayı gelirse
-       gelsin, her animasyon karesinde sadece EN GÜNCEL ilerleme çiziliyor. */
-    let rafId=0,rafPending=false;
-    const flush=()=>{
-      rafPending=false;
-      setProgress(st.progress);
-      setFrameIdx(Math.min(CADRE_FRAME_COUNT,Math.max(1,Math.round(st.progress*(CADRE_FRAME_COUNT-1))+1)));
+    const safety=setTimeout(()=>{st.exhausted=true;releaseCadreScrollLock()},20000);
+    const start=()=>{
+      if(st.triggered)return;
+      st.triggered=true;
+      const v=videoRef.current;if(!v)return;
+      const playPromise=v.play();
+      if(playPromise&&typeof playPromise.catch==='function'){
+        playPromise.catch(()=>{try{v.muted=true;v.play().catch(()=>{})}catch{}});
+      }
     };
-    const apply=(delta:number)=>{
-      st.progress=Math.min(1,Math.max(0,st.progress+delta/TOTAL));
-      if(!rafPending){rafPending=true;rafId=requestAnimationFrame(flush)}
+    const onEnded=()=>{st.exhausted=true;releaseCadreScrollLock()};
+    const onTimeUpdate=()=>{
+      const v=videoRef.current;if(!v||!v.duration)return;
+      setProgress(Math.min(1,v.currentTime/v.duration));
     };
     const onWheel=(e:WheelEvent)=>{
       if(st.exhausted)return;
-      if(st.progress>=1&&e.deltaY>0){st.exhausted=true;releaseCadreScrollLock();return}
-      if(st.progress<=0&&e.deltaY<0)return;
       e.preventDefault();
-      apply(e.deltaY);
+      if(e.deltaY>0)start();
     };
     let touchY:number|null=null;
     const onTouchStart=(e:TouchEvent)=>{touchY=st.exhausted?null:e.touches[0].clientY};
     const onTouchMove=(e:TouchEvent)=>{
       if(st.exhausted||touchY==null)return;
-      const dy=touchY-e.touches[0].clientY;
-      if(st.progress>=1&&dy>0){st.exhausted=true;releaseCadreScrollLock();return}
-      if(st.progress<=0&&dy<0){touchY=e.touches[0].clientY;return}
       e.preventDefault();
-      apply(dy);
-      touchY=e.touches[0].clientY;
+      if(touchY-e.touches[0].clientY>10)start();
     };
+    const v=videoRef.current;
+    v?.addEventListener('ended',onEnded);
+    v?.addEventListener('timeupdate',onTimeUpdate);
     window.addEventListener('wheel',onWheel,{passive:false});
     window.addEventListener('touchstart',onTouchStart,{passive:true});
     window.addEventListener('touchmove',onTouchMove,{passive:false});
     return()=>{
       clearTimeout(safety);
-      cancelAnimationFrame(rafId);
+      v?.removeEventListener('ended',onEnded);
+      v?.removeEventListener('timeupdate',onTimeUpdate);
       window.removeEventListener('wheel',onWheel);
       window.removeEventListener('touchstart',onTouchStart);
       window.removeEventListener('touchmove',onTouchMove);
     };
   },[]);
-  return{frameIdx,progress};
-}
-/* Yeni kare her zaman ALTTA, tam opak beliriyor; bir ÖNCEKİ kare üstünde
-   kısa bir animasyonla eriyip yeni kareyi ortaya çıkarıyor — bkz.
-   .cdFrameImgFade (radical-themes.css). Tamamen deklaratif: ref/imperatif
-   DOM güncellemesi yok, React'in normal yeniden render akışıyla çalışıyor. */
-function CadreFrameCrossfade({frameIdx,alt}:{frameIdx:number;alt:string}){
-  const[older,setOlder]=useState<number|null>(null);
-  const prevRef=useRef(frameIdx);
-  useEffect(()=>{
-    if(frameIdx===prevRef.current)return;
-    setOlder(prevRef.current);
-    prevRef.current=frameIdx;
-  },[frameIdx]);
-  return <>
-    <img className="cdFrameImg" src={cadreFrameSrc(frameIdx)} alt={alt}/>
-    {older!=null&&<img key={older} className="cdFrameImg cdFrameImgFade" src={cadreFrameSrc(older)} alt="" onAnimationEnd={()=>setOlder(null)}/>}
-  </>;
+  return{progress};
 }
 
 function Cadre(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
-  const{frameIdx,progress}=useCadreFrameSequence();
+  const videoRef=useRef<HTMLVideoElement>(null);
+  const{progress}=useCadreVideoGate(videoRef);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const aboutText=b.description||dec(b,'cd_aboutText','Her detay özenle düşünülür; her randevu, sessiz bir lüks anına dönüşür.');
   const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
@@ -2198,7 +2160,7 @@ function Cadre(p:P){
 
     <section className="cdHero">
       <div className="cdFrameWrap">
-        <CadreFrameCrossfade frameIdx={frameIdx} alt={b.name}/>
+        <video ref={videoRef} className="cdFrameImg" src="/cadre/hero.mp4" poster="/cadre/hero-poster.jpg" playsInline preload="auto" aria-hidden="true"/>
       </div>
       <div className="cdHeroOverlay"/>
       <div className="cdHeroText">
@@ -2207,7 +2169,7 @@ function Cadre(p:P){
         {b.hero_description&&<p className="cdHeroDesc">{b.hero_description}</p>}
         <a className="cdBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
       </div>
-      <div className="cdScrollHint" style={{opacity:progress>=1?0:1}}><span/>Kaydırın</div>
+      <div className="cdScrollHint" style={{opacity:progress>=1?0:1}}><span/>Sesli oynatmak için kaydırın</div>
       <div className="cdProgressTrack" aria-hidden="true"><div className="cdProgressFill" style={{width:`${Math.round(progress*100)}%`}}/></div>
     </section>
 
