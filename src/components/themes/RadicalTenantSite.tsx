@@ -1008,7 +1008,7 @@ function Roze(p:P){
           :<div className="rzHeroMedia rzHeroMediaFallback"/>}
       <div className="rzHeroOverlay"/>
       <div className="rzHeroInner">
-        <p className="rzHeroEyebrow"><i/>{b.hero_label||'GÜZELLİK · BAKIM'}</p>
+        <p className="rzHeroEyebrow"><i/>{safeHeroLabel(b,'GÜZELLİK · BAKIM')}</p>
         <WordsDrop tag="h1" parts={[{text:`${b.hero_title||'Güzelliğini'} `},{text:b.hero_highlight||'ortaya çıkar',as:'em'}]}/>
         {b.hero_description&&<p className="rzHeroDesc">{b.hero_description}</p>}
         <div className="rzHeroActions">
@@ -1453,7 +1453,7 @@ function Onix(p:P){
       </div>
       <div className="oxHeroOverlay"/>
       <div className="oxHeroInner">
-        <p className="oxEyebrow"><i/>{b.hero_label||'PREMIUM GÜZELLİK SALONU'}</p>
+        <p className="oxEyebrow"><i/>{safeHeroLabel(b,'PREMIUM GÜZELLİK SALONU')}</p>
         <h1 className="oxHeroTitle">{b.hero_title||'Güzelliğin'} <em>{b.hero_highlight||'zirvesi.'}</em></h1>
         {b.hero_description&&<p className="oxHeroDesc">{b.hero_description}</p>}
         <div className="oxHeroActions">
@@ -1883,7 +1883,7 @@ function Lumina(p:P){
       <div className="lmHeroGrade"/>
       <div className="lmHeroOverlay"/>
       <div className="lmHeroInner">
-        <p className="lmEyebrow"><i/>{b.hero_label||'PREMIUM GÜZELLİK SALONU'}</p>
+        <p className="lmEyebrow"><i/>{safeHeroLabel(b,'PREMIUM GÜZELLİK SALONU')}</p>
         <h1 className="lmHeroTitle">{b.hero_title||'Cildinize'} <em>{b.hero_highlight||'ışık düşür.'}</em></h1>
         {b.hero_description&&<p className="lmHeroDesc">{b.hero_description}</p>}
         <div className="lmHeroActions">
@@ -1963,12 +1963,7 @@ function Nova(p:P){
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const novaPhotos=(galleryPhotos.length?galleryPhotos:LUMINA_DEFAULT_PHOTOS).slice(0,24);
   const aboutText=b.description||dec(b,'nv_aboutText','Her randevu, sizin için özenle tasarlanmış bir deneyimdir — detaylara olan bağlılığımız, sonuçlarımızda kendini gösterir.');
-  /* `hero_label` sütununun veritabanı düzeyindeki VARSAYILANI (platform
-     berber-öncelikli başladığı için) 'ERKEK BAKIM · ONLINE RANDEVU' —
-     işletme bunu hiç değiştirmediyse (yeni oluşturulan her işletmede otomatik
-     dolu geliyor), güzellik salonu temasında bu metin öylece görünüyordu.
-     Bu TEK, bilinen değeri "boş" say — başka hiçbir gerçek değeri ezmiyor. */
-  const heroLabel=(b.hero_label==='ERKEK BAKIM · ONLINE RANDEVU'?'':b.hero_label)||'PREMIUM GÜZELLİK SALONU';
+  const heroLabel=safeHeroLabel(b,'PREMIUM GÜZELLİK SALONU'); // bkz. safeHeroLabel tanımı — barber'a özel eski hero_label değerini gizler
   const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
   return <main id="top" className="tNova">
     <header className="nvNav">
@@ -2170,7 +2165,7 @@ function Cadre(p:P){
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const aboutText=b.description||dec(b,'cd_aboutText','Her detay özenle düşünülür; her randevu, sessiz bir lüks anına dönüşür.');
   const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
-  const heroLabel=(b.hero_label==='ERKEK BAKIM · ONLINE RANDEVU'?'':b.hero_label)||'PREMIUM GÜZELLİK SALONU';
+  const heroLabel=safeHeroLabel(b,'PREMIUM GÜZELLİK SALONU'); // bkz. safeHeroLabel tanımı — barber'a özel eski hero_label değerini gizler
   return <main id="top" className="tCadre">
     <CadreScrollLockInit/>
     <div className="cdFrame" aria-hidden="true"/>
@@ -2271,3 +2266,11 @@ function dec(b:any,key:string,fallback:string){const d=b.theme_decorations||{};r
    Onix) tutarlı şekilde kullanılan paylaşılan kontrol. Detay içeriği hiç
    girilmemiş hizmetlerde hiç görünmez. */
 function hasServiceDetail(s:any){return!!(s.slug&&(s.detail_intro||s.detail_how||s.detail_benefits||s.detail_suitable||s.detail_tip_title||s.detail_before||s.detail_after))}
+/* `hero_label` sütununun eski/varsayılan değeri platform berber-öncelikli
+   başladığı için berbere özel ("Erkek Bakım..."), güzellik/nail/spa
+   işletmelerinde bu metin hiç değiştirilmediyse öylece görünüyordu.
+   Gerçek verideki değer 'ERKEK BAKIM · ONLINE RANDEVU' string'ine BİREBİR
+   eşit olmuyor — üretimde sadece 'ERKEK BAKIM' (kesik) olarak da görüldü —
+   bu yüzden "erkek" ile BAŞLAYAN her değeri (case-insensitive) yakalayan
+   sağlam bir kontrol; başka hiçbir gerçek işletme metnini etkilemiyor. */
+function safeHeroLabel(b:any,fallback:string){return /^erkek/i.test(b.hero_label||'')?fallback:(b.hero_label||fallback)}
