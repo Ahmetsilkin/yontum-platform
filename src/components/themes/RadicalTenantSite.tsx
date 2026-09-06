@@ -2157,6 +2157,23 @@ function useCadreFrameSequence(){
   },[]);
   return{frameIdx,progress};
 }
+/* Yeni kare her zaman ALTTA, tam opak beliriyor; bir ÖNCEKİ kare üstünde
+   kısa bir animasyonla eriyip yeni kareyi ortaya çıkarıyor — bkz.
+   .cdFrameImgFade (radical-themes.css). Tamamen deklaratif: ref/imperatif
+   DOM güncellemesi yok, React'in normal yeniden render akışıyla çalışıyor. */
+function CadreFrameCrossfade({frameIdx,alt}:{frameIdx:number;alt:string}){
+  const[older,setOlder]=useState<number|null>(null);
+  const prevRef=useRef(frameIdx);
+  useEffect(()=>{
+    if(frameIdx===prevRef.current)return;
+    setOlder(prevRef.current);
+    prevRef.current=frameIdx;
+  },[frameIdx]);
+  return <>
+    <img className="cdFrameImg" src={cadreFrameSrc(frameIdx)} alt={alt}/>
+    {older!=null&&<img key={older} className="cdFrameImg cdFrameImgFade" src={cadreFrameSrc(older)} alt="" onAnimationEnd={()=>setOlder(null)}/>}
+  </>;
+}
 
 function Cadre(p:P){
   const{b}=p;
@@ -2181,7 +2198,7 @@ function Cadre(p:P){
 
     <section className="cdHero">
       <div className="cdFrameWrap">
-        <img className="cdFrameImg" src={cadreFrameSrc(frameIdx)} alt={b.name}/>
+        <CadreFrameCrossfade frameIdx={frameIdx} alt={b.name}/>
       </div>
       <div className="cdHeroOverlay"/>
       <div className="cdHeroText">

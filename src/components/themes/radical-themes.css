@@ -1765,8 +1765,22 @@
    Sabit çift çerçeve (.cdFrame, sayfa geneli) hero'nun üzerinde de kalmaya
    devam ediyor — "Framed" kimliği hâlâ görünür. */
 .cdHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;text-align:center}
-.cdFrameWrap{position:absolute;inset:0;z-index:0;overflow:hidden;background:linear-gradient(160deg,var(--cd-champagne),var(--cd-peach));display:flex;align-items:center;justify-content:center}
-.cdFrameImg{width:100%;max-width:1600px;height:100%;object-fit:cover;display:block}
+/* display:grid + place-items:center + her <img>'e grid-area:1/1: her ikisi de
+   AYNI grid hücresine düşüyor, yani tam üst üste biniyor — iki kareyi
+   birbirinin üzerine yığıp çapraz geçiş (cross-fade) yapmanın en basit yolu
+   (position:absolute + margin:auto hesaplarına gerek kalmadan). */
+.cdFrameWrap{position:absolute;inset:0;z-index:0;overflow:hidden;background:linear-gradient(160deg,var(--cd-champagne),var(--cd-peach));display:grid;place-items:center}
+.cdFrameImg{grid-area:1/1;width:100%;max-width:1600px;height:100%;object-fit:cover;display:block}
+/* Kaydırma hızlıyken bir seferde birden çok kare atlanabiliyor (bkz.
+   useCadreFrameSequence) — bu, sert bir "zıplama" gibi görünüyordu. Şimdi her
+   yeni kare hemen altta beliriyor, ESKİ kare ise üstünde kısa bir animasyonla
+   eriyip kayboluyor — kaç kare atlanırsa atlansın, geçiş gözle "video gibi"
+   yumuşak hissettiriyor. CSS transition değil ANIMATION kullanılıyor çünkü
+   yeni monte edilen bir elemanın "önce" durumu olmadığından transition ilk
+   karede çalışmaz — animation ise monte olur olmaz kendiliğinden oynar. */
+.cdFrameImgFade{animation:cdFrameFadeOut .14s linear forwards;pointer-events:none}
+@keyframes cdFrameFadeOut{from{opacity:1}to{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cdFrameImgFade{animation:none;opacity:0}}
 .cdHeroOverlay{position:absolute;inset:0;z-index:1;background:linear-gradient(190deg,rgba(253,246,240,.04) 0%,rgba(253,246,240,.32) 55%,rgba(253,246,240,.94) 94%);pointer-events:none}
 .cdHeroText{position:relative;z-index:2;max-width:640px;padding:0 6vw 100px}
 .cdEyebrow{color:var(--cd-gold);font-size:11px;letter-spacing:3px;font-weight:600;margin:0 0 22px;text-transform:uppercase}
