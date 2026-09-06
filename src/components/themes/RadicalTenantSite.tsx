@@ -2113,10 +2113,23 @@ function useCadreFrameSequence(){
     if(reduced){st.exhausted=true;releaseCadreScrollLock();return}
     const safety=setTimeout(()=>{st.exhausted=true;releaseCadreScrollLock()},45000);
     const TOTAL=5200;
-    const apply=(delta:number)=>{
-      st.progress=Math.min(1,Math.max(0,st.progress+delta/TOTAL));
+    /* Hızlı bir trackpad hareketi saniyede onlarca 'wheel' olayı üretebiliyor
+       — her birinde React state'ini SENKRON güncellemek (setProgress+
+       setFrameIdx) demek, saniyede onlarca yeniden render + yeni bir JPEG
+       kare çizimi demek: tam da kullanıcının bildirdiği "kasma" hissi. Artık
+       matematik (st.progress) her olayda anında güncelleniyor ama EKRANA
+       YANSITMA (state güncellemesi) ekranın kendi yenileme hızına (rAF) göre,
+       en fazla saniyede bir kez gruplanıyor — arada kaç wheel olayı gelirse
+       gelsin, her animasyon karesinde sadece EN GÜNCEL ilerleme çiziliyor. */
+    let rafId=0,rafPending=false;
+    const flush=()=>{
+      rafPending=false;
       setProgress(st.progress);
       setFrameIdx(Math.min(CADRE_FRAME_COUNT,Math.max(1,Math.round(st.progress*(CADRE_FRAME_COUNT-1))+1)));
+    };
+    const apply=(delta:number)=>{
+      st.progress=Math.min(1,Math.max(0,st.progress+delta/TOTAL));
+      if(!rafPending){rafPending=true;rafId=requestAnimationFrame(flush)}
     };
     const onWheel=(e:WheelEvent)=>{
       if(st.exhausted)return;
@@ -2141,6 +2154,7 @@ function useCadreFrameSequence(){
     window.addEventListener('touchmove',onTouchMove,{passive:false});
     return()=>{
       clearTimeout(safety);
+      cancelAnimationFrame(rafId);
       window.removeEventListener('wheel',onWheel);
       window.removeEventListener('touchstart',onTouchStart);
       window.removeEventListener('touchmove',onTouchMove);
