@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -2050,6 +2050,196 @@ function Nova(p:P){
         <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="nvContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="nvContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
       </div>
       <div className="nvFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+
+/* ================= CADRE — kullanıcının hazır bir yapay zeka promptuyla
+   tarif ettiği "Framed" (çerçeveli), sessiz lüks (quiet luxury) tek sayfa
+   tema. İmza özellik: hero'da, kullanıcının verdiği .zip'teki 240 karelik
+   (altın serum damlası + dalga halkaları, ezgif'ten çıkarılmış) dizi,
+   kaydırmaya bağlı (scroll-scrubbed) oynuyor — sayfa dizi bitene kadar
+   kaymıyor. Diğer temaların hepsinden kasıtlı olarak farklı: tek TAM EKRAN
+   fotoğraf değil, ince bir çerçeve içinde SINIRLI/kontrollü bir görsel panel
+   (kaynak kareler 640×360 — tam ekrana gerilirse yumuşak/bulanık dururdu;
+   çerçeveli/gazete-editoryal kompozisyon hem markaya uyuyor hem bunu
+   gerektirmiyor). Lumina'da öğrenilen EN kritik ders burada da uygulandı:
+   kaydırma kilidi, React hydrate olmadan ÖNCE senkron çalışan bir <script>
+   ile başlıyor (bkz. CadreScrollLockInit) — aksi hâlde "ilk denemede kilit
+   atlanıyor" hatası tekrar ederdi. */
+const CADRE_FRAME_COUNT=240;
+const cadreFrameSrc=(i:number)=>`/cadre/frames/frame-${String(i).padStart(3,'0')}.jpg`;
+function CadreScrollLockInit(){
+  return <script dangerouslySetInnerHTML={{__html:"try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.overflow='hidden';document.documentElement.style.overscrollBehavior='none';document.body.style.overflow='hidden'}}catch(e){}"}}/>;
+}
+function releaseCadreScrollLock(){
+  try{
+    document.documentElement.style.overflow='';
+    document.documentElement.style.overscrollBehavior='';
+    document.body.style.overflow='';
+  }catch{}
+}
+/* Lumina'nın "adım adım" (discrete) fotoğraf kilidinden farklı: burada
+   kaydırma miktarı doğrudan kare indeksine ORANTILI (continuous scrub) —
+   bu yüzden Lumina'yı bozan trackpad momentum/kalıntı-sinyal sınıfı hatalara
+   yapısal olarak kapalı: küçük kalıntı sinyaller sadece ilerlemeyi bir tık
+   oynatır, büyük bir "yanlış adım" sıçraması yaratmaz. */
+function useCadreFrameSequence(){
+  const[frameIdx,setFrameIdx]=useState(1);
+  const[progress,setProgress]=useState(0);
+  const stateRef=useRef({progress:0,exhausted:false});
+  useEffect(()=>{
+    let cancelled=false;
+    for(let i=1;i<=CADRE_FRAME_COUNT;i++){
+      const img=new window.Image();
+      img.src=cadreFrameSrc(i);
+    }
+    return()=>{cancelled=true};
+  },[]);
+  /* KASITLI OLARAK burada (veya ayrı, boş bağımlılıklı bir effect'te)
+     "unmount'ta kilidi serbest bırak" satırı YOK. React Strict Mode (next dev,
+     next.config.js'te açık) her effect'i bir kere mount→cleanup→mount diye
+     ÇİFT çalıştırır — sadece geliştirmede, production'da değil. Böyle ayrı
+     bir "cleanup-only" effect eklenmişti, gerçekte hiç unmount olmadığı hâlde
+     bu çift-çalıştırma sırasında kilidi anında açıveriyordu (canlı tarayıcıda
+     test edince yakalandı — kilit hiç devreye girmemiş gibi görünüyordu).
+     Serbest bırakma zaten üç yerden garanti: reduced-motion, exhaust() (son
+     kareden sonraki kaydırma denemesi) ve aşağıdaki 45sn güvenlik zaman aşımı
+     — bu sayfa pratikte gerçek bir unmount da yaşamıyor (client-route geçişi
+     yok), o yüzden ekstra bir "unmount güvenliği" gerekmiyor. */
+  useEffect(()=>{
+    const st=stateRef.current;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced){st.exhausted=true;releaseCadreScrollLock();return}
+    const safety=setTimeout(()=>{st.exhausted=true;releaseCadreScrollLock()},45000);
+    const TOTAL=5200;
+    const apply=(delta:number)=>{
+      st.progress=Math.min(1,Math.max(0,st.progress+delta/TOTAL));
+      setProgress(st.progress);
+      setFrameIdx(Math.min(CADRE_FRAME_COUNT,Math.max(1,Math.round(st.progress*(CADRE_FRAME_COUNT-1))+1)));
+    };
+    const onWheel=(e:WheelEvent)=>{
+      if(st.exhausted)return;
+      if(st.progress>=1&&e.deltaY>0){st.exhausted=true;releaseCadreScrollLock();return}
+      if(st.progress<=0&&e.deltaY<0)return;
+      e.preventDefault();
+      apply(e.deltaY);
+    };
+    let touchY:number|null=null;
+    const onTouchStart=(e:TouchEvent)=>{touchY=st.exhausted?null:e.touches[0].clientY};
+    const onTouchMove=(e:TouchEvent)=>{
+      if(st.exhausted||touchY==null)return;
+      const dy=touchY-e.touches[0].clientY;
+      if(st.progress>=1&&dy>0){st.exhausted=true;releaseCadreScrollLock();return}
+      if(st.progress<=0&&dy<0){touchY=e.touches[0].clientY;return}
+      e.preventDefault();
+      apply(dy);
+      touchY=e.touches[0].clientY;
+    };
+    window.addEventListener('wheel',onWheel,{passive:false});
+    window.addEventListener('touchstart',onTouchStart,{passive:true});
+    window.addEventListener('touchmove',onTouchMove,{passive:false});
+    return()=>{
+      clearTimeout(safety);
+      window.removeEventListener('wheel',onWheel);
+      window.removeEventListener('touchstart',onTouchStart);
+      window.removeEventListener('touchmove',onTouchMove);
+    };
+  },[]);
+  return{frameIdx,progress};
+}
+
+function Cadre(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const{frameIdx,progress}=useCadreFrameSequence();
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  const aboutText=b.description||dec(b,'cd_aboutText','Her detay özenle düşünülür; her randevu, sessiz bir lüks anına dönüşür.');
+  const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
+  const heroLabel=(b.hero_label==='ERKEK BAKIM · ONLINE RANDEVU'?'':b.hero_label)||'PREMIUM GÜZELLİK SALONU';
+  return <main id="top" className="tCadre">
+    <CadreScrollLockInit/>
+    <div className="cdFrame" aria-hidden="true"/>
+    <header className="cdNav">
+      <a className="cdBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hakkimizda">{b.about_label||'Hakkımızda'}</a>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
+      </nav>
+      <a className="cdNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="cdHero">
+      <div className="cdFrameWrap">
+        <img className="cdFrameImg" src={cadreFrameSrc(frameIdx)} alt={b.name}/>
+      </div>
+      <div className="cdHeroOverlay"/>
+      <div className="cdHeroText">
+        <p className="cdEyebrow">{heroLabel}</p>
+        <h1 className="cdHeroTitle">{b.hero_title||'Sessiz bir'} <em>{b.hero_highlight||'lüks.'}</em></h1>
+        {b.hero_description&&<p className="cdHeroDesc">{b.hero_description}</p>}
+        <a className="cdBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+      </div>
+      <div className="cdScrollHint" style={{opacity:progress>=1?0:1}}><span/>Kaydırın</div>
+      <div className="cdProgressTrack" aria-hidden="true"><div className="cdProgressFill" style={{width:`${Math.round(progress*100)}%`}}/></div>
+    </section>
+
+    <section id="hakkimizda" className="cdAbout">
+      <Reveal className="cdAboutPhoto">{aboutPhoto?<img src={aboutPhoto} alt={b.name}/>:<div className="cdAboutPhotoFallback"/>}</Reveal>
+      <Reveal i={1} className="cdAboutText">
+        <small>{b.about_label||'HAKKIMIZDA'}</small>
+        <h2>{b.about_title||`${b.name}'in hikayesi.`}</h2>
+        <p>{aboutText}</p>
+      </Reveal>
+    </section>
+
+    <section id="hizmetler" className="cdServices">
+      <Reveal className="cdSectionHead">
+        <small>{b.services_label||'HİZMETLER'}</small>
+        <h2>{b.services_title||'Sanat seviyesinde bakım.'}</h2>
+      </Reveal>
+      <div className="cdServiceGrid">
+        {p.services.map((s,i)=><Reveal as="article" i={i} key={s.id} className="cdServiceCard">
+          <div className="cdServiceCardInner">
+            <div className="cdServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
+            <div className="cdServiceReveal">
+              {s.description&&<p>{s.description}</p>}
+              <small>{s.duration_minutes} dk</small>
+              {hasServiceDetail(s)&&<a className="cdServiceDetailLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
+            </div>
+          </div>
+        </Reveal>)}
+      </div>
+    </section>
+
+    {galleryPhotos.length>0&&<section id="galeri" className="cdGallery">
+      <Reveal className="cdSectionHead">
+        <small>GALERİ</small>
+        <h2>{dec(b,'cd_galleryTitle','Bizden kareler.')}</h2>
+      </Reveal>
+      <div className="cdGalleryStrip">
+        {galleryPhotos.map((src,i)=><div key={i} className="cdMat"><img src={src} alt={b.name} loading="lazy"/></div>)}
+      </div>
+    </section>}
+
+    <GoogleReviews businessId={b.id}/>
+
+    <section id="randevu" className="cdBooking">
+      <Reveal className="cdSectionHead">
+        <small>{b.booking_label||'RANDEVU'}</small>
+        <h2>{b.booking_title||'Saatini ayır.'}</h2>
+      </Reveal>
+      <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+    </section>
+
+    <footer className="cdFooter">
+      <div className="cdFooterGrid">
+        <div><a className="cdBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a><p>{dec(b,'cd_footerTagline','Kendine ayırdığın zaman, sessiz bir lükstür.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="cdHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="cdContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="cdContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
+      </div>
+      <div className="cdFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }
