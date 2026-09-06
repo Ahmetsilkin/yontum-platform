@@ -1752,15 +1752,21 @@
 .cdNavBtn{border:1px solid var(--cd-ink);color:var(--cd-ink)!important;font-weight:600;font-size:12.5px;letter-spacing:.03em;padding:11px 22px;border-radius:2px;transition:background .18s ease,color .18s ease}
 .cdNavBtn:hover{background:var(--cd-ink);color:var(--cd-bg)!important}
 
-/* Hero — kullanıcının isteğiyle TAM EKRAN: 240 karelik dizi hero'nun
-   tamamını kaplıyor (kaynak kareler 640×360, tam ekrana gerildiği için
-   masaüstünde hafif yumuşak durabilir — kaynak dosyaların doğal sınırı).
+/* Hero — kullanıcının isteğiyle TAM EKRAN yüksekliğinde. Kaynak kareler
+   640×360 — genişliği SINIRSIZ tam ekrana gerilirse (2K/4K monitörlerde
+   3-4 katı büyütme) belirgin bulanıklaşıyordu (kullanıcı bunu bildirdi ve
+   ekran kaydıyla doğruladım). Çözüm: görsel dikeyde hâlâ hero'nun tam
+   boyunu kaplıyor (çoğu dizüstü/telefon ekranında tam ekran hissi aynen
+   duruyor) ama genişliği ~1600px'te sınırlanıp ortalanıyor — büyütme oranı
+   en fazla ~2.5× ile sınırlı kalıyor (sınırsızdı). Geniş ekranlarda yanlarda
+   beliren ince boşluk, arkadaki --cd-surface tonuyla (fotoğrafla uyumlu,
+   kasıtlı bir "vinyet/pasaportu" hissi) dolduruluyor, kopuk durmuyor.
    Kaydırma kilidi/dizi mantığı useCadreFrameSequence'te (RadicalTenantSite.tsx).
    Sabit çift çerçeve (.cdFrame, sayfa geneli) hero'nun üzerinde de kalmaya
    devam ediyor — "Framed" kimliği hâlâ görünür. */
 .cdHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;text-align:center}
-.cdFrameWrap{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--cd-surface)}
-.cdFrameImg{width:100%;height:100%;object-fit:cover;display:block}
+.cdFrameWrap{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--cd-surface);display:flex;align-items:center;justify-content:center}
+.cdFrameImg{width:100%;max-width:1600px;height:100%;object-fit:cover;display:block}
 .cdHeroOverlay{position:absolute;inset:0;z-index:1;background:linear-gradient(190deg,rgba(245,241,234,.04) 0%,rgba(245,241,234,.32) 55%,rgba(245,241,234,.94) 94%);pointer-events:none}
 .cdHeroText{position:relative;z-index:2;max-width:640px;padding:0 6vw 100px}
 .cdEyebrow{color:var(--cd-gold);font-size:11px;letter-spacing:3px;font-weight:600;margin:0 0 22px;text-transform:uppercase}

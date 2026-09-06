@@ -2067,7 +2067,7 @@ function Nova(p:P){
    kaydırma kilidi, React hydrate olmadan ÖNCE senkron çalışan bir <script>
    ile başlıyor (bkz. CadreScrollLockInit) — aksi hâlde "ilk denemede kilit
    atlanıyor" hatası tekrar ederdi. */
-const CADRE_FRAME_COUNT=240;
+const CADRE_FRAME_COUNT=192;
 const cadreFrameSrc=(i:number)=>`/cadre/frames/frame-${String(i).padStart(3,'0')}.jpg`;
 function CadreScrollLockInit(){
   return <script dangerouslySetInnerHTML={{__html:"try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.overflow='hidden';document.documentElement.style.overscrollBehavior='none';document.body.style.overflow='hidden'}}catch(e){}"}}/>;
