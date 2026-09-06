@@ -1742,7 +1742,15 @@
 .cdFrame::before{content:'';position:absolute;inset:6px;border:1px solid rgba(156,127,79,.28)}
 @media(max-width:650px){.cdFrame{inset:8px}.cdFrame::before{inset:4px}}
 
-.cdNav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:34px 5vw 20px;background:linear-gradient(180deg,rgba(253,246,240,.75),transparent)}
+/* Sabit (fixed) nav, sadece hero'nun üzerinde değil TÜM sayfada aynı yerde
+   duruyor — eskiden alta doğru saydamlaşan bir degrade kullanıyordu (sadece
+   hero'nun video/foto zemini düşünülerek), bu yüzden kullanıcı Hizmetler/
+   Randevu gibi bölümlere kaydırdığında o bölümün kendi başlık yazısı nav'ın
+   yarı saydam kısmından "sızıp" nav yazılarıyla görsel olarak çakışıyordu.
+   Artık her zaman opak (buzlu cam efektiyle) bir zemin var — hangi bölüm
+   altından geçerse geçsin nav'ın kendisi hep net okunuyor, altındaki hiçbir
+   şey görünmüyor. */
+.cdNav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:34px 5vw 20px;background:rgba(253,246,240,.92);backdrop-filter:blur(10px) saturate(140%);-webkit-backdrop-filter:blur(10px) saturate(140%);border-bottom:1px solid var(--cd-line)}
 .cdBrand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.01em;font-size:14px;color:var(--cd-ink)}
 .cdBrand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
 .cdBrand i{width:32px;height:32px;border-radius:50%;background:var(--cd-gold);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px}
