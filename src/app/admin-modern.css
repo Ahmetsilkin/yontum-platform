@@ -141,7 +141,7 @@
 .dashTable .dayGroupHeader td{background:var(--bg-soft);color:var(--text-primary);font-weight:700;font-size:11.5px;letter-spacing:.4px;padding:12px 10px;border:0}
 .dashTable th{background:var(--bg-soft);padding:14px 10px;color:var(--text-secondary);font-weight:600;font-size:11px;letter-spacing:.3px}
 .dashTable td{padding:14px 10px;color:var(--text-primary);border-color:var(--line);font-size:13.5px}
-.dashTable tbody tr:hover td{background:#fbfcfe}
+.dashTable tbody tr:hover td{background:var(--bg-soft)}
 .analyticsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:14px}
 .analyticsGrid>div{padding:18px}
 .analyticsGrid small{color:var(--text-secondary);font-size:10.5px;font-weight:700;letter-spacing:.4px}
