@@ -3,7 +3,7 @@ export const dynamic='force-dynamic';
 export async function generateMetadata({params}:{params:Promise<{slug:string;postSlug:string}>}){
   const{slug,postSlug}=await params,db=await createClient();
   const{data:b}=await db.from('businesses').select('id,name').eq('slug',slug).single();
-  if(!b)return{title:'Yontum'};
+  if(!b)return{title:'Megsak'};
   const{data:post}=await db.from('blog_posts').select('title,excerpt').eq('business_id',b.id).eq('slug',postSlug).single();
   if(!post)return{title:b.name};
   return{title:`${post.title} — ${b.name}`,description:post.excerpt||undefined};

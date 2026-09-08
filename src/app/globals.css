@@ -1,5 +1,5 @@
 :root{
-/* Yontum Tasarım Sistemi v5 — GlossGenius/Awwwards standardında Ultra-Premium
+/* Megsak Tasarım Sistemi v5 — GlossGenius/Awwwards standardında Ultra-Premium
    Micro-SaaS kimliği. Eski üç ayrı/kısmen çelişen nesil (--ink/--paper/--accent*,
    --pub-*, --admin-*) burada TEK bir yetkili sistemde birleştirildi — tanıtım
    sitesi, giriş sayfası ve panel artık aynı değişkenlerden besleniyor.
@@ -64,7 +64,7 @@
 @media(max-width:900px){.pubHero{grid-template-columns:1fr;min-height:auto;padding:14vw 7vw 10vw}.pubHeroVisual{min-height:0;margin-top:20px}}
 @media(max-width:480px){.pubGlassChat{width:100%;right:0}.pubGlassSummary{width:88%}}
 /* .heroText/.featureGrid/.how/.pricing/.priceCards/.finalCta/.productMock ve
-   kardeşleri — Yontum Tasarım Sistemi v5 denetiminde SİLİNDİ: page.tsx artık
+   kardeşleri — Megsak Tasarım Sistemi v5 denetiminde SİLİNDİ: page.tsx artık
    .pubHero'yu render ediyor, bu eski hero/features/pricing/CTA bloğu hiçbir
    JSX'te kullanılmıyordu (doğrulanmış ölü kod). .overline ve .primaryBtn ise
    hâlâ canlı (şifre sıfırlama/doğrulama sayfaları) — korunup taşındı. */

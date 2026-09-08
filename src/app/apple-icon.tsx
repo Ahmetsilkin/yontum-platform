@@ -13,7 +13,7 @@ export default function AppleIcon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#141414',
+          background: '#121316',
         }}
       >
         <span
@@ -21,11 +21,11 @@ export default function AppleIcon() {
             fontFamily: 'Georgia, serif',
             fontWeight: 700,
             fontSize: 108,
-            color: '#f7f3e8',
+            color: '#FAFAF7',
             lineHeight: 1,
           }}
         >
-          Y
+          M
         </span>
       </div>
     ),

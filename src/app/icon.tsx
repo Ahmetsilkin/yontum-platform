@@ -13,7 +13,7 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#141414',
+          background: '#121316',
           borderRadius: 7,
         }}
       >
@@ -22,11 +22,11 @@ export default function Icon() {
             fontFamily: 'Georgia, serif',
             fontWeight: 700,
             fontSize: 20,
-            color: '#f7f3e8',
+            color: '#FAFAF7',
             lineHeight: 1,
           }}
         >
-          Y
+          M
         </span>
       </div>
     ),

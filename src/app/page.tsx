@@ -11,7 +11,7 @@ export default function Home(){return <><PlatformHeader/><main className="pubHer
   <div className="pubHeroVisual splashIn d3">
     <svg className="pubSquiggle" viewBox="0 0 120 70" fill="none" aria-hidden="true"><path d="M8 55C8 20 30 20 30 40C30 60 52 60 52 35C52 10 74 10 74 32C74 54 96 54 96 25C96 12 105 8 112 8" stroke="var(--accent-gold)" strokeWidth="7" strokeLinecap="round"/></svg>
     <div className="pubBrowser">
-      <div className="pubBrowserBar"><i/><i/><i/><span>yontum.app/panel</span></div>
+      <div className="pubBrowserBar"><i/><i/><i/><span>megsak.app/panel</span></div>
       <div className="pubBrowserBody">
         <div className="pubMockSide">
           <i className="active"/><i/><i/><i/><i/>

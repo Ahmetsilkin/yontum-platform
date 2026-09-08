@@ -3,7 +3,7 @@ export const dynamic='force-dynamic';
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}){
   const{slug}=await params,db=await createClient();
   const{data:b}=await db.from('businesses').select('name,hero_description,description,logo_url,address').eq('slug',slug).single();
-  if(!b)return{title:'Yontum'};
+  if(!b)return{title:'Megsak'};
   const title=`${b.name} — Online Randevu`,description=b.hero_description||b.description||`${b.name} için online randevu alın.`;
   return{
     title,

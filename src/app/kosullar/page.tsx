@@ -15,7 +15,7 @@ export default function TermsPage() {
 
           <section>
             <h2>1. Hizmetin Tanımı</h2>
-            <p>Yontum, işletmelerin (berber, kuaför, güzellik salonu, spa vb.) kendi tanıtım sitelerini yayınlamalarını ve online randevu almalarını sağlayan bir platformdur. Hesabınızı oluşturarak bu koşulları kabul etmiş sayılırsınız.</p>
+            <p>Megsak, işletmelerin (berber, kuaför, güzellik salonu, spa vb.) kendi tanıtım sitelerini yayınlamalarını ve online randevu almalarını sağlayan bir platformdur. Hesabınızı oluşturarak bu koşulları kabul etmiş sayılırsınız.</p>
           </section>
 
           <section>
@@ -45,7 +45,7 @@ export default function TermsPage() {
 
           <section>
             <h2>7. Sorumluluğun Sınırlandırılması</h2>
-            <p>Yontum, platform üzerinden alınan randevuların işletme ile müşteri arasındaki ilişkisine taraf değildir; hizmet kalitesi, randevuya uyulmaması gibi konulardan sorumlu tutulamaz.</p>
+            <p>Megsak, platform üzerinden alınan randevuların işletme ile müşteri arasındaki ilişkisine taraf değildir; hizmet kalitesi, randevuya uyulmaması gibi konulardan sorumlu tutulamaz.</p>
           </section>
 
           <section>

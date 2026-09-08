@@ -84,7 +84,7 @@ export default function AppointmentPage(){
   return (
     <main className={`appointmentPublicPage appointmentTheme appointment-${family} font-${b.font_family||'serif'}`} style={style}>
       <section>
-        <header className="appointmentBrand appointmentBrandSimple"><div><small>RANDEVU YÖNETİMİ</small><b>{b.name||'Yontum'}</b></div></header>
+        <header className="appointmentBrand appointmentBrandSimple"><div><small>RANDEVU YÖNETİMİ</small><b>{b.name||'Megsak'}</b></div></header>
 
         {!data&&!error?<p className="appointmentLoading">Randevu yükleniyor…</p>:
         error&&!data?<div className="appointmentState error"><b>Randevu açılamadı</b><p>{error}</p></div>:

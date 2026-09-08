@@ -1,6 +1,6 @@
 import type{Metadata}from'next';import'./globals.css';
 
-export const metadata:Metadata={title:{default:'Yontum — Berber siten hazır',template:'%s | Yontum'},description:'Berber, kuaför, güzellik, nail ve spa işletmeleri için dakikalar içinde hazır profesyonel web sitesi ve online randevu sistemi.'};
+export const metadata:Metadata={title:{default:'Megsak — Berber siten hazır',template:'%s | Megsak'},description:'Berber, kuaför, güzellik, nail ve spa işletmeleri için dakikalar içinde hazır profesyonel web sitesi ve online randevu sistemi.'};
 
 // Bu script, sayfa render edilmeden ve React/Supabase istemcisi hiç devreye girmeden
 // ÖNCE çalışır (senkron, <head> içinde). Supabase'in kendi kütüphanesi URL'deki
