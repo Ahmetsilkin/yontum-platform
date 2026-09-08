@@ -13,11 +13,17 @@ export default function Home(){return <><PlatformHeader/><main className="pubHer
     <div className="pubBrowser">
       <div className="pubBrowserBar"><i/><i/><i/><span>yontum.app/panel</span></div>
       <div className="pubBrowserBody">
-        <div className="pubMockHead"><b>Bugünkü randevular</b><span>6 randevu · 1.240 ₺</span></div>
-        <div className="pubMockRow"><i style={{background:'#0046ff'}}/><div><b>10:00 — Ayşe Yılmaz</b><small>Saç Kesimi · Ahmet Usta</small></div><em>Onaylı</em></div>
-        <div className="pubMockRow"><i style={{background:'#059669'}}/><div><b>11:30 — Elif Kaya</b><small>Fön · Selin Usta</small></div><em>Onaylı</em></div>
-        <div className="pubMockRow"><i style={{background:'#d97706'}}/><div><b>14:30 — Merve Demir</b><small>Manikür · Ahmet Usta</small></div><em>Onaylı</em></div>
+        <div className="pubMockSide">
+          <i className="active"/><i/><i/><i/><i/>
+        </div>
+        <div className="pubMockMain">
+          <div className="pubMockHead"><b>Bugünkü randevular</b><span>6 randevu · 1.240 ₺</span></div>
+          <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#0046ff'}}>A</span><div><b>10:00 — Ayşe Yılmaz</b><small>Saç Kesimi · Ahmet Usta</small></div><em>✓ Onaylı</em></div>
+          <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#059669'}}>E</span><div><b>11:30 — Elif Kaya</b><small>Fön · Selin Usta</small></div><em>✓ Onaylı</em></div>
+          <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#d97706'}}>M</span><div><b>14:30 — Merve Demir</b><small>Manikür · Ahmet Usta</small></div><em>✓ Onaylı</em></div>
+        </div>
       </div>
     </div>
+    <div className="pubFloatStat"><span>BU AY BÜYÜME</span><b>▲ %32</b></div>
   </div>
 </main><PlatformFooter/></>}
