@@ -2326,14 +2326,14 @@ function afPlayTypeClick(){
     for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.2);
     const noise=ctx.createBufferSource();noise.buffer=buf;
     const band=ctx.createBiquadFilter();band.type='bandpass';band.frequency.value=2600+Math.random()*900;band.Q.value=1.1;
-    const noiseGain=ctx.createGain();noiseGain.gain.setValueAtTime(.22,now);noiseGain.gain.exponentialRampToValueAtTime(.0005,now+dur);
+    const noiseGain=ctx.createGain();noiseGain.gain.setValueAtTime(.45,now);noiseGain.gain.exponentialRampToValueAtTime(.0005,now+dur);
     noise.connect(band);band.connect(noiseGain);noiseGain.connect(ctx.destination);
     noise.start(now);noise.stop(now+dur);
 
     // 2) Hafif "tak" gövdesi: çok kısa, alçak sinüs — mekanik ağırlık hissi.
     const osc=ctx.createOscillator(),oscGain=ctx.createGain();
     osc.type='sine';osc.frequency.setValueAtTime(150+Math.random()*35,now);
-    oscGain.gain.setValueAtTime(.09,now);oscGain.gain.exponentialRampToValueAtTime(.0005,now+.03);
+    oscGain.gain.setValueAtTime(.18,now);oscGain.gain.exponentialRampToValueAtTime(.0005,now+.03);
     osc.connect(oscGain);oscGain.connect(ctx.destination);
     osc.start(now);osc.stop(now+.032);
   }catch{}
