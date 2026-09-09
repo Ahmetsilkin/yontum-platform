@@ -2296,13 +2296,18 @@ function AfisTeam({p}:{p:P}){
     {visible.length>1&&<div className="afTeamDots">{visible.map((s:any,i:number)=><button key={s.id} type="button" className={i===active?'active':''} onClick={()=>goTo(i)} aria-label={s.name}/>)}</div>}
   </section>;
 }
-/* Daktilo sesi: gerçek bir ses dosyası yerine Web Audio API ile anlık
-   sentezlenen kısa, sert bir "tık" — dış bir varlık gerektirmiyor. Tarayıcılar
-   sayfa hiç etkileşim almadan sesi engelleyebildiği için (autoplay politikası),
-   AudioContext ilk tık denemesinde tembel oluşturuluyor ve her denemede
-   resume() ile açılmaya çalışılıyor; ilk kullanıcı dokunuşu/tuşunda da ayrıca
-   açılmaya çalışılıyor — engellenirse yazı animasyonu sessiz devam eder,
-   hiçbir hataya düşmez. */
+/* Klavye/daktilo tık sesi: gerçek bir ses dosyası yerine Web Audio API ile
+   anlık sentezleniyor — dış bir varlık gerektirmiyor. İlk sürüm (tek kare
+   dalga osilatör) "kötü/yapay bip" gibi duyuluyordu; gerçek bir mekanik tuş
+   sesi ASIL OLARAK gürültü tabanlıdır (net bir tını değil, kısa bir "çıt"),
+   bu yüzden burada iki katman var: (1) bant-geçiren filtreden geçirilmiş,
+   hızla sönümlenen beyaz gürültü patlaması — tuşun keskin "çıt" kısmı,
+   (2) çok kısa, alçak frekanslı bir sinüs — gövdenin hafif "tak" ağırlığı.
+   Tarayıcılar sayfa hiç etkileşim almadan sesi engelleyebildiği için
+   (autoplay politikası), AudioContext ilk denemede tembel oluşturuluyor ve
+   her denemede resume() ile açılmaya çalışılıyor; ilk kullanıcı
+   dokunuşu/tuşunda da ayrıca açılmaya çalışılıyor — engellenirse yazı
+   animasyonu sessiz devam eder, hiçbir hataya düşmez. */
 let afAudioCtx:AudioContext|null=null;
 function afPlayTypeClick(){
   try{
@@ -2314,13 +2319,23 @@ function afPlayTypeClick(){
     const ctx=afAudioCtx!;
     if(ctx.state==='suspended')ctx.resume().catch(()=>{});
     const now=ctx.currentTime;
-    const osc=ctx.createOscillator(),gain=ctx.createGain();
-    osc.type='square';
-    osc.frequency.setValueAtTime(1700+Math.random()*500,now);
-    gain.gain.setValueAtTime(.05,now);
-    gain.gain.exponentialRampToValueAtTime(.0001,now+.028);
-    osc.connect(gain);gain.connect(ctx.destination);
-    osc.start(now);osc.stop(now+.03);
+
+    // 1) Keskin "çıt": kısa, sönümlenen gürültü patlaması, bant-geçiren filtreyle daraltılmış.
+    const dur=.018,n=Math.max(1,Math.floor(ctx.sampleRate*dur));
+    const buf=ctx.createBuffer(1,n,ctx.sampleRate),data=buf.getChannelData(0);
+    for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.2);
+    const noise=ctx.createBufferSource();noise.buffer=buf;
+    const band=ctx.createBiquadFilter();band.type='bandpass';band.frequency.value=2600+Math.random()*900;band.Q.value=1.1;
+    const noiseGain=ctx.createGain();noiseGain.gain.setValueAtTime(.22,now);noiseGain.gain.exponentialRampToValueAtTime(.0005,now+dur);
+    noise.connect(band);band.connect(noiseGain);noiseGain.connect(ctx.destination);
+    noise.start(now);noise.stop(now+dur);
+
+    // 2) Hafif "tak" gövdesi: çok kısa, alçak sinüs — mekanik ağırlık hissi.
+    const osc=ctx.createOscillator(),oscGain=ctx.createGain();
+    osc.type='sine';osc.frequency.setValueAtTime(150+Math.random()*35,now);
+    oscGain.gain.setValueAtTime(.09,now);oscGain.gain.exponentialRampToValueAtTime(.0005,now+.03);
+    osc.connect(oscGain);oscGain.connect(ctx.destination);
+    osc.start(now);osc.stop(now+.032);
   }catch{}
 }
 function useAfAudioUnlock(){
@@ -2332,13 +2347,17 @@ function useAfAudioUnlock(){
   },[]);
 }
 /* Manifesto metnini daktilo gibi harf harf yazan, her harfte kısa bir tık
-   sesi çalan bileşen — bölüm ekrana girince (IntersectionObserver) başlıyor.
-   prefers-reduced-motion'da animasyon atlanıp metin direkt tam gösteriliyor. */
+   sesi çalan bileşen. Kullanıcı isteği: ses SADECE bu bölüm ekrandayken
+   duyulsun — bu yüzden "bir kere başlat" değil, sürekli izlenen bir
+   IntersectionObserver kullanılıyor: bölüm görünürken yazım/ses ilerliyor,
+   kaydırılıp ekrandan çıkınca (henüz bitmediyse) duruyor, geri gelince
+   kaldığı yerden devam ediyor. prefers-reduced-motion'da animasyon
+   atlanıp metin direkt tam gösteriliyor (ses de hiç çalmıyor). */
 function AfisTypewriter({text}:{text:string}){
   const fullText=text;
   const ref=useRef<HTMLDivElement>(null);
   const[count,setCount]=useState(0);
-  const[started,setStarted]=useState(false);
+  const[visible,setVisible]=useState(false);
   const[reduced,setReduced]=useState(false);
   useAfAudioUnlock();
   useEffect(()=>{
@@ -2347,17 +2366,17 @@ function AfisTypewriter({text}:{text:string}){
   },[]);
   useEffect(()=>{
     const el=ref.current;if(!el)return;
-    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){setStarted(true);io.unobserve(e.target)}})},{threshold:.3});
+    const io=new IntersectionObserver(entries=>{entries.forEach(e=>setVisible(e.isIntersecting))},{threshold:.3});
     io.observe(el);
     return()=>io.disconnect();
   },[]);
   useEffect(()=>{
-    if(!started||reduced||count>=fullText.length)return;
+    if(!visible||reduced||count>=fullText.length)return;
     const ch=fullText[count];
     const delay=ch===' '||ch==='\n'?16:30+Math.random()*26;
     const t=setTimeout(()=>{setCount(c=>c+1);if(ch.trim())afPlayTypeClick()},delay);
     return()=>clearTimeout(t);
-  },[started,count,reduced,fullText]);
+  },[visible,count,reduced,fullText]);
   const shown=reduced?fullText:fullText.slice(0,count);
   const done=reduced||count>=fullText.length;
   return <div ref={ref} className="afTypewriter">
