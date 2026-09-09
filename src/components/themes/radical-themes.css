@@ -1930,20 +1930,29 @@
 @media(max-width:700px){.afTorn{height:20px}}
 
 .afManifesto{position:relative;background:var(--af-paper);color:var(--af-text-dark);padding:9vw 6vw 8vw;display:grid;grid-template-columns:1.3fr .8fr;gap:6vw;align-items:center}
+.afManifestoScroll{max-height:340px;overflow-y:auto;padding-right:14px;scrollbar-width:thin;scrollbar-color:rgba(20,20,20,.25) transparent}
+.afManifestoScroll::-webkit-scrollbar{width:5px}
+.afManifestoScroll::-webkit-scrollbar-thumb{background:rgba(20,20,20,.22);border-radius:3px}
 .afManifestoText p{font:500 clamp(19px,2.2vw,28px)/1.55 'Plus Jakarta Sans',Arial,sans-serif;color:var(--af-text-dark);letter-spacing:-.01em;margin:0 0 18px}
 .afManifestoText p:last-child{margin-bottom:0}
-.afEmblemCard{background:var(--af-ink);color:#fff;border-radius:20px;padding:40px 30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 30px 70px rgba(0,0,0,.25)}
+.afEmblemCard{position:relative;background:var(--af-ink);color:#fff;border-radius:20px;padding:40px 30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 30px 70px rgba(0,0,0,.25);overflow:hidden}
 .afEmblemCard i{width:56px;height:56px;border-radius:50%;background:#fff;color:#0d0d0d;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:22px;overflow:hidden}
 .afEmblemCard i img{width:100%;height:100%;object-fit:cover}
 .afEmblemCard small{letter-spacing:2px;font-size:11px;color:rgba(255,255,255,.55);font-weight:700}
 .afEmblemCard b{font:800 20px 'Plus Jakarta Sans',Arial,sans-serif}
-@media(max-width:900px){.afManifesto{grid-template-columns:1fr;text-align:center}.afEmblemCard{margin:0 auto}}
+.afEmblemCard.hasPhoto{padding:0;min-height:360px;justify-content:flex-end;align-items:stretch;gap:0}
+.afEmblemPhoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.afEmblemCard.hasPhoto:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.85))}
+.afEmblemCaption{position:relative;z-index:1;padding:26px}
+.afEmblemCaption small{display:block;margin-bottom:6px}
+@media(max-width:900px){.afManifesto{grid-template-columns:1fr;text-align:center}.afEmblemCard{margin:0 auto;max-width:400px}.afManifestoScroll{max-height:260px;padding-right:0}}
 
 .afTeamSection{position:relative;background:var(--af-ink);padding:9vw 0 8vw;overflow:hidden}
-.afTeamSection>header{padding:0 6vw;text-align:center;margin-bottom:44px}
+.afSectionHead{padding:0 6vw;text-align:center;max-width:640px;margin:0 auto 44px}
 .afTeamSection small{letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--af-muted)}
 .afTeamSection h2{color:#fff;font-size:clamp(26px,3.4vw,40px);margin:12px 0 0}
 .afTeamTrack{display:flex;gap:20px;overflow-x:auto;padding:0 6vw 10px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.afTeamTrack.fits{justify-content:center}
 .afTeamTrack::-webkit-scrollbar{display:none}
 .afTeamCard{scroll-snap-align:center;flex:0 0 auto;width:240px;text-align:center}
 .afTeamPhoto{width:100%;height:300px;border-radius:16px;overflow:hidden;background:#1a1a1a;margin-bottom:16px}
@@ -1956,7 +1965,7 @@
 .afTeamDots button.active{background:#fff;width:22px;border-radius:4px}
 
 .afServices{position:relative;background:var(--af-paper);color:var(--af-text-dark);padding:9vw 6vw}
-.afServices>header{text-align:center;max-width:600px;margin:0 auto 50px}
+
 .afServices small{letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--af-muted-dark)}
 .afServices h2{margin:12px 0 0;font-size:clamp(28px,3.6vw,44px)}
 .afPriceList{max-width:1000px;margin:0 auto;columns:2;column-gap:60px}
@@ -1967,20 +1976,20 @@
 @media(max-width:750px){.afPriceList{columns:1}}
 
 .afBooking{position:relative;background:var(--af-ink);padding:9vw 6vw}
-.afBooking>header{text-align:center;max-width:600px;margin:0 auto 40px}
+
 .afBooking small{letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--af-muted)}
 .afBooking h2{color:#fff;margin:12px 0 0;font-size:clamp(28px,3.6vw,44px)}
 
 .afGallerySection{position:relative;background:var(--af-paper);color:var(--af-text-dark);padding:9vw 6vw}
-.afGallerySection>header{text-align:center;max-width:600px;margin:0 auto 40px}
+
 .afGallerySection small{letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--af-muted-dark)}
 .afGallerySection h2{margin:12px 0 0;font-size:clamp(28px,3.6vw,44px)}
-.rGallery.afGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:row;gap:10px}
-.rGallery.afGrid>*{aspect-ratio:4/3!important;height:auto!important;width:100%!important;grid-column:auto!important;grid-row:auto!important}
-.rGallery.afGrid img,.rGallery.afGrid video{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;filter:grayscale(.15) contrast(1.05);border-radius:8px;transition:transform .3s}
-.rGallery.afGrid .galleryItemBtn{position:relative;overflow:hidden;display:block;padding:0;border:0;border-radius:8px}
+.rGallery.afGrid{display:flex;grid-template-columns:none;max-width:100%;margin:0;overflow-x:auto;gap:18px;padding:4px 0 14px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rGallery.afGrid::-webkit-scrollbar{display:none}
+.rGallery.afGrid>*{flex:0 0 auto;width:min(320px,74vw);aspect-ratio:3/4!important;height:auto!important;grid-column:auto!important;grid-row:auto!important;scroll-snap-align:center}
+.rGallery.afGrid img,.rGallery.afGrid video{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;filter:grayscale(.15) contrast(1.05);border-radius:16px;transition:transform .3s;box-shadow:0 20px 50px rgba(0,0,0,.12)}
+.rGallery.afGrid .galleryItemBtn{position:relative;overflow:hidden;display:block;padding:0;border:0;border-radius:16px;width:100%;height:100%}
 .rGallery.afGrid .galleryItemBtn:hover img{transform:scale(1.04)}
-@media(max-width:900px){.rGallery.afGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 .afFooter{background:var(--af-ink);color:var(--af-text);padding:6vw 6vw 3vw;border-top:1px solid var(--af-line)}
 .afFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px}
@@ -1991,3 +2000,21 @@
 .afContactRow{display:flex;align-items:center;gap:8px}
 .afFooterBottom{border-top:1px solid var(--af-line);padding-top:20px;font-size:12px;color:var(--af-muted);text-align:center}
 @media(max-width:800px){.afFooterGrid{grid-template-columns:1fr;gap:30px}}
+
+/* Değerlendirmeler — bento (düzensiz ızgara) kutu görünümü */
+.tAfis .ownReviews{position:relative;background:var(--af-paper);color:var(--af-text-dark);padding:9vw 6vw}
+.tAfis .ownReviews>header{text-align:center;max-width:600px;margin:0 auto 44px}
+.tAfis .ownReviews small{letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--af-muted-dark)}
+.tAfis .ownReviews h2{margin:12px 0 6px;font:800 clamp(28px,3.6vw,44px)/1.1 'Plus Jakarta Sans',Arial,sans-serif;color:var(--af-text-dark);display:flex;align-items:center;justify-content:center;gap:12px}
+.tAfis .ownReviews h2 span{color:#d9a441;font-size:.5em;letter-spacing:2px}
+.tAfis .ownReviews>header p{color:var(--af-muted-dark);margin:0}
+.tAfis .ownReviewGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:14px}
+.tAfis .ownReviewGrid article{grid-column:span 2;background:var(--af-ink);color:#fff;border-radius:18px;padding:26px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.tAfis .ownReviewGrid article:nth-child(6n+1){grid-column:span 4;grid-row:span 1}
+.tAfis .ownReviewHead{display:flex;align-items:center;gap:10px}
+.tAfis .ownReviewAvatar,.tAfis .ownReviewAvatarFallback{width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.tAfis .ownReviewAvatarFallback{background:#fff;color:#0d0d0d;display:grid;place-items:center;font-weight:800}
+.tAfis .ownReviewHead b{font:700 14px 'Plus Jakarta Sans',Arial,sans-serif}
+.tAfis .ownReviewStars{color:#d9a441;font-size:12px;margin-top:2px}
+.tAfis .ownReviewGrid p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.85);margin:14px 0 0}
+@media(max-width:800px){.tAfis .ownReviewGrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:auto}.tAfis .ownReviewGrid article,.tAfis .ownReviewGrid article:nth-child(6n+1){grid-column:span 2}}

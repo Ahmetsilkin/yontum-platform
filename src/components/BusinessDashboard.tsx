@@ -106,6 +106,7 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
   ],
   afis:[
     {key:'af_manifesto',label:'Manifesto metni (açıklama girilmezse)',type:'textarea',placeholder:'Yılların tecrübesini güncel tekniklerle birleştiren bir kadromuz var. Her randevu, sana özel bir bakım rutinidir.'},
+    {key:'af_emblemPhoto',label:'Manifesto kartı fotoğrafı (eklenmezse yerine logo/baş harf rozeti gösterilir)',type:'image'},
     {key:'af_teamTitle',label:'Ekip bölümü başlığı',placeholder:'Kadromuz'},
     {key:'af_galleryTitle',label:'Galeri başlığı',placeholder:'Bizden kareler.'},
     {key:'af_footerTagline',label:'Footer alt yazısı',type:'textarea',placeholder:'Randevunu al, koltuğa otur, gerisini bize bırak.'},

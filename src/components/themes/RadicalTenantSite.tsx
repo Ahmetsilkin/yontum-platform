@@ -2256,9 +2256,13 @@ function Cadre(p:P){
    noktalı fiyat listesi, kadro karuseli) ilham alındı — hiçbir gerçek marka
    adı, logosu, fotoğrafı veya metni kopyalanmadı; tüm içerik işletmenin
    kendi verisinden geliyor. ================= */
+/* Yırtık kağıt kenarı: keskin/dişli bir zikzak yerine, kontrol noktaları
+   arasında yumuşak Q eğrileriyle çizilmiş, kağıdın gerçekten koparılmışçasına
+   ELE dalgalanan bir çizgi — yükseklik hep 40'lık kutunun ortasına yakın
+   (10-30 arası) kalıyor, ne tepe ne çukur uca değiyor. */
 function TornEdge({fill}:{fill:string}){
-  return <svg className="afTorn" viewBox="0 0 1600 50" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0,0 L0,28 L44,6 L88,40 L132,14 L176,46 L220,18 L264,36 L308,4 L352,42 L396,10 L440,33 L484,16 L528,44 L572,8 L616,38 L660,20 L704,46 L748,5 L792,34 L836,15 L880,42 L924,9 L968,30 L1012,19 L1056,44 L1100,7 L1144,36 L1188,13 L1232,40 L1276,22 L1320,46 L1364,9 L1408,32 L1452,17 L1496,42 L1540,11 L1600,28 L1600,0 Z" fill={fill}/>
+  return <svg className="afTorn" viewBox="0 0 1600 40" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,16.8 Q0,16.8 40,15.3 Q80,13.7 120,18.2 Q160,22.7 200,17.5 Q240,12.3 280,16.5 Q320,20.6 360,19.1 Q400,17.6 440,14.8 Q480,12 520,16.1 Q560,20.1 600,15.9 Q640,11.7 680,15.2 Q720,18.8 760,15.5 Q800,12.3 840,12.4 Q880,12.6 920,15.6 Q960,18.6 1000,22.3 Q1040,25.9 1080,19.6 Q1120,13.2 1160,14.1 Q1200,15 1240,18.7 Q1280,22.3 1320,25.2 Q1360,28.1 1400,24.7 Q1440,21.4 1480,19.8 Q1520,18.1 1560,23.4 Q1580,26 1600,28.6 L1600,0 L0,0 Z" fill={fill}/>
   </svg>;
 }
 function AfisTeam({p}:{p:P}){
@@ -2266,6 +2270,18 @@ function AfisTeam({p}:{p:P}){
   const visible=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const trackRef=useRef<HTMLDivElement>(null);
   const[active,setActive]=useState(0);
+  // Az sayıda çalışan varken kart sırası konteynerden dar kalıp sola yapışık
+  // görünüyordu — sığdığı zaman ortalanıyor, sığmayınca (gerçekten kaydırma
+  // gerektiğinde) normal soldan başlayan kaydırmalı listeye dönüyor.
+  const[fits,setFits]=useState(false);
+  useEffect(()=>{
+    const track=trackRef.current;if(!track)return;
+    const checkFit=()=>setFits(track.scrollWidth<=track.clientWidth+1);
+    checkFit();
+    const ro=new ResizeObserver(checkFit);
+    ro.observe(track);
+    return()=>ro.disconnect();
+  },[visible.length]);
   useEffect(()=>{
     const track=trackRef.current;if(!track)return;
     const cards=Array.from(track.children)as HTMLElement[];
@@ -2276,8 +2292,8 @@ function AfisTeam({p}:{p:P}){
   if(!visible.length)return null;
   function goTo(i:number){(trackRef.current?.children[i]as HTMLElement)?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'})}
   return <section id="afTeam" className="afTeamSection">
-    <Reveal><header><small>EKİP</small><h2>{dec(b,'af_teamTitle','Kadromuz')}</h2></header></Reveal>
-    <div className="afTeamTrack" ref={trackRef}>
+    <Reveal><div className="afSectionHead"><small>EKİP</small><h2>{dec(b,'af_teamTitle','Kadromuz')}</h2></div></Reveal>
+    <div className={`afTeamTrack${fits?' fits':''}`} ref={trackRef}>
       {visible.map((s:any)=><article key={s.id} className="afTeamCard">
         <div className="afTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
         <b>{s.name}</b><small>{s.title||'Berber'}</small>
@@ -2323,14 +2339,18 @@ function Afis(p:P){
 
     <section className="afManifesto">
       <Reveal className="afManifestoText">
-        {b.description?b.description.split(/\n{2,}/).map((par:string,i:number)=><p key={i}>{par}</p>):<p>{dec(b,'af_manifesto','Yılların tecrübesini güncel tekniklerle birleştiren bir kadromuz var. Her randevu, sana özel bir bakım rutinidir.')}</p>}
+        <div className="afManifestoScroll">
+          {b.description?b.description.split(/\n{2,}/).map((par:string,i:number)=><p key={i}>{par}</p>):<p>{dec(b,'af_manifesto','Yılların tecrübesini güncel tekniklerle birleştiren bir kadromuz var. Her randevu, sana özel bir bakım rutinidir.')}</p>}
+        </div>
       </Reveal>
       <Reveal className="afManifestoCard" i={1}>
-        <div className="afEmblemCard">
-          <i>{b.logo_url?<img src={b.logo_url} alt=""/>:<b>{b.name?.[0]}</b>}</i>
-          {years!==null&&<small>SINCE {b.established_year}</small>}
-          <b>{b.name}</b>
-        </div>
+        {(()=>{const photo=dec(b,'af_emblemPhoto','');return <div className={`afEmblemCard${photo?' hasPhoto':''}`}>
+          {photo?<img className="afEmblemPhoto" src={photo} alt={b.name}/>:<i>{b.logo_url?<img src={b.logo_url} alt=""/>:<b>{b.name?.[0]}</b>}</i>}
+          <div className="afEmblemCaption">
+            {years!==null&&<small>SINCE {b.established_year}</small>}
+            <b>{b.name}</b>
+          </div>
+        </div>})()}
       </Reveal>
       <TornEdge fill="var(--af-ink)"/>
     </section>
@@ -2338,7 +2358,7 @@ function Afis(p:P){
     <AfisTeam p={p}/>
 
     <section id="hizmetler" className="afServices">
-      <Reveal><header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Hizmetlerimiz'}</h2></header></Reveal>
+      <Reveal><div className="afSectionHead"><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Hizmetlerimiz'}</h2></div></Reveal>
       <div className="afPriceList">
         {p.services.map((s,i)=><Reveal as="article" className="afPriceRow" key={s.id} i={i%8}>
           <span className="afPriceName">{s.name}</span>
@@ -2350,13 +2370,13 @@ function Afis(p:P){
     </section>
 
     <section id="randevu" className="afBooking">
-      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Koltuğunu ayırt.'}</h2></header></Reveal>
+      <Reveal><div className="afSectionHead"><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Koltuğunu ayırt.'}</h2></div></Reveal>
       <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
       <TornEdge fill="var(--af-paper)"/>
     </section>
 
     <section id="afGallery" className="afGallerySection">
-      <Reveal><header><small>GALERİ</small><h2>{dec(b,'af_galleryTitle','Bizden kareler.')}</h2></header></Reveal>
+      <Reveal><div className="afSectionHead"><small>GALERİ</small><h2>{dec(b,'af_galleryTitle','Bizden kareler.')}</h2></div></Reveal>
       <Reveal><Gallery p={p} variant="afGrid"/></Reveal>
       <TornEdge fill="var(--af-ink)"/>
     </section>
