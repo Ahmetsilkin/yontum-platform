@@ -2256,15 +2256,9 @@ function Cadre(p:P){
    noktalı fiyat listesi, kadro karuseli) ilham alındı — hiçbir gerçek marka
    adı, logosu, fotoğrafı veya metni kopyalanmadı; tüm içerik işletmenin
    kendi verisinden geliyor. ================= */
-/* Yırtık kağıt kenarı: keskin/dişli bir zikzak yerine, kontrol noktaları
-   arasında yumuşak Q eğrileriyle çizilmiş, kağıdın gerçekten koparılmışçasına
-   ELE dalgalanan bir çizgi — yükseklik hep 40'lık kutunun ortasına yakın
-   (10-30 arası) kalıyor, ne tepe ne çukur uca değiyor. */
-function TornEdge({fill}:{fill:string}){
-  return <svg className="afTorn" viewBox="0 0 1600 40" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0,16.8 Q0,16.8 40,15.3 Q80,13.7 120,18.2 Q160,22.7 200,17.5 Q240,12.3 280,16.5 Q320,20.6 360,19.1 Q400,17.6 440,14.8 Q480,12 520,16.1 Q560,20.1 600,15.9 Q640,11.7 680,15.2 Q720,18.8 760,15.5 Q800,12.3 840,12.4 Q880,12.6 920,15.6 Q960,18.6 1000,22.3 Q1040,25.9 1080,19.6 Q1120,13.2 1160,14.1 Q1200,15 1240,18.7 Q1280,22.3 1320,25.2 Q1360,28.1 1400,24.7 Q1440,21.4 1480,19.8 Q1520,18.1 1560,23.4 Q1580,26 1600,28.6 L1600,0 L0,0 Z" fill={fill}/>
-  </svg>;
-}
+/* Kullanıcı geri bildirimiyle yırtık kağıt kenarı efekti tamamen kaldırıldı
+   ("hala yırtık gibi bölümler var, keskin hatlar olsun") — bölümler artık
+   düz, keskin kenarlarla art arda diziliyor. */
 function AfisTeam({p}:{p:P}){
   const{b}=p;
   const visible=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
@@ -2300,7 +2294,6 @@ function AfisTeam({p}:{p:P}){
       </article>)}
     </div>
     {visible.length>1&&<div className="afTeamDots">{visible.map((s:any,i:number)=><button key={s.id} type="button" className={i===active?'active':''} onClick={()=>goTo(i)} aria-label={s.name}/>)}</div>}
-    <TornEdge fill="var(--af-paper)"/>
   </section>;
 }
 function Afis(p:P){
@@ -2334,7 +2327,6 @@ function Afis(p:P){
           <a className="afBtnOutline" href="#hizmetler">{b.services_label||'Hizmetlerimiz'}</a>
         </div>
       </div>
-      <TornEdge fill="var(--af-paper)"/>
     </section>
 
     <section className="afManifesto">
@@ -2352,7 +2344,6 @@ function Afis(p:P){
           </div>
         </div>})()}
       </Reveal>
-      <TornEdge fill="var(--af-ink)"/>
     </section>
 
     <AfisTeam p={p}/>
@@ -2366,19 +2357,16 @@ function Afis(p:P){
           <span className="afPriceValue">{b.show_prices&&s.price!=null?`${Number(s.price).toLocaleString('tr-TR')} ₺`:`${s.duration_minutes} dk`}</span>
         </Reveal>)}
       </div>
-      <TornEdge fill="var(--af-ink)"/>
     </section>
 
     <section id="randevu" className="afBooking">
       <Reveal><div className="afSectionHead"><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Koltuğunu ayırt.'}</h2></div></Reveal>
       <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
-      <TornEdge fill="var(--af-paper)"/>
     </section>
 
     <section id="afGallery" className="afGallerySection">
       <Reveal><div className="afSectionHead"><small>GALERİ</small><h2>{dec(b,'af_galleryTitle','Bizden kareler.')}</h2></div></Reveal>
       <Reveal><Gallery p={p} variant="afGrid"/></Reveal>
-      <TornEdge fill="var(--af-ink)"/>
     </section>
 
     <Reveal><OwnRatings businessId={b.id}/></Reveal>

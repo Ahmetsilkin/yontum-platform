@@ -1908,7 +1908,7 @@
 .afNav nav{display:flex;gap:26px;font-size:13px;font-weight:700}
 .afNav nav a{color:var(--af-muted);transition:color .15s ease}
 .afNav nav a:hover{color:#fff}
-.afNavCta{background:#fff;color:#0d0d0d;padding:11px 20px;border-radius:999px;font-weight:800;font-size:13px;transition:transform .15s ease}
+.afNavCta{background:#fff;color:#0d0d0d!important;padding:11px 20px;border-radius:999px;font-weight:800;font-size:13px;transition:transform .15s ease}
 .afNavCta:hover{transform:translateY(-1px)}
 @media(max-width:800px){.afNav nav{display:none}}
 
@@ -1921,13 +1921,9 @@
 .afHeroInner h1 em{color:#fff;opacity:.6}
 .afHeroInner p{max-width:520px;color:rgba(255,255,255,.75);font-size:16px;line-height:1.7;margin:22px 0 0}
 .afHeroActions{display:flex;flex-wrap:wrap;gap:16px;margin-top:34px}
-.afBtnSolid{background:#fff;color:#0d0d0d;padding:16px 28px;border-radius:999px;font-weight:800;font-size:14px;transition:transform .15s ease;display:inline-block}
-.afBtnSolid:hover{transform:translateY(-2px)}
-.afBtnOutline{border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:16px 28px;border-radius:999px;font-weight:800;font-size:14px;transition:background .15s ease;display:inline-block}
-.afBtnOutline:hover{background:rgba(255,255,255,.08)}
-
-.afTorn{position:absolute;left:0;bottom:-1px;width:100%;height:34px;display:block;z-index:3}
-@media(max-width:700px){.afTorn{height:20px}}
+.afBtnSolid,.afBtnOutline{background:#fff;color:#0d0d0d!important;border:1.5px solid #fff;padding:16px 28px;border-radius:999px;font-weight:800;font-size:14px;transition:transform .15s ease,opacity .15s ease;display:inline-block}
+.afBtnSolid:hover,.afBtnOutline:hover{transform:translateY(-2px)}
+.afBtnOutline{opacity:.88}
 
 .afManifesto{position:relative;background:var(--af-paper);color:var(--af-text-dark);padding:9vw 6vw 8vw;display:grid;grid-template-columns:1.3fr .8fr;gap:6vw;align-items:center}
 .afManifestoScroll{max-height:340px;overflow-y:auto;padding-right:14px;scrollbar-width:thin;scrollbar-color:rgba(20,20,20,.25) transparent}
