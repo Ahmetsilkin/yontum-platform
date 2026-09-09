@@ -2320,22 +2320,30 @@ function afPlayTypeClick(){
     if(ctx.state==='suspended')ctx.resume().catch(()=>{});
     const now=ctx.currentTime;
 
-    // 1) Keskin "çıt": kısa, sönümlenen gürültü patlaması, bant-geçiren filtreyle daraltılmış.
-    const dur=.018,n=Math.max(1,Math.floor(ctx.sampleRate*dur));
+    // 1) Mekanik "klak": alçak/geniş bant-geçiren gürültü patlaması. Daktilo
+    //    tuşu, plastik bir klavye tıkırtısından daha "tok" ve daha az tiz
+    //    duyulur — bu yüzden bant frekansı bilinçli olarak düşük tutuldu.
+    const dur=.024,n=Math.max(1,Math.floor(ctx.sampleRate*dur));
     const buf=ctx.createBuffer(1,n,ctx.sampleRate),data=buf.getChannelData(0);
-    for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.2);
+    for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
     const noise=ctx.createBufferSource();noise.buffer=buf;
-    const band=ctx.createBiquadFilter();band.type='bandpass';band.frequency.value=2600+Math.random()*900;band.Q.value=1.1;
-    const noiseGain=ctx.createGain();noiseGain.gain.setValueAtTime(.45,now);noiseGain.gain.exponentialRampToValueAtTime(.0005,now+dur);
+    const band=ctx.createBiquadFilter();band.type='bandpass';band.frequency.value=1700+Math.random()*700;band.Q.value=.8;
+    const noiseGain=ctx.createGain();noiseGain.gain.setValueAtTime(.5,now);noiseGain.gain.exponentialRampToValueAtTime(.0005,now+dur);
     noise.connect(band);band.connect(noiseGain);noiseGain.connect(ctx.destination);
     noise.start(now);noise.stop(now+dur);
 
-    // 2) Hafif "tak" gövdesi: çok kısa, alçak sinüs — mekanik ağırlık hissi.
-    const osc=ctx.createOscillator(),oscGain=ctx.createGain();
-    osc.type='sine';osc.frequency.setValueAtTime(150+Math.random()*35,now);
-    oscGain.gain.setValueAtTime(.18,now);oscGain.gain.exponentialRampToValueAtTime(.0005,now+.03);
-    osc.connect(oscGain);oscGain.connect(ctx.destination);
-    osc.start(now);osc.stop(now+.032);
+    // 2) Kol/çekiç mekanizmasının "tonk" gövdesi: temel ton + hafif bir üst
+    //    ton (metalik kol yankısı hissi), daha uzun sönümle — bu, sesi
+    //    düz bir plastik "tık"tan daktiloya özgü ağır/mekanik bir "tonk"a
+    //    taşıyan asıl katman.
+    const base=125+Math.random()*25;
+    [[1,.24,.055],[1.8,.08,.035]].forEach(([mult,peak,decay])=>{
+      const osc=ctx.createOscillator(),oscGain=ctx.createGain();
+      osc.type='triangle';osc.frequency.setValueAtTime(base*mult,now);
+      oscGain.gain.setValueAtTime(peak,now);oscGain.gain.exponentialRampToValueAtTime(.0005,now+decay);
+      osc.connect(oscGain);oscGain.connect(ctx.destination);
+      osc.start(now);osc.stop(now+decay+.005);
+    });
   }catch{}
 }
 function useAfAudioUnlock(){
