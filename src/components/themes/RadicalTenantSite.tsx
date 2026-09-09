@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -2246,6 +2246,130 @@ function Cadre(p:P){
         <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="cdContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="cdContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
       </div>
       <div className="cdFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+
+/* ================= Afiş — siyah-beyaz, yırtık kağıt kenarlı editoryal berber
+   teması. Kullanıcının paylaştığı bir referans sitenin GÖRSEL DİLİNDEN
+   (video hero, koyu/açık bant geçişlerinde yırtık kağıt kenarı, menü tarzı
+   noktalı fiyat listesi, kadro karuseli) ilham alındı — hiçbir gerçek marka
+   adı, logosu, fotoğrafı veya metni kopyalanmadı; tüm içerik işletmenin
+   kendi verisinden geliyor. ================= */
+function TornEdge({fill}:{fill:string}){
+  return <svg className="afTorn" viewBox="0 0 1600 50" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,0 L0,28 L44,6 L88,40 L132,14 L176,46 L220,18 L264,36 L308,4 L352,42 L396,10 L440,33 L484,16 L528,44 L572,8 L616,38 L660,20 L704,46 L748,5 L792,34 L836,15 L880,42 L924,9 L968,30 L1012,19 L1056,44 L1100,7 L1144,36 L1188,13 L1232,40 L1276,22 L1320,46 L1364,9 L1408,32 L1452,17 L1496,42 L1540,11 L1600,28 L1600,0 Z" fill={fill}/>
+  </svg>;
+}
+function AfisTeam({p}:{p:P}){
+  const{b}=p;
+  const visible=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const trackRef=useRef<HTMLDivElement>(null);
+  const[active,setActive]=useState(0);
+  useEffect(()=>{
+    const track=trackRef.current;if(!track)return;
+    const cards=Array.from(track.children)as HTMLElement[];
+    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const i=cards.indexOf(e.target as HTMLElement);if(i>=0)setActive(i)}})},{root:track,threshold:.6});
+    cards.forEach(c=>io.observe(c));
+    return()=>io.disconnect();
+  },[visible.length]);
+  if(!visible.length)return null;
+  function goTo(i:number){(trackRef.current?.children[i]as HTMLElement)?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'})}
+  return <section id="afTeam" className="afTeamSection">
+    <Reveal><header><small>EKİP</small><h2>{dec(b,'af_teamTitle','Kadromuz')}</h2></header></Reveal>
+    <div className="afTeamTrack" ref={trackRef}>
+      {visible.map((s:any)=><article key={s.id} className="afTeamCard">
+        <div className="afTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name[0]}</i>}</div>
+        <b>{s.name}</b><small>{s.title||'Berber'}</small>
+      </article>)}
+    </div>
+    {visible.length>1&&<div className="afTeamDots">{visible.map((s:any,i:number)=><button key={s.id} type="button" className={i===active?'active':''} onClick={()=>goTo(i)} aria-label={s.name}/>)}</div>}
+    <TornEdge fill="var(--af-paper)"/>
+  </section>;
+}
+function Afis(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const years=b.established_year?Math.max(1,new Date().getFullYear()-b.established_year):null;
+  return <main id="top" className="tAfis">
+    <header className="afNav">
+      <a className="afBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#afTeam">Kadro</a>
+        <a href="#afGallery">Galeri</a>
+        <a href="#randevu">İletişim</a>
+      </nav>
+      <a className="afNavCta" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="afHero">
+      {b.cover_url?(b.cover_type==='video'?
+        <video className="afHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>:
+        <img className="afHeroMedia" src={b.cover_url} alt=""/>
+      ):null}
+      <div className="afHeroOverlay"/>
+      <div className="afHeroInner">
+        {b.established_year&&<span className="afKicker">SINCE {b.established_year}</span>}
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <div className="afHeroActions">
+          <a className="afBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+          <a className="afBtnOutline" href="#hizmetler">{b.services_label||'Hizmetlerimiz'}</a>
+        </div>
+      </div>
+      <TornEdge fill="var(--af-paper)"/>
+    </section>
+
+    <section className="afManifesto">
+      <Reveal className="afManifestoText">
+        {b.description?b.description.split(/\n{2,}/).map((par:string,i:number)=><p key={i}>{par}</p>):<p>{dec(b,'af_manifesto','Yılların tecrübesini güncel tekniklerle birleştiren bir kadromuz var. Her randevu, sana özel bir bakım rutinidir.')}</p>}
+      </Reveal>
+      <Reveal className="afManifestoCard" i={1}>
+        <div className="afEmblemCard">
+          <i>{b.logo_url?<img src={b.logo_url} alt=""/>:<b>{b.name?.[0]}</b>}</i>
+          {years!==null&&<small>SINCE {b.established_year}</small>}
+          <b>{b.name}</b>
+        </div>
+      </Reveal>
+      <TornEdge fill="var(--af-ink)"/>
+    </section>
+
+    <AfisTeam p={p}/>
+
+    <section id="hizmetler" className="afServices">
+      <Reveal><header><small>{b.services_label||'HİZMETLER'}</small><h2>{b.services_title||'Hizmetlerimiz'}</h2></header></Reveal>
+      <div className="afPriceList">
+        {p.services.map((s,i)=><Reveal as="article" className="afPriceRow" key={s.id} i={i%8}>
+          <span className="afPriceName">{s.name}</span>
+          <span className="afPriceDots"/>
+          <span className="afPriceValue">{b.show_prices&&s.price!=null?`${Number(s.price).toLocaleString('tr-TR')} ₺`:`${s.duration_minutes} dk`}</span>
+        </Reveal>)}
+      </div>
+      <TornEdge fill="var(--af-ink)"/>
+    </section>
+
+    <section id="randevu" className="afBooking">
+      <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Koltuğunu ayırt.'}</h2></header></Reveal>
+      <Reveal><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
+      <TornEdge fill="var(--af-paper)"/>
+    </section>
+
+    <section id="afGallery" className="afGallerySection">
+      <Reveal><header><small>GALERİ</small><h2>{dec(b,'af_galleryTitle','Bizden kareler.')}</h2></header></Reveal>
+      <Reveal><Gallery p={p} variant="afGrid"/></Reveal>
+      <TornEdge fill="var(--af-ink)"/>
+    </section>
+
+    <Reveal><OwnRatings businessId={b.id}/></Reveal>
+
+    <footer className="afFooter">
+      <div className="afFooterGrid">
+        <div><a className="afBrand" href="#top"><b>{b.name}</b></a><p>{dec(b,'af_footerTagline','Randevunu al, koltuğa otur, gerisini bize bırak.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="afHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>ZİYARET</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="afContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="afContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
+      </div>
+      <div className="afFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }
