@@ -170,19 +170,15 @@
 .mediaEditor div b{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .mediaEditor div b small{font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}
 
-/* Genel yapı taşları (builderBlock, toggleField, industryCards vb. globals.css'te
-   tanımlı ama panel-özel — burada indigo/slate sistemine göre eziliyor) */
+/* Genel yapı taşları (builderBlock, toggleField vb. globals.css'te tanımlı
+   ama panel-özel — burada indigo/slate sistemine göre eziliyor) */
 .dashboardShell .builderBlock{border-top-color:var(--line)}
 .dashboardShell .builderBlock>h3,.dashboardShell .galleryHeader h3{font-weight:700;letter-spacing:-.01em;color:var(--text-primary)}
 .dashboardShell .builderBlock>h3:before{background:var(--accent-primary)}
 .dashboardShell .toggleField{background:var(--bg-soft);border-radius:var(--radius-btn);border:1px solid var(--line)}
 .dashboardShell .durationHint,.dashboardShell .serviceDurationNote{background:var(--bg-soft);color:var(--text-secondary);border-radius:var(--radius-btn);border:1px solid var(--line)}
 .dashboardShell .serviceDetailSection{background:var(--bg-soft);border-left:3px solid var(--accent-primary);border-radius:0 var(--radius-btn) var(--radius-btn) 0}
-.dashboardShell .industryCards button,.dashboardShell .presetCards button{border-radius:var(--radius-btn);border:1px solid var(--line);background:var(--bg-card);transition:all .15s ease}
-.dashboardShell .industryCards button:hover,.dashboardShell .presetCards button:hover{background:var(--bg-soft);color:var(--accent-primary);border-color:var(--accent-primary);transform:translateY(-1px)}
-.dashboardShell .colorSetBtn,.dashboardShell .paletteChooser button{border-radius:var(--radius-btn);border:1px solid var(--line)}
-.dashboardShell .colorSetBtn.active{border-color:var(--accent-primary);box-shadow:0 0 0 1px var(--accent-primary)}
-.dashboardShell .logoUploader,.dashboardShell .simpleColorControl,.dashboardShell .paletteChooser,.dashboardShell .domainConnectCard,.dashboardShell .dnsBox{background:var(--bg-soft);border-radius:var(--radius-card);border:1px solid var(--line)}
+.dashboardShell .logoUploader,.dashboardShell .domainConnectCard,.dashboardShell .dnsBox{background:var(--bg-soft);border-radius:var(--radius-card);border:1px solid var(--line)}
 .dashboardShell .mediaEditor{background:var(--bg-soft);border-radius:var(--radius-btn);border:1px solid var(--line)}
 .dashboardShell .waStatusBox,.dashboardShell .waTimingRow,.dashboardShell .googleSettings,.dashboardShell .whatsappSettings{background:var(--bg-soft);border-radius:var(--radius-card);border:1px solid var(--line)}
 .dashboardShell .dashModalBackdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
