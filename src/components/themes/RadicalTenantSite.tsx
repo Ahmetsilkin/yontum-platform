@@ -2328,7 +2328,7 @@ function afPlayTypeClick(){
     for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
     const noise=ctx.createBufferSource();noise.buffer=buf;
     const band=ctx.createBiquadFilter();band.type='bandpass';band.frequency.value=1700+Math.random()*700;band.Q.value=.8;
-    const noiseGain=ctx.createGain();noiseGain.gain.setValueAtTime(.25,now);noiseGain.gain.exponentialRampToValueAtTime(.0005,now+dur);
+    const noiseGain=ctx.createGain();noiseGain.gain.setValueAtTime(.1,now);noiseGain.gain.exponentialRampToValueAtTime(.0005,now+dur);
     noise.connect(band);band.connect(noiseGain);noiseGain.connect(ctx.destination);
     noise.start(now);noise.stop(now+dur);
 
@@ -2337,7 +2337,7 @@ function afPlayTypeClick(){
     //    düz bir plastik "tık"tan daktiloya özgü ağır/mekanik bir "tonk"a
     //    taşıyan asıl katman.
     const base=125+Math.random()*25;
-    [[1,.12,.055],[1.8,.04,.035]].forEach(([mult,peak,decay])=>{
+    [[1,.05,.055],[1.8,.016,.035]].forEach(([mult,peak,decay])=>{
       const osc=ctx.createOscillator(),oscGain=ctx.createGain();
       osc.type='triangle';osc.frequency.setValueAtTime(base*mult,now);
       oscGain.gain.setValueAtTime(peak,now);oscGain.gain.exponentialRampToValueAtTime(.0005,now+decay);
