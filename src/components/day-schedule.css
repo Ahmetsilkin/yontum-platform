@@ -1,73 +1,73 @@
-.daySchedule{background:#111;color:#fff;border-radius:18px;padding:24px;margin-bottom:20px}
+.daySchedule{background:var(--bg-card);color:var(--text-primary);border-radius:18px;padding:24px;margin-bottom:20px}
 .daySchedule>header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:12px}
 .daySchedule h2{font:700 27px var(--font-display,Georgia);margin:5px 0}
-.daySchedule header small{letter-spacing:2px;color:#888}
+.daySchedule header small{letter-spacing:2px;color:var(--text-secondary)}
 .daySchedule header>div:last-child{display:flex;gap:7px}
-.daySchedule input,.daySchedule select{background:#252525;color:#fff;border:1px solid #444;padding:9px}
+.daySchedule input,.daySchedule select{background:var(--bg-soft);color:var(--text-primary);border:1px solid var(--line);padding:9px}
 
 .calBadges{display:flex;gap:10px}
-.calBadge{background:#1c1c1c;border:1px solid #2e2e2e;border-radius:12px;padding:9px 16px;display:flex;flex-direction:column;gap:2px;min-width:120px}
-.calBadge small{color:#888;font-size:9px;letter-spacing:.6px}
-.calBadge b{font:700 19px var(--font-display,Georgia);color:#fff}
+.calBadge{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:9px 16px;display:flex;flex-direction:column;gap:2px;min-width:120px}
+.calBadge small{color:var(--text-secondary);font-size:9px;letter-spacing:.6px}
+.calBadge b{font:700 19px var(--font-display,Georgia);color:var(--text-primary)}
 
 .calLegend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
-.calLegend span{display:flex;align-items:center;gap:6px;font-size:12px;color:#999}
+.calLegend span{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary)}
 .calLegend i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto}
 
 .scheduleGridScroll{overflow-x:auto}
-.scheduleGrid{border-top:1px solid #333;min-width:calc(65px + var(--staff-cols) * 150px)}
-.scheduleColHeads{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));background:#171717;border-bottom:1px solid #333;position:sticky;top:0}
-.scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:var(--admin-pop,#7c5cff);border-left:1px solid #292929;letter-spacing:.3px}
-.hourRow{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));min-height:55px;border-bottom:1px solid #292929}.hourRow>time{padding:14px 8px;color:#777;font-size:11px}
-.staffCell{border-left:1px solid #292929;padding:5px;display:flex;flex-direction:column;gap:5px}
-.hourRow article{position:relative;background:#252525;border-left:4px solid #65d392;padding:9px 70px 9px 10px;display:flex;flex-direction:column;cursor:grab;touch-action:none}
+.scheduleGrid{border-top:1px solid var(--line);min-width:calc(65px + var(--staff-cols) * 150px)}
+.scheduleColHeads{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));background:var(--bg-soft);border-bottom:1px solid var(--line);position:sticky;top:0}
+.scheduleColHeads b{padding:10px 10px;font:600 12px/1.2 inherit;color:var(--accent-pop);border-left:1px solid var(--line);letter-spacing:.3px}
+.hourRow{display:grid;grid-template-columns:65px repeat(var(--staff-cols),minmax(150px,1fr));min-height:55px;border-bottom:1px solid var(--line)}.hourRow>time{padding:14px 8px;color:var(--text-secondary);font-size:11px}
+.staffCell{border-left:1px solid var(--line);padding:5px;display:flex;flex-direction:column;gap:5px}
+.hourRow article{position:relative;background:var(--bg-soft);border-left:4px solid var(--accent-primary);padding:9px 70px 9px 10px;display:flex;flex-direction:column;cursor:grab;touch-action:none}
 .hourRow article:active{cursor:grabbing}
 .hourRow article.touchDragging{opacity:.4}
-.staffCell.touchHover{background:#2a2f24;outline:2px dashed #65d392;outline-offset:-2px}
-.hourRow article.status-completed{border-color:#777;opacity:.7}.hourRow article.status-no_show{border-color:#d96767}.hourRow article span{font-size:12px;margin:3px 0}.hourRow article small{color:#999}.hourRow article em{position:absolute;right:8px;top:8px;font-size:9px;font-style:normal;background:#333;padding:5px}.scheduleEmpty{text-align:center;color:#777}
+.staffCell.touchHover{background:var(--pub2-accent-soft);outline:2px dashed var(--accent-primary);outline-offset:-2px}
+.hourRow article.status-completed{border-color:var(--text-tertiary);opacity:.7}.hourRow article.status-no_show{border-color:var(--pub2-red)}.hourRow article span{font-size:12px;margin:3px 0}.hourRow article small{color:var(--text-secondary)}.hourRow article em{position:absolute;right:8px;top:8px;font-size:9px;font-style:normal;background:var(--bg-card-hover);padding:5px}.scheduleEmpty{text-align:center;color:var(--text-secondary)}
 @media(max-width:650px){.daySchedule{border-radius:0;padding:16px;margin-inline:-10px}.daySchedule>header{display:block}.daySchedule header>div:last-child{margin-top:12px;display:grid;grid-template-columns:1fr 1fr}.calBadges{margin:10px 0}.scheduleGrid{min-width:calc(52px + var(--staff-cols) * 130px)}.scheduleColHeads,.hourRow{grid-template-columns:52px repeat(var(--staff-cols),minmax(130px,1fr))}.hourRow article{padding-right:55px}}
 
 .scheduleDayPicker{display:flex;gap:8px;overflow-x:auto;padding:6px 0 16px}
-.scheduleDayPicker button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;background:#141414;border:1px solid #2a2a2a;border-radius:12px;padding:10px 14px;color:#eee;cursor:pointer;min-width:56px}
-.scheduleDayPicker button small{color:#999;font-size:10px}
+.scheduleDayPicker button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:10px 14px;color:var(--text-primary);cursor:pointer;min-width:56px}
+.scheduleDayPicker button small{color:var(--text-secondary);font-size:10px}
 .scheduleDayPicker button b{font-size:18px}
-.scheduleDayPicker button span{color:#999;font-size:10px}
+.scheduleDayPicker button span{color:var(--text-secondary);font-size:10px}
 .scheduleDayPicker button.today{position:relative}
-.scheduleDayPicker button.today:after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--admin-pop,#7c5cff)}
-.scheduleDayPicker button.selected{border-color:var(--admin-pop,#7c5cff);background:var(--admin-pop,#7c5cff);box-shadow:0 4px 14px #7c5cff40}
-.scheduleDayPicker button.selected small,.scheduleDayPicker button.selected b,.scheduleDayPicker button.selected span{color:#141414}
-.scheduleDayPicker button.selected.today:after{background:#141414}
+.scheduleDayPicker button.today:after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--accent-pop)}
+.scheduleDayPicker button.selected{border-color:var(--accent-pop);background:var(--accent-pop);box-shadow:0 4px 14px rgba(13,110,253,.4)}
+.scheduleDayPicker button.selected small,.scheduleDayPicker button.selected b,.scheduleDayPicker button.selected span{color:#fff}
+.scheduleDayPicker button.selected.today:after{background:#fff}
 .scheduleSlotPicker{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;padding:6px 0 4px}
-.scheduleSlotPicker button{background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:9px 4px;color:#eee;cursor:pointer;font-size:13px}
-.scheduleSlotPicker button.selected{border-color:var(--admin-pop,#7c5cff);background:var(--admin-pop,#7c5cff);color:#141414;font-weight:700;box-shadow:0 4px 14px #7c5cff40}
-.scheduleSlotPicker p{grid-column:1/-1;color:#999;font-size:13px;margin:0}
+.scheduleSlotPicker button{background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;padding:9px 4px;color:var(--text-primary);cursor:pointer;font-size:13px}
+.scheduleSlotPicker button.selected{border-color:var(--accent-pop);background:var(--accent-pop);color:#fff;font-weight:700;box-shadow:0 4px 14px rgba(13,110,253,.4)}
+.scheduleSlotPicker p{grid-column:1/-1;color:var(--text-secondary);font-size:13px;margin:0}
 
-/* Onay modali + detay çekmecesi — açık renk, panelin geri kalanından bağımsız */
-.calModalBackdrop,.calDrawerBackdrop{position:fixed;inset:0;background:#00000066;display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
-.calModal{background:#fff;border-radius:26px;padding:26px;max-width:380px;width:100%;position:relative;box-shadow:0 30px 80px #0005}
-.calModal h3{font:700 20px var(--font-display,Georgia);margin:0 0 10px;color:#141414}
-.calModal p{color:#141414;font-size:14px;line-height:1.5;margin:0 0 20px}
+/* Onay modali + detay çekmecesi — artık panelin geri kalanıyla aynı koyu temada */
+.calModalBackdrop,.calDrawerBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
+.calModal{background:var(--bg-card);border-radius:26px;padding:26px;max-width:380px;width:100%;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.calModal h3{font:700 20px var(--font-display,Georgia);margin:0 0 10px;color:var(--text-primary)}
+.calModal p{color:var(--text-primary);font-size:14px;line-height:1.5;margin:0 0 20px}
 .calModalActions{display:flex;flex-direction:column;gap:8px}
-.calModalX{position:absolute;top:14px;right:14px;border:none;background:#f2f1ec;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#141414}
+.calModalX{position:absolute;top:14px;right:14px;border:none;background:var(--bg-soft);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary)}
 .calBtnPrimary,.calBtnGhost,.calBtnDanger{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;padding:12px 16px;font:600 14px inherit;cursor:pointer;border:1px solid transparent}
-.calBtnPrimary{background:var(--admin-primary,#141414);color:#fff}
+.calBtnPrimary{background:var(--accent-primary);color:#fff}
 .calBtnPrimary:disabled{opacity:.6;cursor:default}
-.calBtnGhost{background:#fff;border-color:#ddd;color:#141414}
-.calBtnDanger{background:#fff;border-color:#e3b8b8;color:#b23b3b}
+.calBtnGhost{background:var(--bg-soft);border-color:var(--line);color:var(--text-primary)}
+.calBtnDanger{background:var(--bg-soft);border-color:rgba(171,46,60,.4);color:var(--status-bad-ink)}
 .spin{animation:calSpin .8s linear infinite}
 @keyframes calSpin{to{transform:rotate(360deg)}}
 
 .calDrawerBackdrop{justify-content:flex-end}
-.calDrawer{background:#fff;height:100%;width:100%;max-width:380px;padding:28px 24px;overflow-y:auto;position:relative;box-shadow:-20px 0 60px #0005;animation:calDrawerIn .22s ease}
+.calDrawer{background:var(--bg-card);height:100%;width:100%;max-width:380px;padding:28px 24px;overflow-y:auto;position:relative;box-shadow:-20px 0 60px rgba(0,0,0,.5);animation:calDrawerIn .22s ease}
 @keyframes calDrawerIn{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
-.calDrawerOverline{color:#999;letter-spacing:1.5px;font-size:11px}
-.calDrawer h3{font:700 24px var(--font-display,Georgia);margin:4px 0 18px;color:#141414}
-.calDrawerRow{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eee;font-size:14px}
-.calDrawerRow span{color:#888}
-.calDrawerRow b{color:#141414;text-align:right}
-.calDrawerNote{margin-top:14px;background:#fbf6e8;border-radius:10px;padding:10px 12px;font-size:13px;color:#5a4a1f}
+.calDrawerOverline{color:var(--text-secondary);letter-spacing:1.5px;font-size:11px}
+.calDrawer h3{font:700 24px var(--font-display,Georgia);margin:4px 0 18px;color:var(--text-primary)}
+.calDrawerRow{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.calDrawerRow span{color:var(--text-secondary)}
+.calDrawerRow b{color:var(--text-primary);text-align:right}
+.calDrawerNote{margin-top:14px;background:var(--status-warn-bg);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--status-warn-ink)}
 .calDrawerContact{display:flex;gap:10px;margin-top:18px}
-.calDrawerContact a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #ddd;border-radius:16px;padding:11px;text-decoration:none;color:#141414;font-size:13px;font-weight:600}
+.calDrawerContact a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);border-radius:16px;padding:11px;text-decoration:none;color:var(--text-primary);font-size:13px;font-weight:600}
 .calDrawerActions{display:flex;flex-direction:column;gap:8px;margin-top:22px}
 
-.calToast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#141414;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;z-index:90;box-shadow:0 12px 30px #0006}
+.calToast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--bg-card-hover);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;z-index:90;box-shadow:0 12px 30px rgba(0,0,0,.6)}

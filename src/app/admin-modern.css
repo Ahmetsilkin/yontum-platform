@@ -7,15 +7,15 @@
 .dashboardShell,.dashboardShell input,.dashboardShell select,.dashboardShell textarea,.dashboardShell button{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
 .dashboardTop h1,.contentHead h2,.panelTitle h2,.onboardingChecklist h2,.editorIntro h2,.dashModal h2,.stat b,.analyticsGrid b{font-family:var(--font-display),-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
 
-/* Sidebar — krem zemin, mürekkep kenarlık, aktif sekme dolu siyah "hap" (giriş sayfasındaki authSide ile aynı dil) */
-.dashboardShell>aside{background:var(--bg-main);background-image:radial-gradient(rgba(22,21,15,.14) 1.2px,transparent 1.2px);background-size:20px 20px;border-right:2px solid var(--text-primary);box-shadow:none}
+/* Sidebar — koyu lacivert zemin, ince camsı ayraç, aktif sekme dolu yeşil "hap" (giriş sayfasındaki authSide ile aynı dil) */
+.dashboardShell>aside{background:var(--bg-main);background-image:radial-gradient(rgba(255,255,255,.07) 1.2px,transparent 1.2px);background-size:20px 20px;border-right:1px solid var(--line);box-shadow:none}
 .dashboardShell>aside button,.dashboardShell>aside a{display:flex;align-items:center;gap:11px;border-radius:999px;margin:2px 0;color:var(--text-primary);font-weight:600;font-size:13.5px;transition:background .15s ease,color .15s ease}
 .dashboardShell>aside button svg,.dashboardShell>aside a svg{flex-shrink:0;opacity:.75}
 .dashboardShell>aside button.active svg,.dashboardShell>aside a.active svg{opacity:1}
-.dashboardShell>aside button:hover,.dashboardShell>aside a:hover{background:rgba(22,21,15,.08);color:var(--text-primary)}
+.dashboardShell>aside button:hover,.dashboardShell>aside a:hover{background:rgba(255,255,255,.06);color:var(--text-primary)}
 .dashboardShell>aside .active{background:var(--accent-primary)!important;color:#fff!important;font-weight:700}
 
-.dashboardTop{background:var(--bg-main);border-bottom:2px solid var(--text-primary);color:var(--text-primary)}
+.dashboardTop{background:var(--bg-main);border-bottom:1px solid var(--line);color:var(--text-primary)}
 .dashboardTop h1{font:700 24px/1.2 var(--font-display);letter-spacing:-.02em;color:var(--text-primary)}
 .dashboardContent{max-width:1400px;margin:auto}
 
@@ -33,30 +33,30 @@
 .panelTitle p,.contentHead p,.editorIntro p{color:var(--text-secondary)}
 
 /* Butonlar */
-.blackBtn{border-radius:var(--radius-btn);background:var(--accent-primary);color:#fff;font-weight:600;font-size:13.5px;border:0;box-shadow:0 2px 8px rgba(22,21,15,.22);transition:background .15s ease,transform .15s cubic-bezier(.4,0,.2,1)}
+.blackBtn{border-radius:var(--radius-btn);background:var(--accent-primary);color:#fff;font-weight:600;font-size:13.5px;border:0;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:background .15s ease,transform .15s cubic-bezier(.4,0,.2,1)}
 .blackBtn:hover{background:var(--accent-primary-hover)}
 .blackBtn:active{transform:scale(.97)}
 .blackBtn:disabled{opacity:.5;cursor:default;transform:none}
-.changePasswordBtn{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);color:var(--text-secondary);padding:9px 16px;border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;margin:0 14px;transition:all .15s ease}
+.changePasswordBtn{display:inline-flex;align-items:center;gap:7px;background:var(--bg-card);border:1px solid var(--line);color:var(--text-secondary);padding:9px 16px;border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;margin:0 14px;transition:all .15s ease}
 .changePasswordBtn:hover{color:var(--text-primary);border-color:var(--line);background:var(--bg-soft)}
-.dashboardShell .plainAction,.dashboardShell .appointmentActions button,.dashboardShell .appointmentTabs button,.dashboardShell .domainButtons>button:not(.blackBtn),.dashboardShell .credActions a,.dashboardShell .credActions button{border-radius:var(--radius-btn);border:1px solid var(--line);background:#fff;color:var(--text-primary);font-weight:600;transition:all .15s ease}
+.dashboardShell .plainAction,.dashboardShell .appointmentActions button,.dashboardShell .appointmentTabs button,.dashboardShell .domainButtons>button:not(.blackBtn),.dashboardShell .credActions a,.dashboardShell .credActions button{border-radius:var(--radius-btn);border:1px solid var(--line);background:var(--bg-card);color:var(--text-primary);font-weight:600;transition:all .15s ease}
 .dashboardShell .plainAction:hover,.dashboardShell .appointmentActions button:hover{background:var(--bg-soft);border-color:var(--line)}
-.dashboardShell .appointmentActions .danger,.dashboardShell .plainAction.danger{color:var(--status-bad-ink);border-color:rgba(185,28,28,.28);background:var(--status-bad-bg)}
+.dashboardShell .appointmentActions .danger,.dashboardShell .plainAction.danger{color:var(--status-bad-ink);border-color:rgba(171,46,60,.4);background:var(--status-bad-bg)}
 
 /* Sekmeler / durum rozetleri — muted pastel + ince kenarlık */
 .appointmentTabs{gap:6px}
-.appointmentTabs button{border-radius:999px;color:var(--text-secondary);background:#fff;border:1px solid var(--line);font-weight:600;font-size:13px}
+.appointmentTabs button{border-radius:999px;color:var(--text-secondary);background:var(--bg-card);border:1px solid var(--line);font-weight:600;font-size:13px}
 .appointmentTabs button.active{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary)}
-.completedBadge{display:inline-flex;align-items:center;gap:5px;background:var(--status-ok-bg);color:var(--status-ok-ink);border:1px solid rgba(4,120,87,.28);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:700}
-.publishBadge{border-radius:999px;background:var(--status-warn-bg);color:var(--status-warn-ink);border:1px solid rgba(180,83,9,.28);font-weight:700}
-.publishBadge.live{background:var(--status-ok-bg);color:var(--status-ok-ink);border-color:rgba(4,120,87,.28)}
+.completedBadge{display:inline-flex;align-items:center;gap:5px;background:var(--status-ok-bg);color:var(--status-ok-ink);border:1px solid rgba(25,135,84,.35);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:700}
+.publishBadge{border-radius:999px;background:var(--status-warn-bg);color:var(--status-warn-ink);border:1px solid rgba(255,193,7,.35);font-weight:700}
+.publishBadge.live{background:var(--status-ok-bg);color:var(--status-ok-ink);border-color:rgba(25,135,84,.35)}
 .sourceBadge{background:var(--bg-soft);color:var(--text-secondary);border-radius:999px;font-weight:600}
 .growthUp{color:var(--status-ok-ink)}
 .growthDown{color:var(--status-bad-ink)}
 .growthNeutral{color:var(--text-secondary)}
 .manualBadge{background:var(--bg-soft);color:var(--text-secondary);border-radius:999px}
 
-.dashModal{border-radius:var(--radius-card);box-shadow:0 25px 70px rgba(22,21,15,.18);background:var(--bg-card);color:var(--text-primary)}
+.dashModal{border-radius:var(--radius-card);box-shadow:0 25px 70px rgba(0,0,0,.45);background:var(--bg-card);color:var(--text-primary)}
 .dashModal h2{letter-spacing:-.01em}
 .daySchedule{box-shadow:var(--shadow-md)}
 @media(max-width:650px){.dashboardTop h1{font-size:19px}.dashboardContent{padding-top:20px!important}.panel,.stat,.siteEditor{border-radius:var(--radius-card)}.stats{gap:8px}.stat b{font-size:23px}.authCard{padding:26px 20px;border-radius:16px}.appointmentTabs{padding-bottom:6px}}
@@ -80,7 +80,7 @@
 
 /* Form elemanları — slate zemin, indigo odak halkası */
 .dashboardShell input,.dashboardShell select,.dashboardShell textarea{background:var(--bg-soft);color:var(--text-primary);border:1px solid var(--line);border-radius:var(--radius-btn);font-size:13.5px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
-.dashboardShell input:focus,.dashboardShell select:focus,.dashboardShell textarea:focus{outline:0;background:#fff;border-color:var(--accent-pop);box-shadow:0 0 0 3px rgba(99,102,241,.18)}
+.dashboardShell input:focus,.dashboardShell select:focus,.dashboardShell textarea:focus{outline:0;background:var(--bg-card);border-color:var(--accent-pop);box-shadow:0 0 0 3px rgba(13,110,253,.25)}
 .dashboardShell input::placeholder,.dashboardShell textarea::placeholder{color:var(--text-secondary)}
 .dashboardShell .field{color:var(--text-primary);font-weight:600;font-size:12.5px}
 .dashboardShell a{color:var(--text-primary)}
@@ -88,15 +88,15 @@
 
 /* Hizmet paneldeki renk etiketi (sadece panelde ayirt etmek icin, musteri tarafinda gorunmez) */
 .serviceColorRow{display:flex;flex-wrap:wrap;gap:9px;margin-top:9px}
-.serviceColorSwatch{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0;transition:transform .12s ease,box-shadow .12s ease}
+.serviceColorSwatch{width:28px;height:28px;border-radius:50%;border:2px solid var(--bg-card);box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0;transition:transform .12s ease,box-shadow .12s ease}
 .serviceColorSwatch:hover{transform:scale(1.1)}
-.serviceColorSwatch.selected{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--accent-primary)}
-.serviceColorSwatch.none{background:#fff;color:var(--text-secondary);font-size:12px;display:grid;place-items:center}
+.serviceColorSwatch.selected{box-shadow:0 0 0 2px var(--bg-card),0 0 0 4px var(--accent-primary)}
+.serviceColorSwatch.none{background:var(--bg-card);color:var(--text-secondary);font-size:12px;display:grid;place-items:center}
 .serviceColorDot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
 
 /* Hizmet formundaki "Detay sayfası" alt bölümleri artık katlanır — hepsi aynı
    anda açık durup kalabalık göstermesin diye <details> ile bölümlere ayrıldı */
-.detailAccordion{border:1px solid var(--line);border-radius:var(--radius-btn);background:#fff;overflow:hidden}
+.detailAccordion{border:1px solid var(--line);border-radius:var(--radius-btn);background:var(--bg-card);overflow:hidden}
 .detailAccordion+.detailAccordion{margin-top:10px}
 .detailAccordion summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;align-items:baseline;gap:10px;font-weight:700;font-size:13.5px;color:var(--text-primary)}
 .detailAccordion summary::-webkit-details-marker{display:none}
@@ -112,15 +112,15 @@
 .templatePreview i{display:block;height:70px;border-radius:var(--radius-btn);margin-bottom:10px}
 .templatePreview b{display:block;font-weight:700;font-size:13.5px}
 .templatePreview small{display:block;color:var(--text-secondary);margin-top:4px;font-size:12px;line-height:1.5}
-.dashboardShell .templatePreview.active{border-color:var(--accent-pop)!important;box-shadow:0 0 0 2px rgba(99,102,241,.16)}
+.dashboardShell .templatePreview.active{border-color:var(--accent-pop)!important;box-shadow:0 0 0 2px rgba(13,110,253,.22)}
 
 .ratingRequestBtn{display:inline-block;background:var(--status-ok-bg);color:var(--status-ok-ink);border:1px solid rgba(4,120,87,.28);padding:7px 12px;border-radius:999px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .15s}
-.ratingRequestBtn:hover{background:#d4f4e2}
+.ratingRequestBtn:hover{background:rgba(25,135,84,.3)}
 .manualReviewForm{margin:14px 0}
 .manualReviewList{margin-top:18px;display:flex;flex-direction:column;gap:10px}
 .manualReviewItem{display:flex;justify-content:space-between;gap:14px;padding:14px 16px}
 .manualReviewItem b{color:var(--text-primary);margin-right:8px}
-.manualReviewStars{color:#d97706;font-size:13px;letter-spacing:1px}
+.manualReviewStars{color:var(--accent-amber);font-size:13px;letter-spacing:1px}
 .manualReviewService{display:block;color:var(--accent-primary);font-size:11px;font-weight:700;margin-top:2px}
 .manualReviewItem p{color:var(--text-secondary);font-size:13px;margin-top:6px;line-height:1.5}
 .newStaffModal{max-width:480px}
@@ -149,7 +149,7 @@
 .analyticsGrid small{color:var(--text-secondary);font-size:10.5px;font-weight:700;letter-spacing:.4px}
 .analyticsGrid b{display:block;font-size:24px;margin:8px 0 6px;color:var(--text-primary);font-weight:800;letter-spacing:-.02em}
 .analyticsGrid span{display:block;font-size:11.5px}
-.reminderPanel{border-color:rgba(180,83,9,.28)}
+.reminderPanel{border-color:rgba(255,193,7,.35)}
 .reminderRow{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .reminderRow:last-child{border-bottom:0}
 .reminderRow small{display:block;color:var(--text-secondary);font-size:12px;margin-top:3px}
@@ -159,7 +159,7 @@
 .manualReviewAvatarFallback{width:40px;height:40px;border-radius:50%;background:var(--accent-primary);color:#fff;display:grid;place-items:center;font-weight:800;flex-shrink:0}
 .manualReviewItem{align-items:flex-start;gap:12px}
 .manualDayPicker{display:flex;gap:8px;overflow-x:auto;padding:6px 0 10px;margin-top:6px}
-.manualDayPicker button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-btn);padding:10px 14px;color:var(--text-primary);cursor:pointer;min-width:56px;transition:all .15s}
+.manualDayPicker button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius-btn);padding:10px 14px;color:var(--text-primary);cursor:pointer;min-width:56px;transition:all .15s}
 .manualDayPicker button small{color:var(--text-secondary);font-size:10px}
 .manualDayPicker button b{font-size:18px}
 .manualDayPicker button span{color:var(--text-secondary);font-size:10px}
@@ -178,13 +178,13 @@
 .dashboardShell .toggleField{background:var(--bg-soft);border-radius:var(--radius-btn);border:1px solid var(--line)}
 .dashboardShell .durationHint,.dashboardShell .serviceDurationNote{background:var(--bg-soft);color:var(--text-secondary);border-radius:var(--radius-btn);border:1px solid var(--line)}
 .dashboardShell .serviceDetailSection{background:var(--bg-soft);border-left:3px solid var(--accent-primary);border-radius:0 var(--radius-btn) var(--radius-btn) 0}
-.dashboardShell .industryCards button,.dashboardShell .presetCards button{border-radius:var(--radius-btn);border:1px solid var(--line);background:#fff;transition:all .15s ease}
+.dashboardShell .industryCards button,.dashboardShell .presetCards button{border-radius:var(--radius-btn);border:1px solid var(--line);background:var(--bg-card);transition:all .15s ease}
 .dashboardShell .industryCards button:hover,.dashboardShell .presetCards button:hover{background:var(--bg-soft);color:var(--accent-primary);border-color:var(--accent-primary);transform:translateY(-1px)}
 .dashboardShell .colorSetBtn,.dashboardShell .paletteChooser button{border-radius:var(--radius-btn);border:1px solid var(--line)}
 .dashboardShell .colorSetBtn.active{border-color:var(--accent-primary);box-shadow:0 0 0 1px var(--accent-primary)}
 .dashboardShell .logoUploader,.dashboardShell .simpleColorControl,.dashboardShell .paletteChooser,.dashboardShell .domainConnectCard,.dashboardShell .dnsBox{background:var(--bg-soft);border-radius:var(--radius-card);border:1px solid var(--line)}
 .dashboardShell .mediaEditor{background:var(--bg-soft);border-radius:var(--radius-btn);border:1px solid var(--line)}
 .dashboardShell .waStatusBox,.dashboardShell .waTimingRow,.dashboardShell .googleSettings,.dashboardShell .whatsappSettings{background:var(--bg-soft);border-radius:var(--radius-card);border:1px solid var(--line)}
-.dashboardShell .dashModalBackdrop{background:rgba(22,21,15,.45);backdrop-filter:blur(2px)}
+.dashboardShell .dashModalBackdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
 .dashboardShell button{transition:transform .15s cubic-bezier(.4,0,.2,1),background .15s ease,border-color .15s ease,color .15s ease}
 .dashboardShell button:active{transform:scale(.97)}
