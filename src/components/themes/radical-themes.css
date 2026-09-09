@@ -1929,8 +1929,11 @@
 .afManifestoScroll{max-height:340px;overflow-y:auto;padding-right:14px;scrollbar-width:thin;scrollbar-color:rgba(20,20,20,.25) transparent}
 .afManifestoScroll::-webkit-scrollbar{width:5px}
 .afManifestoScroll::-webkit-scrollbar-thumb{background:rgba(20,20,20,.22);border-radius:3px}
-.afManifestoText p{font:500 clamp(19px,2.2vw,28px)/1.55 'Plus Jakarta Sans',Arial,sans-serif;color:var(--af-text-dark);letter-spacing:-.01em;margin:0 0 18px}
+.afManifestoText p{font:500 clamp(19px,2.2vw,28px)/1.55 'Plus Jakarta Sans',Arial,sans-serif;color:var(--af-text-dark);letter-spacing:-.01em;margin:0 0 18px;white-space:pre-wrap}
 .afManifestoText p:last-child{margin-bottom:0}
+.afCaret{display:inline-block;width:.09em;height:.9em;background:var(--af-text-dark);margin-left:2px;vertical-align:text-bottom;animation:afCaretBlink .9s step-end infinite}
+@keyframes afCaretBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.afCaret{display:none}}
 .afEmblemCard{position:relative;background:var(--af-ink);color:#fff;border-radius:20px;padding:40px 30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 30px 70px rgba(0,0,0,.25);overflow:hidden}
 .afEmblemCard i{width:56px;height:56px;border-radius:50%;background:#fff;color:#0d0d0d;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:22px;overflow:hidden}
 .afEmblemCard i img{width:100%;height:100%;object-fit:cover}

@@ -2296,6 +2296,74 @@ function AfisTeam({p}:{p:P}){
     {visible.length>1&&<div className="afTeamDots">{visible.map((s:any,i:number)=><button key={s.id} type="button" className={i===active?'active':''} onClick={()=>goTo(i)} aria-label={s.name}/>)}</div>}
   </section>;
 }
+/* Daktilo sesi: gerçek bir ses dosyası yerine Web Audio API ile anlık
+   sentezlenen kısa, sert bir "tık" — dış bir varlık gerektirmiyor. Tarayıcılar
+   sayfa hiç etkileşim almadan sesi engelleyebildiği için (autoplay politikası),
+   AudioContext ilk tık denemesinde tembel oluşturuluyor ve her denemede
+   resume() ile açılmaya çalışılıyor; ilk kullanıcı dokunuşu/tuşunda da ayrıca
+   açılmaya çalışılıyor — engellenirse yazı animasyonu sessiz devam eder,
+   hiçbir hataya düşmez. */
+let afAudioCtx:AudioContext|null=null;
+function afPlayTypeClick(){
+  try{
+    if(!afAudioCtx){
+      const Ctor=(window as any).AudioContext||(window as any).webkitAudioContext;
+      if(!Ctor)return;
+      afAudioCtx=new Ctor();
+    }
+    const ctx=afAudioCtx!;
+    if(ctx.state==='suspended')ctx.resume().catch(()=>{});
+    const now=ctx.currentTime;
+    const osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.type='square';
+    osc.frequency.setValueAtTime(1700+Math.random()*500,now);
+    gain.gain.setValueAtTime(.05,now);
+    gain.gain.exponentialRampToValueAtTime(.0001,now+.028);
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.start(now);osc.stop(now+.03);
+  }catch{}
+}
+function useAfAudioUnlock(){
+  useEffect(()=>{
+    function unlock(){if(afAudioCtx?.state==='suspended')afAudioCtx.resume().catch(()=>{})}
+    window.addEventListener('pointerdown',unlock);
+    window.addEventListener('keydown',unlock);
+    return()=>{window.removeEventListener('pointerdown',unlock);window.removeEventListener('keydown',unlock)};
+  },[]);
+}
+/* Manifesto metnini daktilo gibi harf harf yazan, her harfte kısa bir tık
+   sesi çalan bileşen — bölüm ekrana girince (IntersectionObserver) başlıyor.
+   prefers-reduced-motion'da animasyon atlanıp metin direkt tam gösteriliyor. */
+function AfisTypewriter({text}:{text:string}){
+  const fullText=text;
+  const ref=useRef<HTMLDivElement>(null);
+  const[count,setCount]=useState(0);
+  const[started,setStarted]=useState(false);
+  const[reduced,setReduced]=useState(false);
+  useAfAudioUnlock();
+  useEffect(()=>{
+    const mq=window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+  },[]);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){setStarted(true);io.unobserve(e.target)}})},{threshold:.3});
+    io.observe(el);
+    return()=>io.disconnect();
+  },[]);
+  useEffect(()=>{
+    if(!started||reduced||count>=fullText.length)return;
+    const ch=fullText[count];
+    const delay=ch===' '||ch==='\n'?16:30+Math.random()*26;
+    const t=setTimeout(()=>{setCount(c=>c+1);if(ch.trim())afPlayTypeClick()},delay);
+    return()=>clearTimeout(t);
+  },[started,count,reduced,fullText]);
+  const shown=reduced?fullText:fullText.slice(0,count);
+  const done=reduced||count>=fullText.length;
+  return <div ref={ref} className="afTypewriter">
+    {shown.split(/\n{2,}/).map((par,i,arr)=><p key={i}>{par}{i===arr.length-1&&!done&&<span className="afCaret"/>}</p>)}
+  </div>;
+}
 function Afis(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
@@ -2330,11 +2398,11 @@ function Afis(p:P){
     </section>
 
     <section className="afManifesto">
-      <Reveal className="afManifestoText">
+      <div className="afManifestoText">
         <div className="afManifestoScroll">
-          {b.description?b.description.split(/\n{2,}/).map((par:string,i:number)=><p key={i}>{par}</p>):<p>{dec(b,'af_manifesto','Yılların tecrübesini güncel tekniklerle birleştiren bir kadromuz var. Her randevu, sana özel bir bakım rutinidir.')}</p>}
+          <AfisTypewriter text={b.description||dec(b,'af_manifesto','Yılların tecrübesini güncel tekniklerle birleştiren bir kadromuz var. Her randevu, sana özel bir bakım rutinidir.')}/>
         </div>
-      </Reveal>
+      </div>
       <Reveal className="afManifestoCard" i={1}>
         {(()=>{const photo=dec(b,'af_emblemPhoto','');return <div className={`afEmblemCard${photo?' hasPhoto':''}`}>
           {photo?<img className="afEmblemPhoto" src={photo} alt={b.name}/>:<i>{b.logo_url?<img src={b.logo_url} alt=""/>:<b>{b.name?.[0]}</b>}</i>}
