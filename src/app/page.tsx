@@ -1,4 +1,4 @@
-import Link from'next/link';import PlatformHeader from'@/components/PlatformHeader';import PlatformFooter from'@/components/PlatformFooter';import{Calendar,Palette,CreditCard,MessageCircle,Users,ShieldCheck,Zap,Smartphone,Quote}from'lucide-react';
+import Link from'next/link';import PlatformHeader from'@/components/PlatformHeader';import PlatformFooter from'@/components/PlatformFooter';import PubAudienceCarousel from'@/components/PubAudienceCarousel';import{Calendar,Palette,CreditCard,MessageCircle,Users,ShieldCheck,Zap,Smartphone,Quote}from'lucide-react';
 export default function Home(){return <>
   <div className="pubTopBar">🎉 <b>Yeni:</b> Randevularını ve siteni tek panelden yönet — 14 gün ücretsiz dene.</div>
   <PlatformHeader/>
@@ -32,6 +32,7 @@ export default function Home(){return <>
       <div className="pubFeatureBadge pfb-5"><i><Users/></i>Çalışan Yönetimi</div>
     </div>
   </main>
+  <PubAudienceCarousel/>
   <section className="pubBenefits">
     <h2>Randevu almak veya işletmeni yönetmek isteyenler için <em>eksiksiz ve özenli</em> hizmetler sunuyoruz.</h2>
     <p>Girişimcilerin ve işletme sahiplerinin hayatını kolaylaştırmaya çalışan bir uygulama olarak, randevu ve site yönetiminde karşılaşılması muhtemel sorunlara pratik çözümler geliştiriyoruz.</p>
