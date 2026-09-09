@@ -1976,8 +1976,14 @@
 
 .afBooking{position:relative;background:var(--af-ink);padding:9vw 6vw}
 
-.afBooking small{letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--af-muted)}
+.afBooking .afSectionHead small{letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--af-muted)}
 .afBooking h2{color:#fff;margin:12px 0 0;font-size:clamp(28px,3.6vw,44px)}
+/* TenantBooking (paylaşılan, tema-bağımsız randevu formu) kendi kartını hep
+   BEYAZ zeminle çiziyor, ama kendi metin rengini hiç belirlemiyor — bu
+   yüzden Afiş'in koyu köke ait neredeyse-beyaz yazı rengi buraya kadar miras
+   kalıyor ve beyaz kart üzerinde görünmez oluyordu (ad/soyad/telefon vb.).
+   Kartın kendi rengini burada açıkça koyu olarak sabitliyoruz. */
+.afBooking .tenantBooking{color:#141414}
 
 .afGallerySection{position:relative;background:var(--af-paper);color:var(--af-text-dark);padding:9vw 6vw}
 
