@@ -188,3 +188,19 @@
 .dashboardShell .dashModalBackdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
 .dashboardShell button{transition:transform .15s cubic-bezier(.4,0,.2,1),background .15s ease,border-color .15s ease,color .15s ease}
 .dashboardShell button:active{transform:scale(.97)}
+
+/* Müşteri CRM'i */
+.customerToolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.customerSearchBox{position:relative;display:flex;align-items:center}
+.customerSearchBox svg{position:absolute;left:12px;color:var(--text-secondary);pointer-events:none}
+.customerSearchBox input{padding-left:34px;min-width:220px}
+.dashboardShell .customerRow{cursor:pointer}
+.dashboardShell .customerRow:hover td{background:var(--bg-soft)}
+.customerAvatar{width:28px;height:28px;font-size:12px;margin-right:8px;display:inline-grid;vertical-align:middle}
+.customerVipBadge{display:inline-flex;align-items:center;gap:3px;margin-left:8px;font-size:10px;font-weight:700;color:var(--accent-amber);background:rgba(255,193,7,.14);padding:3px 8px;border-radius:999px;vertical-align:middle}
+.customerContactRow{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 20px;font-size:13px}
+.customerContactRow a,.customerContactRow span{display:inline-flex;align-items:center;gap:6px;color:var(--text-secondary);text-decoration:none}
+.customerContactRow a{color:var(--accent-pop)}
+.customerDetailModal{width:min(560px,100%)}
+.customerHistoryList{display:flex;flex-direction:column;max-height:320px;overflow:auto;margin-top:10px}
+@media(max-width:650px){.customerSearchBox input{min-width:0;width:100%}.customerToolbar{width:100%}}
