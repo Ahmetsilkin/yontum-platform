@@ -41,7 +41,7 @@
 @media(prefers-reduced-motion:reduce){.ksReveal{opacity:1;margin-top:0;transition:none}}
 
 /* Hero — kaydırdıkça ileri-geri oynayan berberlik klibi (kapak fotoğrafı yerine) */
-.ksHero{position:relative;margin-top:-84px;min-height:max(92vh,480px);display:flex;align-items:flex-end;background:#0a0a0a;overflow:hidden}
+.ksHero{position:relative;margin-top:-84px;min-height:max(100vh,560px);min-height:max(100dvh,560px);display:flex;align-items:flex-end;background:#0a0a0a;overflow:hidden}
 .ksHeroPhoto{position:absolute;inset:-2%;z-index:0;overflow:hidden}
 .ksHeroLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   transform:scale(calc(1.02 + var(--ksP,0) * .06));
@@ -60,7 +60,7 @@
 .ksHeroCta{background:#fff;color:#111!important;padding:16px 28px;font-weight:800;font-size:15px;border-radius:8px;transition:transform .2s}
 .ksHeroCta:hover{transform:translateY(-2px)}
 .ksOpenStatus{color:#fff;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff40;padding:12px 18px;border-radius:8px}
-@media(max-width:640px){.ksHero{min-height:max(78vh,460px)}.ksHeroInner{padding:0 6vw 50px}}
+@media(max-width:640px){.ksHero{min-height:max(100vh,520px);min-height:max(100dvh,520px)}.ksHeroInner{padding:0 6vw 50px}}
 
 /* Hizmetler */
 .ksServices{padding:100px 6vw;background:var(--ks-bg)}
