@@ -206,7 +206,7 @@ function Keskin(p:P){
   const openDaysCount=(p.hours||[]).filter((h:any)=>h.is_open).length;
   const{ref:heroRef,t:heroT}=useScrollFrac();
   return <main id="top" className="tKeskin">
-    <header className="ksNav">
+    <header className={`ksNav${heroT>.92?' scrolled':''}`}>
       <a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a>
       <nav>
         <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
@@ -219,7 +219,10 @@ function Keskin(p:P){
     </header>
 
     <section ref={heroRef as any} className="ksHero">
-      <KsHeroVideo t={heroT}/>
+      {b.cover_url?(b.cover_type==='video'?
+        <video className="ksHeroCoverMedia" src={b.cover_url} autoPlay muted loop playsInline aria-hidden="true"/>:
+        <img className="ksHeroCoverMedia" src={b.cover_url} alt={b.name} aria-hidden="true"/>
+      ):<KsHeroVideo t={heroT}/>}
       <div className="ksHeroOverlay"/>
       <div className="ksHeroInner">
         {city&&<span className="ksKicker">{city.toLocaleUpperCase('tr')}</span>}

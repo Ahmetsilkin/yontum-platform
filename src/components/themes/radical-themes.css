@@ -19,14 +19,20 @@
 /* ================= Keskin — açık zemin, siyah tipografili modern berber teması ================= */
 .tKeskin{--ks-bg:#f7f5ef;--ks-surface:#ffffff;--ks-line:#e7e3d7;--ks-ink:#141414;--ks-muted:#6b6b66;--accent:var(--ks-ink);--brand:var(--ks-ink);background:var(--ks-bg);color:var(--ks-ink);font-family:'Inter',Arial,Helvetica,sans-serif}
 .tKeskin h1,.tKeskin h2,.tKeskin h3,.tKeskin .ksBrand b,.tKeskin .ksNavBtn,.tKeskin .ksHeroCta{font-family:'Plus Jakarta Sans','Inter',Arial,Helvetica,sans-serif}
-.ksNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 6vw;background:#f7f5efee;backdrop-filter:blur(10px);border-bottom:1px solid var(--ks-line)}
+.ksNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 6vw;background:transparent;border-bottom:1px solid transparent;transition:background .35s ease,border-color .35s ease}
+.ksNav.scrolled{background:#f7f5efee;backdrop-filter:blur(10px);border-bottom-color:var(--ks-line)}
 .ksBrand{display:flex;align-items:center;gap:10px}
-.ksBrand i{font-style:normal;font-size:18px}
-.ksBrand b{font-weight:800;letter-spacing:.5px;font-size:16px;text-transform:uppercase}
+.ksBrand i{font-style:normal;font-size:18px;color:#fff;transition:color .3s ease}
+.ksBrand b{font-weight:800;letter-spacing:.5px;font-size:16px;text-transform:uppercase;color:#fff;transition:color .3s ease}
+.ksNav.scrolled .ksBrand i,.ksNav.scrolled .ksBrand b{color:var(--ks-ink)}
 .ksNav nav{display:flex;gap:30px;font-size:14px;font-weight:600}
-.ksNav nav a{color:var(--ks-ink);opacity:.75;transition:opacity .15s}
+.ksNav nav a{color:#fff;opacity:.85;transition:opacity .15s,color .3s ease}
 .ksNav nav a:hover{opacity:1}
-.ksNavBtn{background:var(--ks-ink);color:#fff!important;padding:12px 22px;font-weight:700;font-size:14px;border-radius:8px}
+.ksNav.scrolled nav a{color:var(--ks-ink);opacity:.75}
+.ksNavBtn{background:rgba(255,255,255,.14);color:#fff!important;padding:12px 22px;font-weight:700;font-size:14px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);backdrop-filter:blur(6px);transition:background .25s ease,border-color .25s ease,color .25s ease}
+.ksNavBtn:hover{background:rgba(255,255,255,.28)}
+.ksNav.scrolled .ksNavBtn{background:var(--ks-ink);color:#fff!important;border-color:var(--ks-ink)}
+.ksNav.scrolled .ksNavBtn:hover{background:#000}
 @media(max-width:800px){.ksNav nav{display:none}.ksNavBtn{padding:10px 16px;font-size:12px}}
 
 /* Zarif kaydırma efekti — sayfa genelinde bölümler görünür olunca yumuşakça belirir */
@@ -35,7 +41,7 @@
 @media(prefers-reduced-motion:reduce){.ksReveal{opacity:1;margin-top:0;transition:none}}
 
 /* Hero — kaydırdıkça ileri-geri oynayan berberlik klibi (kapak fotoğrafı yerine) */
-.ksHero{position:relative;min-height:92vh;display:flex;align-items:flex-end;background:#0a0a0a;overflow:hidden}
+.ksHero{position:relative;margin-top:-84px;min-height:92vh;display:flex;align-items:flex-end;background:#0a0a0a;overflow:hidden}
 .ksHeroPhoto{position:absolute;inset:-2%;z-index:0;overflow:hidden}
 .ksHeroLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   transform:scale(calc(1.02 + var(--ksP,0) * .06));
@@ -44,7 +50,8 @@
 .ksHeroPoster.hide{opacity:0}
 .ksHeroClip{opacity:0}
 .ksHeroClip.show{opacity:1}
-.ksHeroOverlay{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,#000 10%,#00000090 34%,#00000030 62%,#0000 85%)}
+.ksHeroCoverMedia{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
+.ksHeroOverlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0) 130px),linear-gradient(0deg,#000 10%,#00000090 34%,#00000030 62%,#0000 85%)}
 .ksHeroInner{position:relative;z-index:2;padding:0 6vw 70px;max-width:800px}
 @media(prefers-reduced-motion:reduce){.ksHeroLayer{transition:opacity .5s ease}}
 .ksKicker{display:inline-block;letter-spacing:3px;font-size:12px;font-weight:700;color:#fff;opacity:.8;text-transform:uppercase;margin-bottom:16px}
@@ -97,7 +104,7 @@
 .ksGallerySection h2{font:800 38px 'Plus Jakarta Sans','Inter',Arial,sans-serif;letter-spacing:-.5px;margin:12px 0 0}
 .rGallery.ksGrid{display:flex;grid-template-columns:none;max-width:100%;margin:0;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:20px;padding:6px 6px 22px;scroll-snap-type:x mandatory;scrollbar-width:none}
 .rGallery.ksGrid::-webkit-scrollbar{display:none}
-.rGallery.ksGrid>*{flex:0 0 auto!important;width:min(300px,68vw)!important;aspect-ratio:1/1!important;height:auto!important;grid-column:auto!important;grid-row:auto!important;scroll-snap-align:center}
+.rGallery.ksGrid>*{flex:0 0 auto!important;width:min(280px,66vw)!important;aspect-ratio:3/4!important;height:auto!important;grid-column:auto!important;grid-row:auto!important;scroll-snap-align:center}
 .rGallery.ksGrid img,.rGallery.ksGrid video{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;filter:grayscale(1) contrast(1.05);border-radius:14px;transition:transform .5s cubic-bezier(.2,.7,.3,1);box-shadow:0 24px 48px -20px rgba(20,20,20,.35)}
 .rGallery.ksGrid .galleryItemBtn{position:relative;overflow:hidden;display:block;padding:0;border:0;border-radius:14px}
 .rGallery.ksGrid .galleryItemBtn::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
