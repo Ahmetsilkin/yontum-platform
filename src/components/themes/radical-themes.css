@@ -159,7 +159,10 @@
 .tKeskin .ownReviewGrid article{background:var(--ks-bg);border:1px solid var(--ks-line);border-radius:14px;padding:24px}
 .tKeskin .ownReviewStars{color:#f5a623!important}
 .tKeskin .ownReviewGrid p{color:var(--ks-ink);font-size:14px;line-height:1.7;margin-top:12px}
-.tKeskin .ownReviewAvatar,.tKeskin .ownReviewAvatarFallback{background:var(--ks-ink);color:#fff}
+.tKeskin .ownReviewHead{display:flex;align-items:center;gap:12px}
+.tKeskin .ownReviewHead b{font:700 14px 'Plus Jakarta Sans','Inter',Arial,sans-serif;color:var(--ks-ink)}
+.tKeskin .ownReviewAvatar,.tKeskin .ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--ks-ink);color:#fff}
+.tKeskin .ownReviewAvatarFallback{display:grid;place-items:center;font-weight:800;font-size:15px}
 @media(max-width:800px){.tKeskin .ownReviewGrid{grid-template-columns:1fr}}
 
 /* Footer */
@@ -351,7 +354,10 @@
 .tAtelier .ownReviewGrid article{background:var(--at-surface);padding:26px}
 .tAtelier .ownReviewStars{color:var(--at-gold-light)!important}
 .tAtelier .ownReviewGrid p{color:var(--at-ink);font-size:14px;line-height:1.7;margin-top:12px;font-style:italic}
-.tAtelier .ownReviewAvatar,.tAtelier .ownReviewAvatarFallback{background:var(--at-gold);color:#1a1206}
+.tAtelier .ownReviewHead{display:flex;align-items:center;gap:12px}
+.tAtelier .ownReviewHead b{font:600 14px 'Playfair Display',Georgia,serif;color:var(--at-ink)}
+.tAtelier .ownReviewAvatar,.tAtelier .ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--at-gold);color:#1a1206}
+.tAtelier .ownReviewAvatarFallback{display:grid;place-items:center;font-weight:800;font-size:15px}
 @media(max-width:800px){.tAtelier .ownReviewGrid{grid-template-columns:1fr}}
 
 /* İletişim */
@@ -505,7 +511,10 @@
 .tVitrin .ownReviewGrid article{background:var(--vt-surface);padding:26px}
 .tVitrin .ownReviewStars{color:var(--vt-amber-light)!important}
 .tVitrin .ownReviewGrid p{color:var(--vt-ink);font-size:14px;line-height:1.7;margin-top:12px;font-style:italic}
-.tVitrin .ownReviewAvatar,.tVitrin .ownReviewAvatarFallback{background:var(--vt-amber);color:#1a1206}
+.tVitrin .ownReviewHead{display:flex;align-items:center;gap:12px}
+.tVitrin .ownReviewHead b{font:600 14px 'Playfair Display',Georgia,serif;color:var(--vt-ink)}
+.tVitrin .ownReviewAvatar,.tVitrin .ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--vt-amber);color:#1a1206}
+.tVitrin .ownReviewAvatarFallback{display:grid;place-items:center;font-weight:800;font-size:15px}
 @media(max-width:800px){.tVitrin .ownReviewGrid{grid-template-columns:1fr}}
 
 /* Randevu (paylaşılan AtelierBooking, --at-* değişken köprüsüyle) */
