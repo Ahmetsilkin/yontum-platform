@@ -59,6 +59,9 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'mg_reviewsTitle',label:'Yorumlar bölümü başlığı',placeholder:'Müşteri yorumları'},
     {key:'mg_faq',label:'Sık sorulan sorular',type:'faq'},
   ],
+  deneyim:[
+    {key:'dx_galleryTitle',label:'Mekân sahnesi başlığı',placeholder:'Kapıdan girdiğin an başlar.'},
+  ],
   atelier:[
     {key:'at_brandSubtitle',label:'Logo alt yazısı',placeholder:'BERBER ATÖLYESİ'},
     {key:'at_galleryTitle',label:'Galeri başlığı',placeholder:'Son çalışmalarımız.'},

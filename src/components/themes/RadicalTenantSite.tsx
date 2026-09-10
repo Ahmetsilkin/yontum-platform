@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -3018,6 +3018,174 @@ function Magaza(p:P){
       </div>
       <div className="mgFooterBottom">© {new Date().getFullYear()} {b.name} · Tüm hakları saklıdır</div>
     </footer>
+  </main>;
+}
+
+/* ================= Deneyim — tam sayfa scrollytelling (barber) =================
+   Her "sahne" ekranı tam kaplar; kaydırma CSS scroll-snap ile sahne sahne
+   geçer (bu projede GSAP/ScrollTrigger tabanlı scroll geçmişte sorun
+   çıkardığı için native scroll-snap tercih edildi — modern scrollytelling
+   zaten böyle yapılır; GSAP scrubbed mikro-efekt gerekirse hâlâ mevcut).
+   Sahne içi metin/görsel girişleri IntersectionObserver + CSS ile kademeli.
+   Özel imleç, hover tilt ve harf harf giriş yalnızca hover'lı cihazda ve
+   prefers-reduced-motion kapalıyken. Reduced-motion'da: snap kapalı, düz
+   dikey sayfa, animasyon yok. Renkler yalnızca `.tDeneyim` kökünde token. */
+function dxWords(text:string){
+  return String(text||'').split(/\s+/).filter(Boolean).map((w,i)=><span key={i} className="dxWord" style={{'--wi':i}as React.CSSProperties}>{w}&nbsp;</span>);
+}
+function DxCursor(){
+  const dot=useRef<HTMLDivElement>(null);const label=useRef<HTMLSpanElement>(null);
+  useEffect(()=>{
+    if(window.matchMedia('(hover: none)').matches||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const el=dot.current!;let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y,raf=0;
+    const move=(e:MouseEvent)=>{x=e.clientX;y=e.clientY};
+    const loop=()=>{cx+=(x-cx)*.2;cy+=(y-cy)*.2;el.style.transform=`translate(${cx.toFixed(1)}px,${cy.toFixed(1)}px)`;raf=requestAnimationFrame(loop)};
+    const over=(e:MouseEvent)=>{const t=(e.target as HTMLElement)?.closest?.('[data-cursor]');if(t){el.classList.add('hot');if(label.current)label.current.textContent=t.getAttribute('data-cursor')||''}};
+    const out=(e:MouseEvent)=>{const rt=e.relatedTarget as HTMLElement|null;if(!rt||!rt.closest?.('[data-cursor]')){el.classList.remove('hot');if(label.current)label.current.textContent=''}};
+    window.addEventListener('mousemove',move);document.addEventListener('mouseover',over);document.addEventListener('mouseout',out);
+    loop();
+    return()=>{cancelAnimationFrame(raf);window.removeEventListener('mousemove',move);document.removeEventListener('mouseover',over);document.removeEventListener('mouseout',out)};
+  },[]);
+  return <div ref={dot} className="dxCursor" aria-hidden="true"><span ref={label}/></div>;
+}
+function DxTilt({src,alt,className=''}:{src:string;alt:string;className?:string}){
+  const ref=useRef<HTMLDivElement>(null);
+  const move=(e:React.MouseEvent)=>{
+    const el=ref.current;if(!el)return;
+    if(window.matchMedia('(hover: none)').matches||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const r=el.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+    el.style.transform=`perspective(1000px) rotateY(${(px*6).toFixed(2)}deg) rotateX(${(-py*6).toFixed(2)}deg)`;
+  };
+  const leave=()=>{if(ref.current)ref.current.style.transform=''};
+  return <div className={`dxTilt ${className}`} ref={ref} onMouseMove={move} onMouseLeave={leave}><img src={src} alt={alt} loading="lazy"/></div>;
+}
+function DxKen({shots}:{shots:string[]}){
+  const[i,setI]=useState(0);
+  useEffect(()=>{
+    if(shots.length<2||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const t=setInterval(()=>setI(v=>(v+1)%shots.length),5000);
+    return()=>clearInterval(t);
+  },[shots.length]);
+  return <div className="dxKenWrap" aria-hidden="true">
+    {shots.map((src,n)=><img key={n} src={src} alt="" className={`dxKen${n===i?' on':''}`} loading="lazy"/>)}
+    <span className="dxHeroVeil"/>
+  </div>;
+}
+function DxReviews({businessId}:{businessId:string}){
+  const[data,setData]=useState<any>(null);
+  useEffect(()=>{fetch(`/api/ratings/${businessId}`).then(r=>r.json()).then(setData).catch(()=>{})},[businessId]);
+  if(!data?.enabled||!data.reviews?.length)return null;
+  return <>{data.reviews.slice(0,5).map((r:any,i:number)=><section key={i} className="dxScene dxReview">
+    <div className="dxSceneInner">
+      <span className="dxQuoteMark" aria-hidden="true">&ldquo;</span>
+      <blockquote className="dxSplit">{dxWords(r.comment||'')}</blockquote>
+      <p className="dxReviewBy"><b>{r.customer_name||'Müşterimiz'}</b>{r.service_label&&<span> · {r.service_label}</span>}<i className="dxStars">{'★'.repeat(r.stars||5)}</i></p>
+    </div>
+  </section>)}</>;
+}
+function Deneyim(p:P){
+  const{b}=p;
+  const scRef=useRef<HTMLElement>(null);
+  const[active,setActive]=useState(0);
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const shots=[...p.gallery.map((g:any)=>g.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,6) as string[];
+  const heroPoster=(b.cover_type==='video'?'':b.cover_url)||shots[0]||'';
+  let wa=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(wa.startsWith('0'))wa='90'+wa.slice(1);
+  const chapters=[
+    {id:0,label:'Giriş'},
+    p.services.length?{id:1,label:'Hizmetler'}:null,
+    visibleStaff.length?{id:2,label:'Ekip'}:null,
+    shots.length?{id:3,label:'Mekân'}:null,
+    {id:4,label:'Yorumlar'},
+    {id:5,label:'Randevu'},
+  ].filter(Boolean)as{id:number;label:string}[];
+  useEffect(()=>{
+    const sc=scRef.current;if(!sc)return;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const root=reduced?null:sc;
+    const io1=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{root,threshold:.2});
+    sc.querySelectorAll('.dxScene').forEach(s=>io1.observe(s));
+    const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setActive(Number((e.target as HTMLElement).dataset.dxCh))}),{root,rootMargin:'-48% 0px -48% 0px'});
+    sc.querySelectorAll('[data-dx-ch]').forEach(a=>io2.observe(a));
+    return()=>{io1.disconnect();io2.disconnect()};
+  },[]);
+  const goTo=(chId:number)=>{
+    const el=scRef.current?.querySelector(`[data-dx-ch="${chId}"]`)as HTMLElement|undefined;
+    el?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  };
+  return <main id="top" className="tDeneyim" ref={scRef as any}>
+    <DxCursor/>
+    <nav className="dxDots" aria-label="Sahneler">
+      {chapters.map(c=><button key={c.id} type="button" className={active===c.id?'on':''} onClick={()=>goTo(c.id)} aria-label={c.label}><span>{c.label}</span></button>)}
+    </nav>
+
+    <section className="dxScene dxHero" data-dx-ch="0">
+      <div className="dxHeroMedia" aria-hidden="true">
+        {b.cover_url&&b.cover_type==='video'?<video className="dxHeroVid" src={b.cover_url} autoPlay muted loop playsInline preload="none" poster={heroPoster}/>:null}
+        {heroPoster?<img className="dxHeroImg" src={heroPoster} alt=""/>:<span className="dxHeroBlank"/>}
+        <span className="dxHeroVeil"/>
+      </div>
+      <div className="dxSceneInner dxHeroInner">
+        <span className="dxKick">{safeHeroLabel(b,'ERKEK BAKIM · DENEYİM')}</span>
+        <h1 className="dxSplit">{dxWords(b.hero_title||'Randevunu al, deneyime başla')}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <a className="dxBtn" href="#dxCta" data-cursor="Randevu Al" onClick={e=>{e.preventDefault();goTo(5)}}>{b.booking_button_text||'Randevu Al'}</a>
+      </div>
+      <span className="dxScrollHint" aria-hidden="true">kaydır</span>
+    </section>
+
+    {p.services.length>0&&<div className="dxChapter" data-dx-ch="1" id="dxServices">
+      {p.services.map((s,i)=><section key={s.id} className="dxScene dxService">
+        <DxTilt src={s.image_url||heroPoster||shots[i%Math.max(shots.length,1)]||''} alt={s.name} className="dxServicePhoto"/>
+        <div className="dxSceneInner dxServiceText">
+          <span className="dxIndex">{String(i+1).padStart(2,'0')} / {String(p.services.length).padStart(2,'0')}</span>
+          <h2 className="dxSplit">{dxWords(s.name)}</h2>
+          {s.description&&<p>{s.description}</p>}
+          <div className="dxServiceMeta">
+            <span>{s.duration_minutes} dk</span>
+            {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
+          </div>
+        </div>
+      </section>)}
+    </div>}
+
+    {visibleStaff.length>0&&<div className="dxChapter" data-dx-ch="2" id="dxTeam">
+      {visibleStaff.map((s:any)=><section key={s.id} className="dxScene dxMember">
+        <div className="dxMemberPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name?.[0]}</i>}<span className="dxHeroVeil"/></div>
+        <div className="dxSceneInner dxMemberText">
+          <span className="dxKick">EKİP</span>
+          <h2 className="dxSplit">{dxWords(s.name)}</h2>
+          <p>{s.title||'Usta Berber'}</p>
+        </div>
+      </section>)}
+    </div>}
+
+    {shots.length>0&&<section className="dxScene dxGallery" data-dx-ch="3" id="dxGallery">
+      <DxKen shots={shots}/>
+      <div className="dxSceneInner dxGalleryText">
+        <span className="dxKick">MEKÂN</span>
+        <h2 className="dxSplit">{dxWords(dec(b,'dx_galleryTitle','Kapıdan girdiğin an başlar.'))}</h2>
+      </div>
+    </section>}
+
+    <div className="dxChapter" data-dx-ch="4" id="dxReviews">
+      <DxReviews businessId={b.id}/>
+      <section className="dxScene dxReviewsFallback"><div className="dxSceneInner"><span className="dxKick">GÜVEN</span><h2 className="dxSplit">{dxWords('Deneyimi yaşayanlar anlatıyor.')}</h2><p>İlk yorumlar geldiğinde burada, tam ekran görünecek.</p></div></section>
+    </div>
+
+    <section className="dxScene dxCta" data-dx-ch="5" id="dxCta">
+      <div className="dxSceneInner dxCtaInner">
+        <span className="dxKick">SIRA SENDE</span>
+        <h2 className="dxSplit">{dxWords(b.booking_title||'Koltuk hazır. Sen ne zaman gelirsin?')}</h2>
+        <div className="dxCtaActions">
+          {wa&&<a className="dxBtn" href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" data-cursor="Yaz">WhatsApp'tan yaz</a>}
+          {b.phone&&<a className="dxBtn dxBtnGhost" href={`tel:${b.phone.replace(/\s/g,'')}`} data-cursor="Ara">{b.phone}</a>}
+        </div>
+        <div className="dxBookBox"><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></div>
+        <footer className="dxFoot">{b.address&&<span>{b.address}</span>}{b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/> {b.instagram}</a>}<span>© {new Date().getFullYear()} {b.name}</span></footer>
+      </div>
+    </section>
   </main>;
 }
 
