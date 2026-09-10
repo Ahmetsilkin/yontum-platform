@@ -95,12 +95,14 @@
 .ksGallerySection>header{max-width:600px;margin:0 auto 40px}
 .ksGallerySection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ks-muted)}
 .ksGallerySection h2{font:800 38px 'Plus Jakarta Sans','Inter',Arial,sans-serif;letter-spacing:-.5px;margin:12px 0 0}
-.rGallery.ksGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-flow:row;gap:16px}
-.rGallery.ksGrid>*{aspect-ratio:4/5!important;height:auto!important;width:100%!important;grid-column:auto!important;grid-row:auto!important}
-.rGallery.ksGrid img,.rGallery.ksGrid video{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;filter:grayscale(1) contrast(1.05);border-radius:12px;transition:transform .3s}
-.rGallery.ksGrid .galleryItemBtn{position:relative;overflow:hidden;display:block;padding:0;border:0;border-radius:12px}
-.rGallery.ksGrid .galleryItemBtn:hover img{transform:scale(1.04)}
-@media(max-width:700px){.rGallery.ksGrid{grid-template-columns:repeat(2,1fr)}}
+.rGallery.ksGrid{display:flex;grid-template-columns:none;max-width:100%;margin:0;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:20px;padding:6px 6px 22px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rGallery.ksGrid::-webkit-scrollbar{display:none}
+.rGallery.ksGrid>*{flex:0 0 auto!important;width:min(300px,68vw)!important;aspect-ratio:1/1!important;height:auto!important;grid-column:auto!important;grid-row:auto!important;scroll-snap-align:center}
+.rGallery.ksGrid img,.rGallery.ksGrid video{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;filter:grayscale(1) contrast(1.05);border-radius:14px;transition:transform .5s cubic-bezier(.2,.7,.3,1);box-shadow:0 24px 48px -20px rgba(20,20,20,.35)}
+.rGallery.ksGrid .galleryItemBtn{position:relative;overflow:hidden;display:block;padding:0;border:0;border-radius:14px}
+.rGallery.ksGrid .galleryItemBtn::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
+.rGallery.ksGrid .galleryItemBtn:hover img{transform:scale(1.06)}
+.ksGallerySection .rGallery.ksGrid{margin:0 -6vw;padding-left:6vw;padding-right:6vw}
 
 /* Ekip */
 .ksTeamSection{padding:100px 6vw;background:var(--ks-surface)}
