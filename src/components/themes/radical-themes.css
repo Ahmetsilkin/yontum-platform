@@ -2653,7 +2653,7 @@
 
 /* HİZMETLER — kart grid */
 .mgServices{padding:clamp(56px,8vw,96px) 6vw;background:var(--bg)}
-.mgServiceGrid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px}
+.mgServiceGrid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,320px));justify-content:center;gap:20px}
 .mgCard{border:1px solid var(--line);border-radius:3px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .15s ease,transform .15s ease}
 .mgCard:hover{box-shadow:0 12px 32px -14px color-mix(in srgb,var(--text) 22%,transparent);transform:translateY(-2px)}
 .mgCardImg{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-bottom:1px solid var(--line)}
