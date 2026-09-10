@@ -284,14 +284,14 @@ function Keskin(p:P){
       </div>
     </section>
 
+    <Reveal><Booking p={p}/></Reveal>
+
+    <Reveal><OwnRatings businessId={b.id}/></Reveal>
+
     <section id="ksFaq" className="ksFaqSection">
       <Reveal><header><small>MERAK EDİLENLER</small><h2>Sık sorulan sorular</h2></header></Reveal>
       <Reveal><Faq items={faq}/></Reveal>
     </section>
-
-    <Reveal><Booking p={p}/></Reveal>
-
-    <Reveal><OwnRatings businessId={b.id}/></Reveal>
 
     <section id="ksContact" className="ksFooter">
       <div className="ksFooterGrid">
