@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',dergi:'warm'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,dergi:Dergi},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -2742,134 +2742,6 @@ function Kil(p:P){
         </div>
         <div className="klFooterBottom">© {new Date().getFullYear()} {b.name}</div>
       </div>
-    </footer>
-  </main>;
-}
-
-/* ================= Dergi — editoryal / dergi uzun-form teması ==================
-   Diğer temalardan farklı olarak KART IZGARASI YOK: sayfa bir dergi
-   makalesi gibi okunuyor. Baş kısım bir "künye/manşet", ardından tek bir
-   <article>: kicker + manşet + standfirst (koyu italik giriş) + künye
-   satırı, tam-genişlik açılış fotoğrafı, ÇOK KOLONLU gövde metni (drop
-   cap'li), araya serpiştirilmiş "FİYAT LİSTESİ" kutusu (dergi kenar
-   notu gibi), büyük bir pull-quote, "KATKIDA BULUNANLAR" (ekip, tipografik
-   liste), foto-deneme şeridi (galeri), "RANDEVU KUPONU" (kesikli çerçeve,
-   TenantBooking), "OKUR MEKTUPLARI" (yorumlar) ve bir kolofon/künye footer.
-   Serif manşet tipografisi (Fraunces). Baştaki ince okuma-ilerleme çubuğu
-   dışında animasyon yok (baskı sükûneti). */
-function DergiProgress(){
-  const ref=useRef<HTMLDivElement>(null);
-  useEffect(()=>{
-    let raf=0;
-    const onScroll=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{
-      const el=ref.current;if(!el)return;
-      const h=document.documentElement;
-      const max=h.scrollHeight-h.clientHeight;
-      el.style.transform=`scaleX(${max>0?Math.min(1,h.scrollTop/max):0})`;
-    })};
-    onScroll();
-    window.addEventListener('scroll',onScroll,{passive:true});
-    window.addEventListener('resize',onScroll);
-    return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(raf)};
-  },[]);
-  return <div className="dgProgress" aria-hidden="true"><div ref={ref} className="dgProgressBar"/></div>;
-}
-function Dergi(p:P){
-  const{b}=p;
-  const hourRows=groupedHourRows(p.hours||[]);
-  const city=(b.address?b.address.split(',').pop()?.trim():'')||'';
-  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
-  const openPhoto=b.cover_url||p.gallery?.[0]?.image_url||'';
-  const essayPhotos=[...p.gallery.map((g:any)=>g.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,6);
-  const body=String(b.description||'').split(/\n{2,}/).map(s=>s.trim()).filter(Boolean);
-  const bodyA=body.length>1?body.slice(0,Math.ceil(body.length/2)):body;
-  const bodyB=body.length>1?body.slice(Math.ceil(body.length/2)):[];
-  const essayText=dec(b,'dg_essay','');
-  const deck=dec(b,'dg_deck',b.hero_description||'Bir koltuk, bir ayna ve kendine ayırdığın yarım saat. İşte bu kadar basit, işte bu kadar önemli.');
-  const pull=dec(b,'dg_pullQuote',b.tagline||'“Acele işe şeytan karışır; iyi bir kesim sabır ister.”');
-  return <main id="top" className="tDergi">
-    <DergiProgress/>
-
-    <header className="dgMasthead">
-      <div className="dgMastheadTop">
-        <span className="dgIssue">SAYI №01{city&&` · ${city.toLocaleUpperCase('tr')}`}{b.established_year&&` · EST. ${b.established_year}`}</span>
-        <nav className="dgMastNav">
-          <a href="#hizmetler">Hizmetler</a><span>·</span>
-          <a href="#dgTeam">Kadro</a><span>·</span>
-          <a href="#dgGallery">Galeri</a><span>·</span>
-          <a href="#randevu">Randevu</a>
-        </nav>
-      </div>
-      <a href="#top" className="dgTitle">{b.name}</a>
-      <div className="dgMastRule"/>
-    </header>
-
-    <article className="dgArticle">
-      <header className="dgOpener">
-        <span className="dgKicker">{safeHeroLabel(b,'DOSYA')}</span>
-        <h1>{b.hero_title||b.name}{b.hero_highlight&&<> — <em>{b.hero_highlight}</em></>}</h1>
-        <p className="dgDeck">{deck}</p>
-        <p className="dgByline">Hazırlayan <b>{b.name}</b>{city&&<> · {city}</>} · {Math.max(2,Math.round((body.join(' ').length||600)/900))} dk okuma</p>
-      </header>
-
-      {openPhoto&&<figure className="dgFullBleed">
-        <img src={openPhoto} alt={b.name}/>
-        <figcaption>{b.name}{city&&`, ${city}`}. {b.address||'Fotoğraf: kendi arşivimiz.'}</figcaption>
-      </figure>}
-
-      <div className="dgBody">
-        {(bodyA.length?bodyA:['Sıcak, sakin bir mekân; işini seven bir ekip. Buraya bir hizmet almaya değil, bir alışkanlığı sürdürmeye gelirsin. Aynanın karşısına oturduğunda acele yoktur — sohbet, kahve ve iyi bir kesim aynı ritmin parçasıdır.']).map((par,i)=><p key={i}>{par}</p>)}
-      </div>
-
-      <blockquote className="dgPull">{pull}</blockquote>
-
-      <section id="hizmetler" className="dgPriceBox">
-        <div className="dgPriceHead"><h2>{b.services_title||'Fiyat Listesi'}</h2><span>{b.services_label||'HİZMETLER'}</span></div>
-        <div className="dgPriceList">
-          {p.services.map(s=><div className="dgPriceRow" key={s.id}>
-            <span className="dgPriceName">{s.name}{s.description&&<em> — {s.description}</em>}</span>
-            <span className="dgPriceDots"/>
-            <span className="dgPriceVal">{b.show_prices&&s.price!=null?`${Number(s.price).toLocaleString('tr-TR')} ₺`:`${s.duration_minutes} dk`}</span>
-          </div>)}
-        </div>
-      </section>
-
-      {(bodyB.length||essayText)&&<div className="dgBody dgBodyB">
-        {(bodyB.length?bodyB:[essayText]).map((par,i)=><p key={i}>{par}</p>)}
-      </div>}
-
-      {visibleStaff.length>0&&<section id="dgTeam" className="dgContributors">
-        <h2>{dec(b,'dg_teamTitle','Katkıda Bulunanlar')}</h2>
-        <ul>
-          {visibleStaff.map((s:any)=><li key={s.id}><b>{s.name}</b><span>{s.title||'Usta'}</span></li>)}
-        </ul>
-      </section>}
-
-      {essayPhotos.length>0&&<section id="dgGallery" className="dgEssay">
-        <h2>{dec(b,'dg_galleryTitle','Foto-Deneme')}</h2>
-        <div className="dgEssayStrip">
-          {essayPhotos.map((src,i)=><figure key={i}><img src={src} alt={`${b.name} ${i+1}`} loading="lazy"/></figure>)}
-        </div>
-      </section>}
-
-      <section id="randevu" className="dgCoupon">
-        <div className="dgCouponInner">
-          <div className="dgCouponHead"><span>◦ ◦ ◦</span><h2>Randevu Kuponu</h2><span>◦ ◦ ◦</span></div>
-          <TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/>
-        </div>
-      </section>
-
-      <div className="dgLetters"><OwnRatings businessId={b.id}/></div>
-    </article>
-
-    <footer className="dgColophon">
-      <div className="dgColRule"/>
-      <div className="dgColGrid">
-        <div><b>{b.name}</b><p>{dec(b,'dg_colophon','Bu sayfa, iyi bir işin anlatılmaya değer olduğuna inananlar için hazırlandı.')}</p></div>
-        <div><small>ADRES & SAATLER</small>{b.address&&<p>{b.address}</p>}{hourRows.map((r,i)=><p key={i} className="dgColHours"><span>{r.label}</span><span>{r.value}</span></p>)}</div>
-        <div><small>İLETİŞİM</small>{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
-      </div>
-      <div className="dgColBottom">© {new Date().getFullYear()} {b.name} · Tüm hakları saklıdır</div>
     </footer>
   </main>;
 }

@@ -46,14 +46,6 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'kl_galleryTitle',label:'Galeri başlığı',placeholder:'Bizden kareler'},
     {key:'kl_footerTagline',label:'Footer alt yazısı',placeholder:'Seni burada ağırlamak için sabırsızlanıyoruz.'},
   ],
-  dergi:[
-    {key:'dg_deck',label:'Giriş cümlesi (manşetin altındaki koyu italik yazı)',type:'textarea',placeholder:'Bir koltuk, bir ayna ve kendine ayırdığın yarım saat.'},
-    {key:'dg_essay',label:'İkinci paragraf (açıklama tek parçaysa buraya devamı)',type:'textarea',placeholder:'Mekândan, ekipten, alışkanlıklardan biraz daha bahset...'},
-    {key:'dg_pullQuote',label:'Öne çıkan alıntı (büyük tırnaklı yazı)',placeholder:'“İyi bir kesim sabır ister.”'},
-    {key:'dg_teamTitle',label:'Ekip bölümü başlığı',placeholder:'Katkıda Bulunanlar'},
-    {key:'dg_galleryTitle',label:'Galeri bölümü başlığı',placeholder:'Foto-Deneme'},
-    {key:'dg_colophon',label:'Footer (kolofon) yazısı',type:'textarea',placeholder:'Bu sayfa, iyi bir işin anlatılmaya değer olduğuna inananlar için hazırlandı.'},
-  ],
   atelier:[
     {key:'at_brandSubtitle',label:'Logo alt yazısı',placeholder:'BERBER ATÖLYESİ'},
     {key:'at_galleryTitle',label:'Galeri başlığı',placeholder:'Son çalışmalarımız.'},
