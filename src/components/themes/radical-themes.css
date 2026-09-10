@@ -2364,7 +2364,7 @@
   --leather:#6f3f2c;--leather-dark:#43241a;--leather-hi:#8a5540;
   --page:#f3ead6;--surface:#f3ead6;--card:#fbf7ec;--note:#fdf3cf;--note-2:#e6eef7;
   --text:#3a2c1f;--muted:#7d6b54;
-  --brass:#c39a4e;--ribbon:#8f2f28;--ink:#2f3f6b;--rule:#d8c7a7;
+  --brass:#c39a4e;--ribbon:#8f2f28;--ink:#2f3f6b;--rule:#d8c7a7;--accent:var(--brass);
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
   --slab:'Zilla Slab',Georgia,serif;--hand:'Caveat','Segoe Script',cursive;--label:'Inter',Arial,sans-serif;
   display:flex;flex-direction:column;
