@@ -23,7 +23,7 @@ export default async function BlogIndex({params}:{params:Promise<{slug:string}>}
         {(posts||[]).map(post=><article key={post.id}>
           <a href={`/site/${b.slug}/blog/${post.slug}`}>
             <div className="atJournalCover">{post.cover_url?<img src={post.cover_url} alt={post.title}/>:<i>✂</i>}</div>
-            {post.category&&<small>{post.category.toUpperCase()}</small>}
+            {post.category&&<small>{post.category.toLocaleUpperCase('tr')}</small>}
             <h3>{post.title}</h3>
             {post.excerpt&&<p>{post.excerpt}</p>}
           </a>

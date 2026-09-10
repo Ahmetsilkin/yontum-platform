@@ -24,7 +24,7 @@ export default async function BlogPost({params}:{params:Promise<{slug:string;pos
     </header>
     <article className="atPostArticle">
       <div className="atPostHead">
-        {post.category&&<small>{post.category.toUpperCase()}</small>}
+        {post.category&&<small>{post.category.toLocaleUpperCase('tr')}</small>}
         <h1>{post.title}</h1>
         <span>{dateStr}</span>
       </div>

@@ -222,7 +222,7 @@ function Keskin(p:P){
       <KsHeroVideo t={heroT}/>
       <div className="ksHeroOverlay"/>
       <div className="ksHeroInner">
-        {city&&<span className="ksKicker">{city.toUpperCase()}</span>}
+        {city&&<span className="ksKicker">{city.toLocaleUpperCase('tr')}</span>}
         <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/>{b.hero_highlight}</>}</h1>
         <div className="ksHeroActions">
           <a className="ksHeroCta" href="#randevu">{b.booking_button_text||'Hemen Randevu Al'}</a>
@@ -276,7 +276,7 @@ function Keskin(p:P){
     </section>}
 
     <section className="ksWhy">
-      <Reveal><header><small>NEDEN {b.name.toUpperCase()}?</small></header></Reveal>
+      <Reveal><header><small>NEDEN {b.name.toLocaleUpperCase('tr')}?</small></header></Reveal>
       <div className="ksWhyGrid">
         <Reveal i={0}><i>✨</i><h3>{dec(b,'ks_why1Title','Usta İşçilik')}</h3><p>{dec(b,'ks_why1Text','Her kesim, yüz hatlarına göre kişiye özel tasarlanır. Acele iş yok, kusursuz iş var.')}</p></Reveal>
         <Reveal i={1}><i>🛡</i><h3>{dec(b,'ks_why2Title','Tam Hijyen')}</h3><p>{dec(b,'ks_why2Text','Her müşteride tek kullanımlık ustura, sterilize aletler ve taze havlu standarttır.')}</p></Reveal>
@@ -919,7 +919,7 @@ function RozeTestimonials({p}:{p:P}){
   const perPage=4;
   const pages=Math.max(1,Math.ceil(data.reviews.length/perPage));
   const shown=data.reviews.slice(page*perPage,page*perPage+perPage);
-  const initials=(n:string)=>(n||'?').trim().charAt(0).toUpperCase();
+  const initials=(n:string)=>(n||'?').trim().charAt(0).toLocaleUpperCase('tr');
   const avatarBg=['#d9948f','#b7a89f','#c9a45f','#a67d8a'];
   return <section className="rzTestimonials">
     <div className="rzTestiGrid">
