@@ -2755,16 +2755,65 @@ function Kil(p:P){
    Kartı (deftere sıkıştırılmış lamine kart) → Ekip (ataşlı polaroidler) →
    Galeri (kontakt baskı) → Yorumlar (teşekkür notları) → arka kapak.
    Renkler yalnızca `.tDefter` kökünde token; bileşenlerde sabit hex yok. */
+/* "Paper slide" ses efekti — dış dosya yok, Web Audio ile anlık sentez:
+   frekansı yukarıdan aşağı süzülen (kayma hissi) kısa, yumuşak, band-geçiren
+   gürültü + hafif alçak-geçiren. Sadece kapak açılırken (kullanıcı jestiyle)
+   çalınır; autoplay engellenirse sessizce atlanır. Sesin öznel kalitesini
+   (gerçekten "kağıt" gibi mi) doğrulayamıyorum — yalnızca grafiğin hatasız
+   çalıştığını ve parametrelerin makul olduğunu kontrol edebilirim. */
+let dfAudioCtx:AudioContext|null=null;
+function dfPlayPaperSlide(){
+  try{
+    if(!dfAudioCtx){
+      const Ctor=(window as any).AudioContext||(window as any).webkitAudioContext;
+      if(!Ctor)return;
+      dfAudioCtx=new Ctor();
+    }
+    const ctx=dfAudioCtx!;
+    if(ctx.state==='suspended')ctx.resume().catch(()=>{});
+    const now=ctx.currentTime,dur=.85;
+    const n=Math.max(1,Math.floor(ctx.sampleRate*dur));
+    const buf=ctx.createBuffer(1,n,ctx.sampleRate),d=buf.getChannelData(0);
+    for(let i=0;i<n;i++){const t=i/n;d[i]=((Math.random()*2-1)+(Math.random()*2-1))*.5*(1-t*.55)}
+    const src=ctx.createBufferSource();src.buffer=buf;
+    const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.Q.value=.7;
+    bp.frequency.setValueAtTime(2600,now);
+    bp.frequency.exponentialRampToValueAtTime(850,now+dur);
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=5200;
+    const g=ctx.createGain();
+    g.gain.setValueAtTime(.0001,now);
+    g.gain.exponentialRampToValueAtTime(.13,now+.12);
+    g.gain.exponentialRampToValueAtTime(.055,now+.42);
+    g.gain.exponentialRampToValueAtTime(.0004,now+dur);
+    src.connect(bp);bp.connect(lp);lp.connect(g);g.connect(ctx.destination);
+    src.start(now);src.stop(now+dur+.02);
+  }catch{}
+}
 function Defter(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const shots=[...p.gallery.map((g:any)=>g.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,8);
-  return <main id="top" className="tDefter">
+  // Kapak animasyonu: SAYFAYA İLK DOKUNUŞTA (tap/tık/scroll/tuş) açılır;
+  // hiç etkileşim olmazsa ~6sn sonra kendiliğinden açılır (pasif ziyaretçi/bot
+  // için kilitli kalmasın). prefers-reduced-motion'da zaten CSS ile açık başlar.
+  const[opened,setOpened]=useState(false);
+  useEffect(()=>{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setOpened(true);return}
+    let done=false;
+    const open=(e?:Event)=>{if(done)return;done=true;setOpened(true);if(e&&e.type!=='scroll')dfPlayPaperSlide();cleanup()};
+    const evs=['pointerdown','touchstart','keydown','wheel','scroll'];
+    evs.forEach(e=>window.addEventListener(e,open,{passive:true,once:true}));
+    const t=setTimeout(open,6000);
+    function cleanup(){clearTimeout(t);evs.forEach(e=>window.removeEventListener(e,open))}
+    return cleanup;
+  },[]);
+  return <main id="top" className={`tDefter${opened?' dfOpened':''}`}>
     <div className="dfStrap"><a href="#top"><b>{b.name}</b></a><nav><a href="#randevu">Randevu</a><a href="#hizmetler">Hizmetler</a><a href="#dfTeam">Ekip</a><a href="#dfGallery">Galeri</a></nav></div>
 
     <div className="dfBook">
       <span className="dfBookEdge" aria-hidden="true"/>
+      <span className="dfCoverHint" aria-hidden="true">dokun, defter açılsın</span>
       <section className="dfInside">
         <p className="dfHand">{b.description||dec(b,'df_intro','Bu deftere yazdığımız her isim bir söz: dükkâna geldiğinde koltuk hazır, ustura bilenmiş, kahve demlenmiş olacak.')}</p>
         <span className="dfInsideSign">— {b.name}</span>
