@@ -2794,18 +2794,28 @@ function Defter(p:P){
   const hourRows=groupedHourRows(p.hours||[]);
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const shots=[...p.gallery.map((g:any)=>g.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,8);
-  // Kapak animasyonu: SAYFAYA İLK DOKUNUŞTA (tap/tık/scroll/tuş) açılır;
-  // hiç etkileşim olmazsa ~6sn sonra kendiliğinden açılır (pasif ziyaretçi/bot
-  // için kilitli kalmasın). prefers-reduced-motion'da zaten CSS ile açık başlar.
+  // Kapak animasyonu: defter AÇILMADAN sayfa aşağı kaydırılamaz (altı boş
+  // görünmesin). İlk etkileşimde (dokun / kaydır / tuş) sayfa kilidi açılır
+  // ve kapak açılır. Etkileşim olmazsa ~6sn sonra kendiliğinden açılır.
+  // prefers-reduced-motion'da zaten CSS ile açık başlar, kilit uygulanmaz.
   const[opened,setOpened]=useState(false);
   useEffect(()=>{
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setOpened(true);return}
     let done=false;
-    const open=(e?:Event)=>{if(done)return;done=true;setOpened(true);if(e&&e.type!=='scroll')dfPlayPaperSlide();cleanup()};
-    const evs=['pointerdown','touchstart','keydown','wheel','scroll'];
-    evs.forEach(e=>window.addEventListener(e,open,{passive:true,once:true}));
+    const html=document.documentElement,prevOverflow=html.style.overflow,prevOB=html.style.overscrollBehavior;
+    const unlock=()=>{html.style.overflow=prevOverflow;html.style.overscrollBehavior=prevOB};
+    html.style.overflow='hidden';html.style.overscrollBehavior='none';
+    const open=(e?:Event)=>{
+      if(done)return;done=true;
+      unlock();
+      setOpened(true);
+      if(e&&e.type!=='scroll')dfPlayPaperSlide();
+      cleanup();
+    };
+    const evs=['pointerdown','touchstart','keydown','wheel','scroll','touchmove'];
+    evs.forEach(e=>window.addEventListener(e,open,{passive:true}));
     const t=setTimeout(open,6000);
-    function cleanup(){clearTimeout(t);evs.forEach(e=>window.removeEventListener(e,open))}
+    function cleanup(){clearTimeout(t);evs.forEach(e=>window.removeEventListener(e,open));unlock()}
     return cleanup;
   },[]);
   return <main id="top" className={`tDefter${opened?' dfOpened':''}`}>
@@ -2813,7 +2823,7 @@ function Defter(p:P){
 
     <div className="dfBook">
       <span className="dfBookEdge" aria-hidden="true"/>
-      <span className="dfCoverHint" aria-hidden="true">dokun, defter açılsın</span>
+      <span className="dfCoverHint" aria-hidden="true">dokun ya da kaydır</span>
       <section className="dfInside">
         <p className="dfHand">{b.description||dec(b,'df_intro','Bu deftere yazdığımız her isim bir söz: dükkâna geldiğinde koltuk hazır, ustura bilenmiş, kahve demlenmiş olacak.')}</p>
         <span className="dfInsideSign">— {b.name}</span>
