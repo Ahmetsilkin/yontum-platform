@@ -2777,8 +2777,7 @@ function DergiProgress(){
 function Dergi(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
-  const cityRaw=(b.address?b.address.split(',').pop()?.trim():'')||'';
-  const city=cityRaw&&cityRaw.length<=22?cityRaw:'';
+  const city=(b.address?b.address.split(',').pop()?.trim():'')||'';
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const openPhoto=b.cover_url||p.gallery?.[0]?.image_url||'';
   const essayPhotos=[...p.gallery.map((g:any)=>g.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,6);
