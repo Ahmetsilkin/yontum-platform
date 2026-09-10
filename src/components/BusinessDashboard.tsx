@@ -38,6 +38,14 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'br_galleryTitle',label:'Galeri başlığı',placeholder:'İşimiz'},
     {key:'br_footerTagline',label:'Footer alt yazısı',placeholder:'Otur. Kestir. Çık.'},
   ],
+  kil:[
+    {key:'kl_heroKicker',label:'Giriş üst etiketi',placeholder:'ONLINE RANDEVU'},
+    {key:'kl_aboutTitle',label:'Hakkımızda başlığı',placeholder:'Kendine ayırdığın zaman.'},
+    {key:'kl_aboutText',label:'Hakkımızda metni',type:'textarea',placeholder:'Sıcak, sakin bir ortamda; işini seven bir ekiple tanış.'},
+    {key:'kl_teamTitle',label:'Ekip başlığı',placeholder:'Ekibimiz'},
+    {key:'kl_galleryTitle',label:'Galeri başlığı',placeholder:'Bizden kareler'},
+    {key:'kl_footerTagline',label:'Footer alt yazısı',placeholder:'Seni burada ağırlamak için sabırsızlanıyoruz.'},
+  ],
   atelier:[
     {key:'at_brandSubtitle',label:'Logo alt yazısı',placeholder:'BERBER ATÖLYESİ'},
     {key:'at_galleryTitle',label:'Galeri başlığı',placeholder:'Son çalışmalarımız.'},

@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -2594,6 +2594,154 @@ function Brutal(p:P){
         <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
       </div>
       <div className="brFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+
+/* ================= Kil — claymorphism kuaför/güzellik teması ==================
+   Pastel tonlar (pudra pembe / lavanta / krem), sert kontrast yok. Her
+   kart/buton çift katmanlı yumuşak gölgeyle "kabartılmış" görünür, köşeler
+   bol yuvarlak. Renkler yalnızca `.tKil` kökünde token (--bg/--text/
+   --surface/--accent...), bileşen kurallarında sabit hex yok. Bölümler
+   <main>'de flex-column, her birine CSS'te açık `order`. Animasyonlar
+   kütüphanesiz: IntersectionObserver + yaylı (spring) cubic-bezier CSS
+   geçişleri (opacity + scale + blur), saf CSS @keyframes float bloblar,
+   ve CSS-geçişiyle yumuşatılmış (lerp hissi) manyetik buton. Tümü
+   prefers-reduced-motion'da devre dışı. */
+function useKilReduced(){
+  const[r,setR]=useState(false);
+  useEffect(()=>{const mq=window.matchMedia('(prefers-reduced-motion: reduce)');setR(mq.matches);const f=()=>setR(mq.matches);mq.addEventListener('change',f);return()=>mq.removeEventListener('change',f)},[]);
+  return r;
+}
+function ClayReveal({children,as='div',className='',i=0}:{children:React.ReactNode;as?:'div'|'article'|'section';className?:string;i?:number}){
+  const ref=useRef<HTMLElement>(null);
+  const[shown,setShown]=useState(false);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){setShown(true);io.unobserve(e.target)}})},{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+    io.observe(el);return()=>io.disconnect();
+  },[]);
+  const Tag:any=as;
+  return <Tag ref={ref} className={`klReveal ${shown?'in':''} ${className}`} style={{'--kri':i}as React.CSSProperties}>{children}</Tag>;
+}
+function KilBlobs(){
+  return <div className="klBlobs" aria-hidden="true"><span className="klBlob klBlob1"/><span className="klBlob klBlob2"/></div>;
+}
+/* Manyetik buton: fare içindeyken butonu imlece doğru hafifçe kaydırır.
+   İvmeyi/gecikmeyi CSS transition sağlıyor (rAF döngüsü yok) — bu yüzden
+   hareket ani değil, yavaşça imlece "akıyor". */
+function useKilMagnet(){
+  const ref=useRef<HTMLAnchorElement>(null);
+  const onMouseMove=(e:React.MouseEvent)=>{
+    const el=ref.current;if(!el)return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('(hover: none)').matches)return;
+    const r=el.getBoundingClientRect();
+    const x=(e.clientX-(r.left+r.width/2))*.3;
+    const y=(e.clientY-(r.top+r.height/2))*.3;
+    el.style.transform=`translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(1.04)`;
+  };
+  const onMouseLeave=()=>{if(ref.current)ref.current.style.transform=''};
+  return{ref,onMouseMove,onMouseLeave};
+}
+function KilTeam({p}:{p:P}){
+  const{b}=p;
+  const visible=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  if(!visible.length)return null;
+  return <section className="klTeamSection">
+    <ClayReveal className="klSectionHead"><small>EKİP</small><h2>{dec(b,'kl_teamTitle','Ekibimiz')}</h2></ClayReveal>
+    <div className="klTeamGrid">
+      {visible.map((s:any,i:number)=><ClayReveal as="article" className="klTeamCard" key={s.id} i={i%4}>
+        <div className="klTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name?.[0]}</i>}</div>
+        <b>{s.name}</b><small>{s.title||'Uzman'}</small>
+      </ClayReveal>)}
+    </div>
+  </section>;
+}
+function Kil(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const reduced=useKilReduced();
+  const mag=useKilMagnet();
+  const aboutPhoto=p.gallery?.[0]?.image_url||b.cover_url||'';
+  return <main id="top" className={`tKil${reduced?' klReducedMotion':''}`}>
+    <header className="klNav">
+      <a className="klBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#klTeam">Ekip</a>
+        <a href="#klGallery">Galeri</a>
+        <a href="#randevu">İletişim</a>
+      </nav>
+      <a className="klBtn klBtnAccent klBtnMagnet" href="#randevu" ref={mag.ref} onMouseMove={mag.onMouseMove} onMouseLeave={mag.onMouseLeave}>{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="klHero">
+      <KilBlobs/>
+      <div className="klHeroInner">
+        <span className="klKicker">{dec(b,'kl_heroKicker',safeHeroLabel(b,'ONLINE RANDEVU'))}</span>
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<> <em>{b.hero_highlight}</em></>}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <div className="klHeroActions">
+          <a className="klBtn klBtnAccent" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+          <a className="klBtn" href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        </div>
+      </div>
+      {(b.cover_url||aboutPhoto)&&<div className="klHeroMediaBox">
+        {b.cover_url&&b.cover_type==='video'?<video className="klHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>:<img className="klHeroMedia" src={b.cover_url||aboutPhoto} alt={b.name}/>}
+      </div>}
+    </section>
+
+    <section id="hizmetler" className="klServices">
+      <ClayReveal className="klSectionHead"><small>{(b.services_label||'HİZMETLER').toLocaleUpperCase('tr')}</small><h2>{b.services_title||'Hizmetlerimiz'}</h2></ClayReveal>
+      <div className="klServiceGrid">
+        {p.services.map((s,i)=><ClayReveal as="article" className="klServiceCard" key={s.id} i={i%3}>
+          {s.image_url&&(s.image_type==='video'?<video className="klServicePhoto" src={s.image_url} muted loop playsInline/>:<img className="klServicePhoto" src={s.image_url} alt={s.name}/>)}
+          <div className="klServiceBody">
+            <div className="klServiceHead"><h3>{s.name}</h3>{b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</div>
+            {s.description&&<p>{s.description}</p>}
+            <span className="klPill">{s.duration_minutes} dk</span>
+            {hasServiceDetail(s)&&<a className="klTextLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detay →</a>}
+          </div>
+        </ClayReveal>)}
+      </div>
+    </section>
+
+    <section className="klAbout">
+      <ClayReveal className="klAboutCard">
+        <div className="klAboutText">
+          <small>{b.about_label||'HAKKIMIZDA'}</small>
+          <h2>{dec(b,'kl_aboutTitle',b.about_title||'Kendine ayırdığın zaman.')}</h2>
+          <p>{dec(b,'kl_aboutText',b.description||'Sıcak, sakin bir ortamda; işini seven bir ekiple tanış. Her randevu, kendine ayırdığın küçük bir mola.')}</p>
+        </div>
+        {aboutPhoto&&<div className="klAboutPhoto"><img src={aboutPhoto} alt={b.name}/></div>}
+      </ClayReveal>
+    </section>
+
+    <div id="klTeam"><KilTeam p={p}/></div>
+
+    <section id="randevu" className="klBooking">
+      <ClayReveal className="klSectionHead"><small>{(b.booking_label||'RANDEVU').toLocaleUpperCase('tr')}</small><h2>{b.booking_title||'Randevunu ayır.'}</h2></ClayReveal>
+      <div className="klBookingBox">
+        <TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/>
+      </div>
+    </section>
+
+    <section id="klGallery" className="klGallerySection">
+      <ClayReveal className="klSectionHead"><small>GALERİ</small><h2>{dec(b,'kl_galleryTitle','Bizden kareler')}</h2></ClayReveal>
+      <Gallery p={p} variant="klGrid"/>
+    </section>
+
+    <OwnRatings businessId={b.id}/>
+
+    <footer className="klFooter">
+      <div className="klFooterCard">
+        <div className="klFooterGrid">
+          <div className="klFooterBrand"><b>{b.name}</b><p>{dec(b,'kl_footerTagline','Seni burada ağırlamak için sabırsızlanıyoruz.')}</p></div>
+          <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="klHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+          <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
+        </div>
+        <div className="klFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+      </div>
     </footer>
   </main>;
 }
