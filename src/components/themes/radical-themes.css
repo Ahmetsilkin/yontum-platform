@@ -2136,7 +2136,7 @@
 
 /* EKİP */
 .brTeamSection{padding:clamp(56px,8vw,110px) 0}
-.brTeamGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;padding:0 6vw;max-width:1160px;margin:0 auto}
+.brTeamGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,230px));justify-content:center;gap:18px;padding:0 6vw;max-width:1160px;margin:0 auto}
 .brTeamCard{background:var(--surface);border:var(--bd) solid var(--line);box-shadow:var(--shadow-sm);padding:0 0 16px;transition:transform .1s linear,box-shadow .1s linear}
 .brTeamCard:hover{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
 .brTeamPhoto{aspect-ratio:1/1;border-bottom:var(--bd) solid var(--line);overflow:hidden;background:var(--accent)}
@@ -2144,7 +2144,7 @@
 .brTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;font:400 54px 'Archivo Black',sans-serif;font-style:normal;color:var(--accent-ink)}
 .brTeamCard b{display:block;margin:14px 16px 0;font:400 16px 'Archivo Black',sans-serif;text-transform:uppercase}
 .brTeamCard small{display:block;margin:4px 16px 0;font:700 11px 'Space Grotesk',sans-serif;letter-spacing:.08em;color:var(--muted)}
-@media(max-width:640px){.brTeamGrid{grid-template-columns:1fr 1fr;gap:12px}}
+@media(max-width:640px){.brTeamGrid{grid-template-columns:repeat(auto-fit,minmax(140px,180px));gap:12px}}
 
 /* RANDEVU */
 .brBooking{padding:clamp(56px,8vw,110px) 0;background:var(--line);color:var(--bg)}
