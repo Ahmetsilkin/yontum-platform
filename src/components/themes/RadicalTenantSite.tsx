@@ -2763,22 +2763,27 @@ function Defter(p:P){
   return <main id="top" className="tDefter">
     <div className="dfStrap"><a href="#top"><b>{b.name}</b></a><nav><a href="#randevu">Randevu</a><a href="#hizmetler">Hizmetler</a><a href="#dfTeam">Ekip</a><a href="#dfGallery">Galeri</a></nav></div>
 
-    <header className="dfCover">
-      <span className="dfRibbon"/>
-      <div className="dfCoverPlate">
-        {b.logo_url&&<img className="dfCoverLogo" src={b.logo_url} alt={b.name}/>}
-        <span className="dfCoverKicker">RANDEVU DEFTERİ</span>
-        <h1>{b.name}</h1>
-        {b.established_year&&<span className="dfCoverEst">EST. {b.established_year}</span>}
-      </div>
-      <span className="dfCorner dfCornerTL"/><span className="dfCorner dfCornerTR"/>
-      <span className="dfCorner dfCornerBL"/><span className="dfCorner dfCornerBR"/>
-    </header>
-
-    <section className="dfInside">
-      <p className="dfHand">{b.description||dec(b,'df_intro','Bu deftere yazdığımız her isim bir söz: dükkâna geldiğinde koltuk hazır, ustura bilenmiş, kahve demlenmiş olacak.')}</p>
-      <span className="dfInsideSign">— {b.name}</span>
-    </section>
+    <div className="dfBook">
+      <span className="dfBookEdge" aria-hidden="true"/>
+      <section className="dfInside">
+        <p className="dfHand">{b.description||dec(b,'df_intro','Bu deftere yazdığımız her isim bir söz: dükkâna geldiğinde koltuk hazır, ustura bilenmiş, kahve demlenmiş olacak.')}</p>
+        <span className="dfInsideSign">— {b.name}</span>
+      </section>
+      <header className="dfCover">
+        <div className="dfCoverFace">
+          <span className="dfRibbon"/>
+          <div className="dfCoverPlate">
+            {b.logo_url&&<img className="dfCoverLogo" src={b.logo_url} alt={b.name}/>}
+            <span className="dfCoverKicker">RANDEVU DEFTERİ</span>
+            <h1>{b.name}</h1>
+            {b.established_year&&<span className="dfCoverEst">EST. {b.established_year}</span>}
+          </div>
+          <span className="dfCorner dfCornerTL"/><span className="dfCorner dfCornerTR"/>
+          <span className="dfCorner dfCornerBL"/><span className="dfCorner dfCornerBR"/>
+        </div>
+        <div className="dfCoverBack" aria-hidden="true"/>
+      </header>
+    </div>
 
     <section id="randevu" className="dfBooking">
       <div className="dfPageHead"><span className="dfPageTab">RANDEVU</span><span className="dfPageNo">s. 1</span></div>
