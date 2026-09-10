@@ -2576,3 +2576,143 @@
 .dfBackRows,.dfBackHours{display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:center;margin-top:18px;font-family:var(--label);font-size:12px;letter-spacing:.04em;color:color-mix(in srgb,var(--page) 78%,transparent)}
 .dfBackHours{font-size:11px;opacity:.8;margin-top:10px}
 .dfBackBottom{margin-top:20px;font-family:var(--label);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--page) 60%,transparent)}
+
+/* ================= Mağaza — HiQ/e-ticaret dilinde dönüşüm odaklı tema =========
+   Renkler yalnızca `.tMagaza` kökünde token; aşağıdaki kurallarda sabit hex
+   yok (yalnızca var(...) ve color-mix). <main> flex-column + her bölüme order. */
+.tMagaza{
+  --bg:#ffffff;--surface:#f7f7f7;--text:#000000;--muted:#6b6b6b;
+  --accent:#d63a2f;--accent-dark:#b52e24;--line:#e6e6e6;
+  --btn-fg:#ffffff;--btn2-bg:#e9e9e9;
+  --head:'Montserrat','Inter',Arial,Helvetica,sans-serif;
+  --body:'Lato','Inter',Arial,Helvetica,sans-serif;
+  display:flex;flex-direction:column;overflow-x:clip;
+  background:var(--bg);color:var(--text);font-family:var(--body);font-weight:400;
+}
+.tMagaza h1,.tMagaza h2,.tMagaza h3{font-family:var(--head);font-weight:800;letter-spacing:-.01em;line-height:1.14;margin:0;color:var(--text)}
+.tMagaza a{color:inherit;text-decoration:none}
+.tMagaza ::selection{background:var(--accent);color:var(--btn-fg)}
+.tMagaza>.mgTrustBar{order:1}
+.tMagaza>.mgHeader{order:2}
+.tMagaza>.mgHero{order:3}
+.tMagaza>.mgServices{order:4}
+.tMagaza>.mgBooking{order:5}
+.tMagaza>.mgReviews{order:6}
+.tMagaza>.mgFaq{order:7}
+.tMagaza>.mgFooter{order:8}
+
+/* butonlar */
+.tMagaza .mgBtn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:var(--head);font-weight:700;font-size:14px;padding:14px 26px;border:2px solid var(--text);border-radius:2px;cursor:pointer;transition:background .15s ease,color .15s ease,border-color .15s ease}
+.tMagaza .mgBtnDark{background:var(--text);color:var(--btn-fg)}
+.tMagaza .mgBtnDark:hover{background:var(--bg);color:var(--text)}
+.tMagaza .mgBtnAccent{background:var(--accent);color:var(--btn-fg);border-color:var(--accent)}
+.tMagaza .mgBtnAccent:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+.tMagaza .mgBtn2{background:var(--btn2-bg);color:var(--text);border-color:var(--btn2-bg)}
+
+/* section başlığı */
+.mgSectionHead{max-width:640px;margin:0 auto 40px;text-align:center}
+.mgSectionHead h2{font-size:clamp(26px,4vw,40px);font-weight:900}
+.mgSectionHead p{color:var(--muted);margin-top:10px;font-size:15px;line-height:1.6}
+
+/* TRUST BAR */
+.mgTrustBar{background:var(--text);color:var(--bg);font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.03em;display:flex;justify-content:center;flex-wrap:wrap;gap:8px 34px;padding:9px 6vw;text-transform:uppercase}
+.mgTrustBar span{display:inline-flex;align-items:center;gap:8px}
+.mgTrustBar span::before{content:"✓";color:var(--accent);font-weight:900}
+
+/* HEADER */
+.mgHeader{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 6vw}
+.mgLogo{display:flex;align-items:center;gap:10px}
+.mgLogo img,.mgLogo i{width:38px;height:38px;object-fit:contain;border-radius:2px;background:var(--surface);display:grid;place-items:center;font:800 18px var(--head);font-style:normal}
+.mgLogo b{font-family:var(--head);font-weight:800;font-size:17px;letter-spacing:.02em}
+.mgHeader nav{display:flex;gap:28px;font-family:var(--head);font-weight:700;font-size:13px}
+.mgHeader nav a{color:var(--text);opacity:.68;transition:opacity .15s ease,color .15s ease}
+.mgHeader nav a:hover{opacity:1;color:var(--accent)}
+.mgHeaderCta{padding:11px 20px;font-size:13px}
+@media(max-width:860px){.mgHeader nav{display:none}}
+
+/* HERO — slider/banner */
+.mgHero{position:relative;min-height:clamp(440px,64vh,620px);display:flex;align-items:center;overflow:hidden;background:var(--surface)}
+.mgHeroMedia{position:absolute;inset:0;z-index:0}
+.mgHeroMedia img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
+.mgHeroMedia img.on{opacity:1}
+.mgHeroBlank{position:absolute;inset:0;background:linear-gradient(120deg,var(--surface),var(--line))}
+.mgHeroShade{position:absolute;inset:0;background:linear-gradient(90deg,color-mix(in srgb,var(--text) 66%,transparent) 0%,color-mix(in srgb,var(--text) 30%,transparent) 46%,transparent 78%)}
+.mgHeroInner{position:relative;z-index:1;max-width:640px;padding:48px 6vw;color:var(--bg)}
+.mgHeroKick{display:inline-block;background:var(--accent);color:var(--btn-fg);font-family:var(--head);font-weight:800;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:2px;text-transform:uppercase}
+.mgHero h1{color:var(--bg);font-size:clamp(32px,5.4vw,58px);font-weight:900;margin:18px 0 0}
+.mgHero h1 mark{background:var(--accent);color:var(--btn-fg);padding:0 .12em}
+.mgHero p{color:var(--bg);opacity:.92;font-size:clamp(15px,1.7vw,18px);line-height:1.6;margin:16px 0 0;max-width:46ch}
+.mgHeroActions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.mgHeroActions .mgBtnDark{background:var(--bg);color:var(--text);border-color:var(--bg)}
+.mgHeroActions .mgBtnDark:hover{background:transparent;color:var(--bg);border-color:var(--bg)}
+.mgHeroDots{position:absolute;z-index:1;left:6vw;bottom:22px;display:flex;gap:8px}
+.mgHeroDots button{width:26px;height:4px;border:0;border-radius:2px;background:color-mix(in srgb,var(--bg) 40%,transparent);cursor:pointer;padding:0;transition:background .2s ease}
+.mgHeroDots button.on{background:var(--accent)}
+@media(max-width:640px){.mgHeroShade{background:linear-gradient(180deg,color-mix(in srgb,var(--text) 35%,transparent),color-mix(in srgb,var(--text) 68%,transparent))}}
+
+/* HİZMETLER — kart grid */
+.mgServices{padding:clamp(56px,8vw,96px) 6vw;background:var(--bg)}
+.mgServiceGrid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px}
+.mgCard{border:1px solid var(--line);border-radius:3px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .15s ease,transform .15s ease}
+.mgCard:hover{box-shadow:0 12px 32px -14px color-mix(in srgb,var(--text) 22%,transparent);transform:translateY(-2px)}
+.mgCardImg{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-bottom:1px solid var(--line)}
+.mgCardBody{padding:20px;display:flex;flex-direction:column;flex:1}
+.mgCardBody h3{font-size:17px;font-weight:800}
+.mgCardBody p{color:var(--muted);font-size:13px;line-height:1.55;margin:8px 0 0}
+.mgCardMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 0}
+.mgDur{font-family:var(--head);font-weight:700;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);padding:5px 10px;border-radius:2px}
+.mgPrice{font-family:var(--head);font-weight:900;font-size:20px;color:var(--accent)}
+.mgCardLink{font-family:var(--head);font-weight:700;font-size:12px;color:var(--text);margin-top:12px;border-bottom:1px solid var(--line);align-self:flex-start}
+.mgCardBtn{margin-top:auto;width:100%;font-size:13px;padding:12px}
+.mgCardBody>.mgCardBtn{margin-top:18px}
+.mgCard .mgCardLink+.mgCardBtn{margin-top:14px}
+
+/* RANDEVU */
+.mgBooking{padding:clamp(56px,8vw,96px) 6vw;background:var(--surface)}
+.mgBookingBox{max-width:820px;margin:0 auto;background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:clamp(22px,4vw,40px)}
+.mgBookingBox .tenantBooking{color:var(--text);background:transparent;box-shadow:none;border:0}
+.tMagaza .mgBookingBox input,.tMagaza .mgBookingBox select,.tMagaza .mgBookingBox textarea{border-radius:2px!important;border:1px solid var(--line)!important;background:var(--bg)!important;color:var(--text)!important;font-family:var(--body)!important}
+.tMagaza .mgBookingBox button{border-radius:2px!important;background:var(--accent)!important;color:var(--btn-fg)!important;font-family:var(--head)!important;font-weight:700!important;border-color:var(--accent)!important}
+
+/* YORUMLAR — ürün yorumu kartları */
+.mgReviews{padding:clamp(56px,8vw,96px) 6vw;background:var(--bg)}
+.mgReviews .mgSectionHead{margin-bottom:14px}
+.tMagaza .ownReviews{padding:0}
+.tMagaza .ownReviews>header{text-align:center;max-width:640px;margin:0 auto 30px}
+.tMagaza .ownReviews small{display:none}
+.tMagaza .ownReviews h2{font-family:var(--head);font-weight:900;font-size:clamp(30px,4.2vw,44px);color:var(--text);margin:0;display:inline-flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:12px 22px}
+.tMagaza .ownReviews h2 span{color:var(--accent);font-size:.6em;letter-spacing:1px}
+.tMagaza .ownReviews header p{color:var(--muted);margin-top:8px;font-size:14px}
+.tMagaza .ownReviewGrid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tMagaza .ownReviewGrid article{border:1px solid var(--line);border-radius:3px;padding:22px;background:var(--bg)}
+.tMagaza .ownReviewHead{display:flex;align-items:center;gap:12px}
+.tMagaza .ownReviewAvatar,.tMagaza .ownReviewAvatarFallback{width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--surface);color:var(--text);display:grid;place-items:center;font:800 17px var(--head);border:1px solid var(--line)}
+.tMagaza .ownReviewHead b{font-family:var(--head);font-weight:800;font-size:14px}
+.tMagaza .ownReviewStars{color:var(--accent);font-size:12px;margin-top:3px}
+.tMagaza .ownReviewGrid p{font-size:14px;line-height:1.6;color:var(--text);margin-top:12px}
+@media(max-width:900px){.tMagaza .ownReviewGrid{grid-template-columns:1fr}}
+
+/* SSS — accordion (paylaşılan Faq bileşeni ks* sınıflarını kullanır) */
+.mgFaq{padding:clamp(56px,8vw,96px) 6vw;background:var(--surface)}
+.mgFaq .ksFaqList{max-width:800px;margin:0 auto}
+.mgFaq .ksFaqItem{border-bottom:1px solid var(--line)}
+.mgFaq .ksFaqItem>button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;background:none;border:0;padding:20px 4px;cursor:pointer;text-align:left;font-family:var(--head);font-weight:700;font-size:15px;color:var(--text)}
+.mgFaq .ksFaqItem>button i{font-family:var(--head);font-style:normal;font-weight:800;font-size:20px;color:var(--accent);flex-shrink:0}
+.mgFaq .ksFaqItem>p{color:var(--muted);font-size:14px;line-height:1.65;padding:0 4px 20px;margin:0}
+.mgFaq .ksFaqItem.open>button{color:var(--accent)}
+
+/* FOOTER */
+.mgFooter{background:var(--text);color:var(--bg);padding:clamp(44px,6vw,72px) 6vw 28px}
+.mgFooterGrid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:36px;padding-bottom:30px;border-bottom:1px solid color-mix(in srgb,var(--bg) 16%,transparent)}
+.mgFooter .mgLogo b{color:var(--bg)}
+.mgFooter .mgLogo img,.mgFooter .mgLogo i{background:color-mix(in srgb,var(--bg) 12%,transparent);color:var(--bg)}
+.mgFooterBrand p{color:color-mix(in srgb,var(--bg) 58%,transparent);font-size:13px;margin-top:12px;line-height:1.6;max-width:280px}
+.mgFooter small{font-family:var(--head);font-weight:800;font-size:11px;letter-spacing:.12em;color:color-mix(in srgb,var(--bg) 48%,transparent);display:block;margin-bottom:12px}
+.mgHoursRow{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:color-mix(in srgb,var(--bg) 78%,transparent);padding:5px 0;max-width:230px}
+.mgFooter div>p{font-size:13px;color:color-mix(in srgb,var(--bg) 78%,transparent);margin:6px 0}
+.mgFooter a{color:var(--bg)}
+.mgWaLink{display:inline-flex;align-items:center;gap:8px;color:var(--accent)!important;font-weight:700}
+.mgWaLink svg,.mgFooter div>p a svg{vertical-align:-3px}
+.mgTeamCount{font-family:var(--head);font-weight:700}
+.mgFooterBottom{max-width:1180px;margin:0 auto;padding-top:22px;font-family:var(--head);font-size:11px;letter-spacing:.06em;color:color-mix(in srgb,var(--bg) 40%,transparent)}
+@media(max-width:760px){.mgFooterGrid{grid-template-columns:1fr;gap:24px}}

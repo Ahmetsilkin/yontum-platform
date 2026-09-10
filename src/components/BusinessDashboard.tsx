@@ -52,6 +52,13 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'df_galleryTitle',label:'Galeri bölümü başlığı',placeholder:'Kontakt Baskı'},
     {key:'df_footerTagline',label:'Arka kapak yazısı',placeholder:'Defter hep açık; sıradaki isim seninki olabilir.'},
   ],
+  magaza:[
+    {key:'mg_trust1',label:'Üst şerit — 1. rakam/ifade',placeholder:'%98 memnuniyet'},
+    {key:'mg_trust2',label:'Üst şerit — 2. rakam/ifade',placeholder:'2.000+ mutlu müşteri'},
+    {key:'mg_trust3',label:'Üst şerit — 3. rakam/ifade',placeholder:'Aynı gün randevu'},
+    {key:'mg_reviewsTitle',label:'Yorumlar bölümü başlığı',placeholder:'Müşteri yorumları'},
+    {key:'mg_faq',label:'Sık sorulan sorular',type:'faq'},
+  ],
   atelier:[
     {key:'at_brandSubtitle',label:'Logo alt yazısı',placeholder:'BERBER ATÖLYESİ'},
     {key:'at_galleryTitle',label:'Galeri başlığı',placeholder:'Son çalışmalarımız.'},

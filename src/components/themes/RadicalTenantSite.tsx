@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -2902,6 +2902,121 @@ function Defter(p:P){
         <div className="dfBackHours">{hourRows.map((r,i)=><span key={i}>{r.label}: {r.value}</span>)}</div>
         <div className="dfBackBottom">© {new Date().getFullYear()} {b.name}</div>
       </div>
+    </footer>
+  </main>;
+}
+
+/* ================= Mağaza — HiQ/e-ticaret dilinde, dönüşüm odaklı tema ==========
+   (kullanıcının "Vitrin tarzı" isteği; `vitrin` aile anahtarı emekli temada
+   dolu olduğu için family = `magaza`). Temiz, direkt, güven veren düzen:
+   trust-badge şeridi → header → slider hero → hizmet kart grid'i → fotoğraflı
+   yorum kartları → SSS accordion → footer. Beyaz zemin, saf siyah tipografi
+   (Montserrat başlık / Lato gövde), tek kırmızı vurgu (CTA + fiyat/rozet).
+   Renkler yalnızca `.tMagaza` kökünde token; bileşenlerde sabit hex yok.
+   <main> flex-column + her bölüme açık `order`. */
+function MagazaHero({p}:{p:P}){
+  const{b}=p;
+  const imgs=[b.cover_url,...(p.gallery||[]).map((g:any)=>g.image_url)].filter(Boolean).slice(0,4) as string[];
+  const[i,setI]=useState(0);
+  useEffect(()=>{
+    if(imgs.length<2||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const t=setInterval(()=>setI(v=>(v+1)%imgs.length),5200);
+    return()=>clearInterval(t);
+  },[imgs.length]);
+  return <section className="mgHero">
+    <div className="mgHeroMedia">
+      {imgs.length?imgs.map((src,n)=><img key={n} src={src} className={n===i?'on':''} alt="" aria-hidden="true"/>):<span className="mgHeroBlank" aria-hidden="true"/>}
+      <span className="mgHeroShade" aria-hidden="true"/>
+    </div>
+    <div className="mgHeroInner">
+      <span className="mgHeroKick">{safeHeroLabel(b,'ONLINE RANDEVU')}</span>
+      <h1>{b.hero_title||b.name}{b.hero_highlight&&<> <mark>{b.hero_highlight}</mark></>}</h1>
+      {b.hero_description&&<p>{b.hero_description}</p>}
+      <div className="mgHeroActions">
+        <a className="mgBtn mgBtnAccent" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+        <a className="mgBtn mgBtnDark" href="#hizmetler">{b.services_label||'Hizmetleri Gör'}</a>
+      </div>
+    </div>
+    {imgs.length>1&&<div className="mgHeroDots">{imgs.map((_,n)=><button key={n} type="button" className={n===i?'on':''} onClick={()=>setI(n)} aria-label={`Görsel ${n+1}`}/>)}</div>}
+  </section>;
+}
+function Magaza(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const faq=parseFaq(dec(b,'mg_faq',''));
+  let wa=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(wa.startsWith('0'))wa='90'+wa.slice(1);
+  return <main id="top" className="tMagaza">
+    <div className="mgTrustBar">
+      <span>{dec(b,'mg_trust1','%98 memnuniyet')}</span>
+      <span>{dec(b,'mg_trust2','2.000+ mutlu müşteri')}</span>
+      <span>{dec(b,'mg_trust3','Aynı gün randevu')}</span>
+    </div>
+
+    <header className="mgHeader">
+      <a className="mgLogo" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#mgReviews">Yorumlar</a>
+        <a href="#sss">SSS</a>
+        <a href="#mgFooter">İletişim</a>
+      </nav>
+      <a className="mgBtn mgBtnAccent mgHeaderCta" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <MagazaHero p={p}/>
+
+    <section id="hizmetler" className="mgServices">
+      <div className="mgSectionHead"><h2>{b.services_title||'Hizmetler'}</h2><p>{b.services_description||'Fiyatlar ve süreler nettir; sürpriz yok.'}</p></div>
+      <div className="mgServiceGrid">
+        {p.services.map(s=><article className="mgCard" key={s.id}>
+          {s.image_url&&(s.image_type==='video'?<video className="mgCardImg" src={s.image_url} muted loop playsInline/>:<img className="mgCardImg" src={s.image_url} alt={s.name}/>)}
+          <div className="mgCardBody">
+            <h3>{s.name}</h3>
+            {s.description&&<p>{s.description}</p>}
+            <div className="mgCardMeta">
+              <span className="mgDur">{s.duration_minutes} dk</span>
+              {b.show_prices&&s.price!=null&&<span className="mgPrice">{Number(s.price).toLocaleString('tr-TR')} ₺</span>}
+            </div>
+            {hasServiceDetail(s)&&<a className="mgCardLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detaylar →</a>}
+            <a className="mgBtn mgBtnAccent mgCardBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+          </div>
+        </article>)}
+      </div>
+    </section>
+
+    <section id="randevu" className="mgBooking">
+      <div className="mgSectionHead"><h2>{b.booking_title||'Randevunu oluştur'}</h2><p>{b.booking_description||'Birkaç adımda tarih ve saat seç; onayı hemen alırsın.'}</p></div>
+      <div className="mgBookingBox">
+        <TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/>
+      </div>
+    </section>
+
+    <section id="mgReviews" className="mgReviews">
+      <div className="mgSectionHead"><h2>{dec(b,'mg_reviewsTitle','Müşteri yorumları')}</h2><p>Gerçek müşterilerden, doğrulanmış randevular sonrası.</p></div>
+      <div className="mgReviewsBody"><OwnRatings businessId={b.id}/></div>
+    </section>
+
+    <section id="sss" className="mgFaq">
+      <div className="mgSectionHead"><h2>Sık sorulan sorular</h2></div>
+      <Faq items={faq}/>
+    </section>
+
+    <footer id="mgFooter" className="mgFooter">
+      <div className="mgFooterGrid">
+        <div className="mgFooterBrand">
+          <a className="mgLogo" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+          {b.address&&<p>{b.address}</p>}
+        </div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="mgHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>
+          {b.phone&&<p>{b.phone}</p>}
+          {wa&&<p><a className="mgWaLink" href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer"><WaIcon/> WhatsApp destek</a></p>}
+          {b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/> {b.instagram}</a></p>}
+          {visibleStaff.length>0&&<p className="mgTeamCount">{visibleStaff.length} uzman ekip</p>}
+        </div>
+      </div>
+      <div className="mgFooterBottom">© {new Date().getFullYear()} {b.name} · Tüm hakları saklıdır</div>
     </footer>
   </main>;
 }
