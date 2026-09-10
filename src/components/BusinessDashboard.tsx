@@ -31,6 +31,13 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'ks_why3Text',label:'"Neden biz" 3. metin',type:'textarea',placeholder:'Sıra beklemek yok, online randevunu al.'},
     {key:'ks_faq',label:'Sık sorulan sorular',type:'faq'},
   ],
+  brutal:[
+    {key:'br_marquee',label:'Akan şerit yazısı',placeholder:'RANDEVU AL — KESKİN TIRAŞ — SAKAL TASARIMI — ÇOCUK KESİMİ'},
+    {key:'br_heroKicker',label:'Giriş üst etiketi',placeholder:'ERKEK BAKIM · ONLINE RANDEVU'},
+    {key:'br_teamTitle',label:'Ekip başlığı',placeholder:'Kadro'},
+    {key:'br_galleryTitle',label:'Galeri başlığı',placeholder:'İşimiz'},
+    {key:'br_footerTagline',label:'Footer alt yazısı',placeholder:'Otur. Kestir. Çık.'},
+  ],
   atelier:[
     {key:'at_brandSubtitle',label:'Logo alt yazısı',placeholder:'BERBER ATÖLYESİ'},
     {key:'at_galleryTitle',label:'Galeri başlığı',placeholder:'Son çalışmalarımız.'},

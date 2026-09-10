@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -2476,6 +2476,124 @@ function Afis(p:P){
         <div><small>ZİYARET</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p className="afContactRow"><WaIcon/>{b.phone}</p>}{b.instagram&&<p className="afContactRow"><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a></p>}</div>
       </div>
       <div className="afFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+
+/* ================= Brütal — neubrutalist berber teması ==================
+   Kırık beyaz zemin, saf siyah kalın border + offset gölge, tek turuncu
+   vurgu. Başlıklar Archivo Black, gövde Space Grotesk. Sert/ani geçişler
+   (0.1s linear), keskin köşeler. Renkler `.tBrutal` kökünde --bg/--text/
+   --surface/--accent/--line token'ları olarak tanımlı; bileşen kuralları
+   yalnızca var(...) kullanır (sabit hex yazılmaz). Bölümler <main>'de
+   flex-column olarak diziliyor ve her birine CSS'te açık `order` verildi
+   (bkz. radical-themes.css `.tBrutal>*` order kuralları). */
+function BrutalMarquee({text}:{text:string}){
+  return <div className="brMarquee" aria-hidden="true">
+    <div className="brMarqueeTrack">
+      {Array.from({length:8}).map((_,i)=><span key={i} className="brMarqueeItem">{text}<b className="brMarqueeSep">✦</b></span>)}
+    </div>
+  </div>;
+}
+function BrutalTeam({p}:{p:P}){
+  const{b}=p;
+  const visible=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  if(!visible.length)return null;
+  return <section className="brTeamSection">
+    <div className="brSectionHead"><small>EKİP</small><h2>{dec(b,'br_teamTitle','Kadro')}</h2></div>
+    <div className="brTeamGrid">
+      {visible.map((s:any)=><article key={s.id} className="brTeamCard">
+        <div className="brTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name?.[0]}</i>}</div>
+        <b>{s.name}</b><small>{(s.title||'BERBER').toLocaleUpperCase('tr')}</small>
+      </article>)}
+    </div>
+  </section>;
+}
+/* Hizmetler: saf CSS "sticky stacking cards" — her kart position:sticky ile
+   bir öncekinin üzerine artan bir top offset'iyle yapışır, aralarındaki
+   margin-bottom kaydırma payını verir. Kütüphane/JS yok. */
+function BrutalStack({p}:{p:P}){
+  const{b}=p;
+  if(!p.services.length)return null;
+  return <section id="hizmetler" className="brServices">
+    <div className="brSectionHead"><small>{(b.services_label||'HİZMETLER').toLocaleUpperCase('tr')}</small><h2>{b.services_title||'Hizmetler'}</h2></div>
+    <div className="brStack">
+      {p.services.map((s,i)=><article key={s.id} className="brServiceCard" style={{'--i':i}as React.CSSProperties}>
+        <div className="brServiceNo">{String(i+1).padStart(2,'0')}</div>
+        <div className="brServiceBody">
+          <h3>{s.name}</h3>
+          {s.description&&<p>{s.description}</p>}
+          <div className="brServiceMeta">
+            <span>{s.duration_minutes} DK</span>
+            {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
+          </div>
+          {hasServiceDetail(s)&&<a className="brTextLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>DETAY →</a>}
+        </div>
+      </article>)}
+    </div>
+  </section>;
+}
+function Brutal(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const marquee=dec(b,'br_marquee','RANDEVU AL — KESKİN TIRAŞ — SAKAL TASARIMI — ÇOCUK KESİMİ');
+  return <main id="top" className="tBrutal">
+    <header className="brNav">
+      <a className="brBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#brTeam">Kadro</a>
+        <a href="#brGallery">Galeri</a>
+        <a href="#randevu">İletişim</a>
+      </nav>
+      <a className="brBtn brNavCta" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <BrutalMarquee text={marquee}/>
+
+    <section className="brHero">
+      <div className="brHeroInner">
+        <span className="brKicker">{dec(b,'br_heroKicker',safeHeroLabel(b,'ERKEK BAKIM · ONLINE RANDEVU'))}</span>
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<> <mark>{b.hero_highlight}</mark></>}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <div className="brHeroActions">
+          <a className="brBtn brBtnAccent" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
+          <a className="brBtn" href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        </div>
+      </div>
+      <div className="brHeroMediaBox">
+        {b.cover_url?(b.cover_type==='video'?
+          <video className="brHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>:
+          <img className="brHeroMedia" src={b.cover_url} alt={b.name}/>
+        ):<i className="brHeroMark">{b.name?.[0]}</i>}
+      </div>
+    </section>
+
+    <BrutalStack p={p}/>
+
+    <div id="brTeam"><BrutalTeam p={p}/></div>
+
+    <section id="randevu" className="brBooking">
+      <div className="brSectionHead"><small>{(b.booking_label||'RANDEVU').toLocaleUpperCase('tr')}</small><h2>{b.booking_title||'Koltuğunu Kap'}</h2></div>
+      <div className="brBookingBox">
+        <TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/>
+      </div>
+    </section>
+
+    <section id="brGallery" className="brGallerySection">
+      <div className="brSectionHead"><small>GALERİ</small><h2>{dec(b,'br_galleryTitle','İşimiz')}</h2></div>
+      <Gallery p={p} variant="brGrid"/>
+    </section>
+
+    <OwnRatings businessId={b.id}/>
+
+    <footer className="brFooter">
+      <div className="brFooterGrid">
+        <div className="brFooterBrand"><b>{b.name}</b><p>{dec(b,'br_footerTagline','Otur. Kestir. Çık.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="brHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
+      </div>
+      <div className="brFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }
