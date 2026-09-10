@@ -31,3 +31,4 @@ Icon
 .vercel
 .env*
 !whatsapp-service/.env.example
+Icon
