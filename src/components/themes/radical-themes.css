@@ -2353,3 +2353,183 @@
 .klFooter div>p{font-size:13px;color:var(--muted);margin:5px 0}
 .klFooterBottom{padding-top:22px;font-size:12px;color:var(--muted)}
 @media(max-width:760px){.klFooterGrid{grid-template-columns:1fr;gap:22px}}
+
+/* ================= Defter — neo-skeuomorphic "deri randevu defteri" =================
+   Masada duran deri kaplı bir randevu defteri. Renkler yalnızca `.tDefter`
+   kökünde token (--bg/--text/--surface + malzeme token'ları); aşağıdaki
+   kurallarda sabit hex yok. Bölümler <main>'de flex-column, her birine
+   açık `order` — sıra defterin fiziğini izliyor (randevu öne alınmış). */
+.tDefter{
+  --desk:#241b14;--bg:#241b14;
+  --leather:#6f3f2c;--leather-dark:#43241a;--leather-hi:#8a5540;
+  --page:#f3ead6;--surface:#f3ead6;--card:#fbf7ec;--note:#fdf3cf;--note-2:#e6eef7;
+  --text:#3a2c1f;--muted:#7d6b54;
+  --brass:#c39a4e;--ribbon:#8f2f28;--ink:#2f3f6b;--rule:#d8c7a7;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  --slab:'Zilla Slab',Georgia,serif;--hand:'Caveat','Segoe Script',cursive;--label:'Inter',Arial,sans-serif;
+  display:flex;flex-direction:column;
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb,var(--desk) 82%,#000) 0%, var(--desk) 60%),
+    var(--desk);
+  color:var(--text);font-family:var(--slab);font-weight:400;
+  padding:0 clamp(12px,4vw,64px) clamp(30px,5vw,70px);
+}
+.tDefter h1,.tDefter h2,.tDefter h3{font-family:var(--slab);font-weight:700;margin:0;line-height:1.1}
+.tDefter a{color:inherit;text-decoration:none}
+.tDefter ::selection{background:var(--brass);color:var(--leather-dark)}
+.tDefter>.dfStrap{order:1}
+.tDefter>.dfCover{order:2}
+.tDefter>.dfInside{order:3}
+.tDefter>.dfBooking{order:4}
+.tDefter>.dfPriceCardWrap{order:5}
+.tDefter>#dfTeam{order:6}
+.tDefter>.dfGallerySection{order:7}
+.tDefter>.dfNotes{order:8}
+.tDefter>.dfBack{order:9}
+
+/* ortak sayfa görünümü — krem kağıt sayfası, yumuşak gölge, ince grain */
+.dfInside,.dfBooking,.dfPriceCardWrap,.dfTeamSection,.dfGallerySection,.dfNotes{
+  position:relative;background:var(--page);
+  max-width:920px;width:100%;margin:0 auto;
+  padding:clamp(28px,4vw,54px);
+  box-shadow:0 22px 40px -18px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.25) inset;
+}
+.dfInside::after,.dfBooking::after,.dfPriceCardWrap::after,.dfTeamSection::after,.dfGallerySection::after,.dfNotes::after{
+  content:"";position:absolute;inset:0;background-image:var(--grain);background-size:180px;
+  mix-blend-mode:soft-light;opacity:.5;pointer-events:none;
+}
+.dfInside{margin-top:-8px}
+.dfPageHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.dfPageTab{display:inline-block;background:var(--brass);color:var(--leather-dark);font-family:var(--label);font-size:11px;font-weight:700;letter-spacing:.16em;padding:6px 14px;border-radius:0 0 8px 8px;box-shadow:0 3px 6px -2px rgba(0,0,0,.4);transform:translateY(-1px)}
+.dfPageNo{font-family:var(--hand);font-size:20px;color:var(--muted)}
+.dfPageTitle{font-size:clamp(24px,3.6vw,40px);color:var(--text);margin:8px 0 26px;border-bottom:2px solid var(--rule);padding-bottom:12px}
+
+/* STICKY DERİ ŞERİT */
+.dfStrap{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  margin:0 calc(clamp(12px,4vw,64px) * -1);padding:10px clamp(16px,5vw,70px);
+  background:linear-gradient(180deg,var(--leather-hi),var(--leather) 45%,var(--leather-dark));
+  border-bottom:2px solid var(--leather-dark);box-shadow:0 6px 14px -6px rgba(0,0,0,.6)}
+.dfStrap a{color:var(--page)}
+.dfStrap b{font-family:var(--slab);font-weight:700;letter-spacing:.02em;text-shadow:0 1px 0 rgba(0,0,0,.45)}
+.dfStrap nav{display:flex;gap:20px;font-family:var(--label);font-size:12px;font-weight:600;letter-spacing:.04em}
+.dfStrap nav a{opacity:.82}.dfStrap nav a:hover{opacity:1;color:var(--brass)}
+@media(max-width:720px){.dfStrap nav{display:none}}
+
+/* DERİ KAPAK */
+.dfCover{position:relative;max-width:920px;width:100%;margin:clamp(22px,4vw,48px) auto clamp(16px,3vw,30px);
+  min-height:clamp(280px,46vw,440px);display:flex;align-items:center;justify-content:center;
+  border-radius:6px 16px 16px 6px;
+  background:
+    radial-gradient(130% 90% at 22% 12%, var(--leather-hi) 0%, transparent 46%),
+    linear-gradient(180deg, color-mix(in srgb,var(--leather) 88%,#000) 0%, var(--leather) 40%, var(--leather-dark) 100%);
+  border-left:10px solid var(--leather-dark);
+  box-shadow:0 34px 60px -22px rgba(0,0,0,.7), 0 2px 0 rgba(255,255,255,.14) inset, 0 -3px 8px rgba(0,0,0,.4) inset}
+.dfCover::after{content:"";position:absolute;inset:0;border-radius:inherit;background-image:var(--grain);background-size:200px;mix-blend-mode:overlay;opacity:.4;pointer-events:none}
+.dfCoverPlate{position:relative;text-align:center;padding:26px 34px;border:2px solid color-mix(in srgb,var(--brass) 70%,transparent);border-radius:8px}
+.dfCoverLogo{width:56px;height:56px;object-fit:contain;margin:0 auto 12px;display:block;filter:sepia(.3) drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+.dfCoverKicker{display:block;font-family:var(--label);font-size:11px;font-weight:700;letter-spacing:.34em;color:var(--brass)}
+.dfCover h1{font-size:clamp(32px,7vw,72px);text-transform:uppercase;letter-spacing:.02em;margin:14px 0 0;
+  color:var(--brass);text-shadow:0 1px 0 rgba(255,255,255,.18),0 -1px 2px rgba(0,0,0,.55),0 3px 6px rgba(0,0,0,.4)}
+.dfCoverEst{display:block;margin-top:12px;font-family:var(--hand);font-size:22px;color:color-mix(in srgb,var(--page) 80%,transparent)}
+.dfRibbon{position:absolute;top:-10px;right:44px;width:26px;height:132px;z-index:2;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--ribbon) 78%,#000),var(--ribbon) 55%,color-mix(in srgb,var(--ribbon) 82%,#000));
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);box-shadow:2px 3px 6px -1px rgba(0,0,0,.5)}
+.dfCorner{position:absolute;width:34px;height:34px;background:linear-gradient(135deg,var(--brass),color-mix(in srgb,var(--brass) 60%,#000));box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.dfCornerTL{top:0;left:0;clip-path:polygon(0 0,100% 0,0 100%);border-radius:6px 0 0 0}
+.dfCornerTR{top:0;right:0;clip-path:polygon(0 0,100% 0,100% 100%);border-radius:0 16px 0 0}
+.dfCornerBL{bottom:0;left:0;clip-path:polygon(0 0,0 100%,100% 100%);border-radius:0 0 0 6px}
+.dfCornerBR{bottom:0;right:0;clip-path:polygon(100% 0,100% 100%,0 100%);border-radius:0 0 16px 0}
+@media(prefers-reduced-motion:no-preference){.dfCover{animation:dfSettle .6s cubic-bezier(.2,.7,.3,1) both}}
+@keyframes dfSettle{from{transform:perspective(1400px) rotateX(6deg) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+
+/* İÇ KAPAK — el yazısı giriş */
+.dfInside{text-align:center}
+.dfHand{font-family:var(--hand);font-size:clamp(20px,2.8vw,30px);line-height:1.5;color:var(--ink);max-width:34ch;margin:0 auto}
+.dfInsideSign{display:block;margin-top:16px;font-family:var(--hand);font-size:20px;color:var(--muted)}
+
+/* RANDEVU — çizgili sayfa */
+.dfRuled{position:relative;background:
+  linear-gradient(90deg,transparent 44px,color-mix(in srgb,var(--ribbon) 45%,transparent) 44px,color-mix(in srgb,var(--ribbon) 45%,transparent) 46px,transparent 46px),
+  repeating-linear-gradient(var(--page) 0 31px,var(--rule) 31px 32px);
+  padding:14px 14px 14px 60px;border-radius:4px;box-shadow:0 1px 0 rgba(255,255,255,.4) inset}
+.dfRuled .tenantBooking{background:transparent;box-shadow:none;border:0;color:var(--text)}
+.tDefter .dfRuled input,.tDefter .dfRuled select,.tDefter .dfRuled textarea{border-radius:0!important;border:0!important;border-bottom:1.5px solid color-mix(in srgb,var(--ink) 45%,transparent)!important;background:transparent!important;color:var(--ink)!important;font-family:var(--slab)!important}
+.tDefter .dfRuled label{font-family:var(--label)!important;letter-spacing:.02em}
+.tDefter .dfRuled button{border-radius:6px!important;background:var(--ribbon)!important;color:var(--page)!important;font-family:var(--label)!important;box-shadow:0 4px 10px -3px rgba(0,0,0,.45)!important}
+
+/* FİYAT KARTI — deftere sıkışmış lamine kart */
+.dfPriceCardWrap{background:transparent;box-shadow:none;padding:clamp(20px,4vw,44px) 0}
+.dfPriceCardWrap::after{display:none}
+.dfPriceCard{position:relative;max-width:560px;margin:0 auto;background:var(--card);border-radius:12px;
+  padding:30px 30px 34px;transform:rotate(-1.4deg);
+  box-shadow:0 20px 34px -16px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.06) inset}
+.dfPriceCard::after{content:"";position:absolute;inset:0;border-radius:12px;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 34%,rgba(255,255,255,0) 66%,rgba(255,255,255,.22) 100%)}
+.dfPunch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;
+  background:var(--desk);box-shadow:0 1px 2px rgba(255,255,255,.6),0 -1px 2px rgba(0,0,0,.3) inset}
+.dfPriceHead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--rule);padding-bottom:12px;margin:8px 0 14px}
+.dfPriceHead h2{font-size:clamp(22px,3vw,30px)}
+.dfPriceHead span{font-family:var(--label);font-size:10.5px;font-weight:700;letter-spacing:.2em;color:var(--muted)}
+.dfPriceRow{display:flex;align-items:baseline;gap:6px;padding:9px 0;font-size:15.5px}
+.dfPriceRow+.dfPriceRow{border-top:1px dotted var(--rule)}
+.dfPriceDots{flex:1;border-bottom:1.5px dotted var(--rule);transform:translateY(-4px)}
+.dfPriceVal{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600;font-family:var(--hand);font-size:19px;color:var(--ink)}
+
+/* EKİP — ataşlı polaroidler */
+.dfPolaroids{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,34px);justify-content:center}
+.dfPolaroid{margin:0;background:var(--card);padding:12px 12px 44px;border-radius:3px;width:min(210px,60vw);
+  transform:rotate(calc(var(--dfr,0) * 2.4deg));
+  box-shadow:0 16px 28px -14px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.05) inset;transition:transform .18s ease}
+.dfPolaroid:hover{transform:rotate(0) scale(1.03)}
+.dfTape{position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-3deg);width:74px;height:24px;
+  background:color-mix(in srgb,var(--brass) 30%,rgba(255,255,255,.5));box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.dfPolaroid{position:relative}
+.dfPolaroidPhoto{aspect-ratio:1;overflow:hidden;background:var(--rule)}
+.dfPolaroidPhoto img{width:100%;height:100%;object-fit:cover;filter:sepia(.28) contrast(1.04)}
+.dfPolaroidPhoto i{width:100%;height:100%;display:grid;place-items:center;font:700 46px var(--slab);color:var(--muted)}
+.dfPolaroid figcaption{position:absolute;left:0;right:0;bottom:10px;text-align:center}
+.dfPolaroid figcaption b{display:block;font-family:var(--hand);font-size:22px;font-weight:700;color:var(--ink)}
+.dfPolaroid figcaption span{display:block;font-family:var(--label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:1px}
+
+/* GALERİ — kontakt baskı */
+.dfContact{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;background:color-mix(in srgb,var(--desk) 88%,#000);padding:12px;border-radius:4px}
+.dfFrame{position:relative;margin:0;border:5px solid var(--card);background:var(--card)}
+.dfFrame img{width:100%;aspect-ratio:1;object-fit:cover;display:block;filter:sepia(.3) contrast(1.06) brightness(.98)}
+.dfFrameNo{position:absolute;left:4px;bottom:4px;font-family:var(--label);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--brass);background:rgba(0,0,0,.55);padding:2px 5px}
+
+/* YORUMLAR — teşekkür notları */
+.dfNotes{background:transparent;box-shadow:none;padding:clamp(24px,4vw,50px) 0}
+.dfNotes::after{display:none}
+.dfNotes .ownReviews{padding:0;background:transparent}
+.dfNotes .ownReviews>header{max-width:none;text-align:center;margin:0 auto 30px}
+.dfNotes .ownReviews small{font-family:var(--label);font-size:11px;letter-spacing:.18em;color:var(--brass)}
+.dfNotes .ownReviews h2{font-family:var(--slab);font-weight:700;font-size:clamp(24px,3.4vw,36px);color:var(--page);margin:10px 0 0;display:flex;align-items:center;justify-content:center;gap:12px}
+.dfNotes .ownReviews h2 span{color:var(--brass);font-size:.55em}
+.dfNotes .ownReviews header p{font-family:var(--hand);font-size:19px;color:color-mix(in srgb,var(--page) 78%,transparent);margin-top:6px}
+.dfNotes .ownReviewGrid{display:block;column-count:3;column-gap:20px;max-width:1000px;margin:0 auto}
+.dfNotes .ownReviewGrid article{break-inside:avoid;margin-bottom:20px;background:var(--note);border-radius:2px;padding:22px 20px 18px;
+  transform:rotate(calc((var(--kri,0) - 1) * 1.1deg));box-shadow:0 12px 22px -12px rgba(0,0,0,.5)}
+.dfNotes .ownReviewGrid article:nth-child(2n){background:var(--note-2)}
+.dfNotes .ownReviewGrid article::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:var(--ribbon);box-shadow:0 2px 4px rgba(0,0,0,.4),0 -1px 2px rgba(255,255,255,.4) inset}
+.dfNotes .ownReviewGrid article{position:relative}
+.dfNotes .ownReviewHead{display:flex;align-items:baseline;gap:8px;margin-top:6px}
+.dfNotes .ownReviewAvatar,.dfNotes .ownReviewAvatarFallback{display:none}
+.dfNotes .ownReviewHead b{font-family:var(--hand);font-size:20px;font-weight:700;color:var(--ink);order:2}
+.dfNotes .ownReviewHead b::before{content:"— "}
+.dfNotes .ownReviewStars{color:var(--brass);font-size:12px;order:1}
+.dfNotes .ownReviewGrid p{font-family:var(--hand);font-size:17px;line-height:1.5;color:var(--text);margin:0}
+@media(max-width:820px){.dfNotes .ownReviewGrid{column-count:2}}
+@media(max-width:560px){.dfNotes .ownReviewGrid{column-count:1}}
+
+/* ARKA KAPAK */
+.dfBack{position:relative;max-width:920px;width:100%;margin:clamp(16px,3vw,30px) auto 0;padding:clamp(32px,5vw,60px);
+  border-radius:16px 6px 6px 16px;border-right:10px solid var(--leather-dark);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--leather) 88%,#000),var(--leather) 42%,var(--leather-dark));
+  box-shadow:0 30px 54px -22px rgba(0,0,0,.7),0 2px 0 rgba(255,255,255,.12) inset;text-align:center;color:var(--page)}
+.dfBack::after{content:"";position:absolute;inset:0;border-radius:inherit;background-image:var(--grain);background-size:200px;mix-blend-mode:overlay;opacity:.4;pointer-events:none}
+.dfBackPlate{position:relative}
+.dfBack b{font-family:var(--slab);font-weight:700;font-size:clamp(22px,4vw,34px);text-transform:uppercase;letter-spacing:.03em;color:var(--brass);text-shadow:0 1px 0 rgba(255,255,255,.15),0 -1px 2px rgba(0,0,0,.5)}
+.dfBack .dfHand{color:color-mix(in srgb,var(--page) 82%,transparent);margin-top:12px}
+.dfBackRows,.dfBackHours{display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:center;margin-top:18px;font-family:var(--label);font-size:12px;letter-spacing:.04em;color:color-mix(in srgb,var(--page) 78%,transparent)}
+.dfBackHours{font-size:11px;opacity:.8;margin-top:10px}
+.dfBackBottom{margin-top:20px;font-family:var(--label);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--page) 60%,transparent)}

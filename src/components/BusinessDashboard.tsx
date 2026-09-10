@@ -46,6 +46,12 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'kl_galleryTitle',label:'Galeri başlığı',placeholder:'Bizden kareler'},
     {key:'kl_footerTagline',label:'Footer alt yazısı',placeholder:'Seni burada ağırlamak için sabırsızlanıyoruz.'},
   ],
+  defter:[
+    {key:'df_intro',label:'İç kapak yazısı (el yazısı giriş — açıklama boşsa)',type:'textarea',placeholder:'Bu deftere yazdığımız her isim bir söz...'},
+    {key:'df_teamTitle',label:'Ekip bölümü başlığı',placeholder:'Kadromuz'},
+    {key:'df_galleryTitle',label:'Galeri bölümü başlığı',placeholder:'Kontakt Baskı'},
+    {key:'df_footerTagline',label:'Arka kapak yazısı',placeholder:'Defter hep açık; sıradaki isim seninki olabilir.'},
+  ],
   atelier:[
     {key:'at_brandSubtitle',label:'Logo alt yazısı',placeholder:'BERBER ATÖLYESİ'},
     {key:'at_galleryTitle',label:'Galeri başlığı',placeholder:'Son çalışmalarımız.'},

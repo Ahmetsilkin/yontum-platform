@@ -9,8 +9,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -2741,6 +2741,101 @@ function Kil(p:P){
           <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
         </div>
         <div className="klFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+      </div>
+    </footer>
+  </main>;
+}
+
+/* ================= Defter — neo-skeuomorphic "deri randevu defteri" =================
+   Tüm sayfa, masada duran deri kaplı bir randevu defteri. Ölçülü skeuomorphism:
+   yumuşak gerçekçi gölgeler, ince deri/kağıt grain (CSS gradient + SVG noise),
+   dikişli (dashed) kenarlar, ribbon ayraç, çizgili sayfa. Ağır görsel dosya
+   YOK. Sıralamayı defterin kendisi belirliyor: kapak → iç kapak (el yazısı
+   giriş) → RANDEVU (çizgili sayfa — defterin asıl işi, öne alındı) → Fiyat
+   Kartı (deftere sıkıştırılmış lamine kart) → Ekip (ataşlı polaroidler) →
+   Galeri (kontakt baskı) → Yorumlar (teşekkür notları) → arka kapak.
+   Renkler yalnızca `.tDefter` kökünde token; bileşenlerde sabit hex yok. */
+function Defter(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const shots=[...p.gallery.map((g:any)=>g.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,8);
+  return <main id="top" className="tDefter">
+    <div className="dfStrap"><a href="#top"><b>{b.name}</b></a><nav><a href="#randevu">Randevu</a><a href="#hizmetler">Hizmetler</a><a href="#dfTeam">Ekip</a><a href="#dfGallery">Galeri</a></nav></div>
+
+    <header className="dfCover">
+      <span className="dfRibbon"/>
+      <div className="dfCoverPlate">
+        {b.logo_url&&<img className="dfCoverLogo" src={b.logo_url} alt={b.name}/>}
+        <span className="dfCoverKicker">RANDEVU DEFTERİ</span>
+        <h1>{b.name}</h1>
+        {b.established_year&&<span className="dfCoverEst">EST. {b.established_year}</span>}
+      </div>
+      <span className="dfCorner dfCornerTL"/><span className="dfCorner dfCornerTR"/>
+      <span className="dfCorner dfCornerBL"/><span className="dfCorner dfCornerBR"/>
+    </header>
+
+    <section className="dfInside">
+      <p className="dfHand">{b.description||dec(b,'df_intro','Bu deftere yazdığımız her isim bir söz: dükkâna geldiğinde koltuk hazır, ustura bilenmiş, kahve demlenmiş olacak.')}</p>
+      <span className="dfInsideSign">— {b.name}</span>
+    </section>
+
+    <section id="randevu" className="dfBooking">
+      <div className="dfPageHead"><span className="dfPageTab">RANDEVU</span><span className="dfPageNo">s. 1</span></div>
+      <h2 className="dfPageTitle">{b.booking_title||'Bugünün Kaydı'}</h2>
+      <div className="dfRuled">
+        <TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/>
+      </div>
+    </section>
+
+    <section id="hizmetler" className="dfPriceCardWrap">
+      <div className="dfPriceCard">
+        <span className="dfPunch"/>
+        <div className="dfPriceHead"><h2>{b.services_title||'Fiyat Kartı'}</h2><span>{b.services_label||'HİZMETLER'}</span></div>
+        <div className="dfPriceList">
+          {p.services.map(s=><div className="dfPriceRow" key={s.id}>
+            <span className="dfPriceName">{s.name}</span>
+            <span className="dfPriceDots"/>
+            <span className="dfPriceVal">{b.show_prices&&s.price!=null?`${Number(s.price).toLocaleString('tr-TR')} ₺`:`${s.duration_minutes} dk`}</span>
+          </div>)}
+        </div>
+        <span className="dfLaminate"/>
+      </div>
+    </section>
+
+    {visibleStaff.length>0&&<div id="dfTeam"><section className="dfTeamSection">
+      <div className="dfPageHead"><span className="dfPageTab">EKİP</span></div>
+      <h2 className="dfPageTitle">{dec(b,'df_teamTitle','Kadromuz')}</h2>
+      <div className="dfPolaroids">
+        {visibleStaff.map((s:any,i:number)=><figure className="dfPolaroid" key={s.id} style={{'--dfr':((i%3)-1)}as React.CSSProperties}>
+          <span className="dfTape"/>
+          <div className="dfPolaroidPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name?.[0]}</i>}</div>
+          <figcaption><b>{s.name}</b><span>{s.title||'Usta'}</span></figcaption>
+        </figure>)}
+      </div>
+    </section></div>}
+
+    {shots.length>0&&<section id="dfGallery" className="dfGallerySection">
+      <div className="dfPageHead"><span className="dfPageTab">GALERİ</span></div>
+      <h2 className="dfPageTitle">{dec(b,'df_galleryTitle','Kontakt Baskı')}</h2>
+      <div className="dfContact">
+        {shots.map((src,i)=><figure key={i} className="dfFrame"><img src={src} alt={`${b.name} ${i+1}`} loading="lazy"/><span className="dfFrameNo">{String(i+1).padStart(2,'0')}</span></figure>)}
+      </div>
+    </section>}
+
+    <div className="dfNotes"><OwnRatings businessId={b.id}/></div>
+
+    <footer className="dfBack">
+      <div className="dfBackPlate">
+        <b>{b.name}</b>
+        <p className="dfHand">{dec(b,'df_footerTagline','Defter hep açık; sıradaki isim seninki olabilir.')}</p>
+        <div className="dfBackRows">
+          {b.address&&<span>{b.address}</span>}
+          {b.phone&&<span>{b.phone}</span>}
+          {b.instagram&&<span><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></span>}
+        </div>
+        <div className="dfBackHours">{hourRows.map((r,i)=><span key={i}>{r.label}: {r.value}</span>)}</div>
+        <div className="dfBackBottom">© {new Date().getFullYear()} {b.name}</div>
       </div>
     </footer>
   </main>;
