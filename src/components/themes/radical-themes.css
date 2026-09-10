@@ -109,8 +109,8 @@
 .ksGallerySection h2{font:800 38px 'Plus Jakarta Sans','Inter',Arial,sans-serif;letter-spacing:-.5px;margin:12px 0 0}
 .rGallery.ksGrid{display:flex;grid-template-columns:none;max-width:100%;margin:0;overflow-x:auto;-webkit-overflow-scrolling:touch;justify-content:safe center;gap:20px;padding:6px 6px 22px;scroll-snap-type:x mandatory;scrollbar-width:none}
 .rGallery.ksGrid::-webkit-scrollbar{display:none}
-.rGallery.ksGrid>*{flex:0 0 auto!important;width:min(280px,66vw)!important;aspect-ratio:3/4!important;height:auto!important;grid-column:auto!important;grid-row:auto!important;scroll-snap-align:center}
-.rGallery.ksGrid img,.rGallery.ksGrid video{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;filter:grayscale(1) contrast(1.05);border-radius:14px;transition:transform .5s cubic-bezier(.2,.7,.3,1);box-shadow:0 24px 48px -20px rgba(20,20,20,.35)}
+.rGallery.ksGrid>*{flex:0 0 auto!important;height:clamp(300px,52vh,440px)!important;width:auto!important;aspect-ratio:auto!important;grid-column:auto!important;grid-row:auto!important;scroll-snap-align:center}
+.rGallery.ksGrid img,.rGallery.ksGrid video{display:block;height:100%;width:auto;max-width:none;aspect-ratio:auto;object-fit:cover;filter:grayscale(1) contrast(1.05);border-radius:14px;transition:transform .5s cubic-bezier(.2,.7,.3,1)}
 .rGallery.ksGrid .galleryItemBtn{position:relative;overflow:hidden;display:block;padding:0;border:0;border-radius:14px}
 .rGallery.ksGrid .galleryItemBtn::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
 .rGallery.ksGrid .galleryItemBtn:hover img{transform:scale(1.06)}
@@ -129,9 +129,7 @@
 .ksTeamGrid b{display:block;margin-top:14px;font-weight:800;font-size:15px}
 .ksTeamGrid small{display:block;margin-top:2px;color:var(--ks-muted);font-size:12px}
 @media(max-width:640px){
-.ksTeamGrid{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-template-rows:auto auto;grid-auto-columns:44vw;justify-content:start;gap:18px 14px;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;scrollbar-width:none;padding-bottom:10px}
-.ksTeamGrid::-webkit-scrollbar{display:none}
-.ksTeamGrid>article{scroll-snap-align:start}
+.ksTeamGrid{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:row;justify-content:stretch;gap:16px;max-width:100%;overflow:visible}
 .ksTeamPhoto{border-radius:16px}
 }
 
