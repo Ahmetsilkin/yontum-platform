@@ -2800,14 +2800,14 @@ function Defter(p:P){
   // prefers-reduced-motion'da zaten CSS ile açık başlar, kilit uygulanmaz.
   const[opened,setOpened]=useState(false);
   useEffect(()=>{
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setOpened(true);return}
+    // Kilit, React hydrate olmadan ÖNCE <CadreScrollLockInit> script'iyle
+    // kurulur (paylaşılan yardımcı); burada sadece açma tetikleyicisi var.
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){releaseCadreScrollLock();setOpened(true);return}
+    try{document.documentElement.style.overflow='hidden';document.documentElement.style.overscrollBehavior='none';document.body.style.overflow='hidden'}catch{}
     let done=false;
-    const html=document.documentElement,prevOverflow=html.style.overflow,prevOB=html.style.overscrollBehavior;
-    const unlock=()=>{html.style.overflow=prevOverflow;html.style.overscrollBehavior=prevOB};
-    html.style.overflow='hidden';html.style.overscrollBehavior='none';
     const open=(e?:Event)=>{
       if(done)return;done=true;
-      unlock();
+      releaseCadreScrollLock();
       setOpened(true);
       if(e&&e.type!=='scroll')dfPlayPaperSlide();
       cleanup();
@@ -2815,10 +2815,11 @@ function Defter(p:P){
     const evs=['pointerdown','touchstart','keydown','wheel','scroll','touchmove'];
     evs.forEach(e=>window.addEventListener(e,open,{passive:true}));
     const t=setTimeout(open,6000);
-    function cleanup(){clearTimeout(t);evs.forEach(e=>window.removeEventListener(e,open));unlock()}
+    function cleanup(){clearTimeout(t);evs.forEach(e=>window.removeEventListener(e,open));releaseCadreScrollLock()}
     return cleanup;
   },[]);
   return <main id="top" className={`tDefter${opened?' dfOpened':''}`}>
+    <CadreScrollLockInit/>
     <div className="dfStrap"><a href="#top"><b>{b.name}</b></a><nav><a href="#randevu">Randevu</a><a href="#hizmetler">Hizmetler</a><a href="#dfTeam">Ekip</a><a href="#dfGallery">Galeri</a></nav></div>
 
     <div className="dfBook">
