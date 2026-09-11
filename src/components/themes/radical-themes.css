@@ -2963,14 +2963,20 @@
 
 /* GALERİ */
 .spGallery{padding:0 6vw 130px}
-.spGalleryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-.spGalleryItem{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--surface)}
-.spGalleryItem:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.spGalleryGrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(240px,30vw);grid-auto-flow:dense;gap:14px}
+.spGalleryItem{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--accent)}
+.spGalleryItem:nth-child(1){grid-column:span 2;grid-row:span 2}
+.spGalleryItem:nth-child(4){grid-column:span 2}
+.spGalleryItem:nth-child(5){grid-row:span 2}
 .spGalleryItem img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.1) contrast(1.05);transition:transform .7s cubic-bezier(.16,1,.3,1)}
 .spGalleryItem:hover img{transform:scale(1.12)}
 .spGalleryGrid .ksReveal{width:100%;height:100%;margin-top:0;opacity:0;transition:opacity .6s ease}
 .spGalleryGrid .ksReveal.in{opacity:1}
-@media(max-width:700px){.spGalleryGrid{grid-template-columns:1fr 1fr}.spGalleryItem:first-child{grid-column:span 2}}
+@media(max-width:700px){
+  .spGalleryGrid{grid-template-columns:1fr 1fr;grid-auto-rows:minmax(180px,52vw)}
+  .spGalleryItem:nth-child(1){grid-column:span 2;grid-row:span 1}
+  .spGalleryItem:nth-child(4),.spGalleryItem:nth-child(5){grid-column:span 1;grid-row:span 1}
+}
 
 /* RANDEVU */
 .spBookingLeft{background:var(--bg);justify-content:center;padding:8vw 6vw}
