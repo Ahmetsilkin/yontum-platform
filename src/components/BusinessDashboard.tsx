@@ -60,6 +60,7 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'mg_faq',label:'Sık sorulan sorular',type:'faq'},
   ],
   deneyim:[
+    {key:'dx_servicesTitle',label:'Hizmetler sahnesi başlığı',placeholder:'Neyle başlayalım?'},
     {key:'dx_teamTitle',label:'Ekip sahnesi başlığı',placeholder:'Ustalarımız.'},
     {key:'dx_galleryTitle',label:'Mekân sahnesi başlığı',placeholder:'Kapıdan girdiğin an başlar.'},
   ],

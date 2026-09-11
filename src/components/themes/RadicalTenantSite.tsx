@@ -3117,18 +3117,24 @@ function Deneyim(p:P){
       <span className="dxScrollHint" aria-hidden="true">kaydır</span>
     </section>
 
-    {p.services.map((s,i)=><section key={s.id} className="dxScene dxService" style={{order:20}} {...(i===0?ch(1,'dxServices'):{})}>
-      <DxTilt src={s.image_url||heroPoster||shots[i%Math.max(shots.length,1)]||''} alt={s.name} className="dxServicePhoto"/>
-      <div className="dxSceneInner dxServiceText">
-        <span className="dxIndex">{String(i+1).padStart(2,'0')} / {String(p.services.length).padStart(2,'0')}</span>
-        <h2 className="dxSplit">{dxWords(s.name)}</h2>
-        {s.description&&<p>{s.description}</p>}
-        <div className="dxServiceMeta">
-          <span>{s.duration_minutes} dk</span>
-          {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
+    {p.services.length>0&&<section className="dxScene dxFlat" style={{order:20}} {...ch(1,'dxServices')}>
+      <div className="dxSceneInner dxGridInner">
+        <span className="dxKick">HİZMETLER</span>
+        <h2 className="dxSplit">{dxWords(dec(b,'dx_servicesTitle','Neyle başlayalım?'))}</h2>
+        <div className="dxServiceTrack">
+          {p.services.map((s,i)=><article className="dxServiceCard" key={s.id}>
+            <DxTilt src={s.image_url||heroPoster||shots[i%Math.max(shots.length,1)]||''} alt={s.name} className="dxServiceCardPhoto"/>
+            <span className="dxIndex">{String(i+1).padStart(2,'0')} / {String(p.services.length).padStart(2,'0')}</span>
+            <h3>{s.name}</h3>
+            {s.description&&<p>{s.description}</p>}
+            <div className="dxServiceMeta">
+              <span>{s.duration_minutes} dk</span>
+              {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
+            </div>
+          </article>)}
         </div>
       </div>
-    </section>)}
+    </section>}
 
     {visibleStaff.length>0&&<section className="dxScene dxFlat" style={{order:30}} {...ch(2,'dxTeam')}>
       <div className="dxSceneInner dxGridInner">
