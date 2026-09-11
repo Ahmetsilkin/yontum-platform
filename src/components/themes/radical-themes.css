@@ -2823,9 +2823,6 @@
 .dxBentoCell:hover figcaption,.dxBentoScene.in .dxBentoCell:first-child figcaption{opacity:1}
 .dxBentoCell figcaption b{display:block;font-family:var(--head);font-weight:700;font-size:14px;text-transform:uppercase;color:var(--text)}
 .dxBentoCell figcaption span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-top:2px}
-.dxBentoFill{background:var(--surface)}
-.dxBentoCell:nth-child(4).dxBentoFill{background:var(--accent)}
-.dxBentoCell:nth-child(7).dxBentoFill{background:color-mix(in srgb,var(--accent) 22%,var(--surface))}
 .dxBentoHead{position:absolute;left:0;bottom:0;z-index:5;max-width:min(92vw,560px);padding:clamp(30px,5vw,60px) clamp(24px,5vw,64px) clamp(28px,4vw,48px);background:linear-gradient(0deg,var(--bg) 34%,color-mix(in srgb,var(--bg) 60%,transparent) 70%,transparent)}
 .dxBentoHead h2{font-size:clamp(30px,5vw,66px);text-transform:uppercase;margin:12px 0 0}
 @media(max-width:820px){.dxBento{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,1fr)}.dxBentoCell:nth-child(6){grid-column:span 1}}

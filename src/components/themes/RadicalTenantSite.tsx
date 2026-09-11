@@ -3139,7 +3139,7 @@ function Deneyim(p:P){
     </section>)}
 
     {visibleStaff.length>0&&<section className="dxScene dxBentoScene dxTeamBento" style={{order:30}} {...ch(2,'dxTeam')}>
-      <DxBento cells={Array.from({length:9},(_,i)=>i<visibleStaff.length?{img:visibleStaff[i].photo_url||'',name:visibleStaff[i].name,title:visibleStaff[i].title||'Usta Berber'}:{fill:true})}/>
+      <DxBento cells={Array.from({length:9},(_,i)=>{const s=visibleStaff[i%visibleStaff.length];return{img:s.photo_url||'',name:s.name,title:s.title||'Usta Berber'}})}/>
       <div className="dxBentoHead">
         <span className="dxKick">EKİP</span>
         <h2 className="dxSplit">{dxWords(dec(b,'dx_teamTitle','Ustalarımız.'))}</h2>
