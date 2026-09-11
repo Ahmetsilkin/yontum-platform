@@ -3060,14 +3060,6 @@ function DxTilt({src,alt,className=''}:{src:string;alt:string;className?:string}
   const leave=()=>{if(ref.current)ref.current.style.transform=''};
   return <div className={`dxTilt ${className}`} ref={ref} onMouseMove={move} onMouseLeave={leave}><img src={src} alt={alt} loading="lazy"/></div>;
 }
-function DxBento({cells}:{cells:{img?:string;name?:string;title?:string;fill?:boolean}[]}){
-  return <div className="dxBento" aria-hidden="true">
-    {cells.map((c,i)=><figure key={i} className={`dxBentoCell${c.fill?' dxBentoFill':''}`}>
-      {c.img?<img src={c.img} alt="" loading="lazy"/>:c.fill?null:<i>{c.name?.[0]}</i>}
-      {c.name&&!c.fill&&<figcaption><b>{c.name}</b>{c.title&&<span>{c.title}</span>}</figcaption>}
-    </figure>)}
-  </div>;
-}
 function Deneyim(p:P){
   const{b}=p;
   const scRef=useRef<HTMLElement>(null);
@@ -3138,19 +3130,26 @@ function Deneyim(p:P){
       </div>
     </section>)}
 
-    {visibleStaff.length>0&&<section className="dxScene dxBentoScene dxTeamBento" style={{order:30}} {...ch(2,'dxTeam')}>
-      <DxBento cells={Array.from({length:9},(_,i)=>{const s=visibleStaff[i%visibleStaff.length];return{img:s.photo_url||'',name:s.name,title:s.title||'Usta Berber'}})}/>
-      <div className="dxBentoHead">
+    {visibleStaff.length>0&&<section className="dxScene dxFlat" style={{order:30}} {...ch(2,'dxTeam')}>
+      <div className="dxSceneInner dxGridInner">
         <span className="dxKick">EKİP</span>
         <h2 className="dxSplit">{dxWords(dec(b,'dx_teamTitle','Ustalarımız.'))}</h2>
+        <div className="dxCards">
+          {visibleStaff.map(s=><div className="dxCard" key={s.id}>
+            <div className="dxCardPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name} loading="lazy"/>:<i>{s.name?.[0]}</i>}</div>
+            <div className="dxCardText"><b>{s.name}</b><span>{s.title||'Usta Berber'}</span></div>
+          </div>)}
+        </div>
       </div>
     </section>}
 
-    {shots.length>0&&<section className="dxScene dxBentoScene dxGalleryBento" style={{order:40}} {...ch(3,'dxGallery')}>
-      <DxBento cells={Array.from({length:9},(_,i)=>({img:shots[i%shots.length]}))}/>
-      <div className="dxBentoHead">
+    {shots.length>0&&<section className="dxScene dxFlat" style={{order:40}} {...ch(3,'dxGallery')}>
+      <div className="dxSceneInner dxGridInner">
         <span className="dxKick">MEKÂN</span>
         <h2 className="dxSplit">{dxWords(dec(b,'dx_galleryTitle','Kapıdan girdiğin an başlar.'))}</h2>
+        <div className="dxCards">
+          {shots.map((src,i)=><div className="dxCard dxCardPhotoOnly" key={i}><div className="dxCardPhoto"><img src={src} alt="" loading="lazy"/></div></div>)}
+        </div>
       </div>
     </section>}
 
