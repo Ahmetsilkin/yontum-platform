@@ -3072,26 +3072,17 @@ function DxKen({shots}:{shots:string[]}){
     <span className="dxHeroVeil"/>
   </div>;
 }
-function DxReviews({businessId}:{businessId:string}){
-  const[data,setData]=useState<any>(null);
-  useEffect(()=>{fetch(`/api/ratings/${businessId}`).then(r=>r.json()).then(setData).catch(()=>{})},[businessId]);
-  if(!data?.enabled||!data.reviews?.length)return null;
-  return <>{data.reviews.slice(0,5).map((r:any,i:number)=><section key={i} className="dxScene dxReview">
-    <div className="dxSceneInner">
-      <span className="dxQuoteMark" aria-hidden="true">&ldquo;</span>
-      <blockquote className="dxSplit">{dxWords(r.comment||'')}</blockquote>
-      <p className="dxReviewBy"><b>{r.customer_name||'Müşterimiz'}</b>{r.service_label&&<span> · {r.service_label}</span>}<i className="dxStars">{'★'.repeat(r.stars||5)}</i></p>
-    </div>
-  </section>)}</>;
-}
 function Deneyim(p:P){
   const{b}=p;
   const scRef=useRef<HTMLElement>(null);
   const[active,setActive]=useState(0);
+  const[reviews,setReviews]=useState<any[]>([]);
   const visibleStaff=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const shots=[...p.gallery.map((g:any)=>g.image_url),...p.media.filter((m:any)=>m.type!=='video').map((m:any)=>m.url)].filter(Boolean).slice(0,6) as string[];
   const heroPoster=(b.cover_type==='video'?'':b.cover_url)||shots[0]||'';
+  const hourRows=groupedHourRows(p.hours||[]);
   let wa=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(wa.startsWith('0'))wa='90'+wa.slice(1);
+  useEffect(()=>{fetch(`/api/ratings/${b.id}`).then(r=>r.json()).then(d=>{if(d?.enabled&&Array.isArray(d.reviews)&&d.reviews.length)setReviews(d.reviews.slice(0,5))}).catch(()=>{})},[b.id]);
   const chapters=[
     {id:0,label:'Giriş'},
     p.services.length?{id:1,label:'Hizmetler'}:null,
@@ -3100,27 +3091,30 @@ function Deneyim(p:P){
     {id:4,label:'Yorumlar'},
     {id:5,label:'Randevu'},
   ].filter(Boolean)as{id:number;label:string}[];
+  // .dxScene'ler (özellikle yorumlar fetch sonrası) DOM'a sonradan
+  // eklendiği için gözlemcileri reviews yüklendiğinde yeniden kur.
   useEffect(()=>{
     const sc=scRef.current;if(!sc)return;
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root=reduced?null:sc;
-    const io1=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{root,threshold:.2});
+    const io1=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{root,threshold:.15});
     sc.querySelectorAll('.dxScene').forEach(s=>io1.observe(s));
     const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setActive(Number((e.target as HTMLElement).dataset.dxCh))}),{root,rootMargin:'-48% 0px -48% 0px'});
     sc.querySelectorAll('[data-dx-ch]').forEach(a=>io2.observe(a));
     return()=>{io1.disconnect();io2.disconnect()};
-  },[]);
+  },[reviews.length]);
   const goTo=(chId:number)=>{
     const el=scRef.current?.querySelector(`[data-dx-ch="${chId}"]`)as HTMLElement|undefined;
     el?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
   };
+  const ch=(idx:number,id:string):any=>({'data-dx-ch':idx,id});
   return <main id="top" className="tDeneyim" ref={scRef as any}>
     <DxCursor/>
     <nav className="dxDots" aria-label="Sahneler">
       {chapters.map(c=><button key={c.id} type="button" className={active===c.id?'on':''} onClick={()=>goTo(c.id)} aria-label={c.label}><span>{c.label}</span></button>)}
     </nav>
 
-    <section className="dxScene dxHero" data-dx-ch="0">
+    <section className="dxScene dxHero" data-dx-ch="0" style={{order:10}}>
       <div className="dxHeroMedia" aria-hidden="true">
         {b.cover_url&&b.cover_type==='video'?<video className="dxHeroVid" src={b.cover_url} autoPlay muted loop playsInline preload="none" poster={heroPoster}/>:null}
         {heroPoster?<img className="dxHeroImg" src={heroPoster} alt=""/>:<span className="dxHeroBlank"/>}
@@ -3135,33 +3129,29 @@ function Deneyim(p:P){
       <span className="dxScrollHint" aria-hidden="true">kaydır</span>
     </section>
 
-    {p.services.length>0&&<div className="dxChapter" data-dx-ch="1" id="dxServices">
-      {p.services.map((s,i)=><section key={s.id} className="dxScene dxService">
-        <DxTilt src={s.image_url||heroPoster||shots[i%Math.max(shots.length,1)]||''} alt={s.name} className="dxServicePhoto"/>
-        <div className="dxSceneInner dxServiceText">
-          <span className="dxIndex">{String(i+1).padStart(2,'0')} / {String(p.services.length).padStart(2,'0')}</span>
-          <h2 className="dxSplit">{dxWords(s.name)}</h2>
-          {s.description&&<p>{s.description}</p>}
-          <div className="dxServiceMeta">
-            <span>{s.duration_minutes} dk</span>
-            {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
-          </div>
+    {p.services.map((s,i)=><section key={s.id} className="dxScene dxService" style={{order:20}} {...(i===0?ch(1,'dxServices'):{})}>
+      <DxTilt src={s.image_url||heroPoster||shots[i%Math.max(shots.length,1)]||''} alt={s.name} className="dxServicePhoto"/>
+      <div className="dxSceneInner dxServiceText">
+        <span className="dxIndex">{String(i+1).padStart(2,'0')} / {String(p.services.length).padStart(2,'0')}</span>
+        <h2 className="dxSplit">{dxWords(s.name)}</h2>
+        {s.description&&<p>{s.description}</p>}
+        <div className="dxServiceMeta">
+          <span>{s.duration_minutes} dk</span>
+          {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
         </div>
-      </section>)}
-    </div>}
+      </div>
+    </section>)}
 
-    {visibleStaff.length>0&&<div className="dxChapter" data-dx-ch="2" id="dxTeam">
-      {visibleStaff.map((s:any)=><section key={s.id} className="dxScene dxMember">
-        <div className="dxMemberPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name?.[0]}</i>}<span className="dxHeroVeil"/></div>
-        <div className="dxSceneInner dxMemberText">
-          <span className="dxKick">EKİP</span>
-          <h2 className="dxSplit">{dxWords(s.name)}</h2>
-          <p>{s.title||'Usta Berber'}</p>
-        </div>
-      </section>)}
-    </div>}
+    {visibleStaff.map((s:any,i:number)=><section key={s.id} className="dxScene dxMember" style={{order:30}} {...(i===0?ch(2,'dxTeam'):{})}>
+      <div className="dxMemberPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name}/>:<i>{s.name?.[0]}</i>}<span className="dxHeroVeil"/></div>
+      <div className="dxSceneInner dxMemberText">
+        <span className="dxKick">EKİP</span>
+        <h2 className="dxSplit">{dxWords(s.name)}</h2>
+        <p>{s.title||'Usta Berber'}</p>
+      </div>
+    </section>)}
 
-    {shots.length>0&&<section className="dxScene dxGallery" data-dx-ch="3" id="dxGallery">
+    {shots.length>0&&<section className="dxScene dxGallery" style={{order:40}} {...ch(3,'dxGallery')}>
       <DxKen shots={shots}/>
       <div className="dxSceneInner dxGalleryText">
         <span className="dxKick">MEKÂN</span>
@@ -3169,12 +3159,17 @@ function Deneyim(p:P){
       </div>
     </section>}
 
-    <div className="dxChapter" data-dx-ch="4" id="dxReviews">
-      <DxReviews businessId={b.id}/>
-      <section className="dxScene dxReviewsFallback"><div className="dxSceneInner"><span className="dxKick">GÜVEN</span><h2 className="dxSplit">{dxWords('Deneyimi yaşayanlar anlatıyor.')}</h2><p>İlk yorumlar geldiğinde burada, tam ekran görünecek.</p></div></section>
-    </div>
+    {reviews.length>0?reviews.map((r,i)=><section key={i} className="dxScene dxReview" style={{order:50}} {...(i===0?ch(4,'dxReviews'):{})}>
+      <div className="dxSceneInner">
+        <span className="dxQuoteMark" aria-hidden="true">&ldquo;</span>
+        <blockquote className="dxSplit">{dxWords(r.comment||'')}</blockquote>
+        <p className="dxReviewBy"><b>{r.customer_name||'Müşterimiz'}</b>{r.service_label&&<span> · {r.service_label}</span>}<i className="dxStars">{'★'.repeat(r.stars||5)}</i></p>
+      </div>
+    </section>):<section className="dxScene dxReviewsFallback" style={{order:50}} {...ch(4,'dxReviews')}>
+      <div className="dxSceneInner"><span className="dxKick">GÜVEN</span><h2 className="dxSplit">{dxWords('Deneyimi yaşayanlar anlatıyor.')}</h2><p>İlk yorumlar geldiğinde burada, tam ekran görünecek.</p></div>
+    </section>}
 
-    <section className="dxScene dxCta" data-dx-ch="5" id="dxCta">
+    <section className="dxScene dxCta" style={{order:60}} {...ch(5,'dxCta')}>
       <div className="dxSceneInner dxCtaInner">
         <span className="dxKick">SIRA SENDE</span>
         <h2 className="dxSplit">{dxWords(b.booking_title||'Koltuk hazır. Sen ne zaman gelirsin?')}</h2>
@@ -3183,9 +3178,21 @@ function Deneyim(p:P){
           {b.phone&&<a className="dxBtn dxBtnGhost" href={`tel:${b.phone.replace(/\s/g,'')}`} data-cursor="Ara">{b.phone}</a>}
         </div>
         <div className="dxBookBox"><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></div>
-        <footer className="dxFoot">{b.address&&<span>{b.address}</span>}{b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/> {b.instagram}</a>}<span>© {new Date().getFullYear()} {b.name}</span></footer>
       </div>
     </section>
+
+    <footer className="dxFooter" style={{order:70}}>
+      <div className="dxFooterGrid">
+        <div className="dxFooterBrand"><b>{b.name}</b>{b.address&&<p>{b.address}</p>}</div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="dxFooterHours"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div><small>İLETİŞİM</small>
+          {b.phone&&<p><a href={`tel:${b.phone.replace(/\s/g,'')}`}>{b.phone}</a></p>}
+          {wa&&<p><a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer"><WaIcon/> WhatsApp</a></p>}
+          {b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/> {b.instagram}</a></p>}
+        </div>
+      </div>
+      <div className="dxFooterBottom">© {new Date().getFullYear()} {b.name} · Tüm hakları saklıdır</div>
+    </footer>
   </main>;
 }
 
