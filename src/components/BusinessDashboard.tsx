@@ -64,6 +64,14 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'dx_teamTitle',label:'Ekip sahnesi başlığı',placeholder:'Ustalarımız.'},
     {key:'dx_galleryTitle',label:'Mekân sahnesi başlığı',placeholder:'Kapıdan girdiğin an başlar.'},
   ],
+  split:[
+    {key:'sp_aboutTitle',label:'Hakkımızda başlığı',placeholder:'Zanaatın Mirası'},
+    {key:'sp_aboutText',label:'Hakkımızda metni',type:'textarea',placeholder:'Geleneksel berberliğin sabrını, modern İtalyan çizgisinin netliğiyle birleştiriyoruz.'},
+    {key:'sp_servicesTitle',label:'Hizmetler başlığı',placeholder:'Ritüellerimiz'},
+    {key:'sp_reviewsTitle',label:'Yorumlar başlığı',placeholder:'Fikirler'},
+    {key:'sp_galleryTitle',label:'Galeri başlığı',placeholder:'Stüdyodan Kareler'},
+    {key:'sp_bookingTitle',label:'Randevu başlığı',placeholder:'Koltukta Yerinizi Ayırtın'},
+  ],
   atelier:[
     {key:'at_brandSubtitle',label:'Logo alt yazısı',placeholder:'BERBER ATÖLYESİ'},
     {key:'at_galleryTitle',label:'Galeri başlığı',placeholder:'Son çalışmalarımız.'},

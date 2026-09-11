@@ -25,6 +25,6 @@ const authHashRedirectScript = `
 export default function Layout({children}:{children:React.ReactNode}){return <html lang="tr"><head>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Quicksand:wght@500;600;700&family=Nunito:wght@400;500;600;700&family=Zilla+Slab:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Montserrat:wght@700;800;900&family=Lato:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Quicksand:wght@500;600;700&family=Nunito:wght@400;500;600;700&family=Zilla+Slab:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Montserrat:wght@700;800;900&family=Lato:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet"/>
   <script dangerouslySetInnerHTML={{__html:authHashRedirectScript}}/>
 </head><body>{children}</body></html>}

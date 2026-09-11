@@ -2875,3 +2875,141 @@
   .dxScrollHint{animation:none}
   .dxCardPhoto img{transition:none}
 }
+
+/* ================= SPLIT — jilet keskin split-screen, lüks berber stüdyosu ================= */
+.tSplit{
+  --bg:#000000;--surface:#1f150c;--accent:#412d15;--text:#e1dcc9;
+  --head:'Playfair Display',Georgia,'Times New Roman',serif;
+  --body:'Inter',Arial,Helvetica,sans-serif;
+  background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:clip;
+}
+.tSplit h1,.tSplit h2,.tSplit h3{font-family:var(--head);font-weight:600;margin:0;letter-spacing:-.01em;color:var(--text)}
+.tSplit a{color:inherit;text-decoration:none}
+.tSplit ::selection{background:var(--accent);color:var(--text)}
+
+/* NAV */
+.spNav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:20px 4vw;background:rgba(0,0,0,.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--accent)}
+.spBrand{display:flex;align-items:center;gap:12px;font-family:var(--head);font-size:19px}
+.spBrand img,.spBrand i{width:34px;height:34px;object-fit:cover;background:var(--accent);color:var(--text);display:grid;place-items:center;font-style:normal;font-family:var(--head)}
+.spNavLinks{display:flex;gap:34px;font-family:var(--body);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:color-mix(in srgb,var(--text) 72%,transparent)}
+.spNavLinks a{transition:color .25s ease}
+.spNavLinks a:hover{color:var(--text)}
+.spNavCta{border:1px solid var(--accent);padding:11px 22px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;transition:background .3s ease}
+.spNavCta:hover{background:var(--accent)}
+@media(max-width:820px){.spNavLinks{display:none}}
+
+/* SPLIT ORTAK YAPI */
+.spSplit{display:flex;min-height:100vh}
+.spLeftCol{flex:0 0 50%;min-width:0;display:flex;flex-direction:column}
+.spRightCol{flex:0 0 50%;min-width:0;position:sticky;top:0;align-self:flex-start;height:100vh;overflow:hidden}
+.spStickySpacer{height:60vh}
+.spKick{display:inline-block;font-family:var(--body);font-weight:600;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+
+/* HERO + HAKKIMIZDA (sağ panel iki bölüm boyunca sabit kalır) */
+.spHeroText,.spAboutText{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 5.5vw}
+.spHeroText h1{font-size:clamp(38px,4.6vw,72px);line-height:1.05}
+.spHeroText p{margin:22px 0 0;max-width:38ch;color:color-mix(in srgb,var(--text) 78%,transparent);font-size:16px;line-height:1.65}
+.spScrollHint{display:inline-flex;align-items:center;gap:14px;margin-top:56px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb,var(--text) 65%,transparent)}
+.spScrollHint span{width:1px;height:38px;background:var(--accent);position:relative;overflow:hidden}
+.spScrollHint span:before{content:'';position:absolute;left:0;top:-100%;width:100%;height:100%;background:var(--text);animation:spHintDrop 1.8s ease-in-out infinite}
+@keyframes spHintDrop{0%{top:-100%}60%,100%{top:100%}}
+.spAboutText h2{font-size:clamp(30px,4vw,52px);margin-top:14px}
+.spAboutText p{margin:24px 0 0;max-width:46ch;color:color-mix(in srgb,var(--text) 78%,transparent);font-size:16px;line-height:1.75}
+.spHeroTextIn,.spAboutTextIn{margin-top:0!important}
+.spVisualLayer{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(.15) contrast(1.08);transition:clip-path 1.15s cubic-bezier(.16,1,.3,1)}
+.spHeroLayer{z-index:1;clip-path:inset(0 100% 0 0)}
+.spRightCol.in .spHeroLayer{clip-path:inset(0 0% 0 0)}
+.spAboutLayer{z-index:2;clip-path:inset(0 0 100% 0)}
+.spRightCol.spShowAbout .spAboutLayer{clip-path:inset(0 0 0% 0)}
+.spRightCol:after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.4))}
+
+/* HİZMETLER — asimetrik bento */
+.spServices{padding:130px 6vw}
+.spSectionHead{max-width:640px;margin-bottom:56px}
+.spSectionHead h2{font-size:clamp(30px,4.2vw,54px);margin-top:14px}
+.spBento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(220px,auto);grid-auto-flow:dense;gap:18px}
+.spBentoCard{background:var(--surface);border:1px solid var(--accent);padding:32px;display:flex;flex-direction:column;transition:background .4s ease}
+.spBentoCard:hover{background:var(--accent)}
+.spBentoCard:hover h3{text-shadow:0 0 22px color-mix(in srgb,var(--text) 55%,transparent)}
+.spBentoBig{grid-column:span 2;grid-row:span 2}
+.spIndex{font-family:var(--head);font-size:13px;letter-spacing:.1em;color:color-mix(in srgb,var(--text) 60%,transparent)}
+.spBentoCard h3{font-size:clamp(20px,1.8vw,26px);margin-top:14px;text-transform:uppercase;letter-spacing:.01em}
+.spBentoCard p{margin:14px 0 0;color:color-mix(in srgb,var(--text) 72%,transparent);font-size:14px;line-height:1.6;flex:1}
+.spBentoCard footer{display:flex;align-items:baseline;justify-content:space-between;margin-top:22px;padding-top:16px;border-top:1px solid color-mix(in srgb,var(--text) 20%,transparent);font-family:var(--head)}
+.spBentoCard footer span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--text) 65%,transparent)}
+.spBentoCard footer b{font-size:19px;color:var(--text)}
+.spBento .ksReveal{margin-top:0;opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.3,1)}
+.spBento .ksReveal.in{opacity:1;transform:none}
+@media(max-width:980px){.spBento{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.spBento{grid-template-columns:1fr}.spBentoBig{grid-column:span 1;grid-row:span 1}}
+
+/* YORUMLAR — sol sabit, sağ akan şerit */
+.spReviews{display:flex;gap:6vw;padding:130px 6vw;align-items:flex-start}
+.spReviewsSticky{flex:0 0 32%;position:sticky;top:110px}
+.spReviewsSticky h2{font-size:clamp(38px,5vw,74px);margin-top:14px}
+.spScore{display:flex;align-items:baseline;gap:8px;margin-top:24px;font-size:14px;color:color-mix(in srgb,var(--text) 72%,transparent)}
+.spScore b{font-family:var(--head);font-size:42px;color:var(--text)}
+.spScore span{margin-left:6px}
+.spStars{display:block;margin-top:12px;color:var(--accent);letter-spacing:5px;font-size:17px}
+.spReviewsFlow{flex:1;min-width:0;display:flex;flex-direction:column;gap:20px;max-width:640px}
+.spReviewCard{background:var(--surface);border:1px solid var(--accent);padding:30px 32px}
+.spReviewCard p{font-family:var(--head);font-size:18px;line-height:1.55;font-weight:500;font-style:italic}
+.spReviewCard footer{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:18px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--text) 62%,transparent)}
+.spReviewCard footer b{color:var(--text);font-family:var(--body)}
+.spReviewsEmpty{color:color-mix(in srgb,var(--text) 60%,transparent);max-width:480px}
+.spReviewsFlow .ksReveal{margin-top:0;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.spReviewsFlow .ksReveal.in{opacity:1;transform:none}
+@media(max-width:900px){.spReviews{flex-direction:column;gap:40px}.spReviewsSticky{position:static}}
+
+/* GALERİ */
+.spGallery{padding:0 6vw 130px}
+.spGalleryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.spGalleryItem{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--surface)}
+.spGalleryItem:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.spGalleryItem img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.1) contrast(1.05);transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.spGalleryItem:hover img{transform:scale(1.12)}
+.spGalleryGrid .ksReveal{width:100%;height:100%;margin-top:0;opacity:0;transition:opacity .6s ease}
+.spGalleryGrid .ksReveal.in{opacity:1}
+@media(max-width:700px){.spGalleryGrid{grid-template-columns:1fr 1fr}.spGalleryItem:first-child{grid-column:span 2}}
+
+/* RANDEVU */
+.spBookingLeft{background:var(--bg);justify-content:center;padding:8vw 6vw}
+.spBookingLeft h2{font-size:clamp(30px,4vw,50px);margin-top:14px;max-width:14ch}
+.spBookBox{margin-top:40px;max-width:480px}
+.spBookBox .tenantBooking{background:transparent;box-shadow:none;border:0;color:var(--text)}
+.tSplit .spBookBox input,.tSplit .spBookBox select,.tSplit .spBookBox textarea{border-radius:2px!important;border:1px solid var(--accent)!important;background:#000!important;color:var(--text)!important}
+.tSplit .spBookBox .tbServices button,.tSplit .spBookBox .staffOptions button,.tSplit .spBookBox .tbDays button,.tSplit .spBookBox .tbSlots button{background:#000!important;border:1px solid var(--accent)!important;color:var(--text)!important;-webkit-text-fill-color:var(--text);border-radius:2px!important}
+.tSplit .spBookBox .tenantNext{background:var(--accent)!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;border-radius:2px!important;font-family:var(--head)!important}
+.tSplit .spBookBox .tenantStep span,.tSplit .spBookBox h4{color:color-mix(in srgb,var(--text) 65%,transparent)}
+.spBookingInfo{background:var(--surface);justify-content:center;gap:40px;padding:8vw 6vw}
+.spHourRow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid color-mix(in srgb,var(--accent) 65%,transparent);font-size:14px}
+.spHourRow:first-of-type{margin-top:18px}
+.spLocation p{margin:16px 0 0;color:color-mix(in srgb,var(--text) 80%,transparent);font-size:14px;line-height:1.6}
+.spMap{display:block;width:100%;height:220px;margin-top:18px;border:1px solid var(--accent);filter:grayscale(.5) contrast(1.1) brightness(.85);box-shadow:0 0 44px -12px color-mix(in srgb,var(--accent) 80%,transparent)}
+.spBookingInfo>div:last-child p{margin-top:16px}
+.spBookingInfo>div:last-child a{font-family:var(--head);font-size:18px}
+@media(max-width:900px){.spSplit.spBooking{flex-direction:column}}
+
+/* FOOTER */
+.spFooter{background:#000;border-top:1px solid var(--accent);padding:60px 6vw 26px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px}
+.spFooterBrand b{font-family:var(--head);font-size:22px}
+.spFooterBrand p{margin:8px 0 0;color:color-mix(in srgb,var(--text) 65%,transparent);font-size:13px}
+.spFooterActions{display:flex;flex-wrap:wrap;gap:14px}
+.spBtn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border:1px solid var(--accent);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;transition:background .3s ease}
+.spBtn:hover{background:var(--accent)}
+.spFooterBottom{width:100%;text-align:center;margin-top:10px;padding-top:22px;border-top:1px solid color-mix(in srgb,var(--accent) 45%,transparent);font-size:11px;letter-spacing:.04em;color:color-mix(in srgb,var(--text) 55%,transparent)}
+
+/* MOBİL — split yapı tek sütuna düşer */
+@media(max-width:900px){
+  .spSplit{flex-direction:column;min-height:0}
+  .spLeftCol{flex:none}
+  .spRightCol{position:relative;flex:none;height:62vh;top:auto;align-self:auto}
+  .spHeroText,.spAboutText{min-height:auto;padding:88px 7vw 64px}
+  .spStickySpacer{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .spVisualLayer{transition:none}
+  .spScrollHint span:before{animation:none}
+  .spBentoCard,.spGalleryItem img{transition:none}
+  .spBento .ksReveal,.spReviewsFlow .ksReveal,.spGalleryGrid .ksReveal{opacity:1;transform:none;transition:none}
+}
