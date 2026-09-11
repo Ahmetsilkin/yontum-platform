@@ -2764,6 +2764,10 @@
 
 /* sahne temeli — YAPIŞKAN İSTİF: her sahne üstte pinlenir, bir sonraki
    kaydırdıkça üzerine gelir (alt alta akmaz, "üst üste" biner). */
+/* flex-column konteynerde çocuklar KÜÇÜLMESİN — yoksa flex, içeriği 100dvh'ye
+   sıkıştırıp overflow:hidden ile alt kısmı (uzun randevu formu gibi) kırpıyor,
+   footer'ın altında kalmış gibi görünüyordu. */
+.tDeneyim>*{flex-shrink:0}
 .dxScene{position:sticky;top:0;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:flex-start;padding:clamp(60px,10vh,120px) 8vw;overflow:hidden;background:var(--bg);box-shadow:0 -1px 0 var(--line),0 -60px 100px -50px color-mix(in srgb,#000 78%,transparent)}
 .dxSceneInner{position:relative;z-index:3;max-width:1000px;width:100%}
 .dxKick{display:inline-block;font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent)}
@@ -2837,7 +2841,7 @@
 .dxReviewsFallback h2{font-size:clamp(30px,5vw,64px);text-transform:uppercase}
 
 /* KAPANIŞ / CTA — istifin sonu; yapışkan değil, normal akar (form uzun) */
-.dxCta{position:relative;top:auto;display:block;min-height:100dvh;padding:clamp(70px,12vh,140px) 8vw clamp(50px,8vh,90px);box-shadow:0 -60px 100px -50px color-mix(in srgb,#000 78%,transparent)}
+.dxCta{position:relative;top:auto;display:block;height:auto;min-height:100dvh;overflow:visible;padding:clamp(70px,12vh,140px) 8vw clamp(50px,8vh,90px);box-shadow:0 -60px 100px -50px color-mix(in srgb,#000 78%,transparent)}
 .dxCtaInner{max-width:900px;margin:0 auto}
 .dxCta h2{font-size:clamp(34px,6vw,84px);text-transform:uppercase;margin:16px 0 0}
 .dxCtaActions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
