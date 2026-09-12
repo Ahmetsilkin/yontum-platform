@@ -3,6 +3,8 @@
 const dayNames=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],monthNames=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
 const SERVICE_COLORS=['#e0955a','#5b8c6e','#5c80bc','#c76b98','#c9a13b','#8069b0','#4bab9e','#c1666b','#4f8fb0','#7a9e4f','#b0724f','#5d6bc9'];
 function waPhone(raw:string){let p=String(raw||'').replace(/\D/g,'');if(p.startsWith('0'))p='90'+p.slice(1);if(p&&!p.startsWith('90')&&p.length===10)p='90'+p;return p}
+function ymdIstanbul(iso:string){return new Date(iso).toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'})}
+function shiftYmd(ymd:string,delta:number){const[y,m,d]=ymd.split('-').map(Number);return new Date(y,m-1,d+delta,12).toLocaleDateString('en-CA')}
 
 /* Çalışan sütunları — her çalışanın randevuları kendi sütununda üst üste,
    diğer çalışanınkiler yan sütunda gösterilir. "Ana Takvim" işletmenin kendi
@@ -22,16 +24,16 @@ type Pending={appointmentId:string;oldStart:Date;oldEnd:Date;oldResourceId:strin
 const db=createClient();
 
 export default function DaySchedule({appointments,staff,services,businessId}:{appointments:Appointment[];staff:any[];services:any[];businessId:string}){
-  const today=new Date().toLocaleDateString('en-CA'),[date,setDate]=useState(today),[staffId,setStaffId]=useState('all');
+  const today=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'}),[date,setDate]=useState(today),[staffId,setStaffId]=useState('all');
   const[localAppts,setLocalAppts]=useState(appointments);
   useEffect(()=>{setLocalAppts(appointments)},[appointments]);
   const scheduleDays=useMemo(()=>Array.from({length:22},(_,i)=>{
-    const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-7+i);
-    return{value:d.toLocaleDateString('en-CA'),name:dayNames[d.getDay()],n:d.getDate(),month:monthNames[d.getMonth()],isToday:d.toLocaleDateString('en-CA')===today};
+    const value=shiftYmd(today,-7+i),d=new Date(value+'T12:00:00');
+    return{value,name:dayNames[d.getDay()],n:d.getDate(),month:monthNames[d.getMonth()],isToday:value===today};
   }),[today]);
   const list=useMemo(()=>{
     const target=staff.find(s=>s.id===staffId),matchIds=staffId==='all'?null:new Set([staffId,...(target?.user_id?staff.filter((s:any)=>s.user_id===target.user_id).map((s:any)=>s.id):[])]);
-    return localAppts.filter(a=>a.start_at.slice(0,10)===date&&a.status!=='cancelled'&&(!matchIds||matchIds.has(a.staff_id))).sort((a,b)=>a.start_at.localeCompare(b.start_at));
+    return localAppts.filter(a=>ymdIstanbul(a.start_at)===date&&a.status!=='cancelled'&&(!matchIds||matchIds.has(a.staff_id))).sort((a,b)=>a.start_at.localeCompare(b.start_at));
   },[localAppts,date,staffId,staff]);
   const columns=useMemo(()=>staffColumns(staff,staffId),[staff,staffId]);
   const hasUnassigned=useMemo(()=>staffId==='all'&&list.some(a=>!columns.some(c=>c.matchIds.has(a.staff_id))),[list,columns,staffId]);
@@ -48,8 +50,8 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   // otomatik sıralı paletten düşüyor. Eskiden burada hep otomatik palet
   // kullanılıyordu, kullanıcı renk seçse bile takvimde hiç yansımıyordu.
   const serviceColorMap=useMemo(()=>{const m=new Map<string,string>();services.forEach((s,i)=>m.set(s.id,s.color||SERVICE_COLORS[i%SERVICE_COLORS.length]));return m},[services]);
-  const todaysAppointments=useMemo(()=>localAppts.filter(a=>a.status!=='cancelled'&&a.start_at.slice(0,10)===today),[localAppts,today]);
-  const todaysRevenue=todaysAppointments.reduce((n,a)=>n+Number(a.total_price||0),0);
+  const selectedDayAppointments=useMemo(()=>localAppts.filter(a=>a.status!=='cancelled'&&ymdIstanbul(a.start_at)===date),[localAppts,date]);
+  const selectedDayRevenue=selectedDayAppointments.reduce((n,a)=>n+Number(a.total_price||0),0);
 
   const[selected,setSelected]=useState<Appointment|null>(null);
   const[pending,setPending]=useState<Pending|null>(null);
@@ -172,8 +174,8 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
       <header>
         <div><small>GÜNLÜK AKIŞ</small><h2>Saat Takvimi</h2></div>
         <div className="calBadges">
-          <div className="calBadge"><small>BUGÜNKÜ CİRO</small><b>{todaysRevenue.toLocaleString('tr-TR')} ₺</b></div>
-          <div className="calBadge"><small>BUGÜNKÜ RANDEVU</small><b>{todaysAppointments.length}</b></div>
+          <div className="calBadge"><small>{date===today?'BUGÜNKÜ CİRO':'SEÇİLİ GÜN CİROSU'}</small><b>{selectedDayRevenue.toLocaleString('tr-TR')} ₺</b></div>
+          <div className="calBadge"><small>{date===today?'BUGÜNKÜ RANDEVU':'SEÇİLİ GÜN RANDEVU'}</small><b>{selectedDayAppointments.length}</b></div>
         </div>
         <select value={staffId} onChange={e=>setStaffId(e.target.value)}>
           <option value="all">Tüm çalışanlar</option>
