@@ -19,9 +19,9 @@ export default function Home(){return <>
           <div className="pubMockSide"><i className="active"/><i/><i/><i/><i/></div>
           <div className="pubMockMain">
             <div className="pubMockHead"><b>Bugünkü randevular</b><span>6 randevu · 1.240 ₺</span></div>
-            <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#0d6efd'}}>A</span><div><b>10:00 — Ayşe Yılmaz</b><small>Saç Kesimi · Ahmet Usta</small></div><em>✓ Onaylı</em></div>
-            <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#198754'}}>E</span><div><b>11:30 — Elif Kaya</b><small>Fön · Selin Usta</small></div><em>✓ Onaylı</em></div>
-            <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#d97706'}}>M</span><div><b>14:30 — Merve Demir</b><small>Manikür · Ahmet Usta</small></div><em>✓ Onaylı</em></div>
+            <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#006bff'}}>A</span><div><b>10:00 — Ayşe Yılmaz</b><small>Saç Kesimi · Ahmet Usta</small></div><em>✓ Onaylı</em></div>
+            <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#e55cff'}}>E</span><div><b>11:30 — Elif Kaya</b><small>Fön · Selin Usta</small></div><em>✓ Onaylı</em></div>
+            <div className="pubMockRow"><span className="pubMockAvatar" style={{background:'#0099ff'}}>M</span><div><b>14:30 — Merve Demir</b><small>Manikür · Ahmet Usta</small></div><em>✓ Onaylı</em></div>
           </div>
         </div>
       </div>
