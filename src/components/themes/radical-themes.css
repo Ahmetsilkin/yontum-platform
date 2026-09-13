@@ -22,9 +22,9 @@
 .ksNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 6vw;background:transparent;border-bottom:1px solid transparent;transition:background .35s ease,border-color .35s ease}
 .ksNav.scrolled{background:#f7f5efee;backdrop-filter:blur(10px);border-bottom-color:var(--ks-line)}
 .ksBrand{display:flex;align-items:center;gap:10px}
-.ksBrand i{font-style:normal;font-size:18px;color:#fff;transition:color .3s ease}
+.ksBrand img{height:28px;width:auto;display:block}
 .ksBrand b{font-weight:800;letter-spacing:.5px;font-size:16px;text-transform:uppercase;color:#fff;transition:color .3s ease}
-.ksNav.scrolled .ksBrand i,.ksNav.scrolled .ksBrand b{color:var(--ks-ink)}
+.ksNav.scrolled .ksBrand b{color:var(--ks-ink)}
 .ksNav nav{display:flex;gap:30px;font-size:14px;font-weight:600}
 .ksNav nav a{color:#fff;opacity:.85;transition:opacity .15s,color .3s ease}
 .ksNav nav a:hover{opacity:1}
@@ -186,7 +186,7 @@
 /* Footer */
 .ksFooter{background:#111;color:#fff;padding:80px 6vw 30px}
 .ksFooterGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6vw}
-.ksFooterGrid .ksBrand b,.ksFooterGrid .ksBrand i{color:#fff}
+.ksFooterGrid .ksBrand b{color:#fff}
 .ksFooterGrid>div:first-child p{color:#ffffffaa;margin-top:14px;font-size:13px;line-height:1.7;max-width:320px}
 .ksFooterGrid>div>small{display:block;letter-spacing:2px;font-size:11px;font-weight:700;color:#ffffff88;margin-bottom:16px}
 .ksFooterGrid>div>p{color:#ffffffcc;font-size:14px;margin:0 0 10px}

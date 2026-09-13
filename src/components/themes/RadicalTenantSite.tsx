@@ -207,7 +207,7 @@ function Keskin(p:P){
   const{ref:heroRef,t:heroT}=useScrollFrac();
   return <main id="top" className="tKeskin">
     <header className={`ksNav${heroT>.92?' scrolled':''}`}>
-      <a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a>
+      <a className="ksBrand" href="#top">{b.logo_url&&<img src={b.logo_url} alt={b.name}/>}<b>{b.name}</b></a>
       <nav>
         <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
         <a href="#ksGallery">Galeri</a>
@@ -298,7 +298,7 @@ function Keskin(p:P){
 
     <section id="ksContact" className="ksFooter">
       <div className="ksFooterGrid">
-        <div><a className="ksBrand" href="#top"><i>✂</i><b>{b.name}</b></a></div>
+        <div><a className="ksBrand" href="#top">{b.logo_url&&<img src={b.logo_url} alt={b.name}/>}<b>{b.name}</b></a></div>
         <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="ksHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
         <div><small>İLETİŞİM</small>{b.address&&<p>📍 {b.address}</p>}{b.phone&&<p>📞 {b.phone}</p>}{b.instagram&&<p>◎ <a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
       </div>
