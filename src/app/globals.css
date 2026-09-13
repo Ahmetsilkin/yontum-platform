@@ -144,6 +144,7 @@
 .authCard h2{font:700 30px/1.25 var(--font-display);margin:34px 0 8px;letter-spacing:-.01em;color:var(--pub2-ink)}
 .authCard>p{color:var(--pub2-muted);margin-bottom:28px;font-size:14.5px}
 .field{display:block;font-size:13px;font-weight:600;margin:16px 0;color:var(--pub2-ink)}
+.logoScaleField{margin:16px 0 0}.logoScaleField input[type=range]{display:block;width:100%;max-width:280px;margin-top:10px}
 .input{display:block;width:100%;margin-top:8px;border:1px solid var(--pub2-line);background:rgba(255,255,255,.04);color:var(--pub2-ink);border-radius:10px;padding:13px 15px;outline:0;font-size:14.5px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
 .input:focus{border-color:var(--pub2-accent);background:rgba(255,255,255,.07);box-shadow:0 0 0 4px var(--pub2-accent-soft)}
 .formButton{width:100%;border:0;background:var(--pub2-accent);color:#fff;padding:15px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:10px;transition:transform .15s cubic-bezier(.4,0,.2,1),background .15s ease}
