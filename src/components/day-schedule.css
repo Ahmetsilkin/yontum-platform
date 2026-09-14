@@ -24,6 +24,11 @@
 .hourRow article:active{cursor:grabbing}
 .hourRow article.touchDragging{opacity:.4}
 .staffCell.touchHover{background:var(--pub2-accent-soft);outline:2px dashed var(--accent-primary);outline-offset:-2px}
+.staffCell{cursor:pointer}
+.staffCell:hover:not(.blocked){background:var(--bg-soft)}
+.staffCell.blocked{background:repeating-linear-gradient(45deg,var(--bg-soft),var(--bg-soft) 7px,transparent 7px,transparent 14px)}
+.blockedTag{align-self:flex-start;background:var(--status-bad-bg);color:var(--status-bad-ink);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;cursor:pointer}
+.scheduleBlockHint{color:var(--text-secondary);font-size:11.5px;margin:-8px 0 12px}
 .hourRow article.status-completed{border-color:var(--text-tertiary);opacity:.7}.hourRow article.status-no_show{border-color:var(--pub2-red)}.hourRow article span{font-size:12px;margin:3px 0}.hourRow article small{color:var(--text-secondary)}.hourRow article em{position:absolute;right:8px;top:8px;font-size:9px;font-style:normal;background:var(--bg-card-hover);padding:5px}.scheduleEmpty{text-align:center;color:var(--text-secondary)}
 @media(max-width:650px){.daySchedule{border-radius:0;padding:16px;margin-inline:-10px}.daySchedule>header{display:block}.daySchedule header>div:last-child{margin-top:12px;display:grid;grid-template-columns:1fr 1fr}.calBadges{margin:10px 0}.scheduleGrid{min-width:calc(52px + var(--staff-cols) * 130px)}.scheduleColHeads,.hourRow{grid-template-columns:52px repeat(var(--staff-cols),minmax(130px,1fr))}.hourRow article{padding-right:55px}}
 

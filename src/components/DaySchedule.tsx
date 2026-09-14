@@ -27,6 +27,8 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   const today=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'}),[date,setDate]=useState(today),[staffId,setStaffId]=useState('all');
   const[localAppts,setLocalAppts]=useState(appointments);
   useEffect(()=>{setLocalAppts(appointments)},[appointments]);
+  const[blockedSlots,setBlockedSlots]=useState<{id:string;start_at:string;end_at:string;reason:string|null}[]>([]);
+  useEffect(()=>{(async()=>{const{data}=await db.from('blocked_slots').select('*').eq('business_id',businessId).order('start_at');setBlockedSlots(data||[])})()},[businessId]);
   const scheduleDays=useMemo(()=>Array.from({length:22},(_,i)=>{
     const value=shiftYmd(today,-7+i),d=new Date(value+'T12:00:00');
     return{value,name:dayNames[d.getDay()],n:d.getDate(),month:monthNames[d.getMonth()],isToday:value===today};
@@ -52,6 +54,28 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   const serviceColorMap=useMemo(()=>{const m=new Map<string,string>();services.forEach((s,i)=>m.set(s.id,s.color||SERVICE_COLORS[i%SERVICE_COLORS.length]));return m},[services]);
   const selectedDayAppointments=useMemo(()=>localAppts.filter(a=>a.status!=='cancelled'&&ymdIstanbul(a.start_at)===date),[localAppts,date]);
   const selectedDayRevenue=selectedDayAppointments.reduce((n,a)=>n+Number(a.total_price||0),0);
+
+  // Randevu saatlerini kapatma — blocked_slots işletme geneli (çalışana özel
+  // değil), bu yüzden bir saat kapatılınca tüm çalışan sütunlarında görünür.
+  function hourBlock(h:number){
+    const cellStart=new Date(`${date}T${String(h).padStart(2,'0')}:00:00+03:00`).getTime(),cellEnd=cellStart+3600000;
+    return blockedSlots.find(b=>new Date(b.start_at).getTime()<cellEnd&&new Date(b.end_at).getTime()>cellStart)||null;
+  }
+  async function toggleBlock(h:number){
+    const existing=hourBlock(h);
+    if(existing){
+      setBlockedSlots(prev=>prev.filter(b=>b.id!==existing.id));
+      const{error}=await db.from('blocked_slots').delete().eq('id',existing.id);
+      if(error){toast('Saat açılamadı.');setBlockedSlots(prev=>[...prev,existing])}else toast('Saat tekrar açıldı.');
+      return;
+    }
+    const start=new Date(`${date}T${String(h).padStart(2,'0')}:00:00+03:00`),end=new Date(start.getTime()+3600000);
+    const tempId=`temp-${Date.now()}`;
+    setBlockedSlots(prev=>[...prev,{id:tempId,start_at:start.toISOString(),end_at:end.toISOString(),reason:null}]);
+    const{data,error}=await db.from('blocked_slots').insert({business_id:businessId,start_at:start.toISOString(),end_at:end.toISOString()}).select().single();
+    if(error){toast('Saat kapatılamadı.');setBlockedSlots(prev=>prev.filter(b=>b.id!==tempId))}
+    else{toast('Saat kapatıldı.');setBlockedSlots(prev=>prev.map(b=>b.id===tempId?data:b))}
+  }
 
   const[selected,setSelected]=useState<Appointment|null>(null);
   const[pending,setPending]=useState<Pending|null>(null);
@@ -192,6 +216,7 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
           </button>
         )}
       </div>
+      <p className="scheduleBlockHint">Boş bir saate tıklayarak o saati randevuya kapatabilir, tekrar tıklayarak açabilirsin.</p>
 
       <div className="scheduleGridScroll">
         <div className="scheduleGrid" style={gridStyle}>
@@ -199,16 +224,27 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
             <span/>
             {allColumns.map(c=><b key={c.id}>{c.name}</b>)}
           </div>}
-          {hours.map(h=>
-            <div className="hourRow" key={h}>
+          {hours.map(h=>{
+            const block=hourBlock(h);
+            return <div className="hourRow" key={h}>
               <time>{String(h).padStart(2,'0')}:00</time>
               {allColumns.length>1?allColumns.map(c=>
-                <div className={`staffCell${touchHoverKey===`${c.id}|${h}`?' touchHover':''}`} key={c.id} data-col={c.id} data-hour={h} onDragOver={e=>e.preventDefault()} onDrop={e=>onDrop(e,c.id,h)}>
+                <div className={`staffCell${block?' blocked':''}${touchHoverKey===`${c.id}|${h}`?' touchHover':''}`} key={c.id} data-col={c.id} data-hour={h}
+                  onDragOver={e=>{if(!block)e.preventDefault()}} onDrop={e=>{if(!block)onDrop(e,c.id,h)}}
+                  onClick={e=>{if(e.target===e.currentTarget)toggleBlock(h)}}
+                  title={block?'Tıkla, bu saati tekrar aç':'Boş saate tıklayarak randevuya kapatabilirsin'}>
+                  {block&&<span className="blockedTag" onClick={()=>toggleBlock(h)}>🚫 Kapalı</span>}
                   {list.filter(a=>new Date(a.start_at).getHours()===h&&(c.id==='__unassigned'?!columns.some(cc=>cc.matchIds.has(a.staff_id)):c.matchIds.has(a.staff_id))).map(apptCard)}
                 </div>
-              ):<div className={`staffCell${touchHoverKey===`${columns[0]?.id||'__unassigned'}|${h}`?' touchHover':''}`} data-col={columns[0]?.id||'__unassigned'} data-hour={h} onDragOver={e=>e.preventDefault()} onDrop={e=>onDrop(e,columns[0]?.id||'__unassigned',h)}>{list.filter(a=>new Date(a.start_at).getHours()===h).map(apptCard)}</div>}
-            </div>
-          )}
+              ):<div className={`staffCell${block?' blocked':''}${touchHoverKey===`${columns[0]?.id||'__unassigned'}|${h}`?' touchHover':''}`} data-col={columns[0]?.id||'__unassigned'} data-hour={h}
+                  onDragOver={e=>{if(!block)e.preventDefault()}} onDrop={e=>{if(!block)onDrop(e,columns[0]?.id||'__unassigned',h)}}
+                  onClick={e=>{if(e.target===e.currentTarget)toggleBlock(h)}}
+                  title={block?'Tıkla, bu saati tekrar aç':'Boş saate tıklayarak randevuya kapatabilirsin'}>
+                  {block&&<span className="blockedTag" onClick={()=>toggleBlock(h)}>🚫 Kapalı</span>}
+                  {list.filter(a=>new Date(a.start_at).getHours()===h).map(apptCard)}
+                </div>}
+            </div>;
+          })}
         </div>
       </div>
       {!list.length&&<p className="scheduleEmpty">Bu gün için randevu bulunmuyor.</p>}
