@@ -27,7 +27,7 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   const today=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Istanbul'}),[date,setDate]=useState(today),[staffId,setStaffId]=useState('all');
   const[localAppts,setLocalAppts]=useState(appointments);
   useEffect(()=>{setLocalAppts(appointments)},[appointments]);
-  const[blockedSlots,setBlockedSlots]=useState<{id:string;start_at:string;end_at:string;reason:string|null}[]>([]);
+  const[blockedSlots,setBlockedSlots]=useState<{id:string;start_at:string;end_at:string;reason:string|null;staff_id:string|null}[]>([]);
   useEffect(()=>{(async()=>{const{data}=await db.from('blocked_slots').select('*').eq('business_id',businessId).order('start_at');setBlockedSlots(data||[])})()},[businessId]);
   const scheduleDays=useMemo(()=>Array.from({length:22},(_,i)=>{
     const value=shiftYmd(today,-7+i),d=new Date(value+'T12:00:00');
@@ -55,24 +55,33 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
   const selectedDayAppointments=useMemo(()=>localAppts.filter(a=>a.status!=='cancelled'&&ymdIstanbul(a.start_at)===date),[localAppts,date]);
   const selectedDayRevenue=selectedDayAppointments.reduce((n,a)=>n+Number(a.total_price||0),0);
 
-  // Randevu saatlerini kapatma — blocked_slots işletme geneli (çalışana özel
-  // değil), bu yüzden bir saat kapatılınca tüm çalışan sütunlarında görünür.
-  function hourBlock(h:number){
+  // Randevu saatlerini kapatma — blocked_slots.staff_id doluysa sadece o
+  // çalışanı, null ise (ör. atanmamış/tekil takvim sütunu) işletme genelini
+  // kapatır. Açma tek tıkla anında olur, kapatma ise onay ister.
+  function hourBlock(h:number,columnId:string){
     const cellStart=new Date(`${date}T${String(h).padStart(2,'0')}:00:00+03:00`).getTime(),cellEnd=cellStart+3600000;
-    return blockedSlots.find(b=>new Date(b.start_at).getTime()<cellEnd&&new Date(b.end_at).getTime()>cellStart)||null;
+    return blockedSlots.find(b=>(!b.staff_id||b.staff_id===columnId)&&new Date(b.start_at).getTime()<cellEnd&&new Date(b.end_at).getTime()>cellStart)||null;
   }
-  async function toggleBlock(h:number){
-    const existing=hourBlock(h);
-    if(existing){
-      setBlockedSlots(prev=>prev.filter(b=>b.id!==existing.id));
-      const{error}=await db.from('blocked_slots').delete().eq('id',existing.id);
-      if(error){toast('Saat açılamadı.');setBlockedSlots(prev=>[...prev,existing])}else toast('Saat tekrar açıldı.');
-      return;
-    }
+  async function unblockNow(existing:{id:string;start_at:string;end_at:string;reason:string|null;staff_id:string|null}){
+    setBlockedSlots(prev=>prev.filter(b=>b.id!==existing.id));
+    const{error}=await db.from('blocked_slots').delete().eq('id',existing.id);
+    if(error){toast('Saat açılamadı.');setBlockedSlots(prev=>[...prev,existing])}else toast('Saat tekrar açıldı.');
+  }
+  const[blockPrompt,setBlockPrompt]=useState<{hour:number;columnId:string;columnName:string}|null>(null);
+  function requestBlock(h:number,columnId:string,columnName:string){
+    const existing=hourBlock(h,columnId);
+    if(existing){unblockNow(existing);return}
+    setBlockPrompt({hour:h,columnId,columnName});
+  }
+  async function confirmBlock(){
+    if(!blockPrompt)return;
+    const{hour:h,columnId}=blockPrompt;
+    setBlockPrompt(null);
     const start=new Date(`${date}T${String(h).padStart(2,'0')}:00:00+03:00`),end=new Date(start.getTime()+3600000);
+    const staffIdToBlock=columnId==='__unassigned'?null:columnId;
     const tempId=`temp-${Date.now()}`;
-    setBlockedSlots(prev=>[...prev,{id:tempId,start_at:start.toISOString(),end_at:end.toISOString(),reason:null}]);
-    const{data,error}=await db.from('blocked_slots').insert({business_id:businessId,start_at:start.toISOString(),end_at:end.toISOString()}).select().single();
+    setBlockedSlots(prev=>[...prev,{id:tempId,start_at:start.toISOString(),end_at:end.toISOString(),reason:null,staff_id:staffIdToBlock}]);
+    const{data,error}=await db.from('blocked_slots').insert({business_id:businessId,start_at:start.toISOString(),end_at:end.toISOString(),staff_id:staffIdToBlock}).select().single();
     if(error){toast('Saat kapatılamadı.');setBlockedSlots(prev=>prev.filter(b=>b.id!==tempId))}
     else{toast('Saat kapatıldı.');setBlockedSlots(prev=>prev.map(b=>b.id===tempId?data:b))}
   }
@@ -224,27 +233,30 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
             <span/>
             {allColumns.map(c=><b key={c.id}>{c.name}</b>)}
           </div>}
-          {hours.map(h=>{
-            const block=hourBlock(h);
-            return <div className="hourRow" key={h}>
+          {hours.map(h=>
+            <div className="hourRow" key={h}>
               <time>{String(h).padStart(2,'0')}:00</time>
-              {allColumns.length>1?allColumns.map(c=>
-                <div className={`staffCell${block?' blocked':''}${touchHoverKey===`${c.id}|${h}`?' touchHover':''}`} key={c.id} data-col={c.id} data-hour={h}
+              {allColumns.length>1?allColumns.map(c=>{
+                const block=hourBlock(h,c.id),blockable=c.id!=='__unassigned';
+                return <div className={`staffCell${block?' blocked':''}${blockable?'':' notBlockable'}${touchHoverKey===`${c.id}|${h}`?' touchHover':''}`} key={c.id} data-col={c.id} data-hour={h}
                   onDragOver={e=>{if(!block)e.preventDefault()}} onDrop={e=>{if(!block)onDrop(e,c.id,h)}}
-                  onClick={e=>{if(e.target===e.currentTarget)toggleBlock(h)}}
-                  title={block?'Tıkla, bu saati tekrar aç':'Boş saate tıklayarak randevuya kapatabilirsin'}>
-                  {block&&<span className="blockedTag" onClick={()=>toggleBlock(h)}>🚫 Kapalı</span>}
+                  onClick={e=>{if(blockable&&e.target===e.currentTarget)requestBlock(h,c.id,c.name)}}
+                  title={!blockable?undefined:block?'Tıkla, bu saati tekrar aç':`Tıkla, ${c.name} için bu saati kapat`}>
+                  {block&&<span className={`blockedTag${blockable?'':' static'}`} onClick={blockable?()=>requestBlock(h,c.id,c.name):undefined}>🚫 Kapalı</span>}
                   {list.filter(a=>new Date(a.start_at).getHours()===h&&(c.id==='__unassigned'?!columns.some(cc=>cc.matchIds.has(a.staff_id)):c.matchIds.has(a.staff_id))).map(apptCard)}
-                </div>
-              ):<div className={`staffCell${block?' blocked':''}${touchHoverKey===`${columns[0]?.id||'__unassigned'}|${h}`?' touchHover':''}`} data-col={columns[0]?.id||'__unassigned'} data-hour={h}
-                  onDragOver={e=>{if(!block)e.preventDefault()}} onDrop={e=>{if(!block)onDrop(e,columns[0]?.id||'__unassigned',h)}}
-                  onClick={e=>{if(e.target===e.currentTarget)toggleBlock(h)}}
+                </div>;
+              }):(()=>{
+                const soloId=columns[0]?.id||'__unassigned',soloName=columns[0]?.name||'Tüm çalışanlar',block=hourBlock(h,soloId);
+                return <div className={`staffCell${block?' blocked':''}${touchHoverKey===`${soloId}|${h}`?' touchHover':''}`} data-col={soloId} data-hour={h}
+                  onDragOver={e=>{if(!block)e.preventDefault()}} onDrop={e=>{if(!block)onDrop(e,soloId,h)}}
+                  onClick={e=>{if(e.target===e.currentTarget)requestBlock(h,soloId,soloName)}}
                   title={block?'Tıkla, bu saati tekrar aç':'Boş saate tıklayarak randevuya kapatabilirsin'}>
-                  {block&&<span className="blockedTag" onClick={()=>toggleBlock(h)}>🚫 Kapalı</span>}
+                  {block&&<span className="blockedTag" onClick={()=>requestBlock(h,soloId,soloName)}>🚫 Kapalı</span>}
                   {list.filter(a=>new Date(a.start_at).getHours()===h).map(apptCard)}
-                </div>}
-            </div>;
-          })}
+                </div>;
+              })()}
+            </div>
+          )}
         </div>
       </div>
       {!list.length&&<p className="scheduleEmpty">Bu gün için randevu bulunmuyor.</p>}
@@ -262,6 +274,18 @@ export default function DaySchedule({appointments,staff,services,businessId}:{ap
           <div className="calModalActions">
             <button className="calBtnPrimary" disabled={applying} onClick={()=>commitPending(true)}>{applying?<Loader2 className="spin" size={16}/>:<MessageCircle size={16}/>} Evet, WhatsApp Gönder</button>
             <button className="calBtnGhost" disabled={applying} onClick={()=>commitPending(false)}>Sadece Takvimi Güncelle</button>
+          </div>
+        </div>
+      </div>}
+
+      {blockPrompt&&<div className="calModalBackdrop" onClick={()=>setBlockPrompt(null)}>
+        <div className="calModal" onClick={e=>e.stopPropagation()}>
+          <button className="calModalX" onClick={()=>setBlockPrompt(null)} aria-label="Vazgeç"><X size={16}/></button>
+          <h3>Saati kapat</h3>
+          <p><b>{String(blockPrompt.hour).padStart(2,'0')}:00</b> saatini <b>{blockPrompt.columnName}</b> için randevuya kapatmak istediğine emin misin?</p>
+          <div className="calModalActions">
+            <button className="calBtnDanger" onClick={confirmBlock}><Ban size={16}/> Evet, Kapat</button>
+            <button className="calBtnGhost" onClick={()=>setBlockPrompt(null)}>Vazgeç</button>
           </div>
         </div>
       </div>}
