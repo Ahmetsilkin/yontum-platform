@@ -2076,6 +2076,7 @@
 .tBrutal>.brBooking{order:6}
 .tBrutal>.brGallerySection{order:7}
 .tBrutal>.ownReviews{order:8}
+.tBrutal>.googleReviews{order:8}
 .tBrutal>.brFooter{order:9}
 
 .tBrutal .brBtn{display:inline-flex;align-items:center;gap:.5em;background:var(--surface);color:var(--text);border:var(--bd) solid var(--line);border-radius:0;box-shadow:var(--shadow-sm);padding:14px 22px;font:700 14px/1 'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;transition:transform .1s linear,box-shadow .1s linear,background .1s linear}
@@ -2223,6 +2224,7 @@
 .tKil>.klBooking{order:6}
 .tKil>.klGallerySection{order:7}
 .tKil>.ownReviews{order:8}
+.tKil>.googleReviews{order:8}
 .tKil>.klFooter{order:9}
 
 /* scroll-in reveal: opacity + scale(.9→1) + blur(6px→0), yaylı */
@@ -2412,6 +2414,7 @@
 .tDefter>#dfTeam{order:6}
 .tDefter>.dfGallerySection{order:7}
 .tDefter>.dfNotes{order:8}
+.tDefter>.googleReviews{order:8}
 .tDefter>.dfBack{order:9}
 
 /* ortak sayfa görünümü — krem kağıt sayfası, yumuşak gölge, ince grain */
@@ -2627,6 +2630,7 @@
 .tMagaza>.mgBooking{order:5}
 .tMagaza>.mgReviews{order:6}
 .tMagaza>.mgFaq{order:7}
+.tMagaza>.googleReviews{order:7}
 .tMagaza>.mgFooter{order:8}
 
 /* butonlar */
@@ -3070,7 +3074,7 @@
 .tVizon ::selection{background:var(--mink);color:#fff}
 .tVizon>.vzNav{order:1}.tVizon>.vzHero{order:2}.tVizon>.vzGallery{order:3}.tVizon>.vzServices{order:4}
 .tVizon>.vzTeam{order:5}.tVizon>.vzTestimonials{order:6}.tVizon>.vzBooking{order:7}
-.tVizon>.vzFooter{order:8}
+.tVizon>.googleReviews{order:8}.tVizon>.vzFooter{order:9}
 .tVizon>.vzDetailHero{order:2}.tVizon>.vzTimeline{order:3}
 
 /* Reveal (paylaşılan .ksReveal — bkz. RadicalTenantSite.tsx) varsayılanı: opacity+margin.

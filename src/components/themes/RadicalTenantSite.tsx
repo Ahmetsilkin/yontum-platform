@@ -297,6 +297,8 @@ function Keskin(p:P){
       <Reveal><Faq items={faq}/></Reveal>
     </section>
 
+    <GoogleReviews businessId={b.id}/>
+
     <section id="ksContact" className="ksFooter">
       <div className="ksFooterGrid">
         <div><a className="ksBrand" href="#top">{b.logo_url&&<img src={b.logo_url} alt={b.name}/>}<b>{b.name}</b></a></div>
@@ -446,6 +448,8 @@ function Atelier(p:P){
       </Reveal>
     </section>
 
+    <GoogleReviews businessId={b.id}/>
+
     <footer className="atFooter">
       <div className="atFooterGrid">
         <div><a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BERBER ATÖLYESİ')}</small></a><p>{dec(b,'at_footerTagline','Bakımı üniformasının bir parçası sayanlar için bir berber atölyesi.')}</p></div>
@@ -560,6 +564,8 @@ function Vitrin(p:P){
       <Reveal><header><small>{b.booking_label||'RANDEVU'}</small><h2>{b.booking_title||'Saatini ayır.'}</h2></header></Reveal>
       <Reveal><AtelierBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></Reveal>
     </section>
+
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="vtFooter">
       <div className="vtFooterGrid">
@@ -768,6 +774,7 @@ function Zarafet(p:P){
     </section>
 
     <ZarafetContact businessId={b.id} bgPhoto={missionPhoto}/>
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="zfFooter">
       <div className="zfFooterGrid">
@@ -1338,6 +1345,8 @@ function Ipek(p:P){
         {b.phone&&<a className="ipCtaCall" href={`tel:${b.phone}`}>Hemen Ara</a>}
       </div></Reveal>
     </section>
+
+    <GoogleReviews businessId={b.id}/>
 
     <IpekFooter b={b} services={p.services} hours={p.hours}/>
 
@@ -2470,6 +2479,7 @@ function Afis(p:P){
     </section>
 
     <Reveal><OwnRatings businessId={b.id}/></Reveal>
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="afFooter">
       <div className="afFooterGrid">
@@ -2588,6 +2598,7 @@ function Brutal(p:P){
     </section>
 
     <OwnRatings businessId={b.id}/>
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="brFooter">
       <div className="brFooterGrid">
@@ -2737,6 +2748,7 @@ function Kil(p:P){
     </section>
 
     <OwnRatings businessId={b.id}/>
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="klFooter">
       <div className="klFooterCard">
@@ -2898,6 +2910,7 @@ function Defter(p:P){
     </section>}
 
     <div className="dfNotes"><OwnRatings businessId={b.id}/></div>
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="dfBack">
       <div className="dfBackPlate">
@@ -3010,6 +3023,8 @@ function Magaza(p:P){
       <div className="mgSectionHead"><h2>Sık sorulan sorular</h2></div>
       <Faq items={faq}/>
     </section>
+
+    <GoogleReviews businessId={b.id}/>
 
     <footer id="mgFooter" className="mgFooter">
       <div className="mgFooterGrid">
@@ -3190,6 +3205,8 @@ function Deneyim(p:P){
       </div>
     </section>
 
+    <div style={{order:65}}><GoogleReviews businessId={b.id}/></div>
+
     <footer className="dxFooter" style={{order:70}}>
       <div className="dxFooterGrid">
         <div className="dxFooterBrand"><b>{b.name}</b>{b.address&&<p>{b.address}</p>}</div>
@@ -3323,6 +3340,8 @@ function Split(p:P){
         {b.phone&&<div><span className="spKick">İLETİŞİM</span><p><a href={`tel:${b.phone.replace(/\s/g,'')}`}>{b.phone}</a></p></div>}
       </div>
     </section>
+
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="spFooter">
       <div className="spFooterBrand"><b>{b.name}</b>{b.address&&<p>{b.address}</p>}</div>
@@ -3497,6 +3516,8 @@ function Vizon(p:P){
       <Reveal className="vzSectionHead"><small>{(b.booking_label||'RANDEVU').toLocaleUpperCase('tr')}</small><h2>{b.booking_title||'Randevunu Ayırt'}</h2></Reveal>
       <div className="vzBookingBox"><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></div>
     </section>
+
+    <GoogleReviews businessId={b.id}/>
 
     <footer className="vzFooter">
       <div className="vzFooterGrid">
