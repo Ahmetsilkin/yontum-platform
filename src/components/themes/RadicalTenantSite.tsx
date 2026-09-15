@@ -3346,6 +3346,17 @@ function useVizonReduced(){
   useEffect(()=>{const mq=window.matchMedia('(prefers-reduced-motion: reduce)');setR(mq.matches);const f=()=>setR(mq.matches);mq.addEventListener('change',f);return()=>mq.removeEventListener('change',f)},[]);
   return r;
 }
+/* Manyetik metin linkleri: useKilMagnet ile aynı mekanik, ama ref/state
+   gerektirmeyen saf fonksiyonlar olarak — bu sayede hizmet kartları gibi
+   değişken sayıda öğe içeren .map() döngülerinde de (Hook kurallarını
+   çiğnemeden) kullanılabiliyor. e.currentTarget üzerinde doğrudan çalışır. */
+function vizonMagnetMove(e:React.MouseEvent){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('(hover: none)').matches)return;
+  const el=e.currentTarget as HTMLElement,r=el.getBoundingClientRect();
+  const x=(e.clientX-(r.left+r.width/2))*.3,y=(e.clientY-(r.top+r.height/2))*.3;
+  el.style.transform=`translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+}
+function vizonMagnetLeave(e:React.MouseEvent){(e.currentTarget as HTMLElement).style.transform=''}
 /* Öncesi/sonrası kaydırmalı karşılaştırma: fare/dokunma ile sürüklenen bir
    ayraç, "sonrası" fotoğrafın üstündeki "öncesi" katmanını clip-path ile keser. */
 function VizonBeforeAfter({before,after,alt}:{before:string;after:string;alt:string}){
@@ -3414,7 +3425,7 @@ function VizonServices({p}:{p:P}){
                 <span>{s.duration_minutes} dk</span>
                 {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
               </div>
-              {hasServiceDetail(s)&&<a className="vzTextLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detayları Gör →</a>}
+              {hasServiceDetail(s)&&<a className="vzTextLink" href={`/site/${b.slug}/hizmet/${s.slug}`} onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Detayları Gör →</a>}
             </div>
           </Reveal>
         ))}
@@ -3452,10 +3463,10 @@ function Vizon(p:P){
     <header className="vzNav">
       <a className="vzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#vzGallery">Galeri</a>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
-        <a href="#vzTeam">Uzmanlarımız</a>
-        <a href="#randevu">Randevu</a>
+        <a href="#vzGallery" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Galeri</a>
+        <a href="#hizmetler" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>{b.services_label||'Hizmetler'}</a>
+        <a href="#vzTeam" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Uzmanlarımız</a>
+        <a href="#randevu" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Randevu</a>
       </nav>
       <a className="vzBtn vzBtnNav" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </header>
@@ -3493,9 +3504,9 @@ function Vizon(p:P){
         <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="vzHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
         <div className="vzFooterContact">
           <small>İLETİŞİM</small>
-          {b.address&&<p className="vzAddressRow"><MapPin size={15}/><span>{b.address}</span></p>}
-          {b.phone&&<a className="vzAddressRow" href={`tel:${b.phone.replace(/\D/g,'')}`}><Phone size={15}/><span>{b.phone}</span></a>}
-          {b.instagram&&<a className="vzAddressRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><Instagram size={15}/><span>{b.instagram}</span></a>}
+          {b.address&&<p className="vzAddressRow" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}><MapPin size={15}/><span>{b.address}</span></p>}
+          {b.phone&&<a className="vzAddressRow" href={`tel:${b.phone.replace(/\D/g,'')}`} onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}><Phone size={15}/><span>{b.phone}</span></a>}
+          {b.instagram&&<a className="vzAddressRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}><Instagram size={15}/><span>{b.instagram}</span></a>}
         </div>
       </div>
       {b.show_map!==false&&b.address&&(
@@ -3522,7 +3533,7 @@ function VizonServiceDetail({b,service}:{b:any;service:any;gallery:any[];media:a
     <style>{'@view-transition{navigation:auto}'}</style>
     <header className="vzNav">
       <a className="vzBrand" href={`/site/${b.slug}#top`}>{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
-      <a className="vzNavBack" href={`/site/${b.slug}`}>← Tüm Hizmetler</a>
+      <a className="vzNavBack" href={`/site/${b.slug}`} onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>← Tüm Hizmetler</a>
     </header>
 
     <section className="vzDetailHero">
