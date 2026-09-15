@@ -188,6 +188,11 @@
 .dashboardShell button{transition:transform .15s cubic-bezier(.4,0,.2,1),background .15s ease,border-color .15s ease,color .15s ease}
 .dashboardShell button:active{transform:scale(.97)}
 
+/* Platform admin — işletme oluşturma paneli */
+.adminTopActions{display:flex;gap:16px;align-items:center}
+.adminPasswordRow{display:flex;gap:8px}
+.adminPasswordRow input{flex:1}
+
 /* Müşteri CRM'i */
 .customerToolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .customerSearchBox{position:relative;display:flex;align-items:center}
