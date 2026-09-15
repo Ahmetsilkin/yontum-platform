@@ -10,8 +10,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -97,7 +97,7 @@ function useScrollFracPinned(){
   },[]);
   return{ref,t};
 }
-function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;className?:string;i?:number;as?:'div'|'article'}){
+function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;className?:string;i?:number;as?:'div'|'article'|'figure'}){
   const ref=useRef<HTMLDivElement>(null);
   const[shown,setShown]=useState(false);
   useEffect(()=>{
@@ -1239,6 +1239,7 @@ export function ServiceDetailSite({b,service,gallery,media,services,hours}:{b:an
   const effectiveScheme=b.background_scheme&&b.background_scheme!=='theme_default'?b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;
   const wrap=(inner:React.ReactNode)=><div className={`radical profession-${b.business_type} mode-${mode} scheme-${effectiveScheme} font-${b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text}as React.CSSProperties}>{inner}<WhatsApp b={b}/></div>;
   if(family==='ipek')return wrap(<IpekServiceDetail b={b} service={service} gallery={gallery} media={media} services={services} hours={hours}/>);
+  if(family==='vizon')return wrap(<VizonServiceDetail b={b} service={service} gallery={gallery} media={media} services={services} hours={hours}/>);
   return wrap(<main className="genericDetailPage"><nav className="genericBreadcrumb"><a href={`/site/${b.slug}`}>← {b.name}</a></nav><h1>{service.name}</h1>{service.detail_intro&&<p>{service.detail_intro}</p>}{service.detail_how&&<><h2>Nasıl Uygulanır?</h2><p>{service.detail_how}</p></>}{service.detail_benefits&&<><h2>Faydaları</h2><p>{service.detail_benefits}</p></>}{service.detail_suitable&&<><h2>Kimler İçin Uygundur?</h2><p>{service.detail_suitable}</p></>}<a href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'} →</a></main>);
 }
 function Ipek(p:P){
@@ -3330,6 +3331,232 @@ function Split(p:P){
         {b.instagram&&<a className="spBtn spBtnGhost" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/> {b.instagram}</a>}
       </div>
       <div className="spFooterBottom">© {new Date().getFullYear()} {b.name} · Tüm hakları saklıdır</div>
+    </footer>
+  </main>;
+}
+/* ================= Vizon — editorial lüks estetik/spa teması =================
+   Dergi mizanpajı (asimetrik ızgara), cam efekti (glassmorphism) hizmet
+   kartları, vizon/altın/okaliptüs tonlarında kurumsal renk kodlaması, gerçek
+   kaydırmalı öncesi/sonrası galeri karşılaştırması ve Chrome'un native
+   Cross-Document View Transitions API'siyle (@view-transition{navigation:auto})
+   sayfalar arası "perde" geçişi — JS kütüphanesi (Framer Motion/Barba.js)
+   gerekmez, desteklemeyen tarayıcılarda sorunsuzca normal geçişe düşer. */
+function useVizonReduced(){
+  const[r,setR]=useState(false);
+  useEffect(()=>{const mq=window.matchMedia('(prefers-reduced-motion: reduce)');setR(mq.matches);const f=()=>setR(mq.matches);mq.addEventListener('change',f);return()=>mq.removeEventListener('change',f)},[]);
+  return r;
+}
+/* Öncesi/sonrası kaydırmalı karşılaştırma: fare/dokunma ile sürüklenen bir
+   ayraç, "sonrası" fotoğrafın üstündeki "öncesi" katmanını clip-path ile keser. */
+function VizonBeforeAfter({before,after,alt}:{before:string;after:string;alt:string}){
+  const ref=useRef<HTMLDivElement>(null);
+  const[pos,setPos]=useState(50);
+  const dragging=useRef(false);
+  function setFromClientX(x:number){
+    const el=ref.current;if(!el)return;
+    const r=el.getBoundingClientRect();
+    setPos(Math.min(100,Math.max(0,((x-r.left)/r.width)*100)));
+  }
+  return (
+    <div
+      ref={ref}
+      className="vzBeforeAfter"
+      onPointerDown={e=>{dragging.current=true;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);setFromClientX(e.clientX)}}
+      onPointerMove={e=>{if(dragging.current)setFromClientX(e.clientX)}}
+      onPointerUp={()=>{dragging.current=false}}
+      onPointerLeave={()=>{dragging.current=false}}
+    >
+      <img className="vzBaBase" src={after} alt={alt} loading="lazy" draggable={false}/>
+      <div className="vzBaBeforeWrap" style={{clipPath:`inset(0 ${100-pos}% 0 0)`}}>
+        <img className="vzBaBefore" src={before} alt={`${alt} — öncesi`} loading="lazy" draggable={false}/>
+      </div>
+      <div className="vzBaHandle" style={{left:`${pos}%`}}><span/></div>
+      <span className="vzBaTag vzBaTagBefore">ÖNCESİ</span>
+      <span className="vzBaTag vzBaTagAfter">SONRASI</span>
+    </div>
+  );
+}
+function VizonGallery({p}:{p:P}){
+  const{b}=p;
+  const items=p.gallery||[];
+  if(!b.show_gallery||!items.length)return null;
+  return (
+    <section id="vzGallery" className="vzGallery">
+      <Reveal className="vzSectionHead"><small>{dec(b,'vz_galleryKicker','GALERİ')}</small><h2>{dec(b,'vz_galleryTitle','Estetik Anlar')}</h2></Reveal>
+      <div className="vzGalleryGrid">
+        {items.map((g:any,i:number)=>(
+          <Reveal as="figure" className="vzGalleryItem" i={i%5} key={g.id}>
+            {g.before_url?
+              <VizonBeforeAfter before={g.before_url} after={g.image_url} alt={g.alt_text||b.name}/>:
+              <div className="vzGalleryPhoto"><img src={g.image_url} alt={g.alt_text||b.name} loading="lazy"/></div>
+            }
+            {g.alt_text&&<figcaption>{g.alt_text}</figcaption>}
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+function VizonServices({p}:{p:P}){
+  const{b}=p;
+  if(!p.services.length)return null;
+  return (
+    <section id="hizmetler" className="vzServices">
+      <Reveal className="vzSectionHead"><small>{(b.services_label||'TEDAVİ MENÜSÜ').toLocaleUpperCase('tr')}</small><h2>{b.services_title||'Hizmet ve Tedavi Menüsü'}</h2></Reveal>
+      <div className="vzServiceGrid">
+        {p.services.map((s,i)=>(
+          <Reveal as="article" className="vzServiceCard" i={i} key={s.id}>
+            {s.image_url&&<div className="vzServiceCardMedia"><img src={s.image_url} alt={s.name} loading="lazy"/></div>}
+            <div className="vzServiceCardBody">
+              <h3>{s.name}</h3>
+              {s.description&&<p>{s.description}</p>}
+              <div className="vzServiceCardFoot">
+                <span>{s.duration_minutes} dk</span>
+                {b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}
+              </div>
+              {hasServiceDetail(s)&&<a className="vzTextLink" href={`/site/${b.slug}/hizmet/${s.slug}`}>Detayları Gör →</a>}
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+function VizonTeam({p}:{p:P}){
+  const{b}=p;
+  const visible=p.staff.filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  if(!visible.length)return null;
+  return (
+    <section id="vzTeam" className="vzTeam">
+      <Reveal className="vzSectionHead"><small>UZMAN KADRO</small><h2>{dec(b,'vz_teamTitle','Güvenle Emanet Edeceğin Uzmanlar')}</h2></Reveal>
+      <div className="vzTeamGrid">
+        {visible.map((s:any,i:number)=>(
+          <Reveal as="article" className="vzTeamCard" i={i} key={s.id}>
+            <div className="vzTeamPhoto">{s.photo_url?<img src={s.photo_url} alt={s.name} loading="lazy"/>:<i>{s.name?.[0]}</i>}</div>
+            <b>{s.name}</b>
+            <small>{s.title||'Uzman'}</small>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+function VizonContact({b}:{b:any}){
+  const mapQuery=encodeURIComponent(b.address||b.name||'');
+  return (
+    <section className="vzContact">
+      <div className="vzContactGrid">
+        <Reveal className="vzContactInfo">
+          <small>İLETİŞİM</small>
+          <h2>{dec(b,'vz_contactTitle','Bize Ulaş')}</h2>
+          {b.address&&<p className="vzAddressRow"><MapPin size={15}/><span>{b.address}</span></p>}
+          {b.phone&&<a className="vzAddressRow" href={`tel:${b.phone.replace(/\D/g,'')}`}><Phone size={15}/><span>{b.phone}</span></a>}
+          {b.instagram&&<a className="vzAddressRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><Instagram size={15}/><span>{b.instagram}</span></a>}
+        </Reveal>
+        {b.show_map!==false&&b.address&&(
+          <Reveal className="vzMapWrap" i={1}>
+            <div className="vzMapPin" aria-hidden="true"/>
+            <iframe className="vzMap" src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} loading="lazy" title="Konum"/>
+          </Reveal>
+        )}
+      </div>
+    </section>
+  );
+}
+function Vizon(p:P){
+  const{b}=p;
+  const reduced=useVizonReduced();
+  const hourRows=groupedHourRows(p.hours||[]);
+  const heroPhoto=b.cover_url||p.gallery?.[0]?.image_url||'';
+  return <main id="top" className={`tVizon${reduced?' vzReducedMotion':''}`}>
+    <style>{'@view-transition{navigation:auto}'}</style>
+    <header className="vzNav">
+      <a className="vzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#vzGallery">Galeri</a>
+        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#vzTeam">Uzmanlarımız</a>
+        <a href="#randevu">Randevu</a>
+      </nav>
+      <a className="vzBtn vzBtnNav" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+    </header>
+
+    <section className="vzHero">
+      <div className="vzHeroText">
+        <span className="vzKicker">{dec(b,'vz_heroKicker',safeHeroLabel(b,'ESTETİK · BAKIM · GÜVEN'))}</span>
+        <h1>{b.hero_title||b.name}{b.hero_highlight&&<><br/><em>{b.hero_highlight}</em></>}</h1>
+        {b.hero_description&&<p>{b.hero_description}</p>}
+        <div className="vzHeroActions">
+          <a className="vzBtn vzBtnGold" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
+          <a className="vzBtn vzBtnGhost" href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        </div>
+      </div>
+      {heroPhoto&&<div className="vzHeroMedia"><img src={heroPhoto} alt={b.name}/></div>}
+    </section>
+
+    <VizonGallery p={p}/>
+    <VizonServices p={p}/>
+    <VizonTeam p={p}/>
+
+    <section className="vzTestimonials">
+      <Reveal className="vzSectionHead"><small>SEÇKİN GERİ BİLDİRİMLER</small><h2>{dec(b,'vz_testimonialsTitle','Bizi Anlatan Sözler')}</h2></Reveal>
+      <OwnRatings businessId={b.id} variant="quote"/>
+    </section>
+
+    <section id="randevu" className="vzBooking">
+      <Reveal className="vzSectionHead"><small>{(b.booking_label||'RANDEVU').toLocaleUpperCase('tr')}</small><h2>{b.booking_title||'Randevunu Ayırt'}</h2></Reveal>
+      <div className="vzBookingBox"><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></div>
+    </section>
+
+    <VizonContact b={b}/>
+
+    <footer className="vzFooter">
+      <div className="vzFooterGrid">
+        <div className="vzFooterBrand"><b>{b.name}</b><p>{dec(b,'vz_footerTagline','Kendine ayırdığın zaman, en değerli yatırımındır.')}</p></div>
+        <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="vzHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+      </div>
+      <div className="vzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+function VizonServiceDetail({b,service}:{b:any;service:any;gallery:any[];media:any[];services:any[];hours:any[]}){
+  const{ref:timelineRef,t:timelineT}=useScrollFrac();
+  const steps:{title:string;text:string}[]=[];
+  if(service.detail_intro)steps.push({title:'Genel Bakış',text:service.detail_intro});
+  if(service.detail_how)steps.push({title:'Nasıl Uygulanır?',text:service.detail_how});
+  if(service.detail_benefits)steps.push({title:'Faydaları',text:service.detail_benefits});
+  if(service.detail_suitable)steps.push({title:'Kimler İçin Uygun?',text:service.detail_suitable});
+  if(service.detail_tip_title||service.detail_tip_text)steps.push({title:service.detail_tip_title||'Uzman İpucu',text:service.detail_tip_text||''});
+  if(service.detail_before)steps.push({title:'Öncesinde',text:service.detail_before});
+  if(service.detail_after)steps.push({title:'Sonrasında',text:service.detail_after});
+  return <main id="top" className="tVizon vzDetailPage">
+    <style>{'@view-transition{navigation:auto}'}</style>
+    <header className="vzNav">
+      <a className="vzBrand" href={`/site/${b.slug}#top`}>{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <a className="vzNavBack" href={`/site/${b.slug}`}>← Tüm Hizmetler</a>
+    </header>
+
+    <section className="vzDetailHero">
+      {service.image_url&&<div className="vzDetailHeroMedia"><img src={service.image_url} alt={service.name}/></div>}
+      <div className="vzDetailHeroText">
+        <small>{b.services_label||'TEDAVİ MENÜSÜ'}</small>
+        <h1>{service.name}</h1>
+        <div className="vzDetailMeta"><span>{service.duration_minutes} dk</span>{b.show_prices&&service.price!=null&&<b>{Number(service.price).toLocaleString('tr-TR')} ₺</b>}</div>
+        <a className="vzBtn vzBtnGold" href={`/site/${b.slug}#randevu`}>{b.booking_button_text||'Randevu Al'} →</a>
+      </div>
+    </section>
+
+    {steps.length>0&&<section className="vzTimeline" ref={timelineRef} style={{'--vzLineProgress':timelineT}as React.CSSProperties}>
+      <div className="vzTimelineLine"/>
+      {steps.map((s,i)=><div className="vzTimelineStep" key={i}>
+        <div className="vzTimelineDot"/>
+        <div className="vzTimelineBody"><h3>{s.title}</h3>{s.text&&<p>{s.text}</p>}</div>
+      </div>)}
+    </section>}
+
+    <footer className="vzFooter">
+      <div className="vzFooterBrand"><b>{b.name}</b></div>
+      <div className="vzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }

@@ -3048,3 +3048,198 @@
   .spBentoCard,.spGalleryItem img{transition:none}
   .spBento .ksReveal,.spReviewsFlow .ksReveal,.spGalleryGrid .ksReveal{opacity:1;transform:none;transition:none}
 }
+
+/* ================= Vizon — editorial lüks estetik/spa teması =================
+   Renk paleti yalnızca `.tVizon` kökünde token (--bg/--text/--surface/--mink/
+   --gold/--eucalyptus/--muted/--line). Bölümler <main>'de flex-column, her
+   birine açık `order`. Kategori rengi (--vz-timeline) profession-* ata
+   sınıfına göre değişir: estetik/güzellik = vizon, spa/masaj = okaliptüs. */
+.tVizon{
+  --bg:#f7f3ee;--surface:#ffffff;--surface-glass:rgba(255,255,255,.55);
+  --text:#241f1c;--muted:#8a7f76;--line:rgba(36,31,28,.14);
+  --mink:#a68a75;--gold:#b08d4f;--eucalyptus:#7c9a85;
+  --vz-timeline:var(--mink);
+  --font-head:'Cinzel',serif;--font-body:'Tenor Sans',sans-serif;--font-caption:'Playfair Display',serif;
+  --font-category:'Bodoni Moda',serif;--font-desc:'Lato',sans-serif;--font-name:'Cormorant',serif;
+  --font-label:'Montserrat',sans-serif;--font-address:'Albert Sans',sans-serif;
+  display:flex;flex-direction:column;background:var(--bg);color:var(--text);font-family:var(--font-body);
+}
+.profession-spa_massage .tVizon{--vz-timeline:var(--eucalyptus)}
+.tVizon a{color:inherit;text-decoration:none}
+.tVizon h1,.tVizon h2{font-family:var(--font-head);font-weight:600;letter-spacing:.01em;line-height:1.15;margin:0;color:var(--text)}
+.tVizon ::selection{background:var(--mink);color:#fff}
+.tVizon>.vzNav{order:1}.tVizon>.vzHero{order:2}.tVizon>.vzGallery{order:3}.tVizon>.vzServices{order:4}
+.tVizon>.vzTeam{order:5}.tVizon>.vzTestimonials{order:6}.tVizon>.vzBooking{order:7}
+.tVizon>.vzContact{order:8}.tVizon>.vzFooter{order:9}
+
+/* Reveal (paylaşılan .ksReveal — bkz. RadicalTenantSite.tsx) varsayılanı: opacity+margin.
+   Vizon bölümlerinde staggered dalga + hafif yukarı kayma olarak override ediyoruz. */
+.vzGalleryGrid .ksReveal,.vzServiceGrid .ksReveal,.vzTeamGrid .ksReveal{margin-top:0;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1)}
+.vzGalleryGrid .ksReveal.in,.vzServiceGrid .ksReveal.in,.vzTeamGrid .ksReveal.in{opacity:1;transform:none}
+.vzSectionHead.ksReveal{margin-top:0;opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.vzSectionHead.ksReveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce),.vzReducedMotion{transition:none}
+.vzReducedMotion .ksReveal{opacity:1!important;transform:none!important;transition:none!important}
+
+/* Section head — ortak başlık deseni */
+.vzSectionHead{text-align:center;max-width:640px;margin:0 auto 48px;padding:0 6vw}
+.vzSectionHead small{display:inline-block;font:700 11px var(--font-label);letter-spacing:.18em;color:var(--gold);margin-bottom:10px}
+.vzSectionHead h2{font-size:clamp(28px,4vw,42px)}
+
+/* NAV */
+.vzNav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 5vw;background:rgba(247,243,238,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.vzBrand{display:flex;align-items:center;gap:12px;font-family:var(--font-head);font-size:18px;font-weight:600;letter-spacing:.02em}
+.vzBrand img{width:38px;height:38px;object-fit:cover;border-radius:50%}
+.vzBrand i{width:38px;height:38px;border-radius:50%;background:var(--mink);color:#fff;display:grid;place-items:center;font:600 17px var(--font-head);font-style:normal}
+.vzNav nav{display:flex;gap:28px;font:600 13px var(--font-label);letter-spacing:.04em}
+.vzNav nav a{color:var(--muted);transition:color .3s ease}
+.vzNav nav a:hover{color:var(--text)}
+.vzNavBack{font:600 12px var(--font-label);letter-spacing:.06em;color:var(--muted);transition:color .3s ease}
+.vzNavBack:hover{color:var(--text)}
+@media(max-width:900px){.vzNav nav{display:none}}
+
+/* Butonlar */
+.vzBtn{display:inline-flex;align-items:center;gap:.5em;padding:14px 26px;border-radius:2px;font:600 13px var(--font-label);letter-spacing:.06em;border:1px solid var(--text);transition:background .3s ease,color .3s ease,transform .3s ease}
+.vzBtn:hover{transform:translateY(-2px)}
+.vzBtnGold{background:var(--gold);border-color:var(--gold);color:#fff}
+.vzBtnGold:hover{background:#96762f}
+.vzBtnGhost{background:transparent;color:var(--text)}
+.vzBtnGhost:hover{background:var(--text);color:var(--bg)}
+.vzBtnNav{padding:10px 20px;font-size:11px}
+.vzTextLink{display:inline-block;margin-top:14px;font:700 12px var(--font-label);letter-spacing:.05em;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px}
+
+/* HERO — asimetrik editorial */
+.vzHero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:clamp(24px,4vw,64px);padding:clamp(48px,8vw,100px) 5vw 80px}
+.vzKicker{display:block;font:700 11px var(--font-label);letter-spacing:.22em;color:var(--gold);margin-bottom:18px}
+.vzHero h1{font-size:clamp(36px,5.4vw,64px)}
+.vzHero h1 em{font-style:italic;color:var(--mink);font-family:var(--font-caption)}
+.vzHero p{font-family:var(--font-body);color:var(--muted);font-size:16px;line-height:1.7;margin:22px 0 0;max-width:46ch}
+.vzHeroActions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.vzHeroMedia{position:relative;aspect-ratio:4/5;border-radius:2px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(36,31,28,.35)}
+.vzHeroMedia img{width:100%;height:100%;object-fit:cover}
+.vzHeroMedia:before{content:'';position:absolute;inset:0;border:1px solid rgba(255,255,255,.5);margin:14px;pointer-events:none}
+@media(max-width:900px){.vzHero{grid-template-columns:1fr}.vzHeroMedia{order:-1;aspect-ratio:16/10}}
+
+/* GALLERY — dergi mizanpajı, asimetrik ızgara + öncesi/sonrası */
+.vzGallery{padding:90px 5vw}
+.vzGalleryGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;max-width:1280px;margin:0 auto}
+.vzGalleryItem{margin:0;border-radius:2px;overflow:hidden;position:relative}
+.vzGalleryItem:nth-child(5n+1){grid-column:span 4;grid-row:span 2}
+.vzGalleryItem:nth-child(5n+2){grid-column:span 2}
+.vzGalleryItem:nth-child(5n+3){grid-column:span 2}
+.vzGalleryItem:nth-child(5n+4){grid-column:span 3}
+.vzGalleryItem:nth-child(5n+5){grid-column:span 3}
+.vzGalleryPhoto{position:relative;width:100%;height:100%;min-height:190px;overflow:hidden}
+.vzGalleryPhoto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.vzGalleryPhoto:before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(176,141,79,.32),rgba(166,138,117,.28));opacity:0;transition:opacity .5s ease;z-index:1}
+.vzGalleryItem:hover .vzGalleryPhoto img{transform:scale(1.08)}
+.vzGalleryItem:hover .vzGalleryPhoto:before{opacity:1}
+.vzGalleryItem figcaption{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;font:italic 500 14px var(--font-caption);color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent);z-index:2}
+@media(max-width:760px){.vzGalleryGrid{grid-template-columns:repeat(2,1fr)}.vzGalleryItem,.vzGalleryItem:nth-child(5n+1),.vzGalleryItem:nth-child(5n+2),.vzGalleryItem:nth-child(5n+3),.vzGalleryItem:nth-child(5n+4),.vzGalleryItem:nth-child(5n+5){grid-column:span 1;grid-row:auto}}
+
+/* Öncesi/Sonrası kaydırmalı karşılaştırma */
+.vzBeforeAfter{position:relative;width:100%;height:100%;min-height:190px;overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none}
+.vzBaBase,.vzBaBefore{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.vzBaBeforeWrap{position:absolute;inset:0}
+.vzBaHandle{position:absolute;top:0;bottom:0;width:2px;background:#fff;transform:translateX(-50%);box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.vzBaHandle span{position:absolute;top:50%;left:50%;width:38px;height:38px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.vzBaHandle span:before{content:'↔';font-size:15px;color:var(--text)}
+.vzBaTag{position:absolute;top:12px;font:700 10px var(--font-label);letter-spacing:.12em;padding:5px 10px;background:rgba(0,0,0,.55);color:#fff;border-radius:2px;z-index:2}
+.vzBaTagBefore{left:12px}.vzBaTagAfter{right:12px}
+
+/* SERVICES — cam efekti (glassmorphism) kartlar */
+.vzServices{padding:90px 5vw;background:linear-gradient(180deg,rgba(166,138,117,.08),transparent)}
+.vzServiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;max-width:1280px;margin:0 auto}
+.vzServiceCard{background:var(--surface-glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.6);border-radius:6px;overflow:hidden;box-shadow:0 20px 45px -25px rgba(36,31,28,.4);transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s ease}
+.vzServiceCard:hover{transform:translateY(-6px);box-shadow:0 28px 55px -22px rgba(36,31,28,.45)}
+.vzServiceCardMedia{height:190px;overflow:hidden}
+.vzServiceCardMedia img{width:100%;height:100%;object-fit:cover}
+.vzServiceCardBody{padding:26px}
+.vzServiceCardBody h3{font-family:var(--font-category);font-size:20px;font-weight:600;margin:0 0 10px}
+.vzServiceCardBody p{font-family:var(--font-desc);color:var(--muted);font-size:14px;line-height:1.65;margin:0}
+.vzServiceCardFoot{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--font-desc);font-size:13px;color:var(--muted)}
+.vzServiceCardFoot b{color:var(--text);font-family:var(--font-label);font-weight:700}
+
+/* TEAM — siyah-beyazdan renkliye geçiş */
+.vzTeam{padding:90px 5vw}
+.vzTeamGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;max-width:1100px;margin:0 auto;text-align:center}
+.vzTeamPhoto{aspect-ratio:3/4;border-radius:2px;overflow:hidden;background:var(--surface);margin-bottom:18px}
+.vzTeamPhoto img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.02);transition:filter .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
+.vzTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--mink);color:#fff;font:600 34px var(--font-head);font-style:normal}
+.vzTeamCard:hover .vzTeamPhoto img{filter:grayscale(0);transform:scale(1.04)}
+.vzTeamCard b{display:block;font-family:var(--font-name);font-size:23px;font-weight:600}
+.vzTeamCard small{display:block;margin-top:4px;font:700 11px var(--font-label);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+
+/* TESTIMONIALS — dergi alıntısı (paylaşılan OwnRatings variant="quote") */
+.vzTestimonials{padding:90px 5vw;background:var(--text);color:var(--bg)}
+.vzTestimonials .vzSectionHead small{color:var(--gold)}
+.vzTestimonials .vzSectionHead h2{color:var(--bg)}
+.vzTestimonials .ownQuote{max-width:760px;margin:0 auto;text-align:center}
+.vzTestimonials .ownQuoteMark{display:block;font-family:var(--font-caption);font-size:64px;line-height:1;color:var(--gold);margin-bottom:10px}
+.vzTestimonials .ownQuote p{font-family:var(--font-caption);font-style:italic;font-size:clamp(19px,2.4vw,26px);line-height:1.75;color:var(--bg);margin:0}
+.vzTestimonials .ownQuoteFoot{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-label);font-size:12px;letter-spacing:.06em;color:var(--mink)}
+.vzTestimonials .ownQuoteNav{display:flex;gap:10px}
+.vzTestimonials .ownQuoteNav button{width:34px;height:34px;border-radius:50%;border:1px solid rgba(247,243,238,.3);background:transparent;color:var(--bg);cursor:pointer;transition:background .3s ease}
+.vzTestimonials .ownQuoteNav button:hover{background:rgba(247,243,238,.12)}
+
+/* BOOKING */
+.vzBooking{padding:90px 5vw}
+.vzBookingBox{max-width:760px;margin:0 auto}
+
+/* CONTACT / lüks harita (CSS filtresiyle monokrom+altın simülasyonu) */
+.vzContact{padding:90px 5vw 110px}
+.vzContactGrid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(30px,4vw,60px);max-width:1180px;margin:0 auto;align-items:start}
+.vzContactInfo small{display:block;font:700 11px var(--font-label);letter-spacing:.18em;color:var(--gold);margin-bottom:12px}
+.vzContactInfo h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:24px}
+.vzAddressRow{display:flex;align-items:center;gap:12px;font-family:var(--font-address);font-size:14.5px;color:var(--muted);padding:10px 0;border-top:1px solid var(--line);transition:color .3s ease}
+.vzAddressRow:first-of-type{border-top:0}
+.vzAddressRow:hover{color:var(--text)}
+.vzAddressRow svg{flex-shrink:0;color:var(--gold)}
+.vzMapWrap{position:relative;overflow:hidden;border-radius:4px;min-height:340px;opacity:0;transform:scale(1.08);transition:opacity .8s ease,transform 1s cubic-bezier(.22,1,.36,1)}
+.vzMapWrap.in{opacity:1;transform:scale(1)}
+.vzMap{width:100%;height:100%;min-height:340px;border:0;display:block;filter:grayscale(1) sepia(.35) saturate(1.7) hue-rotate(-8deg) contrast(1.05)}
+.vzMapPin{position:absolute;left:50%;top:42%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--gold);transform:translate(-50%,-220%) rotate(-45deg);opacity:0;transition:transform .7s cubic-bezier(.34,1.56,.64,1) .35s,opacity .3s ease .35s;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.vzMapWrap.in .vzMapPin{opacity:1;transform:translate(-50%,-100%) rotate(-45deg)}
+@media(max-width:900px){.vzContactGrid{grid-template-columns:1fr}}
+
+/* FOOTER */
+.vzFooter{padding:50px 5vw 34px;border-top:1px solid var(--line)}
+.vzFooterGrid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;max-width:1180px;margin:0 auto;padding-bottom:26px}
+.vzFooterBrand b{font-family:var(--font-head);font-size:20px}
+.vzFooterBrand p{margin-top:10px;color:var(--muted);font-size:13px;max-width:34ch}
+.vzFooter small{display:block;font:700 11px var(--font-label);letter-spacing:.14em;color:var(--gold);margin-bottom:10px}
+.vzHoursRow{display:flex;justify-content:space-between;gap:20px;font-family:var(--font-address);font-size:13px;color:var(--muted);padding:4px 0;max-width:220px}
+.vzFooterBottom{max-width:1180px;margin:0 auto;font-size:12px;color:var(--muted)}
+
+/* SERVICE DETAIL SAYFASI — Cinzel/Tenor Sans, timeline çizgi animasyonu */
+.vzDetailPage .vzDetailHero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,60px);align-items:center;padding:clamp(40px,7vw,90px) 5vw 70px}
+.vzDetailHeroMedia{aspect-ratio:4/5;border-radius:2px;overflow:hidden}
+.vzDetailHeroMedia img{width:100%;height:100%;object-fit:cover}
+.vzDetailHeroText small{display:block;font:700 11px var(--font-label);letter-spacing:.18em;color:var(--gold);margin-bottom:14px}
+.vzDetailHeroText h1{font-size:clamp(32px,4.6vw,52px)}
+.vzDetailMeta{display:flex;gap:18px;align-items:center;margin:20px 0 30px;font-family:var(--font-desc);color:var(--muted);font-size:14px}
+.vzDetailMeta b{font-family:var(--font-label);color:var(--text);font-size:16px}
+@media(max-width:860px){.vzDetailPage .vzDetailHero{grid-template-columns:1fr}.vzDetailHeroMedia{order:-1;aspect-ratio:16/10}}
+
+.vzTimeline{position:relative;max-width:760px;margin:0 auto;padding:20px 5vw 100px 64px}
+.vzTimelineLine{position:absolute;left:calc(5vw + 19px);top:6px;bottom:20px;width:2px;background:var(--line)}
+.vzTimelineLine:before{content:'';position:absolute;inset:0;background:var(--vz-timeline);transform:scaleY(var(--vzLineProgress,0));transform-origin:top center}
+.vzTimelineStep{position:relative;padding-bottom:44px}
+.vzTimelineStep:last-child{padding-bottom:0}
+.vzTimelineDot{position:absolute;left:-45px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--vz-timeline)}
+.vzTimelineBody h3{font-family:var(--font-category);font-size:19px;font-weight:600;margin:0 0 8px}
+.vzTimelineBody p{font-family:var(--font-body);color:var(--muted);font-size:14.5px;line-height:1.75;margin:0;max-width:56ch}
+
+/* View Transitions (Chrome/Edge 126+; desteklemeyen tarayıcılarda no-op) —
+   @view-transition{navigation:auto} kuralı sadece Vizon bileşenlerinin içine
+   gömülü <style> etiketiyle gelir, bu yüzden global etkisi yok. */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.6s;animation-timing-function:cubic-bezier(.65,0,.35,1)}
+::view-transition-old(root){animation-name:vz-curtain-out}
+::view-transition-new(root){animation-name:vz-curtain-in}
+@keyframes vz-curtain-out{to{transform:translateX(-6%);opacity:0}}
+@keyframes vz-curtain-in{from{transform:translateX(6%);opacity:0}}
+
+@media(prefers-reduced-motion:reduce){
+  .vzGalleryPhoto img,.vzServiceCard,.vzTeamPhoto img,.vzMapWrap,.vzMapPin,.vzBtn{transition:none!important}
+  ::view-transition-old(root),::view-transition-new(root){animation:none!important}
+}
