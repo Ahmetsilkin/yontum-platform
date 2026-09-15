@@ -88,7 +88,7 @@ export default function AdminBusinessManager() {
     const j = await res.json();
     setImpersonatingId(null);
     if (!res.ok) { setListError(j.error || 'Panele girilemedi.'); return }
-    window.open(j.link, '_blank');
+    window.open(`/yonetim/giris?token_hash=${encodeURIComponent(j.tokenHash)}`, '_blank');
   }
 
   async function confirmDelete() {
