@@ -192,6 +192,7 @@
 .adminTopActions{display:flex;gap:16px;align-items:center}
 .adminPasswordRow{display:flex;gap:8px}
 .adminPasswordRow input{flex:1}
+.adminRowActions{display:flex;gap:6px;flex-wrap:wrap;white-space:normal!important}
 
 /* Müşteri CRM'i */
 .customerToolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}

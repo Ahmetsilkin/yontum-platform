@@ -42,6 +42,11 @@ export default function AdminBusinessManager() {
   const [resetSubmitting, setResetSubmitting] = useState(false);
   const [resetError, setResetError] = useState('');
   const [resetDone, setResetDone] = useState<string | null>(null);
+  const [listError, setListError] = useState('');
+  const [impersonatingId, setImpersonatingId] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<BizRow | null>(null);
+  const [deleteSubmitting, setDeleteSubmitting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   async function load() {
     setLoading(true);
@@ -76,6 +81,26 @@ export default function AdminBusinessManager() {
   }
 
   async function logout() { await fetch('/api/admin/gate', { method: 'DELETE' }); location.reload() }
+
+  async function openBusinessPanel(b: BizRow) {
+    setImpersonatingId(b.id); setListError('');
+    const res = await fetch(`/api/admin/businesses/${b.id}/impersonate`, { method: 'POST' });
+    const j = await res.json();
+    setImpersonatingId(null);
+    if (!res.ok) { setListError(j.error || 'Panele girilemedi.'); return }
+    window.open(j.link, '_blank');
+  }
+
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleteSubmitting(true); setDeleteError('');
+    const res = await fetch(`/api/admin/businesses/${deleteTarget.id}`, { method: 'DELETE' });
+    const j = await res.json().catch(() => ({}));
+    setDeleteSubmitting(false);
+    if (!res.ok) { setDeleteError(j.error || 'Silinemedi.'); return }
+    setList(l => l.filter(x => x.id !== deleteTarget.id));
+    setDeleteTarget(null);
+  }
 
   return (
     <div className="dashboardShell">
@@ -112,6 +137,7 @@ export default function AdminBusinessManager() {
 
           <section className="panel dashPanel">
             <div className="panelTitle"><div><h2>İşletmeler</h2><p>{list.length} işletme</p></div></div>
+            {listError && <p className="formError">{listError}</p>}
             {loading ? <p>Yükleniyor…</p> : list.length ? (
               <div className="tableScroll">
                 <table className="dashTable">
@@ -123,7 +149,11 @@ export default function AdminBusinessManager() {
                         <td><a href={`/site/${b.slug}`} target="_blank" rel="noopener noreferrer">{b.slug}</a></td>
                         <td>{b.phone}</td>
                         <td>{b.is_published ? 'Yayında' : 'Taslak'}</td>
-                        <td><button type="button" className="plainAction" onClick={() => { setResetTarget(b); setResetPassword(generatePassword()); setResetError(''); setResetDone(null) }}>Şifreyi Sıfırla</button></td>
+                        <td className="adminRowActions">
+                          <button type="button" className="plainAction" disabled={impersonatingId === b.id} onClick={() => openBusinessPanel(b)}>{impersonatingId === b.id ? 'Açılıyor…' : 'Panele Git'}</button>
+                          <button type="button" className="plainAction" onClick={() => { setResetTarget(b); setResetPassword(generatePassword()); setResetError(''); setResetDone(null) }}>Şifreyi Sıfırla</button>
+                          <button type="button" className="plainAction danger" onClick={() => { setDeleteTarget(b); setDeleteError('') }}>Sil</button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -174,6 +204,20 @@ export default function AdminBusinessManager() {
               </>
             )}
           </form>
+        </div>
+      )}
+
+      {deleteTarget && (
+        <div className="dashModalBackdrop">
+          <div className="dashModal">
+            <button type="button" className="modalX" onClick={() => setDeleteTarget(null)}>×</button>
+            <p className="overline">İŞLETMEYİ SİL</p>
+            <h2>{deleteTarget.name}</h2>
+            <p>Bu işletmeyi, sitesini, randevularını ve giriş hesabını kalıcı olarak silmek istediğine emin misin? Bu işlem geri alınamaz.</p>
+            {deleteError && <p className="formError">{deleteError}</p>}
+            <button type="button" className="dangerButton" disabled={deleteSubmitting} onClick={confirmDelete}>{deleteSubmitting ? 'Siliniyor…' : 'Evet, Kalıcı Olarak Sil'}</button>
+            <button type="button" className="plainAction wideBtn" style={{ marginTop: 10 }} onClick={() => setDeleteTarget(null)}>Vazgeç</button>
+          </div>
         </div>
       )}
     </div>
