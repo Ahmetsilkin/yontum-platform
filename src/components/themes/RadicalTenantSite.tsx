@@ -1,6 +1,7 @@
 'use client';
 import{useState,useEffect,useRef,Fragment}from'react';
 import dynamic from'next/dynamic';
+import{Instagram,MapPin,Phone}from'lucide-react';
 import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
 /* Nova'nın 3D sahnesi (@react-three/fiber) sunucuda render edilemez (WebGL
    canvas/tarayıcı API'lerine ihtiyaç duyar) — bu yüzden ssr:false ile sadece
@@ -2662,6 +2663,9 @@ function Kil(p:P){
   const hourRows=groupedHourRows(p.hours||[]);
   const reduced=useKilReduced();
   const mag=useKilMagnet();
+  const magAddr=useKilMagnet();
+  const magPhone=useKilMagnet();
+  const magInsta=useKilMagnet();
   const aboutPhoto=p.gallery?.[0]?.image_url||b.cover_url||'';
   return <main id="top" className={`tKil${reduced?' klReducedMotion':''}`}>
     <header className="klNav">
@@ -2738,7 +2742,11 @@ function Kil(p:P){
         <div className="klFooterGrid">
           <div className="klFooterBrand"><b>{b.name}</b><p>{dec(b,'kl_footerTagline','Seni burada ağırlamak için sabırsızlanıyoruz.')}</p></div>
           <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="klHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
-          <div><small>İLETİŞİM</small>{b.address&&<p>{b.address}</p>}{b.phone&&<p>{b.phone}</p>}{b.instagram&&<p><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></p>}</div>
+          <div className="klFooterContact"><small>İLETİŞİM</small>
+            {b.address&&<a className="klContactLink" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`} target="_blank" rel="noopener noreferrer" ref={magAddr.ref} onMouseMove={magAddr.onMouseMove} onMouseLeave={magAddr.onMouseLeave}><i className="klContactIcon"><MapPin size={15}/></i><span>{b.address}</span></a>}
+            {b.phone&&<a className="klContactLink" href={`tel:${b.phone.replace(/\D/g,'')}`} ref={magPhone.ref} onMouseMove={magPhone.onMouseMove} onMouseLeave={magPhone.onMouseLeave}><i className="klContactIcon"><Phone size={15}/></i><span>{b.phone}</span></a>}
+            {b.instagram&&<a className="klContactLink" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" ref={magInsta.ref} onMouseMove={magInsta.onMouseMove} onMouseLeave={magInsta.onMouseLeave}><i className="klContactIcon"><Instagram size={15}/></i><span>{b.instagram}</span></a>}
+          </div>
         </div>
         <div className="klFooterBottom">© {new Date().getFullYear()} {b.name}</div>
       </div>
