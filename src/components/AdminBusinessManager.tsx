@@ -44,6 +44,7 @@ export default function AdminBusinessManager() {
   const [resetDone, setResetDone] = useState<string | null>(null);
   const [listError, setListError] = useState('');
   const [impersonatingId, setImpersonatingId] = useState<string | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<BizRow | null>(null);
   const [deleteSubmitting, setDeleteSubmitting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
@@ -89,6 +90,15 @@ export default function AdminBusinessManager() {
     setImpersonatingId(null);
     if (!res.ok) { setListError(j.error || 'Panele girilemedi.'); return }
     window.open(`/yonetim/giris?token_hash=${encodeURIComponent(j.tokenHash)}`, '_blank');
+  }
+
+  async function togglePublish(b: BizRow) {
+    setTogglingId(b.id); setListError('');
+    const res = await fetch(`/api/admin/businesses/${b.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_published: !b.is_published }) });
+    const j = await res.json().catch(() => ({}));
+    setTogglingId(null);
+    if (!res.ok) { setListError(j.error || 'Durum değiştirilemedi.'); return }
+    setList(l => l.map(x => x.id === b.id ? { ...x, is_published: !x.is_published } : x));
   }
 
   async function confirmDelete() {
@@ -148,7 +158,7 @@ export default function AdminBusinessManager() {
                         <td><b>{b.name}</b></td>
                         <td><a href={`/site/${b.slug}`} target="_blank" rel="noopener noreferrer">{b.slug}</a></td>
                         <td>{b.phone}</td>
-                        <td>{b.is_published ? 'Yayında' : 'Taslak'}</td>
+                        <td><button type="button" className={`publishBadge ${b.is_published ? 'live' : ''}`} disabled={togglingId === b.id} onClick={() => togglePublish(b)}>{togglingId === b.id ? '…' : b.is_published ? '● Yayında' : '○ Taslak'}</button></td>
                         <td className="adminRowActions">
                           <button type="button" className="plainAction" disabled={impersonatingId === b.id} onClick={() => openBusinessPanel(b)}>{impersonatingId === b.id ? 'Açılıyor…' : 'Panele Git'}</button>
                           <button type="button" className="plainAction" onClick={() => { setResetTarget(b); setResetPassword(generatePassword()); setResetError(''); setResetDone(null) }}>Şifreyi Sıfırla</button>

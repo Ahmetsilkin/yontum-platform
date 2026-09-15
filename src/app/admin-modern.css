@@ -193,6 +193,8 @@
 .adminPasswordRow{display:flex;gap:8px}
 .adminPasswordRow input{flex:1}
 .adminRowActions{display:flex;gap:6px;flex-wrap:wrap;white-space:normal!important}
+button.publishBadge{cursor:pointer;font-family:inherit}
+button.publishBadge:disabled{opacity:.6;cursor:default}
 
 /* Müşteri CRM'i */
 .customerToolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
