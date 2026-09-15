@@ -210,7 +210,7 @@ function Keskin(p:P){
     <header className={`ksNav${heroT>.92?' scrolled':''}`}>
       <a className="ksBrand" href="#top">{b.logo_url&&<img src={b.logo_url} alt={b.name}/>}<b>{b.name}</b></a>
       <nav>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#ksGallery">Galeri</a>
         <a href="#ksFaq">SSS</a>
         <a href="#randevu">Randevu</a>
@@ -338,7 +338,7 @@ function Atelier(p:P){
       <a className="atBrand" href="#top"><b>{b.name}</b><small>{dec(b,'at_brandSubtitle','BERBER ATÖLYESİ')}</small></a>
       <nav>
         <a href="#top">Ana Sayfa</a>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#atGallery">Galeri</a>
         <a href="#atJournal">Blog</a>
       </nav>
@@ -504,7 +504,7 @@ function Vitrin(p:P){
     <header className="vtNav">
       <a className="vtBrand" href="#top">{b.name}</a>
       <nav>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#vtGallery">Galeri</a>
         <a href="#randevu">Randevu</a>
       </nav>
@@ -719,7 +719,7 @@ function Zarafet(p:P){
       <a className="zfBrand" href="#top">{b.name}</a>
       <nav>
         <a href="#top">Ana Sayfa</a>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#zfGallery">Galeri</a>
         <a href="#randevu">Randevu</a>
       </nav>
@@ -1885,7 +1885,7 @@ function Lumina(p:P){
     <header className="lmNav">
       <a className="lmBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
         <a href="#randevu">Randevu</a>
       </nav>
@@ -1984,7 +1984,7 @@ function Nova(p:P){
       <a className="nvBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
         <a href="#hakkimizda">{b.about_label||'Hakkımızda'}</a>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
         <a href="#randevu">Randevu</a>
       </nav>
@@ -2183,7 +2183,7 @@ function Cadre(p:P){
       <a className="cdBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
         <a href="#hakkimizda">{b.about_label||'Hakkımızda'}</a>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
       </nav>
       <a className="cdNavBtn" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
@@ -2413,7 +2413,7 @@ function Afis(p:P){
     <header className="afNav">
       <a className="afBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#afTeam">Kadro</a>
         <a href="#afGallery">Galeri</a>
         <a href="#randevu">İletişim</a>
@@ -2553,7 +2553,7 @@ function Brutal(p:P){
     <header className="brNav">
       <a className="brBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#brTeam">Kadro</a>
         <a href="#brGallery">Galeri</a>
         <a href="#randevu">İletişim</a>
@@ -2683,7 +2683,7 @@ function Kil(p:P){
     <header className="klNav">
       <a className="klBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#klTeam">Ekip</a>
         <a href="#klGallery">Galeri</a>
         <a href="#randevu">İletişim</a>
@@ -2978,7 +2978,7 @@ function Magaza(p:P){
     <header className="mgHeader">
       <a className="mgLogo" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#hizmetler">{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler">Hizmetler</a>
         <a href="#mgReviews">Yorumlar</a>
         <a href="#sss">SSS</a>
         <a href="#mgFooter">İletişim</a>
