@@ -3194,7 +3194,7 @@
 .vzFooterBrand b{font-family:var(--font-head);font-size:20px}
 .vzFooterBrand p{margin-top:10px;color:var(--muted);font-size:13px;max-width:34ch}
 .vzFooter small{display:block;font:700 11px var(--font-label);letter-spacing:.14em;color:var(--gold);margin-bottom:10px}
-.vzHoursRow{display:flex;justify-content:space-between;gap:20px;font-family:var(--font-address);font-size:13px;color:var(--muted);padding:4px 0;max-width:220px}
+.vzHoursRow{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:baseline;gap:14px;font-family:var(--font-address);font-size:13px;color:var(--muted);padding:4px 0;white-space:nowrap}
 .vzAddressRow{display:flex;align-items:center;gap:10px;font-family:var(--font-address);font-size:13.5px;color:var(--muted);padding:6px 0;transition:color .3s ease,transform .4s cubic-bezier(.22,1,.36,1)}
 .vzAddressRow:hover{color:var(--text)}
 .vzAddressRow svg{flex-shrink:0;color:var(--gold)}

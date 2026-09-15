@@ -3464,7 +3464,7 @@ function Vizon(p:P){
       <a className="vzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
         <a href="#vzGallery" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Galeri</a>
-        <a href="#hizmetler" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>{b.services_label||'Hizmetler'}</a>
+        <a href="#hizmetler" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Hizmetler</a>
         <a href="#vzTeam" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Uzmanlarımız</a>
         <a href="#randevu" onMouseMove={vizonMagnetMove} onMouseLeave={vizonMagnetLeave}>Randevu</a>
       </nav>
