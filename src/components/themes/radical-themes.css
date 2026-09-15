@@ -3071,6 +3071,7 @@
 .tVizon>.vzNav{order:1}.tVizon>.vzHero{order:2}.tVizon>.vzGallery{order:3}.tVizon>.vzServices{order:4}
 .tVizon>.vzTeam{order:5}.tVizon>.vzTestimonials{order:6}.tVizon>.vzBooking{order:7}
 .tVizon>.vzFooter{order:8}
+.tVizon>.vzDetailHero{order:2}.tVizon>.vzTimeline{order:3}
 
 /* Reveal (paylaşılan .ksReveal — bkz. RadicalTenantSite.tsx) varsayılanı: opacity+margin.
    Vizon bölümlerinde staggered dalga + hafif yukarı kayma olarak override ediyoruz. */
