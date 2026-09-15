@@ -3591,7 +3591,10 @@ function WhatsApp({b}:{b:any}){if(!b.whatsapp_enabled)return null;let n=String(b
    bazlı değil, WhatsApp gibi dispatcher seviyesinde tek yerden ekleniyor. */
 function GoogleReviewLink({b}:{b:any}){
   if(!b.google_maps_url)return null;
-  return <a className="rGoogleReview" href={b.google_maps_url} target="_blank" rel="noopener noreferrer" aria-label="Google'da bizi değerlendir"><span aria-hidden="true">★</span> Bizi Değerlendir</a>;
+  return <a className="rGoogleReview" href={b.google_maps_url} target="_blank" rel="noopener noreferrer" aria-label="Google'da bizi değerlendir">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.87 6.24 6.85.7-5.14 4.62 1.5 6.72L12 17.4l-6.08 3.48 1.5-6.72-5.14-4.62 6.85-.7z"/></svg>
+    <span>Bizi Değerlendir</span>
+  </a>;
 }
 function accentHex(name:string,fallback:string){return({black:'#111111',burgundy:'#7c3157',pink:'#ed5da8',purple:'#7652a6',sage:'#6f8f78',blue:'#71849c',orange:'#d8753f',gold:'#9b7b3f'}as any)[name]||fallback||'#111111'}
 
