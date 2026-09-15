@@ -3070,7 +3070,7 @@
 .tVizon ::selection{background:var(--mink);color:#fff}
 .tVizon>.vzNav{order:1}.tVizon>.vzHero{order:2}.tVizon>.vzGallery{order:3}.tVizon>.vzServices{order:4}
 .tVizon>.vzTeam{order:5}.tVizon>.vzTestimonials{order:6}.tVizon>.vzBooking{order:7}
-.tVizon>.vzContact{order:8}.tVizon>.vzFooter{order:9}
+.tVizon>.vzFooter{order:8}
 
 /* Reveal (paylaşılan .ksReveal — bkz. RadicalTenantSite.tsx) varsayılanı: opacity+margin.
    Vizon bölümlerinde staggered dalga + hafif yukarı kayma olarak override ediyoruz. */
@@ -3118,7 +3118,7 @@
 .vzHeroMedia{position:relative;aspect-ratio:4/5;border-radius:2px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(36,31,28,.35)}
 .vzHeroMedia img{width:100%;height:100%;object-fit:cover}
 .vzHeroMedia:before{content:'';position:absolute;inset:0;border:1px solid rgba(255,255,255,.5);margin:14px;pointer-events:none}
-@media(max-width:900px){.vzHero{grid-template-columns:1fr}.vzHeroMedia{order:-1;aspect-ratio:16/10}}
+@media(max-width:900px){.vzHero{grid-template-columns:1fr}.vzHeroMedia{order:-1;aspect-ratio:4/5}}
 
 /* GALLERY — dergi mizanpajı, asimetrik ızgara + öncesi/sonrası */
 .vzGallery{padding:90px 5vw}
@@ -3186,30 +3186,24 @@
 .vzBooking{padding:90px 5vw}
 .vzBookingBox{max-width:760px;margin:0 auto}
 
-/* CONTACT / lüks harita (CSS filtresiyle monokrom+altın simülasyonu) */
-.vzContact{padding:90px 5vw 110px}
-.vzContactGrid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(30px,4vw,60px);max-width:1180px;margin:0 auto;align-items:start}
-.vzContactInfo small{display:block;font:700 11px var(--font-label);letter-spacing:.18em;color:var(--gold);margin-bottom:12px}
-.vzContactInfo h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:24px}
-.vzAddressRow{display:flex;align-items:center;gap:12px;font-family:var(--font-address);font-size:14.5px;color:var(--muted);padding:10px 0;border-top:1px solid var(--line);transition:color .3s ease}
-.vzAddressRow:first-of-type{border-top:0}
-.vzAddressRow:hover{color:var(--text)}
-.vzAddressRow svg{flex-shrink:0;color:var(--gold)}
-.vzMapWrap{position:relative;overflow:hidden;border-radius:4px;min-height:340px;opacity:0;transform:scale(1.08);transition:opacity .8s ease,transform 1s cubic-bezier(.22,1,.36,1)}
-.vzMapWrap.in{opacity:1;transform:scale(1)}
-.vzMap{width:100%;height:100%;min-height:340px;border:0;display:block;filter:grayscale(1) sepia(.35) saturate(1.7) hue-rotate(-8deg) contrast(1.05)}
-.vzMapPin{position:absolute;left:50%;top:42%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--gold);transform:translate(-50%,-220%) rotate(-45deg);opacity:0;transition:transform .7s cubic-bezier(.34,1.56,.64,1) .35s,opacity .3s ease .35s;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.4)}
-.vzMapWrap.in .vzMapPin{opacity:1;transform:translate(-50%,-100%) rotate(-45deg)}
-@media(max-width:900px){.vzContactGrid{grid-template-columns:1fr}}
-
-/* FOOTER */
-.vzFooter{padding:50px 5vw 34px;border-top:1px solid var(--line)}
-.vzFooterGrid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;max-width:1180px;margin:0 auto;padding-bottom:26px}
+/* FOOTER — marka, saatler, iletişim ve lüks harita (CSS filtresiyle
+   monokrom+altın simülasyonu) tek bir footer'da toplanır. */
+.vzFooter{padding:70px 5vw 34px;border-top:1px solid var(--line)}
+.vzFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:34px;max-width:1180px;margin:0 auto;padding-bottom:34px}
 .vzFooterBrand b{font-family:var(--font-head);font-size:20px}
 .vzFooterBrand p{margin-top:10px;color:var(--muted);font-size:13px;max-width:34ch}
 .vzFooter small{display:block;font:700 11px var(--font-label);letter-spacing:.14em;color:var(--gold);margin-bottom:10px}
 .vzHoursRow{display:flex;justify-content:space-between;gap:20px;font-family:var(--font-address);font-size:13px;color:var(--muted);padding:4px 0;max-width:220px}
+.vzAddressRow{display:flex;align-items:center;gap:10px;font-family:var(--font-address);font-size:13.5px;color:var(--muted);padding:6px 0;transition:color .3s ease}
+.vzAddressRow:hover{color:var(--text)}
+.vzAddressRow svg{flex-shrink:0;color:var(--gold)}
+.vzMapWrap{position:relative;overflow:hidden;border-radius:4px;max-width:1180px;margin:0 auto 34px;min-height:280px;opacity:0;transform:scale(1.08);transition:opacity .8s ease,transform 1s cubic-bezier(.22,1,.36,1)}
+.vzMapWrap.in{opacity:1;transform:scale(1)}
+.vzMap{width:100%;height:100%;min-height:280px;border:0;display:block;filter:grayscale(1) sepia(.35) saturate(1.7) hue-rotate(-8deg) contrast(1.05)}
+.vzMapPin{position:absolute;left:50%;top:42%;width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--gold);transform:translate(-50%,-220%) rotate(-45deg);opacity:0;transition:transform .7s cubic-bezier(.34,1.56,.64,1) .35s,opacity .3s ease .35s;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.vzMapWrap.in .vzMapPin{opacity:1;transform:translate(-50%,-100%) rotate(-45deg)}
 .vzFooterBottom{max-width:1180px;margin:0 auto;font-size:12px;color:var(--muted)}
+@media(max-width:760px){.vzFooterGrid{grid-template-columns:1fr;gap:26px}}
 
 /* SERVICE DETAIL SAYFASI — Cinzel/Tenor Sans, timeline çizgi animasyonu */
 .vzDetailPage .vzDetailHero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,60px);align-items:center;padding:clamp(40px,7vw,90px) 5vw 70px}

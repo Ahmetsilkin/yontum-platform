@@ -3441,33 +3441,12 @@ function VizonTeam({p}:{p:P}){
     </section>
   );
 }
-function VizonContact({b}:{b:any}){
-  const mapQuery=encodeURIComponent(b.address||b.name||'');
-  return (
-    <section className="vzContact">
-      <div className="vzContactGrid">
-        <Reveal className="vzContactInfo">
-          <small>İLETİŞİM</small>
-          <h2>{dec(b,'vz_contactTitle','Bize Ulaş')}</h2>
-          {b.address&&<p className="vzAddressRow"><MapPin size={15}/><span>{b.address}</span></p>}
-          {b.phone&&<a className="vzAddressRow" href={`tel:${b.phone.replace(/\D/g,'')}`}><Phone size={15}/><span>{b.phone}</span></a>}
-          {b.instagram&&<a className="vzAddressRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><Instagram size={15}/><span>{b.instagram}</span></a>}
-        </Reveal>
-        {b.show_map!==false&&b.address&&(
-          <Reveal className="vzMapWrap" i={1}>
-            <div className="vzMapPin" aria-hidden="true"/>
-            <iframe className="vzMap" src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} loading="lazy" title="Konum"/>
-          </Reveal>
-        )}
-      </div>
-    </section>
-  );
-}
 function Vizon(p:P){
   const{b}=p;
   const reduced=useVizonReduced();
   const hourRows=groupedHourRows(p.hours||[]);
   const heroPhoto=b.cover_url||p.gallery?.[0]?.image_url||'';
+  const mapQuery=encodeURIComponent(b.address||b.name||'');
   return <main id="top" className={`tVizon${reduced?' vzReducedMotion':''}`}>
     <style>{'@view-transition{navigation:auto}'}</style>
     <header className="vzNav">
@@ -3508,13 +3487,23 @@ function Vizon(p:P){
       <div className="vzBookingBox"><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></div>
     </section>
 
-    <VizonContact b={b}/>
-
     <footer className="vzFooter">
       <div className="vzFooterGrid">
         <div className="vzFooterBrand"><b>{b.name}</b><p>{dec(b,'vz_footerTagline','Kendine ayırdığın zaman, en değerli yatırımındır.')}</p></div>
         <div><small>ÇALIŞMA SAATLERİ</small>{hourRows.map((r,i)=><div key={i} className="vzHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}</div>
+        <div className="vzFooterContact">
+          <small>İLETİŞİM</small>
+          {b.address&&<p className="vzAddressRow"><MapPin size={15}/><span>{b.address}</span></p>}
+          {b.phone&&<a className="vzAddressRow" href={`tel:${b.phone.replace(/\D/g,'')}`}><Phone size={15}/><span>{b.phone}</span></a>}
+          {b.instagram&&<a className="vzAddressRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><Instagram size={15}/><span>{b.instagram}</span></a>}
+        </div>
       </div>
+      {b.show_map!==false&&b.address&&(
+        <Reveal className="vzMapWrap" i={1}>
+          <div className="vzMapPin" aria-hidden="true"/>
+          <iframe className="vzMap" src={`https://www.google.com/maps?q=${mapQuery}&output=embed`} loading="lazy" title="Konum"/>
+        </Reveal>
+      )}
       <div className="vzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;

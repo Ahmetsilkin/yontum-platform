@@ -54,7 +54,6 @@ const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
     {key:'vz_galleryTitle',label:'Galeri başlığı',placeholder:'Estetik Anlar'},
     {key:'vz_teamTitle',label:'Ekip başlığı',placeholder:'Güvenle Emanet Edeceğin Uzmanlar'},
     {key:'vz_testimonialsTitle',label:'Yorumlar başlığı',placeholder:'Bizi Anlatan Sözler'},
-    {key:'vz_contactTitle',label:'İletişim başlığı',placeholder:'Bize Ulaş'},
     {key:'vz_footerTagline',label:'Footer alt yazısı',type:'textarea',placeholder:'Kendine ayırdığın zaman, en değerli yatırımındır.'},
   ],
   defter:[
