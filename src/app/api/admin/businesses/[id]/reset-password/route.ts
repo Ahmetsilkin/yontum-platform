@@ -1,13 +1,11 @@
-import{NextRequest,NextResponse}from'next/server';import{createClient,createServiceClient}from'@/lib/supabase-server';import{z}from'zod';
+import{NextRequest,NextResponse}from'next/server';import{cookies}from'next/headers';import{createServiceClient}from'@/lib/supabase-server';import{ADMIN_COOKIE_NAME,isValidAdminSession}from'@/lib/admin-gate';import{z}from'zod';
 const schema=z.object({password:z.string().min(8)});
 export async function POST(req:NextRequest,{params}:{params:Promise<{id:string}>}){
   try{
+    const store=await cookies();
+    if(!isValidAdminSession(store.get(ADMIN_COOKIE_NAME)?.value))return NextResponse.json({error:'Yetkiniz yok.'},{status:403});
     const{id:businessId}=await params;
     const{password}=schema.parse(await req.json());
-    const auth=await createClient(),{data:{user}}=await auth.auth.getUser();
-    if(!user)return NextResponse.json({error:'Giriş gerekli.'},{status:401});
-    const{data:admin}=await auth.from('platform_admins').select('user_id').eq('user_id',user.id).maybeSingle();
-    if(!admin)return NextResponse.json({error:'Yetkiniz yok.'},{status:403});
 
     const db=createServiceClient();
     const{data:owner}=await db.from('business_members').select('user_id').eq('business_id',businessId).eq('role','owner').maybeSingle();

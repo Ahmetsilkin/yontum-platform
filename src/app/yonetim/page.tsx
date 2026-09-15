@@ -1,10 +1,8 @@
-import{redirect}from'next/navigation';import{createClient}from'@/lib/supabase-server';import'@/app/admin-modern.css';import AdminBusinessManager from'@/components/AdminBusinessManager';
+import{cookies}from'next/headers';import'@/app/admin-modern.css';import{ADMIN_COOKIE_NAME,isValidAdminSession}from'@/lib/admin-gate';import AdminBusinessManager from'@/components/AdminBusinessManager';import AdminGateForm from'@/components/AdminGateForm';
 export const dynamic='force-dynamic';
 export default async function Yonetim(){
-  const db=await createClient();
-  const{data:{user}}=await db.auth.getUser();
-  if(!user)redirect('/giris');
-  const{data:admin}=await db.from('platform_admins').select('user_id').eq('user_id',user.id).maybeSingle();
-  if(!admin)redirect('/panel');
+  const store=await cookies();
+  const token=store.get(ADMIN_COOKIE_NAME)?.value;
+  if(!isValidAdminSession(token))return <AdminGateForm/>;
   return <AdminBusinessManager/>;
 }

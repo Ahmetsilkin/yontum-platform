@@ -1,7 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { createClient } from '@/lib/supabase-browser';
 
 type BizRow = { id: string; name: string; slug: string; phone: string; business_type: string; is_published: boolean; created_at: string };
 
@@ -28,7 +26,6 @@ function slugify(v: string) {
 }
 
 export default function AdminBusinessManager() {
-  const db = createClient();
   const [list, setList] = useState<BizRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState('');
@@ -48,8 +45,9 @@ export default function AdminBusinessManager() {
 
   async function load() {
     setLoading(true);
-    const { data } = await db.from('businesses').select('id,name,slug,phone,business_type,is_published,created_at').order('created_at', { ascending: false });
-    setList((data as BizRow[]) || []);
+    const res = await fetch('/api/admin/businesses');
+    const j = await res.json();
+    setList(res.ok ? (j.businesses as BizRow[]) || [] : []);
     setLoading(false);
   }
   useEffect(() => { load() }, []);
@@ -77,14 +75,14 @@ export default function AdminBusinessManager() {
     setResetDone(resetPassword);
   }
 
-  async function logout() { await db.auth.signOut(); location.href = '/giris' }
+  async function logout() { await fetch('/api/admin/gate', { method: 'DELETE' }); location.reload() }
 
   return (
     <div className="dashboardShell">
       <main className="dashboardMain noSide">
         <header className="dashboardTop">
           <div className="platformLogo"><span>M</span><b>MEGSAK</b></div>
-          <div className="adminTopActions"><Link href="/panel">Panelim</Link><button type="button" className="plainAction" onClick={logout}>Çıkış Yap</button></div>
+          <div className="adminTopActions"><button type="button" className="plainAction" onClick={logout}>Çıkış Yap</button></div>
         </header>
         <div className="dashboardContent">
           <section className="panel dashPanel">
