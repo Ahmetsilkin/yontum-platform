@@ -8,10 +8,10 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
    istemcide, ayrı bir JS parçası (chunk) olarak yükleniyor. Diğer temaların
    paketini büyütmüyor: sadece Nova temasını kullanan işletmelerde indiriliyor. */
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
-type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[]};
+type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -3508,6 +3508,121 @@ function VizonServiceDetail({b,service}:{b:any;service:any;gallery:any[];media:a
     <footer className="vzFooter">
       <div className="vzFooterBrand"><b>{b.name}</b></div>
       <div className="vzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+/* ================= SOFRA — randevusuz restoran/kafe teması. Diğer aileler
+   TenantBooking'e bağlıyken burada randevu kavramı yok: nav/hero'daki asıl
+   eylem "Sipariş Ver" (delivery_url) → "Yol Tarifi Al" (google_maps_url) →
+   "Bizi Arayın" (tel:) zincirinden ilk doluya düşer. Menü, services tablosu
+   yerine ayrı menu_categories/menu_items tablolarından geliyor (randevu
+   süresi gibi restorana uymayan alanlar taşınmasın diye). Bölümler sabit
+   sırada olduğundan (booking_first/portfolio gibi yeniden sıralama yok)
+   diğer ailelerdeki flex+order kurulumuna hiç gerek yok — sade blok akışı. */
+function sofraPrimaryCta(b:any):{label:string;href:string;external:boolean}|null{
+  if(b.delivery_url)return{label:'Sipariş Ver',href:b.delivery_url,external:true};
+  if(b.google_maps_url)return{label:'Yol Tarifi Al',href:b.google_maps_url,external:true};
+  if(b.phone)return{label:'Bizi Arayın',href:`tel:${String(b.phone).replace(/\s+/g,'')}`,external:false};
+  return null;
+}
+function Sofra(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  const heroPhoto=b.cover_url||galleryPhotos[0]||'';
+  const aboutPhoto=galleryPhotos[1]||galleryPhotos[0]||'';
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=p.menuItems||[];
+  const cta=sofraPrimaryCta(b);
+  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
+  return <main id="top" className="tSofra">
+    <header className="sfNav">
+      <a className="sfBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hakkimizda">{b.about_label||'Hakkımızda'}</a>
+        <a href="#menu">Menü</a>
+        {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
+        <a href="#iletisim">İletişim</a>
+      </nav>
+      {cta&&<a className="sfNavBtn" {...ctaProps(cta)}>{cta.label}</a>}
+    </header>
+
+    <section className="sfHero" style={heroPhoto?{backgroundImage:`url(${heroPhoto})`}:{}}>
+      <div className="sfHeroOverlay"/>
+      <div className="sfHeroText">
+        <p className="sfEyebrow">{b.hero_label||'RESTORAN · KAFE'}</p>
+        <h1 className="sfHeroTitle">{b.hero_title||'Lezzetin'} <em>{b.hero_highlight||'adresi.'}</em></h1>
+        {b.hero_description&&<p className="sfHeroDesc">{b.hero_description}</p>}
+        <div className="sfHeroBtns">
+          <a className="sfBtnSolid" href="#menu">Menüyü İncele</a>
+          {cta&&<a className="sfBtnOutline" {...ctaProps(cta)}>{cta.label}</a>}
+        </div>
+      </div>
+    </section>
+
+    {(b.description||b.about_title)&&<section id="hakkimizda" className="sfAbout">
+      <Reveal className="sfAboutPhoto">{aboutPhoto?<img src={aboutPhoto} alt={b.name}/>:<div className="sfAboutPhotoFallback"/>}</Reveal>
+      <Reveal i={1} className="sfAboutText">
+        <small>{b.about_label||'HAKKIMIZDA'}</small>
+        <h2>{b.about_title||`${b.name}'in hikayesi.`}</h2>
+        <p>{b.description}</p>
+      </Reveal>
+    </section>}
+
+    <section id="menu" className="sfMenu">
+      <Reveal className="sfSectionHead">
+        <small>MÖNÜ</small>
+        <h2>{dec(b,'sf_menuTitle','Mönümüz')}</h2>
+      </Reveal>
+      {categories.length===0&&<p className="sfMenuEmpty">Mönü yakında eklenecek.</p>}
+      {categories.map((c:any,ci:number)=><Reveal i={ci} key={c.id} className="sfMenuCategory">
+        <h3>{c.name}</h3>
+        <div className="sfMenuItems">
+          {items.filter((it:any)=>it.category_id===c.id).map((it:any)=><div className="sfMenuItem" key={it.id}>
+            {it.image_url&&<img src={it.image_url} alt={it.name} loading="lazy"/>}
+            <div className="sfMenuItemBody">
+              <div className="sfMenuItemHead"><h4>{it.name}</h4><span className="sfMenuDots"/>{b.show_prices!==false&&it.price!=null&&<b>₺{Number(it.price).toLocaleString('tr-TR')}</b>}</div>
+              {it.description&&<p>{it.description}</p>}
+            </div>
+          </div>)}
+        </div>
+      </Reveal>)}
+    </section>
+
+    {galleryPhotos.length>0&&<section id="galeri" className="sfGallery">
+      <Reveal className="sfSectionHead">
+        <small>GALERİ</small>
+        <h2>{dec(b,'sf_galleryTitle','Bizden kareler.')}</h2>
+      </Reveal>
+      <div className="sfGalleryGrid">
+        {galleryPhotos.map((src:string,i:number)=><div key={i} className="sfGalleryItem"><img src={src} alt={b.name} loading="lazy"/></div>)}
+      </div>
+    </section>}
+
+    <GoogleReviews businessId={b.id}/>
+
+    <section id="iletisim" className="sfContact">
+      <Reveal className="sfSectionHead">
+        <small>İLETİŞİM</small>
+        <h2>Bize ulaşın.</h2>
+      </Reveal>
+      <div className="sfContactGrid">
+        <div className="sfContactHours">
+          <h4>Çalışma Saatleri</h4>
+          {hourRows.map((r,i)=><div key={i} className="sfHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
+        </div>
+        <div className="sfContactInfo">
+          {b.address&&<p className="sfContactRow">{b.address}</p>}
+          {b.phone&&<a className="sfContactRow" href={`tel:${String(b.phone).replace(/\s+/g,'')}`}><WaIcon/>{b.phone}</a>}
+          {b.instagram&&<a className="sfContactRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a>}
+          {b.google_maps_url&&<a className="sfContactRow sfDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
+        </div>
+      </div>
+    </section>
+
+    <footer className="sfFooter">
+      <div className="sfFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
+      <div className="sfFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }

@@ -3226,3 +3226,93 @@
   .vzGalleryPhoto img,.vzServiceCard,.vzTeamPhoto img,.vzMapWrap,.vzMapPin,.vzBtn{transition:none!important}
   ::view-transition-old(root),::view-transition-new(root){animation:none!important}
 }
+
+/* ================= Sofra — randevusuz restoran/kafe teması =================
+   Diğer ailelerden farkı: TenantBooking yok, mönü ayrı menu_categories/
+   menu_items tablolarından geliyor. Bölümler sabit sırada (booking_first
+   gibi bir layout_preset restorana uygulanmıyor) — flex+order kurulumuna
+   gerek yok, sade blok akışı yeterli. */
+.tSofra{--sf-bg:#FBF6EF;--sf-surface:#FFFFFF;--sf-ink:#2B2118;--sf-muted:#8a7360;--sf-line:rgba(43,33,24,.12);background:var(--sf-bg);color:var(--sf-ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;overflow-x:clip}
+.tSofra h1,.tSofra h2,.tSofra h3,.tSofra h4{font-family:'Cormorant',Georgia,'Times New Roman',serif}
+.tSofra a{color:inherit;text-decoration:none}
+
+.sfNav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 6vw;background:color-mix(in srgb,var(--sf-bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--sf-line)}
+.sfBrand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;color:var(--sf-ink)}
+.sfBrand img{width:calc(32px * var(--logo-scale,1));height:calc(32px * var(--logo-scale,1));border-radius:50%;object-fit:cover}
+.sfBrand i{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px}
+.sfNav nav{display:flex;gap:28px}
+.sfNav nav a{color:var(--sf-muted);font-size:13px;font-weight:500;transition:color .18s ease}
+.sfNav nav a:hover{color:var(--sf-ink)}
+.sfNavBtn{background:var(--accent);color:#fff!important;font-weight:600;font-size:13px;padding:11px 22px;border-radius:999px;transition:filter .18s ease}
+.sfNavBtn:hover{filter:brightness(1.08)}
+
+.sfHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;background-size:cover;background-position:center;padding:0 6vw 90px;overflow:hidden}
+.sfHeroOverlay{position:absolute;inset:0;background:linear-gradient(190deg,rgba(20,14,8,.15) 0%,rgba(20,14,8,.55) 75%,rgba(20,14,8,.82) 100%)}
+.sfHeroText{position:relative;z-index:2;max-width:640px;color:#fff}
+.sfEyebrow{color:#f0d9b8;font-size:11px;letter-spacing:3px;font-weight:600;margin:0 0 18px;text-transform:uppercase}
+.sfHeroTitle{font-size:clamp(36px,5vw,64px);font-weight:500;line-height:1.1;margin:0 0 18px;color:#fff}
+.sfHeroTitle em{font-style:italic;color:#f0d9b8}
+.sfHeroDesc{font-size:15px;line-height:1.7;color:rgba(255,255,255,.82);margin:0 0 28px;max-width:480px}
+.sfHeroBtns{display:flex;gap:14px;flex-wrap:wrap}
+.sfBtnSolid{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff!important;font-weight:600;font-size:13px;padding:15px 28px;border-radius:999px;transition:filter .18s ease}
+.sfBtnSolid:hover{filter:brightness(1.08)}
+.sfBtnOutline{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,.55);color:#fff!important;font-weight:600;font-size:13px;padding:14px 27px;border-radius:999px;transition:background .18s ease}
+.sfBtnOutline:hover{background:rgba(255,255,255,.12)}
+
+.sfSectionHead{text-align:center;max-width:640px;margin:0 auto 46px}
+.sfSectionHead small{display:block;color:var(--accent);font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:12px;text-transform:uppercase}
+.sfSectionHead h2{font-size:clamp(26px,3vw,38px);margin:0}
+
+.sfAbout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:110px 6vw;max-width:1200px;margin:0 auto}
+.sfAboutPhoto{aspect-ratio:4/5;border-radius:8px;overflow:hidden;background:var(--sf-surface)}
+.sfAboutPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.sfAboutPhotoFallback{width:100%;height:100%;background:linear-gradient(150deg,var(--sf-surface),var(--sf-bg))}
+.sfAboutText small{display:block;color:var(--accent);font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:14px;text-transform:uppercase}
+.sfAboutText h2{font-size:clamp(26px,3vw,36px);margin:0 0 18px}
+.sfAboutText p{color:var(--sf-muted);line-height:1.8;font-size:15px}
+
+.sfMenu{padding:110px 6vw;max-width:900px;margin:0 auto}
+.sfMenuEmpty{text-align:center;color:var(--sf-muted)}
+.sfMenuCategory{margin-bottom:56px}
+.sfMenuCategory:last-child{margin-bottom:0}
+.sfMenuCategory h3{font-size:22px;color:var(--accent);margin:0 0 24px;padding-bottom:12px;border-bottom:1px solid var(--sf-line)}
+.sfMenuItems{display:flex;flex-direction:column;gap:22px}
+.sfMenuItem{display:flex;gap:16px;align-items:flex-start}
+.sfMenuItem img{width:72px;height:72px;border-radius:8px;object-fit:cover;object-position:center;flex:none;display:block}
+.sfMenuItemBody{flex:1;min-width:0}
+.sfMenuItemHead{display:flex;align-items:baseline;gap:10px}
+.sfMenuItemHead h4{font-size:17px;font-weight:600;margin:0;color:var(--sf-ink);font-family:inherit}
+.sfMenuDots{flex:1;border-bottom:1px dotted var(--sf-line);margin-bottom:5px}
+.sfMenuItemHead b{color:var(--accent);font-size:15px;white-space:nowrap}
+.sfMenuItemBody p{margin:6px 0 0;color:var(--sf-muted);font-size:13.5px;line-height:1.6}
+
+.sfGallery{padding:110px 6vw}
+.sfGalleryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1100px;margin:0 auto}
+.sfGalleryItem{aspect-ratio:1;border-radius:8px;overflow:hidden}
+.sfGalleryItem img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .5s ease}
+.sfGalleryItem:hover img{transform:scale(1.06)}
+
+.sfContact{padding:110px 6vw;background:var(--sf-surface)}
+.sfContactGrid{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:900px;margin:0 auto}
+.sfContactHours h4{font-size:14px;text-transform:uppercase;letter-spacing:1px;margin:0 0 18px;color:var(--sf-muted)}
+.sfHoursRow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--sf-line);font-size:14px}
+.sfContactInfo{display:flex;flex-direction:column;gap:14px}
+.sfContactRow{display:flex;align-items:center;gap:10px;color:var(--sf-ink);font-size:14.5px}
+.sfContactRow svg{color:var(--accent);flex:none}
+.sfDirectionsLink{color:var(--accent)!important;font-weight:600}
+
+.sfFooter{display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 6vw;text-align:center;border-top:1px solid var(--sf-line)}
+.sfFooterBrand b{font-size:18px;font-family:'Cormorant',Georgia,serif}
+.sfFooterBrand p{color:var(--sf-muted);font-size:13px;margin:6px 0 0}
+.sfFooterBottom{color:var(--sf-muted);font-size:12px}
+
+@media(max-width:900px){
+  .sfNav nav{display:none}
+  .sfAbout{grid-template-columns:1fr;gap:34px;padding:80px 6vw}
+  .sfContactGrid{grid-template-columns:1fr;gap:34px}
+  .sfGalleryGrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .sfHeroBtns{flex-direction:column;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){.sfGalleryItem img{transition:none}}
