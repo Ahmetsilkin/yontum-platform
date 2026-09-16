@@ -2063,25 +2063,19 @@ function Nova(p:P){
   </main>;
 }
 
-/* ================= CADRE — kullanıcının hazır bir yapay zeka promptuyla
-   tarif ettiği "Framed" (çerçeveli), sessiz lüks (quiet luxury) tek sayfa
-   tema. İmza özellik: hero'da kullanıcının verdiği GERÇEK video (hero.mp4 —
-   altın serum damlası + dalga halkaları, 8sn, sesli). Sayfa açılıp aşağı
-   kaydırılmaya çalışıldığı an video SESİYLE BİRLİKTE oynuyor, video bitene
-   kadar sayfa kilitli kalıyor, bitince serbest kalıyor.
+/* ================= CADRE — "Framed" (çerçeveli), sessiz lüks (quiet
+   luxury) tek sayfa tema. İmza özellik: hero'da kullanıcının verdiği GERÇEK
+   video (hero.mp4 — altın serum damlası + dalga halkaları, 8sn).
 
-   Önceki iki deneme (ezgif'ten çıkarılmış 240, sonra 192 ayrı JPEG/PNG kare,
-   kaydırma miktarına göre "scrub" edilerek) hem kasma hem düşük görüntü
-   kalitesi şikayetine yol açtı — 192 ayrı dosya arasında geçiş yapmak,
-   tarayıcının native video oynatma boru hattından çok daha ağır. Kullanıcı
-   asıl videoyu paylaşınca en doğru çözüm ortaya çıktı: video dosyasını
-   OLDUĞU GİBİ, kendi doğal hızında ve SESİYLE oynat — tarayıcı bunu donanım
-   hızlandırmalı çözüp boyuyor, 656 KB (240 kareden ~6 kat küçük).
-
-   Lumina'da öğrenilen EN kritik ders burada da uygulandı: kaydırma kilidi,
-   React hydrate olmadan ÖNCE senkron çalışan bir <script> ile başlıyor (bkz.
-   CadreScrollLockInit) — aksi hâlde "ilk denemede kilit atlanıyor" hatası
-   tekrar ederdi. */
+   Önceki sürümde video sayfa kaydırılınca SESİYLE başlıyor ve bitene kadar
+   sayfa kilitleniyordu (bkz. git geçmişi) — "Randevu Al" gibi bir linke
+   erken tıklanırsa kilit hiç çözülmediği için sayfa donmuş gibi kalıyordu.
+   Kullanıcı, premium sitelerdeki gibi hızlı/anında oynayan bir arkaplan
+   videosu istediğini belirtince kilit tamamen kaldırıldı: video artık sayfa
+   açılır açılmaz sessiz+döngülü+hızlandırılmış (bkz. useCadreAmbientVideo)
+   oynuyor, kaydırmayı hiçbir zaman engellemiyor. `CadreScrollLockInit` /
+   `releaseCadreScrollLock` burada artık kullanılmıyor ama Defter temasının
+   "kapağı aç" animasyonu hâlâ bu paylaşılan yardımcılara bağlı — silinmedi. */
 function CadreScrollLockInit(){
   return <script dangerouslySetInnerHTML={{__html:"try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.style.overflow='hidden';document.documentElement.style.overscrollBehavior='none';document.body.style.overflow='hidden'}}catch(e){}"}}/>;
 }
@@ -2092,92 +2086,31 @@ function releaseCadreScrollLock(){
     document.body.style.overflow='';
   }catch{}
 }
-/* Video'yu, kullanıcının GERÇEK bir kaydırma hareketine (wheel/touchmove)
-   SENKRON yanıt olarak `play()` ile tetikliyoruz — tarayıcıların "sesli
-   otomatik oynatma" politikası genelde bunu, doğrudan bir kullanıcı jestine
-   senkron bağlı olduğu için izin veriyor. Yine de reddedilirse (bazı
-   tarayıcı/sürümler kaydırmayı yeterli saymayabilir), sessize alıp tekrar
-   deniyoruz — böylece en azından GÖRSEL oynatma hiçbir zaman engellenmiyor. */
-/* Bir 'wheel' olayı bazen sesli oynatmaya yeterli sayılıyor, bazen sayılmıyor
-   — tarayıcıların "kullanıcı jesti" tanımı kaydırma için tutarsız (bir
-   tıklama HER ZAMAN yeterli sayılır, kaydırma öyle değil). Bu yüzden "hep
-   sesli oynasın" isteğini KOD İÇİNDE tam garanti etmenin bir yolu yok — sesli
-   oynatma tarayıcı tarafından reddedilirse (needsSoundPrompt=true), küçük
-   bir "Sesi Aç" düğmesi çıkıyor; buna TIKLAMAK zaten oynayan videoyu
-   sessizden çıkarıyor ve bu, gerçek bir tıklama olduğu için HER ZAMAN
-   çalışır — yani ses her durumda en fazla bir tıkla garanti altında. */
-function useCadreVideoGate(videoRef:{current:HTMLVideoElement|null}){
-  const[progress,setProgress]=useState(0);
-  const[needsSoundPrompt,setNeedsSoundPrompt]=useState(false);
-  const stateRef=useRef({triggered:false,exhausted:false});
+/* Eskiden burada kaydırmayı kilitleyip videoyu bitene kadar bekleten bir
+   "sinematik kapı" vardı — kullanıcı "Randevu Al"a tıkladığında kilit hiç
+   çözülmediği için sayfa donmuş gibi kalıyordu (video bitene ya da 20sn'lik
+   güvenlik süresine kadar). Kaldırıldı: artık premium sitelerdeki gibi video
+   sayfa açılır açılmaz sessiz+döngülü+hızlı oynuyor, kaydırmayı hiçbir zaman
+   engellemiyor. */
+function useCadreAmbientVideo(videoRef:{current:HTMLVideoElement|null}){
   useEffect(()=>{
-    const st=stateRef.current;
-    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(reduced){st.exhausted=true;releaseCadreScrollLock();return}
-    const safety=setTimeout(()=>{st.exhausted=true;releaseCadreScrollLock()},20000);
-    const start=()=>{
-      if(st.triggered)return;
-      st.triggered=true;
-      const v=videoRef.current;if(!v)return;
-      const playPromise=v.play();
-      if(playPromise&&typeof playPromise.catch==='function'){
-        playPromise.catch(()=>{
-          try{v.muted=true;v.play().catch(()=>{})}catch{}
-          setNeedsSoundPrompt(true);
-        });
-      }
-    };
-    const onEnded=()=>{st.exhausted=true;releaseCadreScrollLock()};
-    const onTimeUpdate=()=>{
-      const v=videoRef.current;if(!v||!v.duration)return;
-      setProgress(Math.min(1,v.currentTime/v.duration));
-    };
-    const onWheel=(e:WheelEvent)=>{
-      if(st.exhausted)return;
-      e.preventDefault();
-      if(e.deltaY>0)start();
-    };
-    let touchY:number|null=null;
-    const onTouchStart=(e:TouchEvent)=>{touchY=st.exhausted?null:e.touches[0].clientY};
-    const onTouchMove=(e:TouchEvent)=>{
-      if(st.exhausted||touchY==null)return;
-      e.preventDefault();
-      if(touchY-e.touches[0].clientY>10)start();
-    };
-    const v=videoRef.current;
-    v?.addEventListener('ended',onEnded);
-    v?.addEventListener('timeupdate',onTimeUpdate);
-    window.addEventListener('wheel',onWheel,{passive:false});
-    window.addEventListener('touchstart',onTouchStart,{passive:true});
-    window.addEventListener('touchmove',onTouchMove,{passive:false});
-    return()=>{
-      clearTimeout(safety);
-      v?.removeEventListener('ended',onEnded);
-      v?.removeEventListener('timeupdate',onTimeUpdate);
-      window.removeEventListener('wheel',onWheel);
-      window.removeEventListener('touchstart',onTouchStart);
-      window.removeEventListener('touchmove',onTouchMove);
-    };
-  },[]);
-  const unmute=()=>{
     const v=videoRef.current;if(!v)return;
-    v.muted=false;
-    setNeedsSoundPrompt(false);
-  };
-  return{progress,needsSoundPrompt,unmute};
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    v.playbackRate=1.6;
+    v.play().catch(()=>{});
+  },[]);
 }
 
 function Cadre(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const videoRef=useRef<HTMLVideoElement>(null);
-  const{progress,needsSoundPrompt,unmute}=useCadreVideoGate(videoRef);
+  useCadreAmbientVideo(videoRef);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const aboutText=b.description||dec(b,'cd_aboutText','Her detay özenle düşünülür; her randevu, sessiz bir lüks anına dönüşür.');
   const aboutPhoto=galleryPhotos[0]||b.cover_url||'';
   const heroLabel=safeHeroLabel(b,'PREMIUM GÜZELLİK SALONU'); // bkz. safeHeroLabel tanımı — barber'a özel eski hero_label değerini gizler
   return <main id="top" className="tCadre">
-    <CadreScrollLockInit/>
     <div className="cdFrame" aria-hidden="true"/>
     <header className="cdNav">
       <a className="cdBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
@@ -2191,7 +2124,7 @@ function Cadre(p:P){
 
     <section className="cdHero">
       <div className="cdFrameWrap">
-        <video ref={videoRef} className="cdFrameImg" src="/cadre/hero.mp4" poster="/cadre/hero-poster.jpg" playsInline preload="auto" aria-hidden="true"/>
+        <video ref={videoRef} className="cdFrameImg" src="/cadre/hero.mp4" poster="/cadre/hero-poster.jpg" autoPlay muted loop playsInline preload="auto" aria-hidden="true"/>
       </div>
       <div className="cdHeroOverlay"/>
       <div className="cdHeroText">
@@ -2200,9 +2133,6 @@ function Cadre(p:P){
         {b.hero_description&&<p className="cdHeroDesc">{b.hero_description}</p>}
         <a className="cdBtnSolid" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>
       </div>
-      <div className="cdScrollHint" style={{opacity:progress>=1?0:1}}><span/>Sesli oynatmak için kaydırın</div>
-      <div className="cdProgressTrack" aria-hidden="true"><div className="cdProgressFill" style={{width:`${Math.round(progress*100)}%`}}/></div>
-      {needsSoundPrompt&&<button type="button" className="cdSoundBtn" onClick={unmute}>🔊 Sesi Aç</button>}
     </section>
 
     <section id="hakkimizda" className="cdAbout">
