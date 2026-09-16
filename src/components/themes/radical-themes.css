@@ -124,7 +124,7 @@
 .ksTeamGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,220px));justify-content:center;gap:24px}
 .ksTeamGrid article{text-align:center}
 .ksTeamPhoto{aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:#eeece2}
-.ksTeamPhoto img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+.ksTeamPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(1)}
 .ksTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;font:800 44px 'Plus Jakarta Sans',sans-serif;font-style:normal;color:var(--ks-muted)}
 .ksTeamGrid b{display:block;margin-top:14px;font-weight:800;font-size:15px}
 .ksTeamGrid small{display:block;margin-top:2px;color:var(--ks-muted);font-size:12px}
@@ -655,7 +655,7 @@
 .zfTeamGrid::-webkit-scrollbar{display:none}
 .zfTeamGrid article{text-align:center;flex:0 0 200px;scroll-snap-align:start}
 .zfTeamPhoto{aspect-ratio:3/4;background:#fdfcf9;padding:12px;box-sizing:border-box;border-radius:22px;box-shadow:0 20px 45px #00000026;overflow:hidden}
-.zfTeamPhoto img{width:100%;height:100%;object-fit:cover;border-radius:12px;animation:zfWave 7s ease-in-out infinite}
+.zfTeamPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:12px;animation:zfWave 7s ease-in-out infinite}
 .zfTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--zf-bg);border-radius:12px;font:500 40px 'Playfair Display',serif;color:var(--zf-gold);font-style:normal}
 @keyframes zfWave{
   0%,100%{clip-path:polygon(0 1.5%,100% 0%,100% 98.5%,0% 100%)}
@@ -1981,8 +1981,8 @@
 .afTeamTrack.fits{justify-content:center}
 .afTeamTrack::-webkit-scrollbar{display:none}
 .afTeamCard{scroll-snap-align:center;flex:0 0 auto;width:240px;text-align:center}
-.afTeamPhoto{width:100%;height:300px;border-radius:16px;overflow:hidden;background:#1a1a1a;margin-bottom:16px}
-.afTeamPhoto img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+.afTeamPhoto{width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;background:#1a1a1a;margin-bottom:16px}
+.afTeamPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(1) contrast(1.05)}
 .afTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;font-style:normal;font-size:40px;font-weight:800;color:var(--af-muted)}
 .afTeamCard b{display:block;color:#fff;font:700 16px 'Plus Jakarta Sans',Arial,sans-serif;margin-top:2px}
 .afTeamCard small{color:var(--af-muted);font-size:12.5px}
@@ -2141,7 +2141,7 @@
 .brTeamCard{background:var(--surface);border:var(--bd) solid var(--line);box-shadow:var(--shadow-sm);padding:0 0 16px;transition:transform .1s linear,box-shadow .1s linear}
 .brTeamCard:hover{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
 .brTeamPhoto{aspect-ratio:1/1;border-bottom:var(--bd) solid var(--line);overflow:hidden;background:var(--accent)}
-.brTeamPhoto img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08)}
+.brTeamPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(1) contrast(1.08)}
 .brTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;font:400 54px 'Archivo Black',sans-serif;font-style:normal;color:var(--accent-ink)}
 .brTeamCard b{display:block;margin:14px 16px 0;font:400 16px 'Archivo Black',sans-serif;text-transform:uppercase}
 .brTeamCard small{display:block;margin:4px 16px 0;font:700 11px 'Space Grotesk',sans-serif;letter-spacing:.08em;color:var(--muted)}
@@ -2305,7 +2305,7 @@
 .klTeamCard{background:var(--surface);border-radius:var(--r);box-shadow:var(--clay);padding:18px 18px 22px;text-align:center;transition:transform .35s var(--spring)}
 .klTeamCard:hover{transform:translateY(-6px)}
 .klTeamPhoto{aspect-ratio:1;border-radius:calc(var(--r) - 8px);overflow:hidden;background:var(--bg-lav);box-shadow:var(--clay-press)}
-.klTeamPhoto img{width:100%;height:100%;object-fit:cover}
+.klTeamPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .klTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;font:700 46px 'Quicksand',sans-serif;font-style:normal;color:var(--accent)}
 .klTeamCard b{display:block;margin-top:16px;font:700 16px 'Quicksand',sans-serif}
 .klTeamCard small{display:block;margin-top:3px;font-size:12px;color:var(--muted)}
@@ -2558,7 +2558,7 @@
   background:color-mix(in srgb,var(--brass) 30%,rgba(255,255,255,.5));box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .dfPolaroid{position:relative}
 .dfPolaroidPhoto{aspect-ratio:1;overflow:hidden;background:var(--rule)}
-.dfPolaroidPhoto img{width:100%;height:100%;object-fit:cover;filter:sepia(.28) contrast(1.04)}
+.dfPolaroidPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:sepia(.28) contrast(1.04)}
 .dfPolaroidPhoto i{width:100%;height:100%;display:grid;place-items:center;font:700 46px var(--slab);color:var(--muted)}
 .dfPolaroid figcaption{position:absolute;left:0;right:0;bottom:10px;text-align:center}
 .dfPolaroid figcaption b{display:block;font-family:var(--hand);font-size:22px;font-weight:700;color:var(--ink)}
@@ -3169,7 +3169,7 @@
 .vzTeam{padding:90px 5vw}
 .vzTeamGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,200px));justify-content:center;gap:34px;max-width:1000px;margin:0 auto;text-align:center}
 .vzTeamPhoto{aspect-ratio:3/4;border-radius:2px;overflow:hidden;background:var(--surface);margin-bottom:18px}
-.vzTeamPhoto img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.02);transition:filter .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
+.vzTeamPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(1) contrast(1.02);transition:filter .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
 .vzTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--mink);color:#fff;font:600 34px var(--font-head);font-style:normal}
 .vzTeamCard:hover .vzTeamPhoto img{filter:grayscale(0);transform:scale(1.04)}
 .vzTeamCard b{display:block;font-family:var(--font-name);font-size:23px;font-weight:600}
