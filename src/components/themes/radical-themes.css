@@ -91,7 +91,7 @@
 /* Hakkımızda */
 .ksAbout{padding:100px 6vw;background:var(--ks-surface);display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;max-width:1200px;margin:0 auto}
 .ksAboutPhoto{aspect-ratio:4/5;background:#eeece2;border-radius:14px;overflow:hidden}
-.ksAboutPhoto img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+.ksAboutPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(1)}
 .ksAboutPhoto i{width:100%;height:100%;display:grid;place-items:center;font-size:40px;font-style:normal;color:var(--ks-muted)}
 .ksAboutText small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ks-muted)}
 .ksAboutText h2{font:800 34px 'Plus Jakarta Sans','Inter',Arial,sans-serif;letter-spacing:-.5px;margin:12px 0 18px}
@@ -824,14 +824,14 @@
 .ipBtnOutline{border:1.5px solid var(--ip-gold);color:var(--ip-ink)!important;padding:15px 28px;border-radius:999px;font-weight:700;font-size:14px;transition:.15s}
 .ipBtnOutline:hover{background:var(--ip-gold);color:#fff!important}
 .ipHeroPhoto{aspect-ratio:4/5;border-radius:24px;overflow:hidden;box-shadow:0 40px 80px #0000001a}
-.ipHeroPhoto img,.ipHeroPhoto video{width:100%;height:100%;object-fit:cover}
+.ipHeroPhoto img,.ipHeroPhoto video{width:100%;height:100%;object-fit:cover;object-position:center top}
 .ipHeroPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--ip-surface);font-size:40px;font-style:normal;color:var(--ip-gold)}
 @media(max-width:900px){.ipHero{grid-template-columns:1fr;padding-top:40px}}
 
 /* Hoş geldiniz / intro */
 .ipIntro{max-width:1300px;margin:0 auto;padding:60px 6vw 110px;display:grid;grid-template-columns:.9fr 1.1fr;gap:6vw;align-items:center}
 .ipIntroPhoto{aspect-ratio:4/5;border-radius:24px;overflow:hidden}
-.ipIntroPhoto img{width:100%;height:100%;object-fit:cover}
+.ipIntroPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .ipIntroPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--ip-surface);font-size:40px;font-style:normal;color:var(--ip-gold)}
 .ipIntroText small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--ip-gold)}
 .ipIntroText h2{font:500 clamp(28px,3.4vw,42px)/1.25 'Playfair Display',Georgia,serif;margin:14px 0 20px}
@@ -1671,7 +1671,7 @@
 
 .nvAbout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:60px 6vw 100px;max-width:1300px;margin:0 auto}
 .nvAboutPhoto{border-radius:20px;overflow:hidden;aspect-ratio:4/5}
-.nvAboutPhoto img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.92) brightness(.9)}
+.nvAboutPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:saturate(.92) brightness(.9)}
 .nvAboutPhotoFallback{width:100%;height:100%;background:linear-gradient(150deg,var(--nv-bg3),var(--nv-bg))}
 .nvAboutText small{color:var(--nv-accent);font-weight:800;letter-spacing:2.5px;font-size:11px;font-family:'Inter',sans-serif}
 .nvAboutText h2{font-size:clamp(28px,3.4vw,42px);font-weight:500;margin:14px 0 20px;color:var(--nv-ink)}
@@ -1744,7 +1744,6 @@
   .nvNav nav{display:none}
   .nvManifesto{padding:14vh 6vw}
   .nvAbout{grid-template-columns:1fr;gap:30px;padding:30px 6vw 80px}
-  .nvAboutPhoto{aspect-ratio:16/10}
   .nvServiceGrid{grid-template-columns:1fr}
   .nvGalleryScene{height:70vh;margin:0 4vw}
   .nvFooterGrid{grid-template-columns:1fr 1fr;gap:24px}
@@ -1835,7 +1834,7 @@
 .cdAbout{display:grid;grid-template-columns:1fr 1.2fr;gap:70px;align-items:center;padding:120px 6vw;max-width:1300px;margin:0 auto}
 .cdAboutPhoto{position:relative;overflow:hidden;aspect-ratio:4/5}
 .cdAboutPhoto::after{content:'';position:absolute;inset:10px;border:1px solid rgba(253,246,240,.55);pointer-events:none}
-.cdAboutPhoto img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9)}
+.cdAboutPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:saturate(.9)}
 .cdAboutPhotoFallback{width:100%;height:100%;background:linear-gradient(150deg,var(--cd-surface),var(--cd-champagne),var(--cd-peach))}
 .cdAboutText small{color:var(--cd-gold);font-weight:700;letter-spacing:2.5px;font-size:11px;text-transform:uppercase}
 .cdAboutText h2{font-size:clamp(30px,3.6vw,46px);font-weight:500;font-style:italic;color:var(--cd-ink);margin:16px 0 22px;line-height:1.2}
@@ -1910,7 +1909,6 @@
 @media(max-width:900px){
   .cdNav nav{display:none}
   .cdAbout{grid-template-columns:1fr;gap:34px;padding:80px 6vw}
-  .cdAboutPhoto{aspect-ratio:16/10}
   .cdServiceGrid{grid-template-columns:1fr}
   .cdFooterGrid{grid-template-columns:1fr 1fr;gap:24px}
 }
@@ -2116,9 +2114,9 @@
 .brHero p{margin:24px 0 0;max-width:46ch;font-size:clamp(15px,1.6vw,18px);line-height:1.6;font-weight:500;color:var(--muted)}
 .brHeroActions{display:flex;flex-wrap:wrap;gap:16px;margin-top:34px}
 .brHeroMediaBox{border:var(--bd) solid var(--line);box-shadow:var(--shadow-lg);background:var(--accent);aspect-ratio:4/5;overflow:hidden}
-.brHeroMedia{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08)}
+.brHeroMedia{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:grayscale(1) contrast(1.08)}
 .brHeroMark{width:100%;height:100%;display:grid;place-items:center;font:400 clamp(80px,14vw,180px) 'Archivo Black',sans-serif;font-style:normal;color:var(--accent-ink)}
-@media(max-width:860px){.brHero{grid-template-columns:1fr}.brHeroMediaBox{aspect-ratio:16/10;max-height:58vh}}
+@media(max-width:860px){.brHero{grid-template-columns:1fr}.brHeroMediaBox{aspect-ratio:4/5;max-height:58vh}}
 
 /* HİZMETLER — saf CSS sticky stacking cards */
 .brServices{padding:clamp(56px,8vw,110px) 0}
@@ -2272,8 +2270,8 @@
 .klHero p{margin:22px 0 0;max-width:44ch;font-size:clamp(15px,1.6vw,18px);line-height:1.7;color:var(--muted)}
 .klHeroActions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
 .klHeroMediaBox{position:relative;z-index:1;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--clay);background:var(--bg-lav)}
-.klHeroMedia{width:100%;height:100%;object-fit:cover;display:block}
-@media(max-width:880px){.klHero{grid-template-columns:1fr}.klHeroMediaBox{aspect-ratio:16/11;max-height:56vh}}
+.klHeroMedia{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+@media(max-width:880px){.klHero{grid-template-columns:1fr}.klHeroMediaBox{aspect-ratio:4/5;max-height:56vh}}
 
 /* HİZMETLER */
 .klServices{padding:clamp(56px,8vw,104px) 0}
@@ -2296,7 +2294,7 @@
 .klAboutText h2{font-size:clamp(24px,3.4vw,38px)}
 .klAboutText p{margin:16px 0 0;font-size:15px;line-height:1.75;color:var(--muted)}
 .klAboutPhoto{aspect-ratio:1;border-radius:var(--r);overflow:hidden;box-shadow:var(--clay-sm)}
-.klAboutPhoto img{width:100%;height:100%;object-fit:cover;display:block}
+.klAboutPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 @media(max-width:820px){.klAboutCard{grid-template-columns:1fr}}
 
 /* EKİP */
@@ -3121,7 +3119,7 @@
 .vzHero p{font-family:var(--font-body);color:var(--muted);font-size:16px;line-height:1.7;margin:22px 0 0;max-width:46ch}
 .vzHeroActions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
 .vzHeroMedia{position:relative;aspect-ratio:4/5;border-radius:2px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(36,31,28,.35)}
-.vzHeroMedia img{width:100%;height:100%;object-fit:cover}
+.vzHeroMedia img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .vzHeroMedia:before{content:'';position:absolute;inset:0;border:1px solid rgba(255,255,255,.5);margin:14px;pointer-events:none}
 @media(max-width:900px){.vzHero{grid-template-columns:1fr}.vzHeroMedia{order:-1;aspect-ratio:4/5}}
 
@@ -3213,12 +3211,12 @@
 /* SERVICE DETAIL SAYFASI — Cinzel/Tenor Sans, timeline çizgi animasyonu */
 .vzDetailPage .vzDetailHero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,60px);align-items:center;padding:clamp(40px,7vw,90px) 5vw 70px}
 .vzDetailHeroMedia{aspect-ratio:4/5;border-radius:2px;overflow:hidden}
-.vzDetailHeroMedia img{width:100%;height:100%;object-fit:cover}
+.vzDetailHeroMedia img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .vzDetailHeroText small{display:block;font:700 11px var(--font-label);letter-spacing:.18em;color:var(--gold);margin-bottom:14px}
 .vzDetailHeroText h1{font-size:clamp(32px,4.6vw,52px)}
 .vzDetailMeta{display:flex;gap:18px;align-items:center;margin:20px 0 30px;font-family:var(--font-desc);color:var(--muted);font-size:14px}
 .vzDetailMeta b{font-family:var(--font-label);color:var(--text);font-size:16px}
-@media(max-width:860px){.vzDetailPage .vzDetailHero{grid-template-columns:1fr}.vzDetailHeroMedia{order:-1;aspect-ratio:16/10}}
+@media(max-width:860px){.vzDetailPage .vzDetailHero{grid-template-columns:1fr}.vzDetailHeroMedia{order:-1;aspect-ratio:4/5}}
 
 .vzTimeline{position:relative;max-width:760px;margin:0 auto;padding:20px 5vw 100px 64px}
 .vzTimelineLine{position:absolute;left:calc(5vw + 19px);top:6px;bottom:20px;width:2px;background:var(--line)}
