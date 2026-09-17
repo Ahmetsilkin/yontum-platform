@@ -3780,7 +3780,7 @@ function Taze(p:P){
     </section>
 
     <section className="tzMessageSection">
-      <Reveal as="div" className="tzDividerWrap"><h2 className="tzDivider center">mesaj</h2></Reveal>
+      <Reveal as="div" className="tzDividerWrap"><h2 className="tzDivider center">Bize Ulaşın</h2></Reveal>
       <Reveal i={1} className="tzMessageFormWrap">
         <ContactMessageForm businessId={b.id} prefix="tz"/>
       </Reveal>
