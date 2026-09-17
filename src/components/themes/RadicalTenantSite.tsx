@@ -3525,6 +3525,34 @@ function sofraPrimaryCta(b:any):{label:string;href:string;external:boolean}|null
   if(b.phone)return{label:'Bizi Arayın',href:`tel:${String(b.phone).replace(/\s+/g,'')}`,external:false};
   return null;
 }
+/* Randevu sistemi olmayan restoran temaları (Sofra/Taze) için paylaşılan
+   "bize mesaj gönder" formu — zaten var olan /api/contact-messages'a POST
+   eder (Zarafet'in ZarafetContact'ıyla aynı uç nokta), mesajlar işletme
+   panelindeki "Mesajlar" sekmesinde (contact_messages tablosu) çıkar.
+   `prefix` ile temaya özgü sınıflar üretilir (sf/tz) — buton için de aynı
+   temanın zaten var olan `${prefix}BtnSolid` sınıfı yeniden kullanılıyor. */
+function ContactMessageForm({businessId,prefix}:{businessId:string;prefix:string}){
+  const[sent,setSent]=useState(false);
+  const[sending,setSending]=useState(false);
+  const[error,setError]=useState('');
+  async function submit(e:React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+    const form=e.currentTarget,f=new FormData(form);
+    setSending(true);setError('');
+    const r=await fetch('/api/contact-messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({businessId,name:String(f.get('name')||''),message:String(f.get('message')||'')})});
+    const j=await r.json();
+    setSending(false);
+    if(!r.ok){setError(j.error||'Mesaj gönderilemedi.');return}
+    setSent(true);form.reset();
+  }
+  if(sent)return <div className={`${prefix}ContactSent`}><span>✓</span><p>Mesajın iletildi, en kısa sürede sana dönüş yapacağız.</p></div>;
+  return <form onSubmit={submit} className={`${prefix}ContactForm`}>
+    <input className={`${prefix}ContactInput`} name="name" placeholder="Adın" required maxLength={80}/>
+    <textarea className={`${prefix}ContactInput ${prefix}ContactTextarea`} name="message" placeholder="Mesajın" required maxLength={1000} rows={4}/>
+    {error&&<p className={`${prefix}ContactErr`}>{error}</p>}
+    <button type="submit" className={`${prefix}BtnSolid`} disabled={sending}>{sending?'Gönderiliyor…':'Gönder'}</button>
+  </form>;
+}
 function Sofra(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
@@ -3618,6 +3646,16 @@ function Sofra(p:P){
           {b.google_maps_url&&<a className="sfContactRow sfDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
         </div>
       </div>
+    </section>
+
+    <section className="sfMessageSection">
+      <Reveal className="sfSectionHead">
+        <small>MESAJ</small>
+        <h2>Bize Ulaş</h2>
+      </Reveal>
+      <Reveal i={1} className="sfMessageFormWrap">
+        <ContactMessageForm businessId={b.id} prefix="sf"/>
+      </Reveal>
     </section>
 
     <footer className="sfFooter">
@@ -3737,6 +3775,13 @@ function Taze(p:P){
           {b.google_maps_url&&<a className="tzContactRow tzDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
         </div>
       </div>
+    </section>
+
+    <section className="tzMessageSection">
+      <Reveal as="div" className="tzDividerWrap"><h2 className="tzDivider center">mesaj</h2></Reveal>
+      <Reveal i={1} className="tzMessageFormWrap">
+        <ContactMessageForm businessId={b.id} prefix="tz"/>
+      </Reveal>
     </section>
 
     <footer className="tzFooter">
