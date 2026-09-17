@@ -10,8 +10,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -3791,6 +3791,230 @@ function Taze(p:P){
       <div className="tzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
+}
+/* ================= EMBER — Awwwards-caliber scroll-driven sales showcase,
+   ported from the standalone scrollcraft build (scrollcraft/builds/ember,
+   gitignored generation workspace). Engine files (scrollcraft.js/.css) are
+   served as-is from /ember/ and never edited; they're loaded client-side
+   only for this theme and mounted on this component's own root, themed
+   entirely via --sc-* tokens scoped to .tEmber (never :root — the engine's
+   own file sets :root defaults, and only a same-element override reliably
+   beats that regardless of stylesheet load order). Hero: businesses without
+   their own cover photo get the shared scrub-video hero (the milkshake
+   footage supplied for the pitch); the moment a business sets cover_url,
+   that photo replaces it with a simple static hero instead — real per-
+   business scrub encoding (mobile clip + poster + dense-GOP) isn't
+   something we generate per tenant, so this is the deliberate fallback.
+   The signature move (menu tabs regrade the room's light temperature) is
+   generalized from 4 hardcoded meal-times to however many real
+   menu_categories the business has, interpolating cool→warm across them. */
+function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:number){
+  useEffect(()=>{
+    const root=rootRef.current;
+    if(!root)return;
+    let cancelled=false;
+    function initRelight(){
+      const section=root!.querySelector('#emMenu') as HTMLElement|null;
+      const stage=section?.querySelector('.emMenuStage') as HTMLElement|null;
+      if(!section||!stage||catCount<=0)return;
+      const tabs=Array.from(stage.querySelectorAll('.emMenuTabs button')) as HTMLButtonElement[];
+      const panels=Array.from(stage.querySelectorAll('.emMenuPanel')) as HTMLElement[];
+      const n=catCount;
+      function paint(i:number){
+        const t=n<=1?0:i/(n-1);
+        stage!.style.setProperty('--em-relight-hue',String(205-t*190));
+        stage!.style.setProperty('--em-relight-x',(20+t*60)+'%');
+        stage!.style.setProperty('--em-relight-y',(t*30)+'%');
+        stage!.style.setProperty('--em-relight-sat',(35+t*25)+'%');
+        stage!.style.setProperty('--em-relight-light',(18+t*10)+'%');
+        tabs.forEach((btn,bi)=>btn.classList.toggle('is-active',bi===i));
+        panels.forEach((p,pi)=>p.classList.toggle('is-active',pi===i));
+      }
+      const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function progressFromScroll(){
+        const rect=section!.getBoundingClientRect();
+        const travel=rect.height-window.innerHeight;
+        if(travel<=0)return 0;
+        return Math.min(1,Math.max(0,-rect.top/travel));
+      }
+      let ticking=false;
+      function onScroll(){
+        if(ticking)return;
+        ticking=true;
+        requestAnimationFrame(()=>{
+          const idx=Math.min(n-1,Math.floor(progressFromScroll()*n));
+          paint(idx);
+          ticking=false;
+        });
+      }
+      if(!reduced){
+        window.addEventListener('scroll',onScroll,{passive:true});
+        onScroll();
+      }else paint(0);
+      tabs.forEach((btn,i)=>btn.addEventListener('click',()=>{
+        if(reduced){paint(i);return}
+        const rect=section!.getBoundingClientRect();
+        const travel=rect.height-window.innerHeight;
+        const targetP=(i+0.5)/n;
+        window.scrollTo({top:window.scrollY+rect.top+targetP*travel,behavior:'smooth'});
+      }));
+    }
+    function boot(){
+      if(cancelled||!root)return;
+      const w=window as any;
+      if(w.ScrollCraft&&!root.dataset.scMounted){w.ScrollCraft.mount(root);root.dataset.scMounted='1'}
+      initRelight();
+    }
+    const w=window as any;
+    if(w.ScrollCraft)boot();
+    else{
+      let script=document.querySelector('script[data-ember-engine]') as HTMLScriptElement|null;
+      if(!script){
+        script=document.createElement('script');
+        script.src='/ember/scrollcraft.js';
+        script.dataset.emberEngine='true';
+        document.body.appendChild(script);
+      }
+      script.addEventListener('load',boot);
+    }
+    return()=>{cancelled=true};
+  },[rootRef,catCount]);
+}
+function Ember(p:P){
+  const{b}=p;
+  const rootRef=useRef<HTMLElement|null>(null);
+  const hourRows=groupedHourRows(p.hours||[]);
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean).slice(0,8);
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=p.menuItems||[];
+  const cta=sofraPrimaryCta(b);
+  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
+  const hasCover=!!b.cover_url;
+  useEmberEngine(rootRef,categories.length);
+  return <>
+    <link rel="stylesheet" href="/ember/scrollcraft.css" precedence="ember"/>
+    <main id="top" className="tEmber" ref={rootRef}>
+      <span data-sc-progress></span>
+      <div className="sc-grain" aria-hidden="true"/>
+      <a className="emSkip" href="#emMenu">Hikayeyi Atla</a>
+
+      <header className="emNav">
+        <a className="emBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+        <a className="emNavBtn" href="#emReserve">{cta?.label||'İletişim'}</a>
+      </header>
+
+      {hasCover?
+        <section className="emHeroPhoto" style={{backgroundImage:`url(${b.cover_url})`}}>
+          <div className="emHeroPhotoScrim"/>
+          <div className="emHeroPhotoText">
+            <p className="emEyebrow">{b.hero_label||'Lezzetin olduğu yerde'}</p>
+            <h1 className="emHeroPhotoTitle">{b.hero_title||'Sofran burada'}<br/><em>{b.hero_highlight||'seni bekliyor.'}</em></h1>
+            {b.hero_description&&<p className="emHeroPhotoDesc">{b.hero_description}</p>}
+            <div className="emHeroPhotoBtns">
+              <a className="emBtnSolid" href="#emMenu">Menüyü İncele</a>
+              {cta&&<a className="emBtnOutline" {...ctaProps(cta)}>{cta.label}</a>}
+            </div>
+          </div>
+        </section>
+      :
+        <section data-sc-act="scrub" data-sc-span="4.6" data-sc-dwell="0.4" data-sc-drift="#0B0806">
+          <div data-sc-stage>
+            <img className="sc-stage__poster" src="/ember/hero-poster.jpg" alt=""/>
+            <video data-sc-scrub data-sc-src="/ember/hero.mp4" data-sc-src-mobile="/ember/hero-m.mp4" muted playsInline/>
+            <div className="sc-scrim sc-scrim--lead" aria-hidden="true"/>
+            <div className="sc-copy sc-copy--lead emHeroCopy" data-sc-cue="0 1 0 0">
+              <p className="emEyebrow">{b.hero_label||'Lezzetin olduğu yerde'}</p>
+            </div>
+            <div className="sc-copy sc-copy--lead emHeroCopy" data-sc-cue="0.34 1" style={{top:'auto',bottom:'14%'}}>
+              <h1 className="sc-display sc-display--xl" data-sc-kinetic="lines">{b.hero_title||'Sofran burada'}<br/>{b.hero_highlight||'seni bekliyor.'}</h1>
+            </div>
+          </div>
+        </section>
+      }
+
+      <section id="emMenu" data-sc-act="pin" data-sc-span="3.6" data-sc-drift="#15100B">
+        <div data-sc-stage className="emMenuStage">
+          <div className="emMenuRelight" aria-hidden="true"/>
+          <div className="emMenuHead" data-sc-cue="0 1 0 0">
+            <p className="emEyebrow">Mönü</p>
+            <h2 className="sc-display sc-display--lg">{dec(b,'em_menuTitle','Gün boyu, aynı özenle.')}</h2>
+            {categories.length>0&&<nav className="emMenuTabs" aria-label="Mönü kategorisi">
+              {categories.map((c:any,i:number)=><button type="button" key={c.id} className={i===0?'is-active':''}>{c.name}</button>)}
+            </nav>}
+          </div>
+          <div className="emMenuPanels">
+            {categories.length===0&&<p className="emMenuEmpty">Mönü yakında eklenecek.</p>}
+            {categories.map((c:any,ci:number)=><div key={c.id} className={`emMenuPanel${ci===0?' is-active':''}`}>
+              {items.filter((it:any)=>it.category_id===c.id).map((it:any)=><div className="emMenuItem" key={it.id}>
+                <div className="emMenuItemRow"><span className="emMenuItemName">{it.name}</span><span className="emMenuItemDots"/>{b.show_prices!==false&&it.price!=null&&<span className="emMenuItemPrice">₺{Number(it.price).toLocaleString('tr-TR')}</span>}</div>
+                {it.description&&<p className="emMenuItemDesc">{it.description}</p>}
+              </div>)}
+            </div>)}
+          </div>
+        </div>
+      </section>
+
+      {galleryPhotos.length>0&&<section id="emGallery" className="sc-section emGalleryWrap" data-sc-act="flow" data-sc-drift="#100C08">
+        <div className="sc-wrap sc-stack emGalleryHead" data-sc-in data-sc-stagger="70">
+          <h2 className="sc-display sc-display--md">{dec(b,'em_galleryTitle','Aynı mekan, aynı ruh.')}</h2>
+        </div>
+        <div className="emGalleryMosaic" data-sc-in data-sc-stagger="60">
+          {galleryPhotos.map((src:string,i:number)=><figure key={i}><img src={src} alt={b.name} loading="lazy"/></figure>)}
+        </div>
+      </section>}
+
+      <section id="emReserve" data-sc-act="pin" data-sc-span="1.7" data-sc-drift="#0B0806">
+        <div data-sc-stage className="emClose" data-sc-spotlight>
+          <div className="emCloseInner">
+            <h2 className="sc-display sc-display--lg" data-sc-cue="0.05" data-sc-kinetic="lines">{dec(b,'em_closeTitle','Sofran hazır.')}</h2>
+            {cta?<a className="emCloseCta" data-sc-magnet="0.26" data-sc-cue="0.05" data-sc-rise="0" {...ctaProps(cta)}>{cta.label}</a>
+                :<a className="emCloseCta" data-sc-magnet="0.26" data-sc-cue="0.05" data-sc-rise="0" href="#emContact">Bize Ulaşın</a>}
+          </div>
+          <footer className="emFoot">
+            {b.address&&<span>{b.address}</span>}
+            {hourRows[0]&&<span>{hourRows[0].value}</span>}
+          </footer>
+        </div>
+      </section>
+
+      <OwnRatings businessId={b.id}/>
+      <GoogleReviews businessId={b.id}/>
+
+      <section id="emContact" className="emContact">
+        <Reveal className="emSectionHead">
+          <small>İLETİŞİM</small>
+          <h2>Bize ulaşın.</h2>
+        </Reveal>
+        <div className="emContactGrid">
+          <div className="emContactHours">
+            <h4>Çalışma Saatleri</h4>
+            {hourRows.map((r,i)=><div key={i} className="emHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
+          </div>
+          <div className="emContactInfo">
+            {b.address&&<p className="emContactRow">{b.address}</p>}
+            {b.phone&&<a className="emContactRow" href={`tel:${String(b.phone).replace(/\s+/g,'')}`}><WaIcon/>{b.phone}</a>}
+            {b.instagram&&<a className="emContactRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a>}
+            {b.google_maps_url&&<a className="emContactRow emDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
+          </div>
+        </div>
+      </section>
+
+      <section className="emMessageSection">
+        <Reveal className="emSectionHead">
+          <small>MESAJ</small>
+          <h2>Bize Ulaşın</h2>
+        </Reveal>
+        <Reveal i={1} className="emMessageFormWrap">
+          <ContactMessageForm businessId={b.id} prefix="em"/>
+        </Reveal>
+      </section>
+
+      <footer className="emFooter">
+        <div className="emFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
+        <div className="emFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+      </footer>
+    </main>
+  </>;
 }
 function IgIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>}
 function WaIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>}

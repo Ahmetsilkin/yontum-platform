@@ -3478,3 +3478,120 @@
   .tzPill{position:static}
 }
 @media(prefers-reduced-motion:reduce){.tzGalleryItem img{transition:none}}
+
+/* ================= EMBER — scroll-driven showcase theme. Tokens are scoped
+   to .tEmber (not :root): the engine file (scrollcraft.css, loaded raw from
+   /ember/) sets its own :root defaults, and a same-element override is the
+   only thing guaranteed to beat that regardless of which stylesheet the
+   browser happens to parse last. Everything below is our own markup's CSS;
+   engine-owned classes (sc-*) are themed purely through these tokens. */
+.tEmber{
+  --sc-canvas:#0B0806;--sc-surface:#17110C;--sc-ink:#F3E8D8;--sc-ink-soft:#A8967D;
+  --sc-accent:#C9963E;--sc-accent-ink:#1A1209;
+  --sc-font-display:'Instrument Serif',Georgia,serif;--sc-font-text:'Archivo',system-ui,sans-serif;
+  --em-line:rgba(243,232,216,.12);--em-dot:rgba(243,232,216,.32);
+  background:var(--sc-canvas);color:var(--sc-ink);font-family:var(--sc-font-text);
+}
+
+.tEmber .emSkip{position:fixed;top:0;left:0;z-index:100;transform:translateY(-120%);background:var(--sc-accent);color:var(--sc-accent-ink);font-family:var(--sc-font-text);font-weight:700;font-size:.85rem;padding:0 1.4em;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center;margin:.5rem;border-radius:6px;transition:transform .18s cubic-bezier(.2,.7,.2,1)}
+.tEmber .emSkip:focus{transform:translateY(0);outline:2px solid var(--sc-ink);outline-offset:2px}
+.tEmber #emMenu,.tEmber #emGallery,.tEmber #emReserve{scroll-margin-top:calc(88px + env(safe-area-inset-top,0px))}
+
+.tEmber .emNav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:.75rem clamp(1.25rem,5vw,5.5rem)}
+.tEmber .emBrand{display:inline-flex;align-items:center;gap:10px;font-family:var(--sc-font-display);font-style:italic;font-size:1.5rem;color:var(--sc-ink);letter-spacing:.01em}
+.tEmber .emBrand img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+.tEmber .emBrand i{width:34px;height:34px;border-radius:50%;background:var(--sc-accent);color:var(--sc-accent-ink);display:inline-grid;place-items:center;font-style:normal;font-family:var(--sc-font-text);font-weight:700}
+.tEmber .emNavBtn{font-family:var(--sc-font-text);font-size:.8rem;font-weight:600;letter-spacing:.04em;color:var(--sc-ink);border:1px solid rgba(243,232,216,.4);border-radius:999px;padding:.6em 1.2em;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;transition:border-color .16s ease,background .16s ease}
+.tEmber .emNavBtn:hover{border-color:var(--sc-accent);background:rgba(201,150,62,.12)}
+
+.tEmber .emEyebrow{font-family:var(--sc-font-text);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sc-accent);margin:0 0 1rem}
+.tEmber .emHeroCopy h1{max-width:16ch}
+.tEmber .sc-scrim--lead{background:linear-gradient(to top right,color-mix(in oklab,var(--sc-canvas) 97%,transparent) 0%,color-mix(in oklab,var(--sc-canvas) 85%,transparent) 34%,color-mix(in oklab,var(--sc-canvas) 50%,transparent) 58%,transparent 80%)}
+
+/* static-photo hero (a business's own cover_url replaces the shared clip) */
+.tEmber .emHeroPhoto{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background-size:cover;background-position:center;padding:0 clamp(1.25rem,5vw,5.5rem) 8vh}
+.tEmber .emHeroPhotoScrim{position:absolute;inset:0;background:linear-gradient(to top,color-mix(in oklab,var(--sc-canvas) 92%,transparent) 0%,color-mix(in oklab,var(--sc-canvas) 55%,transparent) 40%,transparent 75%)}
+.tEmber .emHeroPhotoText{position:relative;z-index:1;max-width:640px}
+.tEmber .emHeroPhotoTitle{font-family:var(--sc-font-display);font-weight:400;font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.05;margin:0;color:var(--sc-ink)}
+.tEmber .emHeroPhotoTitle em{font-style:italic;color:var(--sc-accent)}
+.tEmber .emHeroPhotoDesc{color:var(--sc-ink-soft);font-size:15px;max-width:52ch;margin:18px 0 0}
+.tEmber .emHeroPhotoBtns{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.tEmber .emBtnSolid{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;background:var(--sc-accent);color:var(--sc-accent-ink)!important;font-family:var(--sc-font-text);font-weight:700;font-size:.85rem;letter-spacing:.02em;padding:0 1.6em;border-radius:999px;transition:filter .18s ease}
+.tEmber .emBtnSolid:hover{filter:brightness(1.08)}
+.tEmber .emBtnOutline{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;border:1px solid rgba(243,232,216,.4);color:var(--sc-ink)!important;font-family:var(--sc-font-text);font-weight:600;font-size:.85rem;padding:0 1.6em;border-radius:999px;transition:border-color .16s ease}
+.tEmber .emBtnOutline:hover{border-color:var(--sc-accent)}
+
+/* ---------- menu act — signature move: category index regrades the ground ---------- */
+.tEmber .emMenuStage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(4.5rem,9vw,11rem) clamp(1.25rem,5vw,5.5rem);background:var(--sc-canvas);overflow:hidden}
+.tEmber .emMenuRelight{position:absolute;inset:0;z-index:0;opacity:.55;transition:background 1.1s ease,opacity 1.1s ease;background:radial-gradient(120% 90% at var(--em-relight-x,20%) var(--em-relight-y,0%),hsl(var(--em-relight-hue,205) var(--em-relight-sat,35%) var(--em-relight-light,18%)) 0%,#100c08 60%)}
+.tEmber .emMenuHead{position:relative;z-index:2;text-align:center;margin-bottom:3rem}
+.tEmber .emMenuHead h2{margin:.5rem 0 2rem}
+.tEmber .emMenuTabs{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:.5rem;padding:.25rem;border:1px solid var(--em-line);border-radius:999px}
+.tEmber .emMenuTabs button{font-family:var(--sc-font-text);font-size:.82rem;font-weight:600;letter-spacing:.03em;color:var(--sc-ink-soft);padding:.7em 1.4em;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;transition:color .18s ease,background .18s ease}
+.tEmber .emMenuTabs button:hover{color:var(--sc-ink)}
+.tEmber .emMenuTabs button.is-active{color:var(--sc-accent-ink);background:var(--sc-accent)}
+.tEmber .emMenuTabs button:focus-visible{outline:2px solid var(--sc-accent);outline-offset:2px}
+.tEmber .emMenuPanels{position:relative;z-index:2;width:min(720px,90vw)}
+.tEmber .emMenuPanel{display:none;grid-template-columns:1fr;gap:1.5rem}
+.tEmber .emMenuPanel.is-active{display:grid}
+.tEmber .emMenuEmpty{position:relative;z-index:2;color:var(--sc-ink-soft)}
+.tEmber .emMenuItem{display:grid;gap:.25rem}
+.tEmber .emMenuItemRow{display:flex;align-items:baseline;gap:.5rem}
+.tEmber .emMenuItemName{font-family:var(--sc-font-text);font-weight:700;font-size:1.02rem;color:var(--sc-ink)}
+.tEmber .emMenuItemDots{flex:1;border-bottom:1px dotted var(--em-dot);margin-bottom:.35em;min-width:2rem}
+.tEmber .emMenuItemPrice{font-family:var(--sc-font-text);font-weight:600;color:var(--sc-accent);white-space:nowrap}
+.tEmber .emMenuItemDesc{font-family:var(--sc-font-text);font-size:.84rem;color:var(--sc-ink-soft);margin:0;max-width:56ch}
+
+/* ---------- gallery act ---------- */
+.tEmber .emGalleryHead{max-width:40ch;margin:0 0 3rem}
+.tEmber .emGalleryMosaic{display:grid;gap:.75rem;grid-template-columns:repeat(6,1fr);max-width:1280px;margin:0 auto}
+.tEmber .emGalleryMosaic figure{margin:0;border-radius:4px;overflow:hidden;position:relative;background:var(--sc-surface)}
+.tEmber .emGalleryMosaic figure img{display:block;width:100%;height:100%;object-fit:cover}
+.tEmber .emGalleryMosaic figure:nth-child(1){grid-column:span 4;grid-row:span 2;aspect-ratio:4/3}
+.tEmber .emGalleryMosaic figure:nth-child(2){grid-column:span 2;aspect-ratio:1/1}
+.tEmber .emGalleryMosaic figure:nth-child(3){grid-column:span 2;aspect-ratio:1/1}
+.tEmber .emGalleryMosaic figure:nth-child(4){grid-column:span 3;aspect-ratio:4/3}
+.tEmber .emGalleryMosaic figure:nth-child(5){grid-column:span 3;aspect-ratio:4/3}
+.tEmber .emGalleryMosaic figure:nth-child(n+6){grid-column:span 2;aspect-ratio:1/1}
+@media(max-width:760px){
+  .tEmber .emGalleryMosaic{grid-template-columns:repeat(2,1fr)}
+  .tEmber .emGalleryMosaic figure{grid-column:span 1!important;grid-row:auto!important;aspect-ratio:1/1!important}
+}
+
+/* ---------- close act ---------- */
+.tEmber .emClose{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;background:var(--sc-canvas)}
+.tEmber .emCloseInner{max-width:30ch}
+.tEmber .emCloseInner h2{margin:0 0 2rem}
+.tEmber .emCloseCta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;font-family:var(--sc-font-text);font-weight:700;font-size:.9rem;letter-spacing:.03em;color:var(--sc-accent-ink)!important;background:var(--sc-accent);padding:1em 2.2em;border-radius:999px}
+.tEmber .emCloseCta:focus-visible{outline:2px solid var(--sc-ink);outline-offset:3px}
+.tEmber .emFoot{position:absolute;left:0;right:0;bottom:1.5rem;display:flex;justify-content:center;gap:1.5rem;font-family:var(--sc-font-text);font-size:.74rem;color:var(--sc-ink-soft)}
+
+/* ---------- plain (non-engine) sections: contact + message form + footer ---------- */
+.tEmber .emSectionHead{text-align:center;max-width:640px;margin:0 auto 46px}
+.tEmber .emSectionHead small{display:block;color:var(--sc-accent);font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:12px;text-transform:uppercase}
+.tEmber .emSectionHead h2{font-family:var(--sc-font-display);font-size:clamp(26px,3vw,38px);margin:0;color:var(--sc-ink)}
+.tEmber .emContact{padding:110px 6vw;background:var(--sc-surface)}
+.tEmber .emContactGrid{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:900px;margin:0 auto}
+.tEmber .emContactHours h4{font-size:14px;text-transform:uppercase;letter-spacing:1px;margin:0 0 18px;color:var(--sc-ink-soft)}
+.tEmber .emHoursRow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--em-line);font-size:14px;color:var(--sc-ink)}
+.tEmber .emContactInfo{display:flex;flex-direction:column;gap:14px}
+.tEmber .emContactRow{display:flex;align-items:center;gap:10px;color:var(--sc-ink);font-size:14.5px}
+.tEmber .emContactRow svg{color:var(--sc-accent);flex:none}
+.tEmber .emDirectionsLink{color:var(--sc-accent)!important;font-weight:600}
+.tEmber .emMessageSection{padding:0 6vw 130px;max-width:640px;margin:0 auto}
+.tEmber .emContactForm{display:flex;flex-direction:column;gap:14px}
+.tEmber .emContactInput{background:var(--sc-canvas);border:1px solid var(--em-line);border-radius:2px;padding:14px 16px;font-family:inherit;font-size:14px;color:var(--sc-ink)}
+.tEmber .emContactInput::placeholder{color:var(--sc-ink-soft)}
+.tEmber .emContactTextarea{resize:vertical;min-height:110px}
+.tEmber .emContactErr{color:#e08a7a;font-size:13px;margin:0}
+.tEmber .emContactSent{text-align:center;padding:40px 20px;background:var(--sc-canvas);border:1px solid var(--em-line);border-radius:4px}
+.tEmber .emContactSent span{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--sc-accent);color:var(--sc-accent-ink);font-size:18px;margin-bottom:14px}
+.tEmber .emContactSent p{color:var(--sc-ink-soft);margin:0}
+.tEmber .emFooter{display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 6vw;text-align:center;background:var(--sc-canvas);color:var(--sc-ink)}
+.tEmber .emFooterBrand b{font-size:19px;font-family:var(--sc-font-display);font-style:italic;font-weight:400}
+.tEmber .emFooterBrand p{color:var(--sc-ink-soft);font-size:13px;margin:6px 0 0}
+.tEmber .emFooterBottom{color:var(--sc-ink-soft);font-size:12px}
+
+@media(max-width:760px){
+  .tEmber .emContactGrid{grid-template-columns:1fr;gap:34px}
+}
