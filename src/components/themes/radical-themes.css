@@ -3111,7 +3111,7 @@
 
 /* GALLERY — dergi mizanpajı, asimetrik ızgara + öncesi/sonrası */
 .vzGallery{padding:90px 5vw}
-.vzGalleryGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;max-width:1280px;margin:0 auto}
+.vzGalleryGrid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:190px;grid-auto-flow:dense;gap:18px;max-width:1280px;margin:0 auto}
 .vzGalleryItem{margin:0;border-radius:2px;overflow:hidden;position:relative}
 .vzGalleryItem:nth-child(5n+1){grid-column:span 4;grid-row:span 2}
 .vzGalleryItem:nth-child(5n+2){grid-column:span 2}
@@ -3340,21 +3340,15 @@
 .tzBtnOutline{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid rgba(255,255,255,.65);color:#fff!important;font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;padding:13.5px 28px;border-radius:999px;transition:background .18s ease}
 .tzBtnOutline:hover{background:rgba(255,255,255,.14)}
 
-.tzHero{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;padding-bottom:120px}
+.tzHero{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:110px 0 140px}
 .tzHeroPhotos{position:absolute;inset:0;display:flex}
 .tzHeroPhoto{position:relative;flex:1;overflow:hidden;background:var(--tz-dark)}
 .tzHeroPhoto img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .tzHeroShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,32,26,.1) 0%,rgba(18,32,26,.28) 55%,rgba(18,32,26,.6) 100%)}
-.tzHeroTopRow{position:relative;z-index:2;display:flex;justify-content:space-between;padding:110px 6vw 0;color:#fff}
-.tzStat{display:flex;flex-direction:column;gap:6px}
-.tzStat b{font-family:'Fraunces',Georgia,serif;font-size:clamp(40px,5.5vw,72px);line-height:1;font-weight:600}
-.tzStat span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
-.tzStat.right{align-items:flex-end;text-align:right}
-.tzWordmark{position:relative;z-index:3;text-align:center;font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(40px,13vw,180px);color:#fff;margin:28px 0 0;line-height:.95;text-shadow:0 4px 34px rgba(0,0,0,.3);padding:0 5vw}
+.tzWordmark{position:relative;z-index:3;text-align:center;font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(40px,13vw,180px);color:#fff;margin:0;line-height:.95;text-shadow:0 4px 34px rgba(0,0,0,.3);padding:0 5vw}
 .tzHeroBottomRow{position:relative;z-index:2;text-align:center;padding:22px 6vw 0}
 .tzHeroTagline{color:#fff;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;max-width:420px;margin:0 auto;opacity:.92}
 .tzHeroCtaRow{position:relative;z-index:2;display:flex;justify-content:center;gap:14px;padding:26px 6vw 0;flex-wrap:wrap}
-.tzStat.bottom{position:absolute;left:6vw;bottom:40px;z-index:2;color:#fff}
 .tzFloatCard{position:absolute;right:6vw;bottom:34px;z-index:2;width:140px;height:160px;background:#fff;border-radius:20px;padding:14px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
 .tzFloatCard img{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block}
 
@@ -3424,7 +3418,6 @@
   .tzGalleryGrid{grid-template-columns:repeat(2,1fr)}
   .tzFeatures{grid-template-columns:1fr;gap:38px}
   .tzContactGrid{grid-template-columns:1fr;gap:36px}
-  .tzHeroTopRow{padding-top:130px}
   .tzFloatCard{display:none}
 }
 @media(max-width:640px){

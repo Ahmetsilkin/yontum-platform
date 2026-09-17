@@ -3643,8 +3643,7 @@ function Taze(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
-  const heroPhotoA=galleryPhotos[0]||b.cover_url||'';
-  const heroPhotoB=galleryPhotos[1]||galleryPhotos[0]||'';
+  const heroPhotos=Array.from(new Set([b.cover_url,...galleryPhotos].filter(Boolean))).slice(0,2);
   const aboutPhoto=galleryPhotos[2]||galleryPhotos[0]||'';
   const productPhoto=galleryPhotos[3]||b.logo_url||'';
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
@@ -3652,7 +3651,6 @@ function Taze(p:P){
   const catName=(id:string)=>categories.find((c:any)=>c.id===id)?.name||'';
   const cta=sofraPrimaryCta(b);
   const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
-  const years=b.established_year?new Date().getFullYear()-Number(b.established_year):null;
   return <main id="top" className="tTaze">
     <header className="tzNav">
       <a className="tzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
@@ -3667,12 +3665,7 @@ function Taze(p:P){
 
     <section className="tzHero">
       <div className="tzHeroPhotos">
-        <div className="tzHeroPhoto">{heroPhotoA&&<img src={heroPhotoA} alt={b.name}/>}<div className="tzHeroShade"/></div>
-        <div className="tzHeroPhoto">{heroPhotoB&&<img src={heroPhotoB} alt={b.name}/>}<div className="tzHeroShade"/></div>
-      </div>
-      <div className="tzHeroTopRow">
-        <div className="tzStat"><b>{items.length||'—'}</b><span>{dec(b,'tz_stat1Label','İMZA LEZZET')}</span></div>
-        {years!=null&&years>0&&<div className="tzStat right"><span>{dec(b,'tz_stat2Label','YILLIK DENEYİM')}</span><b>{years}</b></div>}
+        {heroPhotos.length?heroPhotos.map((src,i)=><div className="tzHeroPhoto" key={i}><img src={src} alt={b.name}/><div className="tzHeroShade"/></div>):<div className="tzHeroPhoto"><div className="tzHeroShade"/></div>}
       </div>
       <h1 className="tzWordmark">{b.name}</h1>
       <div className="tzHeroBottomRow">
@@ -3682,7 +3675,6 @@ function Taze(p:P){
         <a className="tzBtnSolid" href="#menu">Menüyü Gör</a>
         {cta&&<a className="tzBtnOutline" {...ctaProps(cta)}>{cta.label}</a>}
       </div>
-      <div className="tzStat bottom"><b>{dec(b,'tz_stat3Value','2K')}</b><span>{dec(b,'tz_stat3Label','SADIK MÜŞTERİ')}</span></div>
       {productPhoto&&<div className="tzFloatCard"><img src={productPhoto} alt={b.name}/></div>}
     </section>
 
