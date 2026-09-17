@@ -10,8 +10,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -3623,6 +3623,133 @@ function Sofra(p:P){
     <footer className="sfFooter">
       <div className="sfFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
       <div className="sfFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  </main>;
+}
+
+/* ================= TAZE — enerjik, oyuncu "DTC içecek markası" teması.
+   Sofra ile aynı randevusuz/menü veri modelini (menu_categories/menu_items)
+   kullanır, sadece tamamen farklı bir görsel dil: iki fotoğraf üstüne
+   bindirilmiş dev italik serif marka adı, gerçek veriden gelen istatistik
+   rozetleri (ürün sayısı, kuruluş yılından hesaplanan deneyim), uçuşan
+   etiket rozetli hakkımızda bölümü, numaralı mönü kartları ve küçük harfli
+   italik serif bölüm ayraçları ("menü", "anlar" gibi). sofraPrimaryCta aynen
+   paylaşılıyor — randevu yerine Sipariş Ver → Yol Tarifi Al → Bizi Arayın
+   zinciri burada da geçerli. */
+function TzLeafIcon(){return <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 13c0-5 4-9 9-9h7v2c0 7-5 12-12 12H4v-5Z"/><path d="M6 18C10 14 15 9 20 5"/></svg>}
+function TzClockIcon(){return <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>}
+function TzHeartIcon(){return <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20s-7-4.6-9.5-9C.7 7.5 2.3 4 6 4c2 0 3.4 1 4.9 2.8C12.4 5 13.8 4 15.8 4c3.7 0 5.3 3.5 3.5 7-2.5 4.4-7.3 9-7.3 9Z"/></svg>}
+function Taze(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  const heroPhotoA=galleryPhotos[0]||b.cover_url||'';
+  const heroPhotoB=galleryPhotos[1]||galleryPhotos[0]||'';
+  const aboutPhoto=galleryPhotos[2]||galleryPhotos[0]||'';
+  const productPhoto=galleryPhotos[3]||b.logo_url||'';
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=(p.menuItems||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const catName=(id:string)=>categories.find((c:any)=>c.id===id)?.name||'';
+  const cta=sofraPrimaryCta(b);
+  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
+  const years=b.established_year?new Date().getFullYear()-Number(b.established_year):null;
+  return <main id="top" className="tTaze">
+    <header className="tzNav">
+      <a className="tzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#hakkimizda">{b.about_label||'Hakkımızda'}</a>
+        <a href="#menu">Menü</a>
+        {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
+        <a href="#iletisim">İletişim</a>
+      </nav>
+      {cta&&<a className="tzNavBtn" {...ctaProps(cta)}>{cta.label}</a>}
+    </header>
+
+    <section className="tzHero">
+      <div className="tzHeroPhotos">
+        <div className="tzHeroPhoto">{heroPhotoA&&<img src={heroPhotoA} alt={b.name}/>}<div className="tzHeroShade"/></div>
+        <div className="tzHeroPhoto">{heroPhotoB&&<img src={heroPhotoB} alt={b.name}/>}<div className="tzHeroShade"/></div>
+      </div>
+      <div className="tzHeroTopRow">
+        <div className="tzStat"><b>{items.length||'—'}</b><span>{dec(b,'tz_stat1Label','İMZA LEZZET')}</span></div>
+        {years!=null&&years>0&&<div className="tzStat right"><span>{dec(b,'tz_stat2Label','YILLIK DENEYİM')}</span><b>{years}</b></div>}
+      </div>
+      <h1 className="tzWordmark">{b.name}</h1>
+      <div className="tzHeroBottomRow">
+        <p className="tzHeroTagline">{b.hero_description||dec(b,'tz_tagline','Kendi tarzında keyfini çıkar.')}</p>
+      </div>
+      <div className="tzHeroCtaRow">
+        <a className="tzBtnSolid" href="#menu">Menüyü Gör</a>
+        {cta&&<a className="tzBtnOutline" {...ctaProps(cta)}>{cta.label}</a>}
+      </div>
+      <div className="tzStat bottom"><b>{dec(b,'tz_stat3Value','2K')}</b><span>{dec(b,'tz_stat3Label','SADIK MÜŞTERİ')}</span></div>
+      {productPhoto&&<div className="tzFloatCard"><img src={productPhoto} alt={b.name}/></div>}
+    </section>
+
+    <section id="hakkimizda" className="tzAbout">
+      <Reveal className="tzAboutMedia">
+        <div className="tzAboutPhotoWrap">{aboutPhoto?<img src={aboutPhoto} alt={b.name}/>:<div className="tzAboutPhotoFallback"/>}</div>
+        <div className="tzPillLayer">
+          <span className="tzPill lime p1">{dec(b,'tz_pill1','TAZE MALZEME')}</span>
+          <span className="tzPill pink p2">{dec(b,'tz_pill2','GÜNLÜK ÜRETİM')}</span>
+          <span className="tzPill white p3">{dec(b,'tz_pill3','EV YAPIMI LEZZET')}</span>
+          <span className="tzPill lime p4">{dec(b,'tz_pill4','AFİYET OLSUN')}</span>
+        </div>
+      </Reveal>
+      <Reveal i={1} className="tzAboutText">
+        <h2 className="tzDivider">{dec(b,'tz_aboutWord','tazelik')}</h2>
+        <p>{b.description||`${b.name}, sadece bir şey satmıyor; konforu, kolaylığı ve üstün lezzeti kapına kadar getiriyor.`}</p>
+        {cta&&<a className="tzBtnSolid" {...ctaProps(cta)}>{cta.label}</a>}
+      </Reveal>
+    </section>
+
+    <section id="menu" className="tzMenu">
+      <Reveal as="div" className="tzDividerWrap"><h2 className="tzDivider center">menü</h2></Reveal>
+      {items.length===0?<p className="tzMenuEmpty">Mönü yakında eklenecek.</p>:
+      <div className="tzMenuGrid">
+        {items.map((it:any,i:number)=><Reveal as="article" i={i} key={it.id} className="tzMenuCard">
+          <div className="tzMenuCardTop"><span>{String(i+1).padStart(2,'0')}</span><small>{catName(it.category_id)}</small></div>
+          <div className="tzMenuCardPhoto">{it.image_url?<img src={it.image_url} alt={it.name} loading="lazy"/>:<div className="tzMenuCardPhotoFallback"/>}</div>
+          <div className="tzMenuCardFoot"><h3>{it.name}</h3>{b.show_prices!==false&&it.price!=null&&<b>₺{Number(it.price).toLocaleString('tr-TR')}</b>}</div>
+          {it.description&&<p>{it.description}</p>}
+        </Reveal>)}
+      </div>}
+    </section>
+
+    {galleryPhotos.length>0&&<section id="galeri" className="tzGallery">
+      <Reveal as="div" className="tzDividerWrap"><h2 className="tzDivider center">{dec(b,'tz_galleryWord','anlar')}</h2></Reveal>
+      <div className="tzGalleryGrid">
+        {galleryPhotos.map((src:string,i:number)=><div key={i} className="tzGalleryItem"><img src={src} alt={b.name} loading="lazy"/></div>)}
+      </div>
+    </section>}
+
+    <GoogleReviews businessId={b.id}/>
+
+    <section className="tzFeatures">
+      <div className="tzFeatureItem"><TzLeafIcon/><b>{dec(b,'tz_feat1Title','Taze Malzeme')}</b><p>{dec(b,'tz_feat1Text','Her gün taze hazırlanır.')}</p></div>
+      <div className="tzFeatureItem"><TzClockIcon/><b>{dec(b,'tz_feat2Title','Hızlı Servis')}</b><p>{dec(b,'tz_feat2Text','Sipariş verince beklemezsin.')}</p></div>
+      <div className="tzFeatureItem"><TzHeartIcon/><b>{dec(b,'tz_feat3Title','Özenle Hazırlanır')}</b><p>{dec(b,'tz_feat3Text','Her sipariş elde, tek tek.')}</p></div>
+    </section>
+
+    <section id="iletisim" className="tzContact">
+      <Reveal as="div" className="tzDividerWrap"><h2 className="tzDivider center">{dec(b,'tz_contactWord','iletişim')}</h2></Reveal>
+      <div className="tzContactGrid">
+        <div className="tzContactHours">
+          <h4>Çalışma Saatleri</h4>
+          {hourRows.map((r,i)=><div key={i} className="tzHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
+        </div>
+        <div className="tzContactInfo">
+          {b.address&&<p className="tzContactRow">{b.address}</p>}
+          {b.phone&&<a className="tzContactRow" href={`tel:${String(b.phone).replace(/\s+/g,'')}`}><WaIcon/>{b.phone}</a>}
+          {b.instagram&&<a className="tzContactRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a>}
+          {b.google_maps_url&&<a className="tzContactRow tzDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
+        </div>
+      </div>
+    </section>
+
+    <footer className="tzFooter">
+      <div className="tzFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
+      <div className="tzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
 }
