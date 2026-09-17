@@ -3627,6 +3627,7 @@ function Sofra(p:P){
       </div>
     </section>}
 
+    <OwnRatings businessId={b.id}/>
     <GoogleReviews businessId={b.id}/>
 
     <section id="iletisim" className="sfContact">
@@ -3753,6 +3754,7 @@ function Taze(p:P){
       </div>
     </section>}
 
+    <OwnRatings businessId={b.id}/>
     <GoogleReviews businessId={b.id}/>
 
     <section className="tzFeatures">

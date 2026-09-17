@@ -3301,6 +3301,22 @@
 .sfContactRow svg{color:var(--accent);flex:none}
 .sfDirectionsLink{color:var(--accent)!important;font-weight:600}
 
+.tSofra .ownReviews{padding:0 6vw 110px;max-width:1100px;margin:0 auto}
+.tSofra .ownReviews header{text-align:center;max-width:600px;margin:0 auto 46px}
+.tSofra .ownReviews small{letter-spacing:.14em;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase}
+.tSofra .ownReviews h2{color:var(--sf-ink);font-family:'Cormorant',Georgia,serif;font-size:34px;font-weight:600;margin:12px 0 0}
+.tSofra .ownReviews h2 span{color:var(--accent);font-size:15px;letter-spacing:2px;margin-left:10px}
+.tSofra .ownReviews header p{color:var(--sf-muted);margin-top:10px;font-size:13px}
+.tSofra .ownReviewGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tSofra .ownReviewGrid article{background:var(--sf-surface);border:1px solid var(--sf-line);border-radius:4px;padding:24px}
+.tSofra .ownReviewStars{color:var(--accent)!important}
+.tSofra .ownReviewGrid p{color:var(--sf-ink);font-size:14px;line-height:1.7;margin-top:12px}
+.tSofra .ownReviewHead{display:flex;align-items:center;gap:12px}
+.tSofra .ownReviewHead b{font-size:14px;font-weight:700;color:var(--sf-ink)}
+.tSofra .ownReviewAvatar,.tSofra .ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--accent);color:#fff}
+.tSofra .ownReviewAvatarFallback{display:grid;place-items:center;font-weight:800;font-size:15px}
+@media(max-width:800px){.tSofra .ownReviewGrid{grid-template-columns:1fr}}
+
 .sfMessageSection{padding:0 6vw 130px;max-width:640px;margin:0 auto}
 .sfContactForm{display:flex;flex-direction:column;gap:14px}
 .sfContactInput{background:var(--sf-surface);border:1px solid var(--sf-line);border-radius:2px;padding:14px 16px;font-family:inherit;font-size:14px;color:var(--sf-ink)}
@@ -3415,6 +3431,22 @@
 .tzContactRow{display:flex;align-items:center;gap:10px;color:var(--tz-ink);font-size:14.5px}
 .tzContactRow svg{color:var(--tz-orange);flex:none}
 .tzDirectionsLink{color:var(--tz-orange)!important;font-weight:700}
+
+.tTaze .ownReviews{padding:0 6vw 110px;max-width:1100px;margin:0 auto}
+.tTaze .ownReviews header{text-align:center;max-width:600px;margin:0 auto 46px}
+.tTaze .ownReviews small{letter-spacing:.14em;font-size:11px;font-weight:700;color:var(--tz-orange);text-transform:uppercase}
+.tTaze .ownReviews h2{color:var(--tz-ink);font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:34px;font-weight:500;margin:12px 0 0}
+.tTaze .ownReviews h2 span{color:var(--tz-orange);font-size:15px;letter-spacing:2px;margin-left:10px}
+.tTaze .ownReviews header p{color:var(--tz-muted);margin-top:10px;font-size:13px}
+.tTaze .ownReviewGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tTaze .ownReviewGrid article{background:var(--tz-surface);border-radius:20px;padding:24px}
+.tTaze .ownReviewStars{color:var(--tz-orange)!important}
+.tTaze .ownReviewGrid p{color:var(--tz-ink);font-size:14px;line-height:1.7;margin-top:12px}
+.tTaze .ownReviewHead{display:flex;align-items:center;gap:12px}
+.tTaze .ownReviewHead b{font-size:14px;font-weight:700;color:var(--tz-ink)}
+.tTaze .ownReviewAvatar,.tTaze .ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--tz-orange);color:#fff}
+.tTaze .ownReviewAvatarFallback{display:grid;place-items:center;font-weight:800;font-size:15px}
+@media(max-width:800px){.tTaze .ownReviewGrid{grid-template-columns:1fr}}
 
 .tzMessageSection{padding:0 6vw 130px;max-width:640px;margin:0 auto}
 .tzContactForm{display:flex;flex-direction:column;gap:14px}
