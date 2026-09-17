@@ -3859,11 +3859,26 @@ function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:numbe
         window.scrollTo({top:window.scrollY+rect.top+targetP*travel,behavior:'smooth'});
       }));
     }
+    function warmScrubVideos(){
+      Array.from(root!.querySelectorAll('video[data-sc-scrub]')).forEach((v)=>{
+        const el=v as HTMLVideoElement;
+        const warm=()=>{if(cancelled)return;const t=el.currentTime;el.play().then(()=>{el.pause();el.currentTime=t}).catch(()=>{})};
+        if(el.readyState>=2)warm();else el.addEventListener('loadeddata',warm,{once:true});
+      });
+    }
     function boot(){
       if(cancelled||!root)return;
       const w=window as any;
       if(w.ScrollCraft&&!root.dataset.scMounted){w.ScrollCraft.mount(root);root.dataset.scMounted='1'}
       initRelight();
+      // Chromium stops compositing a <video>'s frame once it's driven purely by
+      // paused currentTime seeks (scrub scrolling) unless it has actually played
+      // at least once. The engine primes this on touchstart/pointerdown for
+      // mobile Safari's autoplay gate, but a desktop mouse-wheel scroll never
+      // fires those events, leaving the hero clip visually black (frame data is
+      // still decoded correctly — only the compositor layer is stale). Warming
+      // it here covers wheel-only scrolling without touching the engine file.
+      warmScrubVideos();
     }
     const w=window as any;
     if(w.ScrollCraft)boot();
