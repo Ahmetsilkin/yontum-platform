@@ -3905,16 +3905,23 @@ function Ember(p:P){
   const cta=sofraPrimaryCta(b);
   const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   const hasCover=!!b.cover_url;
+  const waPhone=(()=>{if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);return n||null})();
   useEmberEngine(rootRef,categories.length);
   return <>
     <link rel="stylesheet" href="/ember/scrollcraft.css" precedence="ember"/>
     <main id="top" className="tEmber" ref={rootRef}>
+      <div className="emBgTexture" aria-hidden="true"/>
       <span data-sc-progress></span>
       <div className="sc-grain" aria-hidden="true"/>
       <a className="emSkip" href="#emMenu">Hikayeyi Atla</a>
 
       <header className="emNav">
         <a className="emBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+        <nav className="emNavLinks" aria-label="Site navigasyonu">
+          <a href="#emMenu">Mönü</a>
+          {galleryPhotos.length>0&&<a href="#emGallery">Galeri</a>}
+          <a href="#emContact">İletişim</a>
+        </nav>
         <a className="emNavBtn" href="#emReserve">{cta?.label||'İletişim'}</a>
       </header>
 
@@ -3932,7 +3939,7 @@ function Ember(p:P){
           </div>
         </section>
       :
-        <section data-sc-act="scrub" data-sc-span="4.6" data-sc-dwell="0.4" data-sc-drift="#0B0806">
+        <section data-sc-act="scrub" data-sc-span="3.4" data-sc-dwell="0.4" data-sc-drift="#0B0806">
           <div data-sc-stage>
             <img className="sc-stage__poster" src="/ember/hero-poster.jpg" alt=""/>
             <video data-sc-scrub data-sc-src="/ember/hero.mp4" data-sc-src-mobile="/ember/hero-m.mp4" muted playsInline/>
@@ -3947,7 +3954,7 @@ function Ember(p:P){
         </section>
       }
 
-      <section id="emMenu" data-sc-act="pin" data-sc-span="3.6" data-sc-drift="#15100B">
+      <section id="emMenu" data-sc-act="pin" data-sc-span="3.0" data-sc-drift="#15100B">
         <div data-sc-stage className="emMenuStage">
           <div className="emMenuRelight" aria-hidden="true"/>
           <div className="emMenuHead" data-sc-cue="0 1 0 0">
@@ -3978,7 +3985,7 @@ function Ember(p:P){
         </div>
       </section>}
 
-      <section id="emReserve" data-sc-act="pin" data-sc-span="1.7" data-sc-drift="#0B0806">
+      <section id="emReserve" data-sc-act="pin" data-sc-span="1.4" data-sc-drift="#0B0806">
         <div data-sc-stage className="emClose" data-sc-spotlight>
           <div className="emCloseInner">
             <h2 className="sc-display sc-display--lg" data-sc-cue="0.05" data-sc-kinetic="lines">{dec(b,'em_closeTitle','Sofran hazır.')}</h2>
@@ -4025,8 +4032,31 @@ function Ember(p:P){
       </section>
 
       <footer className="emFooter">
-        <div className="emFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
-        <div className="emFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+        <div className="emFooterGrid">
+          <div className="emFooterBrand">
+            <div className="emFooterBrandRow">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></div>
+            {b.footer_note&&<p>{b.footer_note}</p>}
+            <p className="emFooterCopy">© {new Date().getFullYear()} {b.name}. Tüm hakları saklıdır.</p>
+          </div>
+          <div className="emFooterCol">
+            <h5>Keşfet</h5>
+            <a href="#emMenu">Mönü</a>
+            {galleryPhotos.length>0&&<a href="#emGallery">Galeri</a>}
+            <a href="#emReserve">{cta?.label||'İletişim'}</a>
+          </div>
+          <div className="emFooterCol">
+            <h5>İletişim</h5>
+            {b.address&&<span>{b.address}</span>}
+            {b.phone&&<a href={`tel:${String(b.phone).replace(/\s+/g,'')}`}>{b.phone}</a>}
+          </div>
+          <div className="emFooterCol">
+            <h5>Sosyal Medya</h5>
+            <div className="emFooterSocial">
+              {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IgIcon/></a>}
+              {waPhone&&<a href={`https://wa.me/${waPhone}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WaIcon/></a>}
+            </div>
+          </div>
+        </div>
       </footer>
     </main>
   </>;
