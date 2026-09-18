@@ -3918,7 +3918,7 @@ function Ember(p:P){
       <header className="emNav">
         <a className="emBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
         <nav className="emNavLinks" aria-label="Site navigasyonu">
-          <a href="#emMenu">Mönü</a>
+          <a href="#emMenu">Menü</a>
           {galleryPhotos.length>0&&<a href="#emGallery">Galeri</a>}
           <a href="#emContact">İletişim</a>
         </nav>
@@ -3939,7 +3939,7 @@ function Ember(p:P){
           </div>
         </section>
       :
-        <section data-sc-act="scrub" data-sc-span="3.4" data-sc-dwell="0.4" data-sc-drift="#0B0806">
+        <section data-sc-act="scrub" data-sc-span="2.6" data-sc-dwell="0.25" data-sc-drift="#0B0806">
           <div data-sc-stage>
             <img className="sc-stage__poster" src="/ember/hero-poster.jpg" alt=""/>
             <video data-sc-scrub data-sc-src="/ember/hero.mp4" data-sc-src-mobile="/ember/hero-m.mp4" muted playsInline/>
@@ -3954,18 +3954,18 @@ function Ember(p:P){
         </section>
       }
 
-      <section id="emMenu" data-sc-act="pin" data-sc-span="3.0" data-sc-drift="#15100B">
+      <section id="emMenu" data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#15100B">
         <div data-sc-stage className="emMenuStage">
           <div className="emMenuRelight" aria-hidden="true"/>
           <div className="emMenuHead" data-sc-cue="0 1 0 0">
-            <p className="emEyebrow">Mönü</p>
+            <p className="emEyebrow">Menü</p>
             <h2 className="sc-display sc-display--lg">{dec(b,'em_menuTitle','Gün boyu, aynı özenle.')}</h2>
-            {categories.length>0&&<nav className="emMenuTabs" aria-label="Mönü kategorisi">
+            {categories.length>0&&<nav className="emMenuTabs" aria-label="Menü kategorisi">
               {categories.map((c:any,i:number)=><button type="button" key={c.id} className={i===0?'is-active':''}>{c.name}</button>)}
             </nav>}
           </div>
           <div className="emMenuPanels">
-            {categories.length===0&&<p className="emMenuEmpty">Mönü yakında eklenecek.</p>}
+            {categories.length===0&&<p className="emMenuEmpty">Menü yakında eklenecek.</p>}
             {categories.map((c:any,ci:number)=><div key={c.id} className={`emMenuPanel${ci===0?' is-active':''}`}>
               {items.filter((it:any)=>it.category_id===c.id).map((it:any)=><div className="emMenuItem" key={it.id}>
                 <div className="emMenuItemRow"><span className="emMenuItemName">{it.name}</span><span className="emMenuItemDots"/>{b.show_prices!==false&&it.price!=null&&<span className="emMenuItemPrice">₺{Number(it.price).toLocaleString('tr-TR')}</span>}</div>
@@ -3985,7 +3985,7 @@ function Ember(p:P){
         </div>
       </section>}
 
-      <section id="emReserve" data-sc-act="pin" data-sc-span="1.4" data-sc-drift="#0B0806">
+      <section id="emReserve" data-sc-act="pin" data-sc-span="1.1" data-sc-drift="#0B0806">
         <div data-sc-stage className="emClose" data-sc-spotlight>
           <div className="emCloseInner">
             <h2 className="sc-display sc-display--lg" data-sc-cue="0.05" data-sc-kinetic="lines">{dec(b,'em_closeTitle','Sofran hazır.')}</h2>
@@ -4040,7 +4040,7 @@ function Ember(p:P){
           </div>
           <div className="emFooterCol">
             <h5>Keşfet</h5>
-            <a href="#emMenu">Mönü</a>
+            <a href="#emMenu">Menü</a>
             {galleryPhotos.length>0&&<a href="#emGallery">Galeri</a>}
             <a href="#emReserve">{cta?.label||'İletişim'}</a>
           </div>
