@@ -3820,13 +3820,20 @@ function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:numbe
       const tabs=Array.from(stage.querySelectorAll('.emMenuTabs button')) as HTMLButtonElement[];
       const panels=Array.from(stage.querySelectorAll('.emMenuPanel')) as HTMLElement[];
       const n=catCount;
-      function paint(i:number){
-        const t=n<=1?0:i/(n-1);
+      // the ambient light drifts continuously with raw scroll progress (never
+      // snapping in N steps) because a gradient's color-stop values don't
+      // actually CSS-transition between discrete swaps — only re-painting it
+      // every scroll frame with a smoothly-changing input reads as smooth.
+      // Which tab/panel is "active" stays a discrete step (menus can't blend),
+      // but that swap now crossfades via opacity, handled purely in CSS.
+      function paintRelight(t:number){
         stage!.style.setProperty('--em-relight-hue',String(205-t*190));
         stage!.style.setProperty('--em-relight-x',(20+t*60)+'%');
         stage!.style.setProperty('--em-relight-y',(t*30)+'%');
         stage!.style.setProperty('--em-relight-sat',(35+t*25)+'%');
         stage!.style.setProperty('--em-relight-light',(18+t*10)+'%');
+      }
+      function paintIndex(i:number){
         tabs.forEach((btn,bi)=>btn.classList.toggle('is-active',bi===i));
         panels.forEach((p,pi)=>p.classList.toggle('is-active',pi===i));
       }
@@ -3842,17 +3849,18 @@ function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:numbe
         if(ticking)return;
         ticking=true;
         requestAnimationFrame(()=>{
-          const idx=Math.min(n-1,Math.floor(progressFromScroll()*n));
-          paint(idx);
+          const p=progressFromScroll();
+          paintRelight(p);
+          paintIndex(Math.min(n-1,Math.floor(p*n)));
           ticking=false;
         });
       }
       if(!reduced){
         window.addEventListener('scroll',onScroll,{passive:true});
         onScroll();
-      }else paint(0);
+      }else{paintRelight(0);paintIndex(0)}
       tabs.forEach((btn,i)=>btn.addEventListener('click',()=>{
-        if(reduced){paint(i);return}
+        if(reduced){paintRelight(n<=1?0:i/(n-1));paintIndex(i);return}
         const rect=section!.getBoundingClientRect();
         const travel=rect.height-window.innerHeight;
         const targetP=(i+0.5)/n;
@@ -3929,7 +3937,6 @@ function Ember(p:P){
         <section className="emHeroPhoto" style={{backgroundImage:`url(${b.cover_url})`}}>
           <div className="emHeroPhotoScrim"/>
           <div className="emHeroPhotoText">
-            <p className="emEyebrow">{b.hero_label||'Lezzetin olduğu yerde'}</p>
             <h1 className="emHeroPhotoTitle">{b.hero_title||'Sofran burada'}<br/><em>{b.hero_highlight||'seni bekliyor.'}</em></h1>
             {b.hero_description&&<p className="emHeroPhotoDesc">{b.hero_description}</p>}
             <div className="emHeroPhotoBtns">
@@ -3939,15 +3946,12 @@ function Ember(p:P){
           </div>
         </section>
       :
-        <section data-sc-act="scrub" data-sc-span="2.6" data-sc-dwell="0.25" data-sc-drift="#0B0806">
+        <section data-sc-act="scrub" data-sc-span="2" data-sc-dwell="0.2" data-sc-drift="#0B0806">
           <div data-sc-stage>
             <img className="sc-stage__poster" src="/ember/hero-poster.jpg" alt=""/>
             <video data-sc-scrub data-sc-src="/ember/hero.mp4" data-sc-src-mobile="/ember/hero-m.mp4" muted playsInline/>
             <div className="sc-scrim sc-scrim--lead" aria-hidden="true"/>
-            <div className="sc-copy sc-copy--lead emHeroCopy" data-sc-cue="0 1 0 0">
-              <p className="emEyebrow">{b.hero_label||'Lezzetin olduğu yerde'}</p>
-            </div>
-            <div className="sc-copy sc-copy--lead emHeroCopy" data-sc-cue="0.34 1" style={{top:'auto',bottom:'14%'}}>
+            <div className="sc-copy sc-copy--lead emHeroCopy" data-sc-cue="0 1" style={{top:'auto',bottom:'14%'}}>
               <h1 className="sc-display sc-display--xl" data-sc-kinetic="lines">{b.hero_title||'Sofran burada'}<br/>{b.hero_highlight||'seni bekliyor.'}</h1>
             </div>
           </div>
@@ -4002,25 +4006,6 @@ function Ember(p:P){
       <OwnRatings businessId={b.id}/>
       <GoogleReviews businessId={b.id}/>
 
-      <section id="emContact" className="emContact">
-        <Reveal className="emSectionHead">
-          <small>İLETİŞİM</small>
-          <h2>Bize ulaşın.</h2>
-        </Reveal>
-        <div className="emContactGrid">
-          <div className="emContactHours">
-            <h4>Çalışma Saatleri</h4>
-            {hourRows.map((r,i)=><div key={i} className="emHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
-          </div>
-          <div className="emContactInfo">
-            {b.address&&<p className="emContactRow">{b.address}</p>}
-            {b.phone&&<a className="emContactRow" href={`tel:${String(b.phone).replace(/\s+/g,'')}`}><WaIcon/>{b.phone}</a>}
-            {b.instagram&&<a className="emContactRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a>}
-            {b.google_maps_url&&<a className="emContactRow emDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
-          </div>
-        </div>
-      </section>
-
       <section className="emMessageSection">
         <Reveal className="emSectionHead">
           <small>MESAJ</small>
@@ -4031,7 +4016,7 @@ function Ember(p:P){
         </Reveal>
       </section>
 
-      <footer className="emFooter">
+      <footer id="emContact" className="emFooter">
         <div className="emFooterGrid">
           <div className="emFooterBrand">
             <div className="emFooterBrandRow">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></div>
@@ -4048,6 +4033,9 @@ function Ember(p:P){
             <h5>İletişim</h5>
             {b.address&&<span>{b.address}</span>}
             {b.phone&&<a href={`tel:${String(b.phone).replace(/\s+/g,'')}`}>{b.phone}</a>}
+            {hourRows.length>0&&<div className="emFooterHours">
+              {hourRows.map((r,i)=><div key={i} className="emFooterHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
+            </div>}
           </div>
           <div className="emFooterCol">
             <h5>Sosyal Medya</h5>
