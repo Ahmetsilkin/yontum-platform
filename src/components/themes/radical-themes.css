@@ -3568,25 +3568,30 @@
 .tEmber .emMenuItemPrice{font-family:var(--sc-font-text);font-weight:600;color:var(--sc-accent);white-space:nowrap}
 .tEmber .emMenuItemDesc{font-family:var(--sc-font-text);font-size:.84rem;color:var(--sc-ink-soft);margin:0;max-width:56ch}
 
-/* ---------- gallery act ---------- */
+/* ---------- gallery act: a staggered strip of dashed-frame photos ---------- */
 .tEmber .emGalleryHead{max-width:40ch;margin:0 0 3rem}
-.tEmber .emGalleryMosaic{display:grid;gap:.75rem;grid-template-columns:repeat(6,1fr);max-width:1280px;margin:0 auto}
-.tEmber .emGalleryMosaic figure{margin:0;border-radius:4px;overflow:hidden;position:relative;background:var(--sc-surface)}
-.tEmber .emGalleryMosaic figure img{display:block;width:100%;height:100%;object-fit:cover}
-.tEmber .emGalleryMosaic figure:nth-child(1){grid-column:span 4;grid-row:span 2;aspect-ratio:4/3}
-.tEmber .emGalleryMosaic figure:nth-child(2){grid-column:span 2;aspect-ratio:1/1}
-.tEmber .emGalleryMosaic figure:nth-child(3){grid-column:span 2;aspect-ratio:1/1}
-.tEmber .emGalleryMosaic figure:nth-child(4){grid-column:span 3;aspect-ratio:4/3}
-.tEmber .emGalleryMosaic figure:nth-child(5){grid-column:span 3;aspect-ratio:4/3}
-.tEmber .emGalleryMosaic figure:nth-child(6){grid-column:span 3;grid-row:span 2;aspect-ratio:3/4}
-.tEmber .emGalleryMosaic figure:nth-child(7){grid-column:span 3;aspect-ratio:16/9}
-.tEmber .emGalleryMosaic figure:nth-child(8){grid-column:span 3;aspect-ratio:16/9}
-/* bento grid reveal: each tile rises and settles into place on its own beat */
-.tEmber .emGalleryMosaic figure{opacity:0;transform:translate3d(0,32px,0) scale(.94);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
-.tEmber .emGalleryMosaic figure.sc-in{opacity:1;transform:none}
+.tEmber .emGalleryMosaic{
+  display:flex;align-items:center;gap:28px;
+  overflow-x:auto;overflow-y:visible;
+  padding:34px 6vw 46px;margin:0 -6vw;
+  scrollbar-width:none;
+}
+.tEmber .emGalleryMosaic::-webkit-scrollbar{display:none}
+.tEmber .emGalleryMosaic figure{
+  --em-rest-y:0px;
+  flex:0 0 auto;margin:0;width:min(240px,60vw);aspect-ratio:3/4;
+  border:2px dashed color-mix(in oklab,var(--sc-accent) 55%,transparent);
+  border-radius:22px;padding:9px;box-sizing:border-box;
+}
+.tEmber .emGalleryMosaic figure img{display:block;width:100%;height:100%;object-fit:cover;border-radius:15px}
+.tEmber .emGalleryMosaic figure:nth-child(odd){--em-rest-y:-14px}
+.tEmber .emGalleryMosaic figure:nth-child(even){--em-rest-y:18px}
+/* each frame rises from below and settles into its own staggered resting line */
+.tEmber .emGalleryMosaic figure{opacity:0;transform:translate3d(0,calc(var(--em-rest-y) + 36px),0) scale(.94);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+.tEmber .emGalleryMosaic figure.sc-in{opacity:1;transform:translate3d(0,var(--em-rest-y),0) scale(1)}
 @media(max-width:760px){
-  .tEmber .emGalleryMosaic{grid-template-columns:repeat(2,1fr)}
-  .tEmber .emGalleryMosaic figure{grid-column:span 1!important;grid-row:auto!important;aspect-ratio:1/1!important}
+  .tEmber .emGalleryMosaic{gap:18px;padding:26px 6vw 40px}
+  .tEmber .emGalleryMosaic figure{width:min(200px,58vw)}
 }
 
 /* ---------- close act ---------- */
@@ -3595,8 +3600,6 @@
 .tEmber .emCloseInner h2{margin:0 0 2rem}
 .tEmber .emCloseCta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;font-family:var(--sc-font-text);font-weight:700;font-size:.9rem;letter-spacing:.03em;color:var(--sc-accent-ink)!important;background:var(--sc-accent);padding:1em 2.2em;border-radius:999px}
 .tEmber .emCloseCta:focus-visible{outline:2px solid var(--sc-ink);outline-offset:3px}
-.tEmber .emFoot{position:absolute;left:0;right:0;bottom:1.5rem;display:flex;justify-content:center;gap:1.5rem;font-family:var(--sc-font-text);font-size:.74rem;color:var(--sc-ink-soft)}
-
 /* ---------- plain (non-engine) sections: contact + message form + footer ---------- */
 .tEmber .emSectionHead{text-align:center;max-width:640px;margin:0 auto 46px}
 .tEmber .emSectionHead small{display:block;color:var(--sc-accent);font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:12px;text-transform:uppercase}

@@ -3996,10 +3996,6 @@ function Ember(p:P){
             {cta?<a className="emCloseCta" data-sc-magnet="0.26" data-sc-cue="0.05" data-sc-rise="0" {...ctaProps(cta)}>{cta.label}</a>
                 :<a className="emCloseCta" data-sc-magnet="0.26" data-sc-cue="0.05" data-sc-rise="0" href="#emContact">Bize Ulaşın</a>}
           </div>
-          <footer className="emFoot">
-            {b.address&&<span>{b.address}</span>}
-            {hourRows[0]&&<span>{hourRows[0].value}</span>}
-          </footer>
         </div>
       </section>
 
