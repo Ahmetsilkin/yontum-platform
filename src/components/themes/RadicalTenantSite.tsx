@@ -10,8 +10,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -4044,6 +4044,218 @@ function Ember(p:P){
       </footer>
     </main>
   </>;
+}
+/* ================= MOCHA — ported from a supplied brand design system
+   ("Mocha Cafe and Bar"): pure red (#ff0000) ink on warm cream paper, two
+   fonts (Oswald condensed for display/nav/buttons, Work Sans for body),
+   true-ellipse buttons (border-radius:50%, not a pill), 1px dashed rules as
+   the only divider, square photo corners, small rotated dashed-border
+   "sticker" captions on photos, and one signature move: a single short word
+   exploded into individual letters with alternating baseline drop, joined
+   by dashed rules (ScatterWord below). No shadows, no gradients, no icon
+   system anywhere in the source — kept faithfully, including using text
+   links instead of icons in the footer. Plain scroll (no scrollcraft), same
+   architecture as Sofra/Taze. The source's own "book a table" screen was a
+   client-only mock (no backend, always "succeeds"); replaced with the same
+   working sofraPrimaryCta chain + ContactMessageForm every other restaurant
+   theme uses, per explicit direction. */
+function ScatterWord({text}:{text:string}){
+  const letters=[...text.toUpperCase()];
+  const drop=letters.map((_,i)=>i%2?0.38:0);
+  return <div className="mcScatter">
+    {letters.map((ch,i)=><Fragment key={i}>
+      {i>0&&<span className="mcScatterRule" style={{marginTop:`calc(1em * ${(drop[i-1]+drop[i])/2+0.42})`}}/>}
+      <span className="mcScatterLetter" style={{marginTop:`calc(1em * ${drop[i]})`}}>{ch===' '?' ':ch}</span>
+    </Fragment>)}
+  </div>;
+}
+function Mocha(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
+  const photo=(i:number)=>galleryPhotos[i]||b.cover_url||'';
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=p.menuItems||[];
+  const[activeCat,setActiveCat]=useState<string|undefined>(categories[0]?.id);
+  const currentCat=categories.some((c:any)=>c.id===activeCat)?activeCat:categories[0]?.id;
+  const cta=sofraPrimaryCta(b);
+  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
+  const waPhone=(()=>{if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);return n||null})();
+  return <main id="top" className="tMocha">
+    <header className="mcNav">
+      <nav className="mcNavGroup mcNavLeft">
+        <a href="#mcMenu">Menü</a>
+        <a href="#mcAbout">Hakkımızda</a>
+      </nav>
+      <a className="mcWordmark" href="#top">
+        <b>{b.name}</b>
+        <span className="mcWordmarkTag"><i/>restoran ve kafe<i/></span>
+      </a>
+      <nav className="mcNavGroup mcNavRight">
+        {cta&&<a {...ctaProps(cta)}>{cta.label}</a>}
+        <a href="#mcContact">İletişim</a>
+      </nav>
+    </header>
+
+    <section className="mcHero">
+      <ScatterWord text="LEZZET"/>
+      <div className="mcHeroGrid">
+        <figure className="mcFrame mcFrame--portrait">
+          {photo(0)?<img src={photo(0)} alt={b.name}/>:<div className="mcFramePh"/>}
+          <span className="mcSticker mcSticker--left">{dec(b,'mc_sticker1','Lezzet')}</span>
+        </figure>
+        <div className="mcHeroLede">
+          <p className="mcEyebrow">{b.hero_label||'Restoran ve Kafe'}</p>
+          <h1>{b.hero_title||b.name}</h1>
+          <p className="mcLedeText">{b.hero_description||dec(b,'mc_tagline','Her tabakta özenle hazırlanmış bir sofra deneyimi.')}</p>
+          <a className="mcBtn mcBtn--ellipse" href="#mcMenu">Mönüyü Gör</a>
+        </div>
+        <div className="mcHeroStack">
+          <figure className="mcFrame mcFrame--wide">
+            {photo(1)?<img src={photo(1)} alt={b.name}/>:<div className="mcFramePh"/>}
+            <span className="mcSticker">{dec(b,'mc_sticker2','Lezzetler')}</span>
+          </figure>
+          <figure className="mcFrame mcFrame--ultra">
+            {photo(2)?<img src={photo(2)} alt={b.name}/>:<div className="mcFramePh"/>}
+            <span className="mcSticker mcSticker--tilt2">{dec(b,'mc_sticker3','Ambiyans')}</span>
+          </figure>
+        </div>
+      </div>
+      <span className="mcDash mcDash--band" aria-hidden="true"/>
+      <div className="mcHeroInfo">
+        <div>{b.address}{b.address&&hourRows[0]&&<br/>}{hourRows[0]&&`${hourRows[0].label}: ${hourRows[0].value}`}</div>
+        <div>{dec(b,'mc_heroNote','Sabah kahvesinden akşam sofrasına, gün boyu açığız.')}</div>
+        <div className="mcHeroInfoLinks">
+          <a href="#mcMenu">Mönü</a>
+          <a href="#mcContact">İletişim</a>
+        </div>
+      </div>
+    </section>
+
+    {(b.description||b.about_title)&&<section id="mcAbout" className="mcAbout">
+      <Reveal className="mcAboutText">
+        <ScatterWord text="HİKAYE"/>
+        <h2>{b.about_title||`${b.name} hakkında`}</h2>
+        <p>{b.description}</p>
+      </Reveal>
+      <Reveal i={1} className="mcAboutMedia">
+        <span className="mcDash mcDash--v" aria-hidden="true"/>
+        <figure className="mcFrame mcFrame--square">
+          {photo(3)?<img src={photo(3)} alt={b.name}/>:<div className="mcFramePh"/>}
+        </figure>
+      </Reveal>
+    </section>}
+
+    <section id="mcMenu" className="mcMenu">
+      <ScatterWord text="MENÜ"/>
+      <div className="mcMenuGrid">
+        <div className="mcMenuSide">
+          <p className="mcEyebrow">Sipariş Ver</p>
+          <h2>{dec(b,'mc_menuTitle','Tüm mönü')}</h2>
+          <p className="mcLedeText">{dec(b,'mc_menuNote','Mutfağımız gün boyu açık.')}</p>
+          {categories.length>0&&<div className="mcMenuTabs">
+            {categories.map((c:any)=><button type="button" key={c.id} className={currentCat===c.id?'is-active':''} onClick={()=>setActiveCat(c.id)}>{c.name}</button>)}
+          </div>}
+          <figure className="mcFrame mcFrame--square">
+            {photo(4)?<img src={photo(4)} alt={b.name}/>:<div className="mcFramePh"/>}
+          </figure>
+        </div>
+        <div className="mcMenuList">
+          {categories.length===0&&<p className="mcMenuEmpty">Mönü yakında eklenecek.</p>}
+          {items.filter((it:any)=>it.category_id===currentCat).map((it:any)=><div className="mcMenuItem" key={it.id}>
+            <div className="mcMenuItemRow"><span>{it.name}</span></div>
+            {it.description&&<p>{it.description}</p>}
+            {b.show_prices!==false&&it.price!=null&&<b>₺{Number(it.price).toLocaleString('tr-TR')}</b>}
+          </div>)}
+          {items.filter((it:any)=>it.category_id===currentCat).length>0&&<span className="mcDash" aria-hidden="true"/>}
+          {cta&&<a className="mcBtn mcBtn--ellipse" {...ctaProps(cta)}>{cta.label}</a>}
+        </div>
+      </div>
+    </section>
+
+    {galleryPhotos.length>0&&<section id="mcGallery" className="mcGallery">
+      <Reveal className="mcGalleryRow">
+        {galleryPhotos.slice(0,3).map((src:string,i:number)=><figure className={`mcFrame mcFrame--gal${i}`} key={i}><img src={src} alt={b.name} loading="lazy"/></figure>)}
+      </Reveal>
+    </section>}
+
+    <OwnRatings businessId={b.id}/>
+    <GoogleReviews businessId={b.id}/>
+
+    <section id="mcReserve" className="mcReserve">
+      <figure className="mcFrame mcFrame--tall">
+        {photo(1)?<img src={photo(1)} alt={b.name}/>:<div className="mcFramePh"/>}
+        <span className="mcSticker">{dec(b,'mc_sticker4','Ambiyans')}</span>
+      </figure>
+      <div className="mcReserveText">
+        <p className="mcEyebrow">{b.address?b.address.split(',')[0]:'Bize gel'}</p>
+        <h2>{dec(b,'mc_reserveTitle','Sofran hazır')}</h2>
+        <p className="mcLedeText">{dec(b,'mc_reserveNote','Bir masa ayırtmak ya da paket sipariş vermek için bize ulaş.')}</p>
+        {cta&&<a className="mcBtn mcBtn--solid" {...ctaProps(cta)}>{cta.label}</a>}
+      </div>
+    </section>
+
+    <section id="mcContact" className="mcContact">
+      <Reveal className="mcContactLede">
+        <p className="mcEyebrow">İletişim</p>
+        <h2>Bize ulaşın</h2>
+      </Reveal>
+      <Reveal i={1} className="mcContactBlocks">
+        {b.address&&<div className="mcContactBlock"><small>Adres</small><p>{b.address}</p></div>}
+        {hourRows.length>0&&<div className="mcContactBlock"><small>Saatler</small>{hourRows.map((r,i)=><p key={i}>{r.label}: {r.value}</p>)}</div>}
+        {b.phone&&<div className="mcContactBlock"><small>Telefon</small><a href={`tel:${String(b.phone).replace(/\s+/g,'')}`}>{b.phone}</a></div>}
+        {b.instagram&&<div className="mcContactBlock"><small>Instagram</small><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></div>}
+        {cta&&<a className="mcBtn mcBtn--ellipse" {...ctaProps(cta)}>{cta.label}</a>}
+      </Reveal>
+      <Reveal i={2} className="mcContactMedia">
+        <figure className="mcFrame mcFrame--4-3">
+          {photo(2)?<img src={photo(2)} alt={b.name}/>:<div className="mcFramePh"/>}
+          <span className="mcSticker">{b.name}</span>
+        </figure>
+      </Reveal>
+    </section>
+
+    <section className="mcMessageSection">
+      <Reveal className="mcContactLede">
+        <p className="mcEyebrow">Mesaj</p>
+        <h2>Bize Ulaşın</h2>
+      </Reveal>
+      <Reveal i={1} className="mcMessageFormWrap">
+        <ContactMessageForm businessId={b.id} prefix="mc"/>
+      </Reveal>
+    </section>
+
+    <footer className="mcFooter">
+      <div className="mcFooterGrid">
+        <div className="mcFooterBrand">
+          <b>{b.name}</b>
+          {b.footer_note&&<p>{b.footer_note}</p>}
+          <p className="mcFooterCopy">© {new Date().getFullYear()} {b.name}. Tüm hakları saklıdır.</p>
+        </div>
+        <div className="mcFooterCol">
+          <h5>Keşfet</h5>
+          <a href="#mcMenu">Mönü</a>
+          {galleryPhotos.length>0&&<a href="#mcGallery">Galeri</a>}
+          <a href="#mcReserve">{cta?.label||'İletişim'}</a>
+        </div>
+        <div className="mcFooterCol">
+          <h5>İletişim</h5>
+          {b.address&&<span>{b.address}</span>}
+          {b.phone&&<a href={`tel:${String(b.phone).replace(/\s+/g,'')}`}>{b.phone}</a>}
+          {hourRows.length>0&&<div className="mcFooterHours">
+            {hourRows.map((r,i)=><div key={i}><span>{r.label}</span><span>{r.value}</span></div>)}
+          </div>}
+        </div>
+        <div className="mcFooterCol">
+          <h5>Sosyal Medya</h5>
+          <div className="mcFooterSocial">
+            {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">Instagram</a>}
+            {waPhone&&<a href={`https://wa.me/${waPhone}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>}
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>;
 }
 function IgIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>}
 function WaIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>}

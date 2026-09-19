@@ -3661,3 +3661,190 @@
 @media(max-width:460px){
   .tEmber .emFooterGrid{grid-template-columns:1fr}
 }
+
+/* ================= MOCHA — pure red on cream, Oswald + Work Sans, true-
+   ellipse buttons, dashed-only dividers, square photo corners, rotated
+   sticker captions. Faithful port of a supplied brand design system; see
+   the Mocha() component comment for what was adapted vs. kept as-is. */
+.tMocha{
+  --mc-red:#ff0000;--mc-red-600:#e00000;--mc-red-300:#ff7069;--mc-red-100:#ffd9d6;
+  --mc-cream:#fff4f3;--mc-cream-100:#ffe9e7;--mc-paper:#ffffff;
+  --mc-font-display:'Oswald',sans-serif;--mc-font-body:'Work Sans',sans-serif;--mc-font-wordmark:'Zilla Slab',serif;
+  background:var(--mc-cream);color:var(--mc-red);font-family:var(--mc-font-body);
+  overflow-x:clip;
+}
+.tMocha a{color:var(--mc-red);text-decoration:none}
+.tMocha h1,.tMocha h2{font-family:var(--mc-font-display);font-weight:600;color:var(--mc-red);margin:0}
+.tMocha p{margin:0}
+.tMocha .mcEyebrow{font-family:var(--mc-font-body);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mc-red);margin:0 0 8px}
+.tMocha .mcLedeText{font-size:18px;line-height:1.45;max-width:34ch}
+
+/* ---------- buttons: the true ellipse is the signature shape ---------- */
+.tMocha .mcBtn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--mc-font-display);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:15px;padding:16px 38px;min-height:44px;box-sizing:border-box;transition:opacity .24s cubic-bezier(.2,.7,.3,1),transform .12s cubic-bezier(.2,.7,.3,1);cursor:pointer}
+.tMocha .mcBtn:hover{opacity:.62}
+.tMocha .mcBtn:active{transform:scale(.97)}
+.tMocha .mcBtn--ellipse{border:1px solid var(--mc-red);border-radius:50%;background:transparent;color:var(--mc-red)}
+.tMocha .mcBtn--solid{border:1px solid var(--mc-red);border-radius:999px;background:var(--mc-red);color:var(--mc-cream)!important}
+
+/* ---------- dashed rules: the only divider in the system ---------- */
+.tMocha .mcDash{display:block;border-top:1px dashed var(--mc-red-300);width:100%}
+.tMocha .mcDash--v{width:1px;border-top:none;border-left:1px dashed var(--mc-red-300);height:100%;justify-self:center}
+.tMocha .mcDash--band{margin:clamp(64px,9vw,140px) 0 48px}
+
+/* ---------- wordmark + nav ---------- */
+.tMocha .mcWordmark{display:inline-flex;flex-direction:column;align-items:center;gap:5px;text-align:center;color:var(--mc-red)}
+.tMocha .mcWordmark b{font-family:var(--mc-font-wordmark);font-weight:700;font-size:26px;letter-spacing:.04em;max-width:40vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tMocha .mcWordmarkTag{display:flex;align-items:center;gap:8px;font-family:var(--mc-font-body);font-size:11px;letter-spacing:.18em;text-transform:lowercase;color:var(--mc-red)}
+.tMocha .mcWordmarkTag i{width:20px;height:1px;background:currentColor;font-style:normal}
+.tMocha .mcNav{display:grid;grid-template-columns:1fr auto 1fr;column-gap:clamp(16px,4vw,64px);align-items:center;padding:26px clamp(24px,5vw,80px)}
+.tMocha .mcNavGroup{display:flex;gap:clamp(12px,3vw,48px);flex-wrap:wrap}
+.tMocha .mcNavLeft{justify-content:flex-start}
+.tMocha .mcNavRight{justify-content:flex-end}
+.tMocha .mcNavGroup a{font-family:var(--mc-font-display);font-weight:600;font-size:15px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;transition:opacity .24s ease}
+.tMocha .mcNavGroup a:hover{opacity:.62}
+@media(max-width:820px){
+  .tMocha .mcNav{grid-template-columns:1fr;justify-items:center;gap:14px;padding:20px clamp(20px,5vw,40px)}
+  .tMocha .mcNavGroup{justify-content:center}
+}
+
+/* ---------- ScatterWord: one short word, letters exploded and dropped on
+   alternating baselines, dashed rules bridging the gaps ---------- */
+.tMocha .mcScatter{display:flex;align-items:flex-start;justify-content:space-between;width:100%;font-family:var(--mc-font-body);font-weight:500;font-size:clamp(56px,11vw,160px);line-height:.82;letter-spacing:.02em;color:var(--mc-red);margin:0 0 clamp(24px,4vw,56px)}
+.tMocha .mcScatterLetter{display:block}
+.tMocha .mcScatterRule{flex:1;align-self:flex-start;border-top:1px dashed var(--mc-red-300);min-width:12px}
+
+/* ---------- photo frames: square corners, real varied ratios, no full-
+   bleed background image, small rotated dashed sticker captions ---------- */
+.tMocha .mcFrame{position:relative;margin:0;display:block}
+.tMocha .mcFrame img{display:block;width:100%;height:100%;object-fit:cover;border-radius:0}
+.tMocha .mcFramePh{width:100%;height:100%;min-height:160px;background:var(--mc-cream-100);border:1px dashed var(--mc-red-300);box-sizing:border-box}
+.tMocha .mcFrame--portrait{aspect-ratio:3/4}
+.tMocha .mcFrame--wide{aspect-ratio:16/9}
+.tMocha .mcFrame--ultra{aspect-ratio:21/9}
+.tMocha .mcFrame--square{aspect-ratio:1/1}
+.tMocha .mcFrame--tall{aspect-ratio:4/5}
+.tMocha .mcFrame--4-3{aspect-ratio:4/3}
+.tMocha .mcSticker{position:absolute;right:8%;bottom:10%;background:var(--mc-paper);color:var(--mc-red);font-family:var(--mc-font-display);font-weight:500;font-size:15px;padding:9px 16px;border:1px dashed var(--mc-red-300);transform:rotate(-6deg)}
+.tMocha .mcSticker--left{left:8%;right:auto}
+.tMocha .mcSticker--tilt2{transform:rotate(5deg)}
+
+/* ---------- hero ---------- */
+.tMocha .mcHero{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px)}
+.tMocha .mcHero>.mcScatter{padding-top:clamp(40px,7vw,90px)}
+.tMocha .mcHeroGrid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(0,1.5fr);gap:clamp(24px,5vw,90px);align-items:start}
+.tMocha .mcHeroLede{display:flex;flex-direction:column;gap:20px;padding-top:8px}
+.tMocha .mcHeroLede h1{font-size:clamp(40px,4.4vw,64px);line-height:1.04;max-width:12ch}
+.tMocha .mcHeroStack{display:flex;flex-direction:column;gap:clamp(24px,4vw,64px)}
+.tMocha .mcHeroInfo{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;font-size:15px;line-height:1.45}
+.tMocha .mcHeroInfoLinks{justify-self:end;text-align:right;display:flex;flex-direction:column;gap:4px}
+@media(max-width:900px){
+  .tMocha .mcHeroGrid{grid-template-columns:1fr;gap:40px}
+  .tMocha .mcHeroInfo{grid-template-columns:1fr;gap:16px;text-align:left}
+  .tMocha .mcHeroInfoLinks{justify-self:start;text-align:left}
+}
+
+/* ---------- about ---------- */
+.tMocha .mcAbout{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,6vw,100px);align-items:start}
+.tMocha .mcAboutText{display:flex;flex-direction:column;gap:20px}
+.tMocha .mcAboutText h2{font-size:clamp(32px,3.6vw,48px);max-width:14ch}
+.tMocha .mcAboutText p{font-size:18px;line-height:1.45;max-width:34ch}
+.tMocha .mcAboutMedia{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:stretch}
+@media(max-width:820px){.tMocha .mcAbout{grid-template-columns:1fr}}
+
+/* ---------- menu ---------- */
+.tMocha .mcMenu{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px)}
+.tMocha .mcMenuGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(24px,6vw,100px);align-items:start}
+.tMocha .mcMenuSide{display:flex;flex-direction:column;gap:24px;position:sticky;top:24px}
+.tMocha .mcMenuSide h2{font-size:clamp(32px,3.6vw,48px)}
+.tMocha .mcMenuTabs{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.tMocha .mcMenuTabs button{background:none;border:none;padding:0;cursor:pointer;font-family:var(--mc-font-display);font-size:22px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--mc-red);opacity:.45;border-bottom:1px solid transparent;transition:opacity .24s ease}
+.tMocha .mcMenuTabs button:hover{opacity:.72}
+.tMocha .mcMenuTabs button.is-active{opacity:1;border-bottom-color:var(--mc-red)}
+.tMocha .mcMenuList{display:flex;flex-direction:column;gap:24px}
+.tMocha .mcMenuEmpty{color:var(--mc-red);opacity:.6}
+.tMocha .mcMenuItem{display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:baseline;padding-bottom:16px;border-bottom:1px dashed var(--mc-red-300)}
+.tMocha .mcMenuItemRow span{font-family:var(--mc-font-display);font-weight:600;font-size:22px;text-transform:uppercase;letter-spacing:.04em}
+.tMocha .mcMenuItem p{grid-column:1/2;margin:6px 0 0;font-size:15px;line-height:1.45;max-width:34ch}
+.tMocha .mcMenuItem b{grid-column:2/3;grid-row:1/2;font-family:var(--mc-font-display);font-size:22px;font-weight:400;white-space:nowrap}
+@media(max-width:900px){.tMocha .mcMenuGrid{grid-template-columns:1fr}.tMocha .mcMenuSide{position:static}}
+
+/* ---------- gallery: varied ratios in a row, never an equal grid ---------- */
+.tMocha .mcGallery{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px)}
+.tMocha .mcGalleryRow{display:grid;grid-template-columns:1.4fr 1fr 1.8fr;gap:clamp(16px,3vw,32px);align-items:end}
+.tMocha .mcFrame--gal0{aspect-ratio:3/4}
+.tMocha .mcFrame--gal1{aspect-ratio:1/1}
+.tMocha .mcFrame--gal2{aspect-ratio:16/9}
+@media(max-width:820px){.tMocha .mcGalleryRow{grid-template-columns:1fr}}
+
+/* ---------- reserve / close ---------- */
+.tMocha .mcReserve{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,6vw,100px);align-items:center}
+.tMocha .mcReserveText{display:flex;flex-direction:column;gap:20px}
+.tMocha .mcReserveText h2{font-size:clamp(32px,3.6vw,48px)}
+@media(max-width:820px){.tMocha .mcReserve{grid-template-columns:1fr}}
+
+/* ---------- contact ---------- */
+.tMocha .mcContact{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:start}
+.tMocha .mcContactLede h2{font-size:clamp(32px,3.6vw,48px)}
+.tMocha .mcContactBlocks{display:flex;flex-direction:column;gap:20px}
+.tMocha .mcContactBlock{padding-top:14px;border-top:1px dashed var(--mc-red-300);display:flex;flex-direction:column;gap:4px}
+.tMocha .mcContactBlock small{font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.tMocha .mcContactBlock p,.tMocha .mcContactBlock a{margin:0;font-size:18px}
+.tMocha .mcContactBlock a:hover{opacity:.62}
+@media(max-width:900px){.tMocha .mcContact{grid-template-columns:1fr}}
+
+/* ---------- message form: underline fields, no boxes, no icon on success ---------- */
+.tMocha .mcMessageSection{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px);max-width:560px}
+.tMocha .mcContactForm{display:flex;flex-direction:column;gap:24px}
+.tMocha .mcContactInput{background:transparent;border:none;border-bottom:1px solid var(--mc-red-300);border-radius:0;padding:10px 2px;font-family:var(--mc-font-body);font-size:18px;color:var(--mc-red);transition:border-color .24s ease}
+.tMocha .mcContactInput::placeholder{color:var(--mc-red-300)}
+.tMocha .mcContactInput:focus{outline:none;border-bottom-color:var(--mc-red)}
+.tMocha .mcContactTextarea{resize:none;min-height:90px}
+.tMocha .mcContactErr{color:var(--mc-red-600);font-size:13px;margin:0}
+.tMocha .mcContactSent{padding:0}
+.tMocha .mcContactSent span{display:none}
+.tMocha .mcContactSent p{font-size:18px;line-height:1.45;margin:0}
+.tMocha .mcBtnSolid{align-self:flex-start;display:inline-flex;align-items:center;justify-content:center;font-family:var(--mc-font-display);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:15px;padding:16px 38px;min-height:44px;box-sizing:border-box;border:1px solid var(--mc-red);border-radius:999px;background:var(--mc-red);color:var(--mc-cream)!important;transition:opacity .24s ease}
+.tMocha .mcBtnSolid:hover{opacity:.62}
+.tMocha .mcBtnSolid:disabled{opacity:.4;pointer-events:none}
+
+/* ---------- shared OwnRatings/GoogleReviews, square avatars not circles ---------- */
+.tMocha .ownReviews,.tMocha .googleReviews{padding:0 clamp(24px,5vw,80px) clamp(64px,9vw,140px)}
+.tMocha .ownReviews header,.tMocha .googleReviews header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin:0 0 32px;max-width:none;text-align:left}
+.tMocha .ownReviews small,.tMocha .googleReviews small{font-family:var(--mc-font-body);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.tMocha .ownReviews h2,.tMocha .googleReviews h2{font-size:clamp(28px,3vw,40px);margin:8px 0 0}
+.tMocha .ownReviews h2 span,.tMocha .googleReviews h2 span{font-size:15px;letter-spacing:2px;margin-left:10px}
+.tMocha .ownReviews header p,.tMocha .googleReviews header p{font-size:13px;margin-top:6px}
+.tMocha .googleReviews header a{font-size:13px;font-weight:600}
+.tMocha .ownReviewGrid,.tMocha .googleReviewGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tMocha .ownReviewGrid article,.tMocha .googleReviewGrid article{border-top:1px dashed var(--mc-red-300);padding-top:16px}
+.tMocha .ownReviewGrid p,.tMocha .googleReviewGrid p{font-size:14px;line-height:1.45;margin-top:10px}
+.tMocha .ownReviewHead,.tMocha .googleReviewGrid article>div:first-child{display:flex;align-items:center;gap:10px}
+.tMocha .ownReviewHead b,.tMocha .googleReviewGrid b{font-family:var(--mc-font-display);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.03em}
+.tMocha .ownReviewStars,.tMocha .googleReviewGrid span{color:var(--mc-red)!important;font-size:12px}
+.tMocha .ownReviewAvatar,.tMocha .googleReviewGrid img{width:36px;height:36px;object-fit:cover;border-radius:0;flex-shrink:0}
+.tMocha .ownReviewAvatarFallback,.tMocha .googleReviewGrid i{width:36px;height:36px;display:grid;place-items:center;background:var(--mc-cream-100);color:var(--mc-red);font-family:var(--mc-font-display);font-weight:600;font-size:14px;font-style:normal;border:1px dashed var(--mc-red-300);flex-shrink:0}
+.tMocha .googleReviewGrid small{font-size:11px}
+.tMocha .googleReviewGrid article>a{font-size:12px;font-weight:600;margin-top:10px;display:inline-block}
+.tMocha .googleReviews>footer{text-align:center;font-size:11px;opacity:.6;margin-top:24px}
+@media(max-width:800px){.tMocha .ownReviewGrid,.tMocha .googleReviewGrid{grid-template-columns:1fr}}
+
+/* ---------- footer ---------- */
+.tMocha .mcFooter{padding:56px clamp(24px,5vw,80px) 30px;border-top:1px dashed var(--mc-red-300)}
+.tMocha .mcFooterGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+.tMocha .mcFooterBrand b{font-family:var(--mc-font-wordmark);font-size:22px;font-weight:700;letter-spacing:.04em}
+.tMocha .mcFooterBrand p{font-size:14px;margin:10px 0 0;max-width:28ch}
+.tMocha .mcFooterCopy{font-size:12px!important;margin-top:14px!important;opacity:.7}
+.tMocha .mcFooterCol{display:flex;flex-direction:column;gap:10px}
+.tMocha .mcFooterCol h5{font-family:var(--mc-font-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin:0 0 4px}
+.tMocha .mcFooterCol a,.tMocha .mcFooterCol span{font-size:14px}
+.tMocha .mcFooterCol a:hover{opacity:.62}
+.tMocha .mcFooterHours{display:flex;flex-direction:column;gap:4px;margin-top:6px;padding-top:10px;border-top:1px dashed var(--mc-red-300)}
+.tMocha .mcFooterHours>div{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.tMocha .mcFooterSocial{display:flex;flex-direction:column;gap:6px}
+@media(max-width:760px){
+  .tMocha .mcFooterGrid{grid-template-columns:1fr 1fr;gap:28px}
+  .tMocha .mcFooterBrand{grid-column:1/-1}
+}
+@media(max-width:460px){
+  .tMocha .mcFooterGrid{grid-template-columns:1fr}
+}
