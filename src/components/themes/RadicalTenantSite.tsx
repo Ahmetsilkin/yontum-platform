@@ -3567,7 +3567,7 @@ function Sofra(p:P){
     <header className="sfNav">
       <a className="sfBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
       <nav>
-        <a href="#hakkimizda">{b.about_label||'Hakkımızda'}</a>
+        <a href="#hakkimizda">Hakkımızda</a>
         <a href="#menu">Menü</a>
         {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
         <a href="#iletisim">İletişim</a>

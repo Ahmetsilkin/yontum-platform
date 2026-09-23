@@ -3317,7 +3317,8 @@
 .tSofra .ownReviewAvatarFallback{display:grid;place-items:center;font-weight:800;font-size:15px}
 @media(max-width:800px){.tSofra .ownReviewGrid{grid-template-columns:1fr}}
 
-.sfMessageSection{padding:0 6vw 130px;max-width:640px;margin:0 auto}
+.sfMessageSection{padding:70px 6vw 130px;background:var(--sf-surface)}
+.sfMessageFormWrap{max-width:640px;margin:0 auto}
 .sfContactForm{display:flex;flex-direction:column;gap:14px}
 .sfContactInput{background:var(--sf-surface);border:1px solid var(--sf-line);border-radius:2px;padding:14px 16px;font-family:inherit;font-size:14px;color:var(--sf-ink)}
 .sfContactInput::placeholder{color:var(--sf-muted)}
