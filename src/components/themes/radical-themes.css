@@ -3565,7 +3565,7 @@
 /* ---------- gallery act: a staggered strip of dashed-frame photos ---------- */
 .tEmber .emGalleryHead{max-width:40ch;margin:0 0 3rem}
 .tEmber .emGalleryMosaic{
-  display:flex;align-items:center;gap:28px;
+  display:flex;align-items:center;justify-content:safe center;gap:28px;
   overflow-x:auto;overflow-y:visible;
   padding:34px 6vw 46px;margin:0 -6vw;
   scrollbar-width:none;
