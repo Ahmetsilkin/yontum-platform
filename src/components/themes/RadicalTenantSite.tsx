@@ -3830,8 +3830,8 @@ function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:numbe
         stage!.style.setProperty('--em-relight-hue',String(205-t*190));
         stage!.style.setProperty('--em-relight-x',(20+t*60)+'%');
         stage!.style.setProperty('--em-relight-y',(t*30)+'%');
-        stage!.style.setProperty('--em-relight-sat',(35+t*25)+'%');
-        stage!.style.setProperty('--em-relight-light',(18+t*10)+'%');
+        stage!.style.setProperty('--em-relight-sat',(35+t*20)+'%');
+        stage!.style.setProperty('--em-relight-light',(86+t*8)+'%');
       }
       function paintIndex(i:number){
         tabs.forEach((btn,bi)=>btn.classList.toggle('is-active',bi===i));
@@ -3918,7 +3918,6 @@ function Ember(p:P){
   return <>
     <link rel="stylesheet" href="/ember/scrollcraft.css" precedence="ember"/>
     <main id="top" className="tEmber" ref={rootRef}>
-      <div className="emBgTexture" aria-hidden="true"/>
       <span data-sc-progress></span>
       <div className="sc-grain" aria-hidden="true"/>
       <a className="emSkip" href="#emMenu">Hikayeyi Atla</a>
@@ -3946,7 +3945,7 @@ function Ember(p:P){
           </div>
         </section>
       :
-        <section data-sc-act="scrub" data-sc-span="2" data-sc-dwell="0.2" data-sc-drift="#0B0806">
+        <section data-sc-act="scrub" data-sc-span="2" data-sc-dwell="0.2" data-sc-drift="#FAF7F2">
           <div data-sc-stage>
             <img className="sc-stage__poster" src="/ember/hero-poster.jpg" alt=""/>
             <video data-sc-scrub data-sc-src="/ember/hero.mp4" data-sc-src-mobile="/ember/hero-m.mp4" muted playsInline/>
@@ -3958,7 +3957,7 @@ function Ember(p:P){
         </section>
       }
 
-      <section id="emMenu" data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#15100B">
+      <section id="emMenu" data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#FAF7F2">
         <div data-sc-stage className="emMenuStage">
           <div className="emMenuRelight" aria-hidden="true"/>
           <div className="emMenuHead" data-sc-cue="0 1 0 0">
@@ -3980,7 +3979,7 @@ function Ember(p:P){
         </div>
       </section>
 
-      {galleryPhotos.length>0&&<section id="emGallery" className="sc-section emGalleryWrap" data-sc-act="flow" data-sc-drift="#100C08">
+      {galleryPhotos.length>0&&<section id="emGallery" className="sc-section emGalleryWrap" data-sc-act="flow" data-sc-drift="#FAF7F2">
         <div className="sc-wrap sc-stack emGalleryHead" data-sc-in data-sc-stagger="70">
           <h2 className="sc-display sc-display--md">{dec(b,'em_galleryTitle','Aynı mekan, aynı ruh.')}</h2>
         </div>
@@ -3989,7 +3988,7 @@ function Ember(p:P){
         </div>
       </section>}
 
-      <section id="emReserve" data-sc-act="pin" data-sc-span="1.1" data-sc-drift="#0B0806">
+      <section id="emReserve" data-sc-act="pin" data-sc-span="1.1" data-sc-drift="#FAF7F2">
         <div data-sc-stage className="emClose" data-sc-spotlight>
           <div className="emCloseInner">
             <h2 className="sc-display sc-display--lg" data-sc-cue="0.05" data-sc-kinetic="lines">{dec(b,'em_closeTitle','Sofran hazır.')}</h2>
