@@ -10,8 +10,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -4199,6 +4199,216 @@ function Mocha(p:P){
         </div>
       </div>
     </footer>
+  </main>;
+}
+/* ============ ÇİĞKÖFTE — neo-brutalist restoran teması ============
+   Kalın siyah çerçeve, blur'suz sert ofset gölge, kırmızı/sarı/krem, tek
+   aile Mulish (başlık 900, gövde 700). Tek sayfa, ankor bağlantılı: sticky
+   navbar (canlı açık/kapalı rozeti + telefon hapı) → hero (kapak fotoğrafı
+   varsa koyu perdeli) → sekmeli menü (fotoğraflı/kompakt kartlar) → hikaye
+   → galeri (lightbox) → yorumlar → koyu iletişim (saatler, harita, mesaj
+   formu) → footer. Tasarım prompt'undaki Tailwind/CSS Modules/next-font yerine
+   projenin gerçek stack'i kullanıldı: düz CSS, .tCigkofte kapsamlı token'lar,
+   Google Fonts <link>. Açık/kapalı hesabı Türkiye saatine (Europe/Istanbul)
+   göre, istemcide yapılır (SSR/hydration uyuşmazlığı olmasın diye). */
+const CG_DAY_ORDER=[1,2,3,4,5,6,0];
+function cgMin(t:string){const[h,m]=String(t||'0:0').split(':');return(+h||0)*60+(+m||0)}
+function cgHm(t:string){return String(t||'').slice(0,5)}
+function cgStatus(hours:any[]):{open:boolean;today:number;next:string}|null{
+  if(!hours||!hours.length)return null;
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Istanbul',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+  const pick=(k:string)=>parts.find(x=>x.type===k)?.value||'';
+  const today=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(pick('weekday'));
+  const now=(+pick('hour'))*60+(+pick('minute'));
+  const row=(d:number)=>hours.find((h:any)=>h.day_of_week===(d+7)%7);
+  const range=(h:any)=>h&&h.is_open?{s:cgMin(h.start_time),e:cgMin(h.end_time)}:null;
+  const t=range(row(today)),y=range(row(today-1));
+  // kapanış açılıştan küçükse gece yarısı aşılmış sayılır (11:00–02:00)
+  const open=!!((t&&(t.e>t.s?now>=t.s&&now<t.e:now>=t.s))||(y&&y.e<y.s&&now<y.e));
+  let next='';
+  if(!open){
+    if(t&&now<t.s)next=`Bugün ${cgHm(row(today).start_time)}`;
+    else for(let d=1;d<=7;d++){const r=row(today+d);if(r&&r.is_open){next=`${d===1?'Yarın':DAY_NAMES[(today+d)%7]} ${cgHm(r.start_time)}`;break}}
+  }
+  return{open,today,next};
+}
+function CgHead({eyebrow,title,text,onDark}:{eyebrow:string;title:string;text?:string;onDark?:boolean}){
+  return <header className="cgHead">
+    <span className={`cgEyebrow${onDark?' cgEyebrow--onDark':''}`}>{eyebrow}</span>
+    <h2>{title}</h2>
+    {text&&<p>{text}</p>}
+  </header>;
+}
+function CgPin(){return <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>}
+function CgPhone(){return <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>}
+function Cigkofte(p:P){
+  const{b}=p;
+  const galleryPhotos:string[]=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean);
+  const heroPhoto:string=b.cover_url||'';
+  const storyPhoto=galleryPhotos[0]||'';
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=p.menuItems||[];
+  const[activeCat,setActiveCat]=useState<string|undefined>(categories[0]?.id);
+  const currentCat=categories.some((c:any)=>c.id===activeCat)?activeCat:categories[0]?.id;
+  const catItems=items.filter((it:any)=>it.category_id===currentCat);
+  const[navOpen,setNavOpen]=useState(false);
+  const[lb,setLb]=useState<number|null>(null);
+  const[status,setStatus]=useState<ReturnType<typeof cgStatus>|undefined>(undefined);
+  useEffect(()=>{const tick=()=>setStatus(cgStatus(p.hours||[]));tick();const id=setInterval(tick,60000);return()=>clearInterval(id)},[p.hours]);
+  useEffect(()=>{
+    if(lb===null)return;
+    const n=galleryPhotos.length;
+    const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setLb(null);else if(e.key==='ArrowRight')setLb(i=>i===null?i:(i+1)%n);else if(e.key==='ArrowLeft')setLb(i=>i===null?i:(i-1+n)%n)};
+    document.addEventListener('keydown',onKey);
+    const prev=document.body.style.overflow;document.body.style.overflow='hidden';
+    return()=>{document.removeEventListener('keydown',onKey);document.body.style.overflow=prev};
+  },[lb,galleryPhotos.length]);
+  useEffect(()=>{
+    if(!navOpen)return;
+    const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setNavOpen(false)};
+    document.addEventListener('keydown',onKey);
+    return()=>document.removeEventListener('keydown',onKey);
+  },[navOpen]);
+  const phoneHref=b.phone?`tel:${String(b.phone).replace(/\s+/g,'')}`:'';
+  const mapsHref=b.google_maps_url||(b.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`:'');
+  const igHandle=b.instagram?String(b.instagram).replace(/^@/,'').trim():'';
+  const dayRows=CG_DAY_ORDER.map(d=>{const h=(p.hours||[]).find((x:any)=>x.day_of_week===d);return{d,label:DAY_NAMES[d],value:h&&h.is_open?`${cgHm(h.start_time)} – ${cgHm(h.end_time)}`:'Kapalı'}});
+  const showStory=!!(b.description||b.about_title);
+  const closeNav=()=>setNavOpen(false);
+  const badge=status&&<span className={`cgStatus${status.open?' is-open':''}`}><i aria-hidden="true"/>{status.open?'Açık':'Kapalı'}</span>;
+  return <main id="top" className="tCigkofte">
+    <a className="cgSkip" href="#menu">İçeriğe geç</a>
+    <header className={`cgNav${navOpen?' is-open':''}`}>
+      <div className="container cgNavInner">
+        <a className="cgBrand" href="#top" onClick={closeNav}>{b.logo_url?<img src={b.logo_url} alt=""/>:<i aria-hidden="true">{b.name?.[0]}</i>}<b>{b.name}</b></a>
+        <nav className="cgNavLinks" aria-label="Sayfa bölümleri">
+          <a href="#menu">Menü</a>
+          {showStory&&<a href="#hikayemiz">Hikayemiz</a>}
+          {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
+          <a href="#yorumlar">Yorumlar</a>
+          <a href="#iletisim">Bize Ulaşın</a>
+        </nav>
+        <div className="cgNavRight">
+          {badge}
+          {phoneHref&&<a className="cgPhonePill" href={phoneHref}><CgPhone/><span>{b.phone}</span></a>}
+          <button type="button" className="cgBurger" aria-label={navOpen?'Menüyü kapat':'Menüyü aç'} aria-expanded={navOpen} aria-controls="cgNavPanel" onClick={()=>setNavOpen(o=>!o)}>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">{navOpen?<path d="M5 5l14 14M19 5L5 19"/>:<path d="M4 7h16M4 12h16M4 17h16"/>}</svg>
+          </button>
+        </div>
+      </div>
+      <div className="cgNavPanel" id="cgNavPanel">
+        <div className="container">
+          <a href="#menu" onClick={closeNav}>Menü</a>
+          {showStory&&<a href="#hikayemiz" onClick={closeNav}>Hikayemiz</a>}
+          {galleryPhotos.length>0&&<a href="#galeri" onClick={closeNav}>Galeri</a>}
+          <a href="#yorumlar" onClick={closeNav}>Yorumlar</a>
+          <a href="#iletisim" onClick={closeNav}>Bize Ulaşın</a>
+          <div className="cgNavPanelFoot">
+            {badge}
+            {phoneHref&&<a className="cgPhonePill" href={phoneHref} onClick={closeNav}><CgPhone/><span>{b.phone}</span></a>}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section className={`cgHero${heroPhoto?' cgHero--photo':''}`}>
+      {heroPhoto&&<><img className="cgHeroImg" src={heroPhoto} alt="" fetchPriority="high"/><div className="cgHeroScrim" aria-hidden="true"/></>}
+      <div className="container cgHeroInner">
+        <h1>{b.hero_title||b.name}</h1>
+        <p className="cgHeroLede">{b.hero_description||dec(b,'cg_tagline','Sıcak, doyurucu, bol sohbetli. Sofra hazır, buyur.')}</p>
+        {status&&!status.open
+          ?<div className="cgClosed"><b>Şu an kapalıyız</b>{status.next&&<span>Sıradaki açılış: {status.next}</span>}</div>
+          :<div className="cgHeroBtns">
+            <a className="cgBtn cgBtn--solid" href="#menu">Menüyü Aç</a>
+            {phoneHref&&<a className="cgBtn cgBtn--accent" href={phoneHref}>{b.phone}</a>}
+          </div>}
+      </div>
+    </section>
+
+    <section id="menu" className="cgSection cgMenu">
+      <div className="container">
+        <CgHead eyebrow="Menü" title={dec(b,'cg_menuTitle','Bugün ne yesek?')} text={dec(b,'cg_menuNote','Kategoriyi seç, tabaklara göz at.')}/>
+        {categories.length>0&&<div className="cgTabsWrap"><div className="cgTabs">
+          {categories.map((c:any)=><button type="button" key={c.id} aria-pressed={currentCat===c.id} onClick={()=>setActiveCat(c.id)}>{c.name}</button>)}
+        </div></div>}
+        {categories.length===0&&<p className="cgEmpty">Menü yakında eklenecek.</p>}
+        {catItems.length>0&&<div className="cgItems">
+          {catItems.map((it:any)=><article className={`cgItem${it.image_url?'':' cgItem--compact'}`} key={it.id}>
+            {it.image_url&&<img className="cgItemImg" src={it.image_url} alt="" loading="lazy"/>}
+            <div className="cgItemBody">
+              <div className="cgItemHead">
+                <h3>{it.name}</h3>
+                {b.show_prices!==false&&it.price!=null&&<span className="cgPrice">₺{Number(it.price).toLocaleString('tr-TR')}</span>}
+              </div>
+              {it.description&&<p className="cgItemDesc">{it.description}</p>}
+            </div>
+          </article>)}
+        </div>}
+      </div>
+    </section>
+
+    {showStory&&<section id="hikayemiz" className="cgSection cgStory">
+      <div className={`container cgStoryGrid${storyPhoto?'':' cgStoryGrid--solo'}`}>
+        <div className="cgStoryText">
+          <CgHead eyebrow="Hikayemiz" title={b.about_title||b.name}/>
+          {b.description&&<p>{b.description}</p>}
+        </div>
+        {storyPhoto&&<figure className="cgStoryPhoto"><img src={storyPhoto} alt="" loading="lazy"/></figure>}
+      </div>
+    </section>}
+
+    {galleryPhotos.length>0&&<section id="galeri" className="cgSection cgGallery">
+      <div className="container">
+        <CgHead eyebrow="Galeri" title={dec(b,'cg_galleryTitle','Bizden kareler')} text={dec(b,'cg_galleryNote','Mekândan ve tabaklardan bir seçki. Büyütmek için dokun.')}/>
+        <div className="cgGalGrid">
+          {galleryPhotos.map((src,i)=><button type="button" className="cgGalItem" key={i} aria-label={`Fotoğrafı büyüt (${i+1}/${galleryPhotos.length})`} onClick={()=>setLb(i)}><img src={src} alt="" loading="lazy"/></button>)}
+        </div>
+      </div>
+    </section>}
+
+    <div id="yorumlar" className="cgReviews">
+      <OwnRatings businessId={b.id}/>
+      <GoogleReviews businessId={b.id}/>
+    </div>
+
+    <section id="iletisim" className="cgSection cgContact">
+      <div className="container">
+        <CgHead onDark eyebrow="İletişim" title="Bize Ulaşın" text={dec(b,'cg_contactNote','Adresimiz, çalışma saatlerimiz ve bir mesaj kadar yakın hattımız.')}/>
+        <div className="cgContactGrid">
+          <div className="cgInfo">
+            {b.address&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPin/></span><p>{b.address}</p></div>}
+            {b.phone&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPhone/></span><p><a href={phoneHref}>{b.phone}</a></p></div>}
+            {igHandle&&<div className="cgInfoRow"><span className="cgInfoIcon"><IgIcon/></span><p><a href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer">@{igHandle}</a></p></div>}
+            {(p.hours||[]).length>0&&<div className="cgHours" role="table" aria-label="Çalışma saatleri">
+              {dayRows.map(r=><div role="row" key={r.d} className={`cgHoursRow${status&&status.today===r.d?' is-today':''}`}><span role="cell">{r.label}</span><span role="cell">{r.value}</span></div>)}
+            </div>}
+            {mapsHref&&<a className="cgBtn cgBtn--accent" href={mapsHref} target="_blank" rel="noopener noreferrer">Yol Tarifi Al</a>}
+          </div>
+          <div className="cgFormCard">
+            <h3>Bize yazın</h3>
+            <ContactMessageForm businessId={b.id} prefix="cg"/>
+          </div>
+        </div>
+        {b.show_map!==false&&b.address&&<div className="cgMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum haritası"/></div>}
+      </div>
+    </section>
+
+    <footer className="cgFooter">
+      <div className="container">
+        <nav className="cgFooterLinks" aria-label="Yasal bağlantılar">
+          <a href="/gizlilik">Gizlilik Politikası</a>
+          <a href="/kosullar">Kullanım Koşulları</a>
+        </nav>
+        <p className="cgFooterCopy">© {new Date().getFullYear()} {b.name}</p>
+      </div>
+    </footer>
+
+    {lb!==null&&galleryPhotos[lb]&&<div className="cgLb" role="dialog" aria-modal="true" aria-label="Fotoğraf görüntüleyici" onClick={()=>setLb(null)}>
+      <button type="button" className="cgLbBtn cgLbClose" aria-label="Kapat" onClick={()=>setLb(null)}>✕</button>
+      {galleryPhotos.length>1&&<button type="button" className="cgLbBtn cgLbPrev" aria-label="Önceki fotoğraf" onClick={e=>{e.stopPropagation();setLb((lb-1+galleryPhotos.length)%galleryPhotos.length)}}>←</button>}
+      <img src={galleryPhotos[lb]} alt="" onClick={e=>e.stopPropagation()}/>
+      {galleryPhotos.length>1&&<button type="button" className="cgLbBtn cgLbNext" aria-label="Sonraki fotoğraf" onClick={e=>{e.stopPropagation();setLb((lb+1)%galleryPhotos.length)}}>→</button>}
+    </div>}
   </main>;
 }
 function IgIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>}
