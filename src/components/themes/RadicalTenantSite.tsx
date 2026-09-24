@@ -3805,68 +3805,14 @@ function Taze(p:P){
    that photo replaces it with a simple static hero instead — real per-
    business scrub encoding (mobile clip + poster + dense-GOP) isn't
    something we generate per tenant, so this is the deliberate fallback.
-   The signature move (menu tabs regrade the room's light temperature) is
-   generalized from 4 hardcoded meal-times to however many real
-   menu_categories the business has, interpolating cool→warm across them. */
-function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:number){
+   Menu categories are side-by-side "notes" tinted along a cool→warm hue
+   sweep (a static take on the old scroll-driven relight): nothing pins, so
+   there are no empty scroll stretches around the menu. */
+function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>){
   useEffect(()=>{
     const root=rootRef.current;
     if(!root)return;
     let cancelled=false;
-    function initRelight(){
-      const section=root!.querySelector('#emMenu') as HTMLElement|null;
-      const stage=section?.querySelector('.emMenuStage') as HTMLElement|null;
-      if(!section||!stage||catCount<=0)return;
-      const tabs=Array.from(stage.querySelectorAll('.emMenuTabs button')) as HTMLButtonElement[];
-      const panels=Array.from(stage.querySelectorAll('.emMenuPanel')) as HTMLElement[];
-      const n=catCount;
-      // the ambient light drifts continuously with raw scroll progress (never
-      // snapping in N steps) because a gradient's color-stop values don't
-      // actually CSS-transition between discrete swaps — only re-painting it
-      // every scroll frame with a smoothly-changing input reads as smooth.
-      // Which tab/panel is "active" stays a discrete step (menus can't blend),
-      // but that swap now crossfades via opacity, handled purely in CSS.
-      function paintRelight(t:number){
-        stage!.style.setProperty('--em-relight-hue',String(205-t*190));
-        stage!.style.setProperty('--em-relight-x',(20+t*60)+'%');
-        stage!.style.setProperty('--em-relight-y',(t*30)+'%');
-        stage!.style.setProperty('--em-relight-sat',(35+t*20)+'%');
-        stage!.style.setProperty('--em-relight-light',(86+t*8)+'%');
-      }
-      function paintIndex(i:number){
-        tabs.forEach((btn,bi)=>btn.classList.toggle('is-active',bi===i));
-        panels.forEach((p,pi)=>p.classList.toggle('is-active',pi===i));
-      }
-      const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      function progressFromScroll(){
-        const rect=section!.getBoundingClientRect();
-        const travel=rect.height-window.innerHeight;
-        if(travel<=0)return 0;
-        return Math.min(1,Math.max(0,-rect.top/travel));
-      }
-      let ticking=false;
-      function onScroll(){
-        if(ticking)return;
-        ticking=true;
-        requestAnimationFrame(()=>{
-          const p=progressFromScroll();
-          paintRelight(p);
-          paintIndex(Math.min(n-1,Math.floor(p*n)));
-          ticking=false;
-        });
-      }
-      if(!reduced){
-        window.addEventListener('scroll',onScroll,{passive:true});
-        onScroll();
-      }else{paintRelight(0);paintIndex(0)}
-      tabs.forEach((btn,i)=>btn.addEventListener('click',()=>{
-        if(reduced){paintRelight(n<=1?0:i/(n-1));paintIndex(i);return}
-        const rect=section!.getBoundingClientRect();
-        const travel=rect.height-window.innerHeight;
-        const targetP=(i+0.5)/n;
-        window.scrollTo({top:window.scrollY+rect.top+targetP*travel,behavior:'smooth'});
-      }));
-    }
     function warmScrubVideos(){
       Array.from(root!.querySelectorAll('video[data-sc-scrub]')).forEach((v)=>{
         const el=v as HTMLVideoElement;
@@ -3878,7 +3824,6 @@ function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:numbe
       if(cancelled||!root)return;
       const w=window as any;
       if(w.ScrollCraft&&!root.dataset.scMounted){w.ScrollCraft.mount(root);root.dataset.scMounted='1'}
-      initRelight();
       // Chromium stops compositing a <video>'s frame once it's driven purely by
       // paused currentTime seeks (scrub scrolling) unless it has actually played
       // at least once. The engine primes this on touchstart/pointerdown for
@@ -3901,7 +3846,7 @@ function useEmberEngine(rootRef:React.RefObject<HTMLElement|null>,catCount:numbe
       script.addEventListener('load',boot);
     }
     return()=>{cancelled=true};
-  },[rootRef,catCount]);
+  },[rootRef]);
 }
 function Ember(p:P){
   const{b}=p;
@@ -3914,7 +3859,7 @@ function Ember(p:P){
   const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   const hasCover=!!b.cover_url;
   const waPhone=(()=>{if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);return n||null})();
-  useEmberEngine(rootRef,categories.length);
+  useEmberEngine(rootRef);
   return <>
     <link rel="stylesheet" href="/ember/scrollcraft.css" precedence="ember"/>
     <main id="top" className="tEmber" ref={rootRef}>
@@ -3945,7 +3890,7 @@ function Ember(p:P){
           </div>
         </section>
       :
-        <section data-sc-act="scrub" data-sc-span="2" data-sc-dwell="0.2" data-sc-drift="#FAF7F2">
+        <section data-sc-act="scrub" data-sc-span="1.6" data-sc-dwell="0.2" data-sc-drift="#FAF7F2">
           <div data-sc-stage>
             <img className="sc-stage__poster" src="/ember/hero-poster.jpg" alt=""/>
             <video data-sc-scrub data-sc-src="/ember/hero.mp4" data-sc-src-mobile="/ember/hero-m.mp4" muted playsInline/>
@@ -3957,26 +3902,28 @@ function Ember(p:P){
         </section>
       }
 
-      <section id="emMenu" data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#FAF7F2">
-        <div data-sc-stage className="emMenuStage">
-          <div className="emMenuRelight" aria-hidden="true"/>
-          <div className="emMenuHead" data-sc-cue="0 1 0 0">
-            <p className="emEyebrow">Menü</p>
-            <h2 className="sc-display sc-display--lg">{dec(b,'em_menuTitle','Gün boyu, aynı özenle.')}</h2>
-            {categories.length>0&&<nav className="emMenuTabs" aria-label="Menü kategorisi">
-              {categories.map((c:any,i:number)=><button type="button" key={c.id} className={i===0?'is-active':''}>{c.name}</button>)}
-            </nav>}
-          </div>
-          <div className="emMenuPanels">
-            {categories.length===0&&<p className="emMenuEmpty">Menü yakında eklenecek.</p>}
-            {categories.map((c:any,ci:number)=><div key={c.id} className={`emMenuPanel${ci===0?' is-active':''}`}>
-              {items.filter((it:any)=>it.category_id===c.id).map((it:any)=><div className="emMenuItem" key={it.id}>
-                <div className="emMenuItemRow"><span className="emMenuItemName">{it.name}</span><span className="emMenuItemDots"/>{b.show_prices!==false&&it.price!=null&&<span className="emMenuItemPrice">₺{Number(it.price).toLocaleString('tr-TR')}</span>}</div>
-                {it.description&&<p className="emMenuItemDesc">{it.description}</p>}
-              </div>)}
-            </div>)}
-          </div>
-        </div>
+      <section id="emMenu" className="emMenu">
+        <Reveal className="emMenuHead">
+          <p className="emEyebrow">Menü</p>
+          <h2 className="sc-display sc-display--lg">{dec(b,'em_menuTitle','Gün boyu, aynı özenle.')}</h2>
+        </Reveal>
+        {categories.length===0&&<p className="emMenuEmpty">Menü yakında eklenecek.</p>}
+        {categories.length>0&&<div className="emNotes">
+          {categories.map((c:any,i:number)=>{
+            const t=categories.length<=1?0:i/(categories.length-1);
+            const catItems=items.filter((it:any)=>it.category_id===c.id);
+            return <Reveal key={c.id} i={i} className="emNoteWrap">
+              <article className="emNote" style={{'--em-note-hue':String(Math.round(205-t*190))} as React.CSSProperties}>
+                <h3><i aria-hidden="true"/>{c.name}</h3>
+                {catItems.length===0&&<p className="emNoteEmpty">Yakında eklenecek.</p>}
+                {catItems.map((it:any)=><div className="emMenuItem" key={it.id}>
+                  <div className="emMenuItemRow"><span className="emMenuItemName">{it.name}</span><span className="emMenuItemDots"/>{b.show_prices!==false&&it.price!=null&&<span className="emMenuItemPrice">₺{Number(it.price).toLocaleString('tr-TR')}</span>}</div>
+                  {it.description&&<p className="emMenuItemDesc">{it.description}</p>}
+                </div>)}
+              </article>
+            </Reveal>;
+          })}
+        </div>}
       </section>
 
       {galleryPhotos.length>0&&<section id="emGallery" className="sc-section emGalleryWrap" data-sc-act="flow" data-sc-drift="#FAF7F2">
@@ -3988,14 +3935,12 @@ function Ember(p:P){
         </div>
       </section>}
 
-      <section id="emReserve" data-sc-act="pin" data-sc-span="1.1" data-sc-drift="#FAF7F2">
-        <div data-sc-stage className="emClose" data-sc-spotlight>
-          <div className="emCloseInner">
-            <h2 className="sc-display sc-display--lg" data-sc-cue="0.05" data-sc-kinetic="lines">{dec(b,'em_closeTitle','Sofran hazır.')}</h2>
-            {cta?<a className="emCloseCta" data-sc-magnet="0.26" data-sc-cue="0.05" data-sc-rise="0" {...ctaProps(cta)}>{cta.label}</a>
-                :<a className="emCloseCta" data-sc-magnet="0.26" data-sc-cue="0.05" data-sc-rise="0" href="#emContact">Bize Ulaşın</a>}
-          </div>
-        </div>
+      <section id="emReserve" className="emClose" data-sc-spotlight>
+        <Reveal className="emCloseInner">
+          <h2 className="sc-display sc-display--lg">{dec(b,'em_closeTitle','Sofran hazır.')}</h2>
+          {cta?<a className="emCloseCta" data-sc-magnet="0.26" {...ctaProps(cta)}>{cta.label}</a>
+              :<a className="emCloseCta" data-sc-magnet="0.26" href="#emContact">Bize Ulaşın</a>}
+        </Reveal>
       </section>
 
       <OwnRatings businessId={b.id}/>
