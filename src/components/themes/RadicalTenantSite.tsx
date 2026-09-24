@@ -4248,13 +4248,19 @@ function Cigkofte(p:P){
   const heroIsVideo=b.cover_type==='video';
   const storyPhoto=galleryPhotos[0]||'';
   const heroVideoRef=useRef<HTMLVideoElement>(null);
-  // autoplay attribute'u bazı tarayıcılarda (odaksız/gizli sekme, düşük güç modu) atlanabiliyor: elle de başlat
+  const[soundOn,setSoundOn]=useState(false);
+  // autoplay attribute'u bazı tarayıcılarda (odaksız/gizli sekme, düşük güç modu) atlanabiliyor: elle de başlat.
+  // Hero ekrandan çıkınca video durur (ses açıksa menüde/galeride çalmaya devam etmesin), dönünce devam eder.
   useEffect(()=>{
     const v=heroVideoRef.current;if(!v)return;
-    const go=()=>{v.muted=true;v.play().catch(()=>{})};
+    let inView=true;
+    const go=()=>{if(inView)v.play().catch(()=>{})};
+    const io=new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)go();else v.pause()},{threshold:.15});
+    io.observe(v);
     go();v.addEventListener('loadeddata',go);document.addEventListener('visibilitychange',go);
-    return()=>{v.removeEventListener('loadeddata',go);document.removeEventListener('visibilitychange',go)};
+    return()=>{io.disconnect();v.removeEventListener('loadeddata',go);document.removeEventListener('visibilitychange',go)};
   },[heroMedia,heroIsVideo]);
+  const toggleSound=()=>{const v=heroVideoRef.current,next=!soundOn;if(v){v.muted=!next;if(next)v.play().catch(()=>{})}setSoundOn(next)};
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const items=p.menuItems||[];
   const[activeCat,setActiveCat]=useState<string|undefined>(categories[0]?.id);
@@ -4320,10 +4326,10 @@ function Cigkofte(p:P){
       </div>
     </header>
 
-    <section className={`cgHero${heroMedia?' cgHero--photo':''}`}>
+    <section className={`cgHero${heroMedia?' cgHero--photo':''}${heroMedia&&heroIsVideo?' cgHero--video':''}`}>
       {heroMedia&&<>
         {heroIsVideo
-          ?<video ref={heroVideoRef} className="cgHeroImg" src={heroMedia} autoPlay muted loop playsInline preload="auto" aria-hidden="true"/>
+          ?<video ref={heroVideoRef} className="cgHeroImg" src={heroMedia} autoPlay muted={!soundOn} loop playsInline preload="auto" aria-hidden="true"/>
           :<img className="cgHeroImg" src={heroMedia} alt="" fetchPriority="high"/>}
         <div className="cgHeroScrim" aria-hidden="true"/>
       </>}
@@ -4337,6 +4343,10 @@ function Cigkofte(p:P){
             {phoneHref&&<a className="cgBtn cgBtn--accent" href={phoneHref}>{b.phone}</a>}
           </div>}
       </div>
+      {heroMedia&&heroIsVideo&&<button type="button" className="cgSound" onClick={toggleSound}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z"/>{soundOn?<path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>:<path d="M22 9l-6 6M16 9l6 6"/>}</svg>
+        <span>{soundOn?'Sesi Kapat':'Sesi Aç'}</span>
+      </button>}
     </section>
 
     <section id="menu" className="cgSection cgMenu">
@@ -4348,7 +4358,7 @@ function Cigkofte(p:P){
         {categories.length===0&&<p className="cgEmpty">Menü yakında eklenecek.</p>}
         {catItems.length>0&&<div className="cgItems">
           {catItems.map((it:any)=><article className={`cgItem${it.image_url?'':' cgItem--compact'}`} key={it.id}>
-            {it.image_url&&<img className="cgItemImg" src={it.image_url} alt="" loading="lazy"/>}
+            {it.image_url&&<div className="cgItemMedia"><img className="cgItemImg" src={it.image_url} alt="" loading="lazy"/></div>}
             <div className="cgItemBody">
               <div className="cgItemHead">
                 <h3>{it.name}</h3>
@@ -4401,9 +4411,11 @@ function Cigkofte(p:P){
           <div className="cgFooterCol">
             <h3>İletişim</h3>
             <div className="cgInfo">
-              {b.address&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPin/></span><p>{b.address}</p></div>}
-              {b.phone&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPhone/></span><p><a href={phoneHref}>{b.phone}</a></p></div>}
-              {igHandle&&<div className="cgInfoRow"><span className="cgInfoIcon"><IgIcon/></span><p><a href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer">@{igHandle}</a></p></div>}
+              {b.address&&(mapsHref
+                ?<a className="cgInfoRow" href={mapsHref} target="_blank" rel="noopener noreferrer"><span className="cgInfoIcon"><CgPin/></span><span className="cgInfoText">{b.address}</span></a>
+                :<div className="cgInfoRow"><span className="cgInfoIcon"><CgPin/></span><span className="cgInfoText">{b.address}</span></div>)}
+              {b.phone&&<a className="cgInfoRow" href={phoneHref}><span className="cgInfoIcon"><CgPhone/></span><span className="cgInfoText">{b.phone}</span></a>}
+              {igHandle&&<a className="cgInfoRow" href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer"><span className="cgInfoIcon"><IgIcon/></span><span className="cgInfoText">@{igHandle}</span></a>}
               {mapsHref&&<a className="cgBtn cgBtn--accent" href={mapsHref} target="_blank" rel="noopener noreferrer">Yol Tarifi Al</a>}
             </div>
           </div>

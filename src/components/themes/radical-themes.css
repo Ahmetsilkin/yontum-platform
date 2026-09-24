@@ -3930,6 +3930,11 @@
 /* hero */
 .tCigkofte .cgHero{position:relative;isolation:isolate;display:flex;align-items:center;padding-block:var(--space-7);border-bottom:var(--border-w) solid var(--color-border)}
 .tCigkofte .cgHero--photo{min-height:calc(100dvh - var(--header-h))}
+.tCigkofte .cgHero--video{padding-bottom:calc(var(--space-7) + var(--tap-min))}
+.tCigkofte .cgSound{position:absolute;z-index:1;bottom:var(--space-5);left:max(var(--container-pad),calc((100% - var(--container-max)) / 2 + var(--container-pad)));display:inline-flex;align-items:center;gap:var(--space-2);min-height:var(--tap-min);padding:10px 20px;background:var(--color-surface);color:var(--color-text);border:var(--border-w) solid var(--color-border);border-radius:var(--radius-pill);box-shadow:var(--shadow-hard);font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--step--1);cursor:pointer;transition:transform var(--dur-fast) var(--ease),box-shadow var(--dur-fast) var(--ease),background var(--dur-fast) var(--ease),color var(--dur-fast) var(--ease)}
+.tCigkofte .cgSound:hover{transform:translate(2px,2px);box-shadow:var(--shadow-pressed)}
+.tCigkofte .cgSound:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.tCigkofte .cgSound:focus-visible{box-shadow:var(--shadow-hard),var(--focus-ring)}
 .tCigkofte .cgHeroImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;z-index:-2}
 .tCigkofte .cgHeroScrim{position:absolute;inset:0;background:var(--color-scrim);z-index:-1}
 .tCigkofte .cgHeroInner{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-4)}
@@ -3958,12 +3963,14 @@
 .tCigkofte .cgTabs button[aria-pressed="true"]{background:var(--color-accent);color:var(--color-text-on-accent);transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
 .tCigkofte .cgTabs button:focus-visible{box-shadow:var(--shadow-hard-sm),var(--focus-ring)}
 .tCigkofte .cgItems{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:var(--space-5);align-items:start}
-.tCigkofte .cgItem{display:flex;flex-direction:column;background:var(--color-surface);border:var(--border-w) solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-hard);overflow:hidden}
-.tCigkofte .cgItemImg{width:100%;aspect-ratio:4/3;object-fit:cover;border-bottom:var(--border-w) solid var(--color-border)}
+.tCigkofte .cgItem{display:flex;flex-direction:column;background:var(--color-surface);border:var(--border-w) solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-hard);overflow:hidden;transition:transform var(--dur-base) var(--ease),box-shadow var(--dur-base) var(--ease)}
+.tCigkofte .cgItemMedia{overflow:hidden;border-bottom:var(--border-w) solid var(--color-border)}
+.tCigkofte .cgItemImg{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform var(--dur-slow) var(--ease)}
 .tCigkofte .cgItemBody{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-4)}
 .tCigkofte .cgItemHead{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-3)}
 .tCigkofte .cgItemHead h3{font-size:var(--step-1);line-height:var(--leading-snug)}
-.tCigkofte .cgPrice{flex:none;background:var(--color-accent-2);color:var(--color-text-on-yellow);border:var(--border-w-thin) solid var(--color-border);border-radius:var(--radius-pill);padding:2px 12px;font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--step-0);white-space:nowrap}
+.tCigkofte .cgPrice{flex:none;background:var(--color-accent-2);color:var(--color-text-on-yellow);border:var(--border-w-thin) solid var(--color-border);border-radius:var(--radius-pill);padding:2px 12px;font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--step-0);white-space:nowrap;transition:transform var(--dur-base) var(--ease),background var(--dur-base) var(--ease),color var(--dur-base) var(--ease)}
+.tCigkofte .cgItemHead h3{transition:color var(--dur-base) var(--ease)}
 .tCigkofte .cgItemDesc{padding-top:var(--space-3);border-top:var(--border-w-thin) dashed var(--color-border);color:var(--color-text-muted)}
 
 /* hikaye */
@@ -4037,10 +4044,9 @@
 .tCigkofte .cgFooterGrid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:var(--space-6);align-items:start;padding-bottom:var(--space-6);border-bottom:var(--border-w-thin) solid var(--color-line-on-dark)}
 .tCigkofte .cgFooterCol h3{font-size:var(--step-1);margin-bottom:var(--space-4)}
 .tCigkofte .cgInfo{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-4)}
-.tCigkofte .cgInfoRow{display:flex;align-items:center;gap:var(--space-3)}
-.tCigkofte .cgInfoIcon{flex:none;display:grid;place-items:center;width:40px;height:40px;border:var(--border-w-thin) solid var(--color-border-on-dark);border-radius:50%;color:var(--color-text-on-dark)}
-.tCigkofte .cgInfoRow p{font-size:var(--step-0)}
-.tCigkofte .cgInfoRow a{text-decoration:underline;text-underline-offset:3px}
+.tCigkofte .cgInfoRow{display:flex;align-items:center;gap:var(--space-3);color:inherit;text-decoration:none}
+.tCigkofte .cgInfoIcon{flex:none;display:grid;place-items:center;width:40px;height:40px;border:var(--border-w-thin) solid var(--color-border-on-dark);border-radius:50%;color:var(--color-text-on-dark);transition:transform var(--dur-base) var(--ease),background var(--dur-base) var(--ease),color var(--dur-base) var(--ease)}
+.tCigkofte .cgInfoText{font-size:var(--step-0);transition:transform var(--dur-base) var(--ease),color var(--dur-base) var(--ease)}
 .tCigkofte .cgHours{width:100%;max-width:420px}
 .tCigkofte .cgHoursRow{display:flex;justify-content:space-between;gap:var(--space-4);padding:var(--space-2) 0;border-bottom:var(--border-w-thin) dashed var(--color-line-on-dark)}
 .tCigkofte .cgHoursRow.is-today{color:var(--color-accent-2);font-weight:var(--weight-display)}
@@ -4049,9 +4055,32 @@
 .tCigkofte .cgMap{border:var(--border-w) solid var(--color-border-on-dark);border-radius:var(--radius-lg);box-shadow:var(--shadow-hard-red);overflow:hidden}
 .tCigkofte .cgMap iframe{width:100%;height:280px;border:0}
 .tCigkofte .cgFooterLinks{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-2) var(--space-5);padding-block:var(--space-3) var(--space-3);border-bottom:var(--border-w-thin) solid var(--color-line-on-dark)}
-.tCigkofte .cgFooterLinks a{font-family:var(--font-mono);font-size:var(--step--2);opacity:.75;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;min-height:var(--tap-min)}
+.tCigkofte .cgFooterLinks a{font-family:var(--font-mono);font-size:var(--step--2);opacity:.75;text-decoration:none;display:inline-flex;align-items:center;min-height:var(--tap-min);transition:transform var(--dur-base) var(--ease),color var(--dur-base) var(--ease),opacity var(--dur-base) var(--ease)}
 .tCigkofte .cgFooterCopy{padding-top:var(--space-4);text-align:center;font-family:var(--font-mono);font-size:var(--step--2);opacity:.8}
 .tCigkofte .cgFooter :focus-visible{box-shadow:var(--focus-ring-on-dark)}
+
+/* yemek sitesine yakışır hover'lar: kartlar yerinden fırlar, fotoğraf yaklaşır, fiyat kırmızıya döner, ikonlar döner */
+@media(hover:hover){
+  .tCigkofte .cgNavLinks a{display:inline-block}
+  .tCigkofte .cgNavLinks a:hover{transform:translateY(-2px) rotate(var(--tilt-chip))}
+  .tCigkofte .cgItem:hover{transform:translate(-3px,-3px) rotate(var(--tilt-card));box-shadow:var(--shadow-hard-lg)}
+  .tCigkofte .cgItem:nth-child(even):hover{transform:translate(-3px,-3px) rotate(var(--tilt-card-alt))}
+  .tCigkofte .cgItem:hover .cgItemImg{transform:scale(1.08)}
+  .tCigkofte .cgItem:hover .cgItemHead h3{color:var(--color-accent)}
+  .tCigkofte .cgItem:hover .cgPrice{background:var(--color-accent);color:var(--color-text-on-accent);transform:rotate(-5deg) scale(1.1)}
+  .tCigkofte .cgStoryPhoto{transition:transform var(--dur-slow) var(--ease),box-shadow var(--dur-slow) var(--ease)}
+  .tCigkofte .cgStoryPhoto:hover{transform:rotate(0) scale(1.02)}
+  .tCigkofte .cgGalItem img{transition:transform var(--dur-slow) var(--ease)}
+  .tCigkofte .cgGalItem:hover img{transform:scale(1.08)}
+  .tCigkofte .cgReviews .ownReviewGrid article,.tCigkofte .cgReviews .googleReviewGrid article{transition:transform var(--dur-base) var(--ease),box-shadow var(--dur-base) var(--ease)}
+  .tCigkofte .cgReviews .ownReviewGrid article:hover,.tCigkofte .cgReviews .googleReviewGrid article:hover{transform:translate(-3px,-3px) rotate(0);box-shadow:var(--shadow-hard-lg)}
+  .tCigkofte a.cgInfoRow:hover .cgInfoIcon{background:var(--color-text-on-dark);color:var(--color-text);transform:rotate(-12deg) scale(1.12)}
+  .tCigkofte a.cgInfoRow:hover .cgInfoText{color:var(--color-accent-2);transform:translateX(4px)}
+  .tCigkofte .cgFooterLinks a:hover{opacity:1;color:var(--color-accent-2);transform:translateY(-2px) rotate(var(--tilt-chip))}
+}
+.tCigkofte a.cgInfoRow:focus-visible{box-shadow:none}
+.tCigkofte a.cgInfoRow:focus-visible .cgInfoIcon{background:var(--color-text-on-dark);color:var(--color-text);box-shadow:var(--focus-ring-on-dark)}
+.tCigkofte .cgFooterLinks a:focus-visible{opacity:1;color:var(--color-accent-2)}
 
 @media(max-width:980px){
   .tCigkofte .cgNavLinks{display:none}
