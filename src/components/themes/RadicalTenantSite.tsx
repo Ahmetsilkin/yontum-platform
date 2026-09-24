@@ -4232,9 +4232,9 @@ function cgStatus(hours:any[]):{open:boolean;today:number;next:string}|null{
   }
   return{open,today,next};
 }
-function CgHead({eyebrow,title,text,onDark}:{eyebrow:string;title:string;text?:string;onDark?:boolean}){
+function CgHead({eyebrow,title,text}:{eyebrow:string;title:string;text?:string}){
   return <header className="cgHead">
-    <span className={`cgEyebrow${onDark?' cgEyebrow--onDark':''}`}>{eyebrow}</span>
+    <span className="cgEyebrow">{eyebrow}</span>
     <h2>{title}</h2>
     {text&&<p>{text}</p>}
   </header>;
@@ -4371,30 +4371,38 @@ function Cigkofte(p:P){
       <GoogleReviews businessId={b.id}/>
     </div>
 
-    <section id="iletisim" className="cgSection cgContact">
-      <div className="container">
-        <CgHead onDark eyebrow="İletişim" title="Bize Ulaşın" text={dec(b,'cg_contactNote','Adresimiz, çalışma saatlerimiz ve bir mesaj kadar yakın hattımız.')}/>
-        <div className="cgContactGrid">
-          <div className="cgInfo">
-            {b.address&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPin/></span><p>{b.address}</p></div>}
-            {b.phone&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPhone/></span><p><a href={phoneHref}>{b.phone}</a></p></div>}
-            {igHandle&&<div className="cgInfoRow"><span className="cgInfoIcon"><IgIcon/></span><p><a href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer">@{igHandle}</a></p></div>}
-            {(p.hours||[]).length>0&&<div className="cgHours" role="table" aria-label="Çalışma saatleri">
-              {dayRows.map(r=><div role="row" key={r.d} className={`cgHoursRow${status&&status.today===r.d?' is-today':''}`}><span role="cell">{r.label}</span><span role="cell">{r.value}</span></div>)}
-            </div>}
-            {mapsHref&&<a className="cgBtn cgBtn--accent" href={mapsHref} target="_blank" rel="noopener noreferrer">Yol Tarifi Al</a>}
-          </div>
-          <div className="cgFormCard">
-            <h3>Bize yazın</h3>
-            <ContactMessageForm businessId={b.id} prefix="cg"/>
-          </div>
+    <section id="iletisim" className="cgSection cgMessage">
+      <div className="container cgMessageGrid">
+        <CgHead eyebrow="Mesaj" title="Bize Ulaşın" text={dec(b,'cg_contactNote','Sorunu, önerini ya da notunu yaz, en kısa sürede dönüş yapalım.')}/>
+        <div className="cgFormCard">
+          <h3>Bize yazın</h3>
+          <ContactMessageForm businessId={b.id} prefix="cg"/>
         </div>
-        {b.show_map!==false&&b.address&&<div className="cgMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum haritası"/></div>}
       </div>
     </section>
 
     <footer className="cgFooter">
       <div className="container">
+        <div className="cgFooterGrid">
+          <div className="cgFooterCol">
+            <h3>İletişim</h3>
+            <div className="cgInfo">
+              {b.address&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPin/></span><p>{b.address}</p></div>}
+              {b.phone&&<div className="cgInfoRow"><span className="cgInfoIcon"><CgPhone/></span><p><a href={phoneHref}>{b.phone}</a></p></div>}
+              {igHandle&&<div className="cgInfoRow"><span className="cgInfoIcon"><IgIcon/></span><p><a href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer">@{igHandle}</a></p></div>}
+              {mapsHref&&<a className="cgBtn cgBtn--accent" href={mapsHref} target="_blank" rel="noopener noreferrer">Yol Tarifi Al</a>}
+            </div>
+          </div>
+          {(p.hours||[]).length>0&&<div className="cgFooterCol">
+            <h3>Çalışma Saatleri</h3>
+            <div className="cgHours" role="table" aria-label="Çalışma saatleri">
+              {dayRows.map(r=><div role="row" key={r.d} className={`cgHoursRow${status&&status.today===r.d?' is-today':''}`}><span role="cell">{r.label}</span><span role="cell">{r.value}</span></div>)}
+            </div>
+          </div>}
+          {b.show_map!==false&&b.address&&<div className="cgFooterCol cgFooterMapCol">
+            <div className="cgMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum haritası"/></div>
+          </div>}
+        </div>
         <nav className="cgFooterLinks" aria-label="Yasal bağlantılar">
           <a href="/gizlilik">Gizlilik Politikası</a>
           <a href="/kosullar">Kullanım Koşulları</a>
