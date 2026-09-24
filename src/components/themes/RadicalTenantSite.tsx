@@ -4244,8 +4244,17 @@ function CgPhone(){return <svg viewBox="0 0 24 24" width="20" height="20" aria-h
 function Cigkofte(p:P){
   const{b}=p;
   const galleryPhotos:string[]=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean);
-  const heroPhoto:string=b.cover_url||'';
+  const heroMedia:string=b.cover_url||'';
+  const heroIsVideo=b.cover_type==='video';
   const storyPhoto=galleryPhotos[0]||'';
+  const heroVideoRef=useRef<HTMLVideoElement>(null);
+  // autoplay attribute'u bazı tarayıcılarda (odaksız/gizli sekme, düşük güç modu) atlanabiliyor: elle de başlat
+  useEffect(()=>{
+    const v=heroVideoRef.current;if(!v)return;
+    const go=()=>{v.muted=true;v.play().catch(()=>{})};
+    go();v.addEventListener('loadeddata',go);document.addEventListener('visibilitychange',go);
+    return()=>{v.removeEventListener('loadeddata',go);document.removeEventListener('visibilitychange',go)};
+  },[heroMedia,heroIsVideo]);
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const items=p.menuItems||[];
   const[activeCat,setActiveCat]=useState<string|undefined>(categories[0]?.id);
@@ -4311,8 +4320,13 @@ function Cigkofte(p:P){
       </div>
     </header>
 
-    <section className={`cgHero${heroPhoto?' cgHero--photo':''}`}>
-      {heroPhoto&&<><img className="cgHeroImg" src={heroPhoto} alt="" fetchPriority="high"/><div className="cgHeroScrim" aria-hidden="true"/></>}
+    <section className={`cgHero${heroMedia?' cgHero--photo':''}`}>
+      {heroMedia&&<>
+        {heroIsVideo
+          ?<video ref={heroVideoRef} className="cgHeroImg" src={heroMedia} autoPlay muted loop playsInline preload="auto" aria-hidden="true"/>
+          :<img className="cgHeroImg" src={heroMedia} alt="" fetchPriority="high"/>}
+        <div className="cgHeroScrim" aria-hidden="true"/>
+      </>}
       <div className="container cgHeroInner">
         <h1>{b.hero_title||b.name}</h1>
         <p className="cgHeroLede">{b.hero_description||dec(b,'cg_tagline','Sıcak, doyurucu, bol sohbetli. Sofra hazır, buyur.')}</p>
