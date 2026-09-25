@@ -4265,7 +4265,6 @@ function Cigkofte(p:P){
   const items=p.menuItems||[];
   const[activeCat,setActiveCat]=useState<string|undefined>(categories[0]?.id);
   const currentCat=categories.some((c:any)=>c.id===activeCat)?activeCat:categories[0]?.id;
-  const catItems=items.filter((it:any)=>it.category_id===currentCat);
   const[navOpen,setNavOpen]=useState(false);
   const[lb,setLb]=useState<number|null>(null);
   const[status,setStatus]=useState<ReturnType<typeof cgStatus>|undefined>(undefined);
@@ -4356,18 +4355,24 @@ function Cigkofte(p:P){
           {categories.map((c:any)=><button type="button" key={c.id} aria-pressed={currentCat===c.id} onClick={()=>setActiveCat(c.id)}>{c.name}</button>)}
         </div></div>}
         {categories.length===0&&<p className="cgEmpty">Menü yakında eklenecek.</p>}
-        {catItems.length>0&&<div className="cgItems">
-          {catItems.map((it:any)=><article className={`cgItem${it.image_url?'':' cgItem--compact'}`} key={it.id}>
-            {it.image_url&&<div className="cgItemMedia"><img className="cgItemImg" src={it.image_url} alt="" loading="lazy"/></div>}
-            <div className="cgItemBody">
-              <div className="cgItemHead">
-                <h3>{it.name}</h3>
-                {b.show_prices!==false&&it.price!=null&&<span className="cgPrice">₺{Number(it.price).toLocaleString('tr-TR')}</span>}
-              </div>
-              {it.description&&<p className="cgItemDesc">{it.description}</p>}
-            </div>
-          </article>)}
-        </div>}
+        {categories.map((c:any)=>{
+          const list=items.filter((it:any)=>it.category_id===c.id);
+          return <div key={c.id} className={`cgCat${c.id===currentCat?' is-active':''}${list.length?'':' cgCat--empty'}`}>
+            <h3 className="cgCatTitle">{c.name}</h3>
+            {list.length>0&&<div className="cgItems">
+              {list.map((it:any)=><article className={`cgItem${it.image_url?'':' cgItem--compact'}`} key={it.id}>
+                {it.image_url&&<div className="cgItemMedia"><img className="cgItemImg" src={it.image_url} alt="" loading="lazy"/></div>}
+                <div className="cgItemBody">
+                  <div className="cgItemHead">
+                    <h4>{it.name}</h4>
+                    {b.show_prices!==false&&it.price!=null&&<span className="cgPrice">₺{Number(it.price).toLocaleString('tr-TR')}</span>}
+                  </div>
+                  {it.description&&<p className="cgItemDesc">{it.description}</p>}
+                </div>
+              </article>)}
+            </div>}
+          </div>;
+        })}
       </div>
     </section>
 
