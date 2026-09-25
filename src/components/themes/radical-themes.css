@@ -3247,6 +3247,7 @@
 .sfNavBtn:hover{filter:brightness(1.08)}
 
 .sfHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;background-size:cover;background-position:center;padding:0 6vw 90px;overflow:hidden}
+.sfHeroMedia{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .sfHeroOverlay{position:absolute;inset:0;background:linear-gradient(190deg,rgba(20,14,8,.15) 0%,rgba(20,14,8,.55) 75%,rgba(20,14,8,.82) 100%)}
 .sfHeroText{position:relative;z-index:2;max-width:640px;color:#fff}
 .sfEyebrow{color:#f0d9b8;font-size:11px;letter-spacing:3px;font-weight:600;margin:0 0 18px;text-transform:uppercase}
@@ -3370,7 +3371,7 @@
 .tzHero{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:110px 0 140px}
 .tzHeroPhotos{position:absolute;inset:0;display:flex}
 .tzHeroPhoto{position:relative;flex:1;overflow:hidden;background:var(--tz-dark)}
-.tzHeroPhoto img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.tzHeroPhoto img,.tzHeroPhoto .tzHeroVideo{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .tzHeroShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,32,26,.1) 0%,rgba(18,32,26,.28) 55%,rgba(18,32,26,.6) 100%)}
 .tzWordmark{position:relative;z-index:3;text-align:center;font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(40px,13vw,180px);color:#fff;margin:0;line-height:.95;text-shadow:0 4px 34px rgba(0,0,0,.3);padding:0 5vw}
 .tzHeroBottomRow{position:relative;z-index:2;text-align:center;padding:22px 6vw 0}
@@ -3532,6 +3533,7 @@
 
 /* static-photo hero (a business's own cover_url replaces the shared clip) */
 .tEmber .emHeroPhoto{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background-size:cover;background-position:center;padding:0 clamp(1.25rem,5vw,5.5rem) 8vh}
+.tEmber .emHeroMedia{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .tEmber .emHeroPhotoScrim{position:absolute;inset:0;background:linear-gradient(to top,color-mix(in oklab,var(--sc-scrim-dark) 92%,transparent) 0%,color-mix(in oklab,var(--sc-scrim-dark) 55%,transparent) 40%,transparent 75%)}
 .tEmber .emHeroPhotoText{position:relative;z-index:1;max-width:640px}
 .tEmber .emHeroPhotoTitle{font-family:var(--sc-font-display);font-weight:400;font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.05;margin:0;color:#FFFFFF}

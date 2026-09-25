@@ -97,6 +97,27 @@ function useScrollFracPinned(){
   },[]);
   return{ref,t};
 }
+/* Kapak videosu (cover_type==='video'): sessiz, döngülü hero videosu.
+   - <video> sunucudan (SSR) değil, sayfa açıldıktan sonra istemcide oluşturulur.
+   - autoplay attribute'u bazı tarayıcılarda (odaksız/gizli sekme, düşük güç modu) atlanabiliyor,
+     o yüzden elle de başlatılır.
+   - Bilinçli olarak IntersectionObserver ile pause/play YOK: denemede, hero videosunu ekrandan
+     çıkınca durdurup geri getiren gözlemci videonun karelerini çözdüğü halde hiç boyatmadı
+     (görünmez video); gözlemcisiz sürüm sorunsuz boyandı.
+   (Çiğköfte'nin ses düğmeli kendi sürümü var.) */
+function CoverVideo({src,className}:{src:string;className:string}){
+  const ref=useRef<HTMLVideoElement>(null);
+  const[mounted,setMounted]=useState(false);
+  useEffect(()=>{setMounted(true)},[]);
+  useEffect(()=>{
+    const v=ref.current;if(!mounted||!v)return;
+    const go=()=>{v.play().catch(()=>{})};
+    go();v.addEventListener('loadeddata',go);document.addEventListener('visibilitychange',go);
+    return()=>{v.removeEventListener('loadeddata',go);document.removeEventListener('visibilitychange',go)};
+  },[src,mounted]);
+  if(!mounted)return null;
+  return <video ref={ref} className={className} src={src} autoPlay muted loop playsInline preload="auto" aria-hidden="true"/>;
+}
 function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;className?:string;i?:number;as?:'div'|'article'|'figure'}){
   const ref=useRef<HTMLDivElement>(null);
   const[shown,setShown]=useState(false);
@@ -3557,7 +3578,8 @@ function Sofra(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
-  const heroPhoto=b.cover_url||galleryPhotos[0]||'';
+  const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const heroPhoto=coverIsVideo?'':(b.cover_url||galleryPhotos[0]||'');
   const aboutPhoto=galleryPhotos[1]||galleryPhotos[0]||'';
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const items=p.menuItems||[];
@@ -3576,6 +3598,7 @@ function Sofra(p:P){
     </header>
 
     <section className="sfHero" style={heroPhoto?{backgroundImage:`url(${heroPhoto})`}:{}}>
+      {coverIsVideo&&<CoverVideo src={b.cover_url} className="sfHeroMedia"/>}
       <div className="sfHeroOverlay"/>
       <div className="sfHeroText">
         <p className="sfEyebrow">{b.hero_label||'RESTORAN · KAFE'}</p>
@@ -3682,7 +3705,8 @@ function Taze(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
-  const heroPhotos=Array.from(new Set([b.cover_url,...galleryPhotos].filter(Boolean))).slice(0,2);
+  const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const heroPhotos=coverIsVideo?[]:Array.from(new Set([b.cover_url,...galleryPhotos].filter(Boolean))).slice(0,2);
   const aboutPhoto=galleryPhotos[2]||galleryPhotos[0]||'';
   const productPhoto=galleryPhotos[3]||b.logo_url||'';
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
@@ -3704,7 +3728,7 @@ function Taze(p:P){
 
     <section className="tzHero">
       <div className="tzHeroPhotos">
-        {heroPhotos.length?heroPhotos.map((src,i)=><div className="tzHeroPhoto" key={i}><img src={src} alt={b.name}/><div className="tzHeroShade"/></div>):<div className="tzHeroPhoto"><div className="tzHeroShade"/></div>}
+        {coverIsVideo?<div className="tzHeroPhoto"><CoverVideo src={b.cover_url} className="tzHeroVideo"/><div className="tzHeroShade"/></div>:heroPhotos.length?heroPhotos.map((src,i)=><div className="tzHeroPhoto" key={i}><img src={src} alt={b.name}/><div className="tzHeroShade"/></div>):<div className="tzHeroPhoto"><div className="tzHeroShade"/></div>}
       </div>
       <h1 className="tzWordmark">{b.name}</h1>
       <div className="tzHeroBottomRow">
@@ -3858,6 +3882,7 @@ function Ember(p:P){
   const cta=sofraPrimaryCta(b);
   const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   const hasCover=!!b.cover_url;
+  const coverIsVideo=hasCover&&b.cover_type==='video';
   const waPhone=(()=>{if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);return n||null})();
   useEmberEngine(rootRef);
   return <>
@@ -3878,7 +3903,8 @@ function Ember(p:P){
       </header>
 
       {hasCover?
-        <section className="emHeroPhoto" style={{backgroundImage:`url(${b.cover_url})`}}>
+        <section className="emHeroPhoto" style={coverIsVideo?undefined:{backgroundImage:`url(${b.cover_url})`}}>
+          {coverIsVideo&&<CoverVideo src={b.cover_url} className="emHeroMedia"/>}
           <div className="emHeroPhotoScrim"/>
           <div className="emHeroPhotoText">
             <h1 className="emHeroPhotoTitle">{b.hero_title||'Sofran burada'}<br/><em>{b.hero_highlight||'seni bekliyor.'}</em></h1>
@@ -4017,7 +4043,8 @@ function Mocha(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
-  const photo=(i:number)=>galleryPhotos[i]||b.cover_url||'';
+  const coverImg=b.cover_type==='video'?'':(b.cover_url||'');
+  const photo=(i:number)=>galleryPhotos[i]||coverImg;
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const items=p.menuItems||[];
   const[activeCat,setActiveCat]=useState<string|undefined>(categories[0]?.id);
@@ -4253,13 +4280,18 @@ function Cigkofte(p:P){
   // Hero ekrandan çıkınca video durur (ses açıksa menüde/galeride çalmaya devam etmesin), dönünce devam eder.
   useEffect(()=>{
     const v=heroVideoRef.current;if(!v)return;
-    let inView=true;
-    const go=()=>{if(inView)v.play().catch(()=>{})};
-    const io=new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)go();else v.pause()},{threshold:.15});
-    io.observe(v);
+    const go=()=>{v.play().catch(()=>{})};
     go();v.addEventListener('loadeddata',go);document.addEventListener('visibilitychange',go);
-    return()=>{io.disconnect();v.removeEventListener('loadeddata',go);document.removeEventListener('visibilitychange',go)};
+    return()=>{v.removeEventListener('loadeddata',go);document.removeEventListener('visibilitychange',go)};
   },[heroMedia,heroIsVideo]);
+  // Ses açıkken hero ekrandan çıkınca video dursun (menüde/galeride çalmaya devam etmesin), dönünce devam etsin.
+  // Gözlemci yalnızca ses açıkken çalışır: sessiz videoda pause/play döngüsü bazı Chromium'larda videoyu boyatmıyor.
+  useEffect(()=>{
+    const v=heroVideoRef.current;if(!soundOn||!v)return;
+    const io=new IntersectionObserver(([e])=>{if(e.isIntersecting)v.play().catch(()=>{});else v.pause()},{threshold:.15});
+    io.observe(v);
+    return()=>io.disconnect();
+  },[soundOn]);
   const toggleSound=()=>{const v=heroVideoRef.current,next=!soundOn;if(v){v.muted=!next;if(next)v.play().catch(()=>{})}setSoundOn(next)};
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const items=p.menuItems||[];
