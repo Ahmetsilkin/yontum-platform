@@ -3705,7 +3705,10 @@ function Sofra(p:P){
         <h2>Bize Ulaş</h2>
       </Reveal>
       <Reveal i={1} className="sfMessageFormWrap">
-        <ContactMessageForm businessId={b.id} prefix="sf"/>
+        <div className="sfFormCard">
+          <h3>Bize yazın</h3>
+          <ContactMessageForm businessId={b.id} prefix="sf"/>
+        </div>
       </Reveal>
     </section>
 

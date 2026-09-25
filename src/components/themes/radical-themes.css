@@ -3233,9 +3233,11 @@
    gibi bir layout_preset restorana uygulanmıyor) — flex+order kurulumuna
    gerek yok, sade blok akışı yeterli. */
 .tSofra,.radical:has(.tSofra),body:has(.tSofra),html:has(.tSofra){
-  /* Renkler: #1A1A1A (yazı/buton/footer) · #F3EFE0 (zemin) · #555555 (soluk yazı, kaydırıcı hover). Başka renk yok;
+  /* Renkler: #1A1A1A (yazı/footer) · #F3EFE0 (zemin) · #555555 (soluk yazı, kaydırıcı hover) + vurgu: #FF6B52 · #A3E0A3 · #8D4B7C · #FFC837. Başka renk yok;
      saydam tonlar bu renklerin saydam halleri. Ham renk yalnızca bu blokta. */
   --sf-ink:#1A1A1A;--sf-cream:#F3EFE0;--sf-gray:#555555;
+  /* vurgu renkleri (butonlar, vurgulu yazılar, hover'lar): mercan · nane · mürdüm · güneş sarısı */
+  --sf-coral:#FF6B52;--sf-mint:#A3E0A3;--sf-plum:#8D4B7C;--sf-sun:#FFC837;
   --sf-bg:var(--sf-cream);--sf-surface:var(--sf-cream);--sf-muted:var(--sf-gray);
   --sf-line:rgba(26,26,26,.16);--sf-line-strong:rgba(26,26,26,.32);
   --sf-on-dark-muted:rgba(243,239,224,.72);--sf-desc:rgba(243,239,224,.88);
@@ -3251,7 +3253,7 @@ body:has(.tSofra),.radical:has(.tSofra){background:var(--sf-bg)}
   --sf-serif:'Cormorant',Georgia,'Times New Roman',serif;--sf-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
   --sf-h1:clamp(40px,4.5vw + 8px,64px);--sf-h2:clamp(30px,2.4vw + 14px,44px);--sf-h3:clamp(20px,.8vw + 14px,24px);
   --sf-body:clamp(16px,.3vw + 13px,18px);--sf-btn:clamp(14px,.2vw + 12px,15px);--sf-micro:clamp(11px,.15vw + 9.5px,12px);
-  --accent:var(--sf-ink);background:var(--sf-bg);color:var(--sf-ink);font-family:var(--sf-sans);font-size:var(--sf-body);line-height:1.5;letter-spacing:0;overflow-x:clip}
+  --accent:var(--sf-plum);background:var(--sf-bg);color:var(--sf-ink);font-family:var(--sf-sans);font-size:var(--sf-body);line-height:1.5;letter-spacing:0;overflow-x:clip}
 .radical .tSofra,.radical .tSofra *{font-family:var(--sf-sans)}
 .radical .tSofra h1,.radical .tSofra h2{font-family:var(--sf-serif);font-weight:500}
 .radical .tSofra :is(h1,h2) *{font-family:inherit}
@@ -3262,31 +3264,29 @@ body:has(.tSofra),.radical:has(.tSofra){background:var(--sf-bg)}
 .sfNav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 6vw;background:color-mix(in srgb,var(--sf-bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--sf-line)}
 .sfBrand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:var(--sf-btn);line-height:1.2;color:var(--sf-ink)}
 .sfBrand img{width:calc(32px * var(--logo-scale,1));height:calc(32px * var(--logo-scale,1));border-radius:50%;object-fit:cover}
-.sfBrand i{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--sf-cream);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px}
-.sfNav nav{display:flex;gap:28px}
-.sfNav nav a{color:var(--sf-muted);font-size:var(--sf-btn);line-height:1;letter-spacing:.05em;font-weight:500;transition:color .18s ease}
-.sfNav nav a:hover{color:var(--sf-ink)}
+.sfBrand i{width:32px;height:32px;border-radius:50%;background:var(--sf-coral);color:var(--sf-ink);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px}
+.sfNav nav{display:flex;gap:6px}
+.sfNav nav a{color:var(--sf-muted);font-size:var(--sf-btn);line-height:1;letter-spacing:.05em;font-weight:500;padding:9px 14px;border-radius:999px;transition:all .3s ease}
+.sfNav nav a:hover{background:var(--sf-mint);color:var(--sf-ink)}
 .sfNavBtn,.sfBtnSolid,.sfBtnOutline{white-space:nowrap}
 .sfNavBtn{flex:none}
 .sfBrand{min-width:0}
-.sfNavBtn,.sfBtnSolid{display:inline-flex;align-items:center;gap:8px;background:var(--sf-ink);color:var(--sf-cream)!important;border:1px solid var(--sf-ink);border-radius:999px;padding:12px 28px;min-height:44px;justify-content:center;font-weight:600;font-size:var(--sf-btn);line-height:1;letter-spacing:.05em;transition:all .3s ease}
-.sfNavBtn:hover,.sfBtnSolid:hover{background:var(--sf-cream);color:var(--sf-ink)!important;border-color:var(--sf-ink);transform:translateY(-2px)}
+.sfNavBtn,.sfBtnSolid{display:inline-flex;align-items:center;gap:8px;background:var(--sf-coral);color:var(--sf-ink)!important;border:1px solid var(--sf-ink);border-radius:999px;padding:12px 28px;min-height:44px;justify-content:center;font-weight:600;font-size:var(--sf-btn);line-height:1;letter-spacing:.05em;transition:all .3s ease}
+.sfNavBtn:hover,.sfBtnSolid:hover{background:var(--sf-plum);color:var(--sf-cream)!important;border-color:var(--sf-ink);transform:translateY(-2px)}
 
 .sfHero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;background-size:cover;background-position:center;padding:0 6vw 90px;overflow:hidden}
 .sfHeroMedia{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .sfSound{position:absolute;z-index:3;top:20px;right:6vw;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;background:var(--sf-glass);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--sf-cream-border);color:var(--sf-cream);font-family:inherit;font-weight:600;font-size:var(--sf-btn);line-height:1;letter-spacing:.05em;border-radius:999px;cursor:pointer;transition:all .3s ease}
-.sfSound:hover{background:var(--sf-cream-hover);transform:translateY(-2px)}
+.sfSound:hover{background:var(--sf-sun);color:var(--sf-ink);border-color:var(--sf-sun);transform:translateY(-2px)}
 .sfHeroOverlay{position:absolute;inset:0;background:var(--sf-hero-overlay)}
 .sfHeroText{position:relative;z-index:2;max-width:640px;color:var(--sf-cream)}
-.sfEyebrow{color:var(--sf-cream);font-size:var(--sf-micro);line-height:1.2;letter-spacing:.08em;font-weight:600;margin:0 0 18px;text-transform:uppercase}
+.sfEyebrow{color:var(--sf-mint);font-size:var(--sf-micro);line-height:1.2;letter-spacing:.08em;font-weight:600;margin:0 0 18px;text-transform:uppercase}
 .sfHeroTitle{font-size:var(--sf-h1);font-weight:500;line-height:1.1;letter-spacing:-.02em;margin:0 0 18px;color:var(--sf-cream)}
-.sfHeroTitle em{font-style:italic;color:var(--sf-cream)}
+.sfHeroTitle em{font-style:italic;color:var(--sf-sun)}
 .sfHeroDesc{font-size:var(--sf-body);line-height:1.5;color:var(--sf-desc);margin:0 0 28px;max-width:480px}
 .sfHeroBtns{display:flex;gap:14px;flex-wrap:wrap}
 .sfBtnOutline{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--sf-cream-border);color:var(--sf-cream)!important;font-weight:600;font-size:var(--sf-btn);line-height:1;letter-spacing:.05em;padding:12px 28px;min-height:44px;justify-content:center;border-radius:999px;transition:all .3s ease}
-.sfBtnOutline:hover{background:var(--sf-cream);color:var(--sf-ink)!important;border-color:var(--sf-cream);transform:translateY(-2px)}
-.sfHero .sfBtnSolid{background:var(--sf-cream);color:var(--sf-ink)!important;border-color:var(--sf-cream)}
-.sfHero .sfBtnSolid:hover{background:transparent;color:var(--sf-cream)!important;border-color:var(--sf-cream)}
+.sfBtnOutline:hover{background:var(--sf-mint);color:var(--sf-ink)!important;border-color:var(--sf-mint);transform:translateY(-2px)}
 
 .sfSectionHead{text-align:center;max-width:640px;margin:0 auto 46px}
 .sfSectionHead small{display:block;color:var(--accent);font-size:var(--sf-micro);line-height:1.2;letter-spacing:.08em;font-weight:700;margin-bottom:12px;text-transform:uppercase}
@@ -3307,6 +3307,10 @@ body:has(.tSofra),.radical:has(.tSofra){background:var(--sf-bg)}
 .sfMenuCategory h3{color:var(--accent);margin:0 0 24px;padding-bottom:12px;border-bottom:1px solid var(--sf-line)}
 .sfMenuItems{display:flex;flex-direction:column;gap:22px}
 .sfMenuItem{display:flex;gap:16px;align-items:flex-start}
+.sfMenuItem img{transition:transform .4s ease}
+.sfMenuItemHead h4{transition:color .3s ease}
+.sfMenuDots{transition:border-color .3s ease}
+@media(hover:hover){.sfMenuItem:hover img{transform:scale(1.08)}.sfMenuItem:hover .sfMenuItemHead h4{color:var(--sf-plum)}.sfMenuItem:hover .sfMenuDots{border-bottom-color:var(--sf-coral)}}
 .sfMenuItem img{width:72px;height:72px;border-radius:8px;object-fit:cover;object-position:center;flex:none;display:block}
 .sfMenuItemBody{flex:1;min-width:0}
 .sfMenuItemHead{display:flex;align-items:baseline;gap:10px}
@@ -3326,19 +3330,21 @@ body:has(.tSofra),.radical:has(.tSofra){background:var(--sf-bg)}
 .sfContactHours h4{font-size:var(--sf-micro);line-height:1.2;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin:0 0 18px;color:var(--sf-muted)}
 .sfHoursRow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--sf-line);font-size:var(--sf-body);line-height:1.5}
 .sfContactInfo{display:flex;flex-direction:column;gap:14px}
-.sfContactRow{display:flex;align-items:center;gap:10px;color:var(--sf-ink);font-size:var(--sf-body);line-height:1.5}
+.sfContactRow{display:flex;align-items:center;gap:10px;color:var(--sf-ink);font-size:var(--sf-body);line-height:1.5;padding:4px 12px;margin-left:-12px;border-radius:999px;transition:all .3s ease}
+a.sfContactRow:hover{background:var(--sf-mint)}
 .sfContactRow svg{color:var(--accent);flex:none}
-.sfDirectionsLink{color:var(--accent)!important;font-weight:600}
+.sfDirectionsLink{color:var(--accent)!important;font-weight:600;transition:all .3s ease}
+a.sfContactRow.sfDirectionsLink:hover{background:var(--sf-sun);color:var(--sf-ink)!important}
 
 .tSofra .ownReviews{padding:0 6vw 110px;max-width:1100px;margin:0 auto}
 .tSofra .ownReviews header{text-align:center;max-width:600px;margin:0 auto 46px}
 .tSofra .ownReviews small{letter-spacing:.08em;line-height:1.2;font-size:var(--sf-micro);font-weight:700;color:var(--accent);text-transform:uppercase}
 .tSofra .ownReviews h2{color:var(--sf-ink);font-family:var(--sf-serif);font-size:var(--sf-h2);line-height:1.15;letter-spacing:-.01em;font-weight:500;margin:12px 0 0}
-.tSofra .ownReviews h2 span{color:var(--accent);font-size:15px;letter-spacing:2px;margin-left:10px}
+.tSofra .ownReviews h2 span{color:var(--sf-coral);font-size:15px;letter-spacing:2px;margin-left:10px}
 .tSofra .ownReviews header p{color:var(--sf-muted);margin-top:10px;font-size:var(--sf-body);line-height:1.5}
 .tSofra .ownReviewGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .tSofra .ownReviewGrid article{background:var(--sf-surface);border:1px solid var(--sf-line);border-radius:4px;padding:24px}
-.tSofra .ownReviewStars{color:var(--accent)!important}
+.tSofra .ownReviewStars{color:var(--sf-coral)!important}
 .tSofra .ownReviewGrid p{color:var(--sf-ink);font-size:var(--sf-body);line-height:1.5;margin-top:12px}
 .tSofra .ownReviewHead{display:flex;align-items:center;gap:12px}
 .tSofra .ownReviewHead b{font-size:var(--sf-body);line-height:1.3;font-weight:700;color:var(--sf-ink)}
@@ -3348,19 +3354,24 @@ body:has(.tSofra),.radical:has(.tSofra){background:var(--sf-bg)}
 .tSofra .googleReviews>header{margin-bottom:46px}
 .tSofra .googleReviews small{letter-spacing:.08em;line-height:1.2;font-size:var(--sf-micro);font-weight:700;color:var(--accent);text-transform:uppercase}
 .tSofra .googleReviews h2{color:var(--sf-ink);font-family:var(--sf-serif);font-size:var(--sf-h2);line-height:1.15;letter-spacing:-.01em;font-weight:500;margin:12px 0 0}
-.tSofra .googleReviews h2 span,.tSofra .googleReviewGrid article span{color:var(--accent);letter-spacing:2px}
+.tSofra .googleReviews h2 span,.tSofra .googleReviewGrid article span{color:var(--sf-coral);letter-spacing:2px}
 .tSofra .googleReviews header p,.tSofra .googleReviewGrid small,.tSofra .googleReviews>footer{color:var(--sf-muted)}
 .tSofra .googleReviews header p,.tSofra .googleReviewGrid article>p{font-size:var(--sf-body);line-height:1.5}
 .tSofra .googleReviewGrid small,.tSofra .googleReviews>footer{font-size:var(--sf-micro);line-height:1.2}
 .tSofra .googleReviews header>a,.tSofra .googleReviewGrid article>a{color:var(--accent)}
+.tSofra .ownReviewGrid article,.tSofra .googleReviewGrid article{transition:all .3s ease}
+@media(hover:hover){.tSofra .ownReviewGrid article:hover,.tSofra .googleReviewGrid article:hover{border-color:var(--sf-coral);transform:translateY(-2px)}}
 .tSofra .googleReviewGrid article{background:var(--sf-surface);border:1px solid var(--sf-line);border-radius:4px;padding:24px;color:var(--sf-ink)}
 .tSofra .googleReviewGrid img,.tSofra .googleReviewGrid article>i{background:var(--accent);color:var(--sf-cream)}
 @media(max-width:800px){.tSofra .ownReviewGrid,.tSofra .googleReviewGrid{grid-template-columns:1fr}}
 /* platformun sağ/sol alttaki yüzen düğmeleri (temanın dışında): Sofra'da da 4 renge uysun */
 .radical:has(.tSofra) .rWhatsapp{background:var(--sf-ink)!important;color:var(--sf-cream)!important;border:1px solid var(--sf-cream-border);box-shadow:0 8px 24px var(--sf-shadow)}
-.radical:has(.tSofra) .rWhatsapp svg{fill:var(--sf-cream)}
+.radical:has(.tSofra) .rWhatsapp svg{fill:var(--sf-cream);transition:fill .3s ease}
+.radical:has(.tSofra) .rWhatsapp:hover{background:var(--sf-sun)!important}
+.radical:has(.tSofra) .rWhatsapp:hover svg{fill:var(--sf-ink)}
 .radical:has(.tSofra) .rGoogleReview{background:var(--sf-cream);color:var(--sf-ink);border-color:var(--sf-ink);box-shadow:0 8px 24px var(--sf-shadow);animation:none}
 .radical:has(.tSofra) .rGoogleReview svg{fill:var(--sf-ink)}
+.radical:has(.tSofra) .rGoogleReview:hover{background:var(--sf-sun)}
 /* kaydırma çubuğu (yalnızca Sofra sayfalarında) */
 html:has(.tSofra)::-webkit-scrollbar{width:8px}
 html:has(.tSofra)::-webkit-scrollbar-track{background:var(--sf-cream)}
@@ -3370,14 +3381,22 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 
 .sfMessageSection{padding:70px 6vw 130px;background:var(--sf-surface)}
 .sfMessageFormWrap{max-width:640px;margin:0 auto}
+/* form şekli Çiğköfte'dekiyle aynı: kalın çerçeveli, yuvarlak köşeli, sert gölgeli kart + yuvarlak input'lar + tam genişlik buton */
+.sfFormCard{background:var(--sf-bg);border:3px solid var(--sf-ink);border-radius:22px;box-shadow:6px 6px 0 var(--sf-ink);padding:32px}
+.sfFormCard h3{margin:0 0 20px}
 .sfContactForm{display:flex;flex-direction:column;gap:14px}
-.sfContactInput{background:var(--sf-bg);border:1px solid var(--sf-line-strong);border-radius:2px;padding:14px 16px;font-family:inherit;font-size:var(--sf-body);line-height:1.5;color:var(--sf-ink)}
+.sfContactForm .sfBtnSolid{width:100%;margin-top:4px}
+.sfContactInput{width:100%;min-height:44px;background:var(--sf-bg);border:3px solid var(--sf-ink);border-radius:16px;padding:12px 18px;font-family:inherit;font-size:var(--sf-body);line-height:1.5;color:var(--sf-ink)}
 .sfContactInput::placeholder{color:var(--sf-muted)}
-.sfContactTextarea{resize:vertical;min-height:110px}
+.sfContactInput{transition:all .3s ease}
+.sfContactInput:hover{border-color:var(--sf-plum)}
+.sfContactInput:focus{outline:none;border-color:var(--sf-ink);box-shadow:0 0 0 3px var(--sf-coral)}
+.sfContactTextarea{resize:vertical;min-height:120px}
 .sfContactErr{color:var(--sf-ink);font-weight:700;font-size:var(--sf-body);line-height:1.5;margin:0}
-.sfContactSent{text-align:center;padding:40px 20px;background:var(--sf-bg);border:1px solid var(--sf-line);border-radius:4px}
-.sfContactSent span{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--accent);color:var(--sf-cream);font-size:18px;margin-bottom:14px}
+.sfContactSent{display:flex;flex-direction:column;align-items:flex-start;gap:14px;text-align:left}
+.sfContactSent span{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--sf-mint);color:var(--sf-ink);font-size:18px}
 .sfContactSent p{color:var(--sf-muted);margin:0}
+@media(max-width:700px){.sfFormCard{padding:20px}}
 
 .sfFooter{display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 6vw;text-align:center;background:var(--sf-ink);color:var(--sf-cream)}
 .sfFooterBrand b{font-size:var(--sf-h3);line-height:1.3;font-weight:600;font-family:var(--sf-sans)}
@@ -3385,7 +3404,7 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .sfFooterBottom{color:var(--sf-on-dark-muted);font-size:var(--sf-micro);line-height:1.2;letter-spacing:.08em;text-transform:uppercase}
 .sfFooterLinks{display:flex;flex-wrap:wrap;justify-content:center;gap:0 22px}
 .sfFooterLinks a{display:inline-flex;align-items:center;min-height:44px;color:var(--sf-on-dark-muted);font-size:var(--sf-micro);line-height:1.2;letter-spacing:.08em;text-transform:uppercase;transition:color .3s ease}
-.sfFooterLinks a:hover{color:var(--sf-cream)}
+.sfFooterLinks a:hover{color:var(--sf-sun)}
 
 @media(max-width:900px){
   .sfNav nav{display:none}
