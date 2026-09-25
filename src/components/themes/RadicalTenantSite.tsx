@@ -105,8 +105,9 @@ function useScrollFracPinned(){
      çıkınca durdurup geri getiren gözlemci videonun karelerini çözdüğü halde hiç boyatmadı
      (görünmez video); gözlemcisiz sürüm sorunsuz boyandı.
    (Çiğköfte'nin ses düğmeli kendi sürümü var.) */
-function CoverVideo({src,className}:{src:string;className:string}){
-  const ref=useRef<HTMLVideoElement>(null);
+function CoverVideo({src,className,videoRef,muted=true}:{src:string;className:string;videoRef?:React.RefObject<HTMLVideoElement|null>;muted?:boolean}){
+  const own=useRef<HTMLVideoElement>(null);
+  const ref=videoRef||own;
   const[mounted,setMounted]=useState(false);
   useEffect(()=>{setMounted(true)},[]);
   useEffect(()=>{
@@ -114,9 +115,33 @@ function CoverVideo({src,className}:{src:string;className:string}){
     const go=()=>{v.play().catch(()=>{})};
     go();v.addEventListener('loadeddata',go);document.addEventListener('visibilitychange',go);
     return()=>{v.removeEventListener('loadeddata',go);document.removeEventListener('visibilitychange',go)};
-  },[src,mounted]);
+  },[src,mounted,ref]);
+  // Ses açıkken hero ekrandan çıkınca video dursun (menüde/galeride çalmaya devam etmesin), dönünce devam etsin.
+  // Gözlemci yalnızca ses açıkken çalışır: sessiz videoda pause/play döngüsü bazı Chromium'larda videoyu boyatmıyor.
+  useEffect(()=>{
+    const v=ref.current;if(muted||!mounted||!v)return;
+    const io=new IntersectionObserver(([e])=>{if(e.isIntersecting)v.play().catch(()=>{});else v.pause()},{threshold:.15});
+    io.observe(v);
+    return()=>io.disconnect();
+  },[muted,mounted,ref]);
   if(!mounted)return null;
-  return <video ref={ref} className={className} src={src} autoPlay muted loop playsInline preload="auto" aria-hidden="true"/>;
+  return <video ref={ref} className={className} src={src} autoPlay muted={muted} loop playsInline preload="auto" aria-hidden="true"/>;
+}
+/* CoverVideo için ses aç/kapat: video sessiz başlar (tarayıcılar sesli otomatik oynatmaya izin vermez),
+   ses ancak tıklama ile açılır. Düğme, video istemcide oluşana kadar gösterilmez. */
+function useCoverSound(){
+  const ref=useRef<HTMLVideoElement>(null);
+  const[soundOn,setSoundOn]=useState(false);
+  const[ready,setReady]=useState(false);
+  useEffect(()=>{setReady(true)},[]);
+  const toggle=()=>{const v=ref.current,next=!soundOn;if(v){v.muted=!next;if(next)v.play().catch(()=>{})}setSoundOn(next)};
+  return{ref,soundOn,ready,toggle};
+}
+function CoverSoundButton({on,onToggle,className}:{on:boolean;onToggle:()=>void;className:string}){
+  return <button type="button" className={className} onClick={onToggle}>
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z"/>{on?<path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>:<path d="M22 9l-6 6M16 9l6 6"/>}</svg>
+    <span>{on?'Sesi Kapat':'Sesi Aç'}</span>
+  </button>;
 }
 function Reveal({children,className='',i=0,as='div'}:{children:React.ReactNode;className?:string;i?:number;as?:'div'|'article'|'figure'}){
   const ref=useRef<HTMLDivElement>(null);
@@ -3579,6 +3604,7 @@ function Sofra(p:P){
   const hourRows=groupedHourRows(p.hours||[]);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const coverSound=useCoverSound();
   const heroPhoto=coverIsVideo?'':(b.cover_url||galleryPhotos[0]||'');
   const aboutPhoto=galleryPhotos[1]||galleryPhotos[0]||'';
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
@@ -3598,8 +3624,9 @@ function Sofra(p:P){
     </header>
 
     <section className="sfHero" style={heroPhoto?{backgroundImage:`url(${heroPhoto})`}:{}}>
-      {coverIsVideo&&<CoverVideo src={b.cover_url} className="sfHeroMedia"/>}
+      {coverIsVideo&&<CoverVideo src={b.cover_url} className="sfHeroMedia" videoRef={coverSound.ref} muted={!coverSound.soundOn}/>}
       <div className="sfHeroOverlay"/>
+      {coverIsVideo&&coverSound.ready&&<CoverSoundButton className="sfSound" on={coverSound.soundOn} onToggle={coverSound.toggle}/>}
       <div className="sfHeroText">
         <p className="sfEyebrow">{b.hero_label||'RESTORAN · KAFE'}</p>
         <h1 className="sfHeroTitle">{b.hero_title||'Lezzetin'} <em>{b.hero_highlight||'adresi.'}</em></h1>
@@ -3684,6 +3711,7 @@ function Sofra(p:P){
 
     <footer className="sfFooter">
       <div className="sfFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
+      <nav className="sfFooterLinks" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
       <div className="sfFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
@@ -3706,6 +3734,7 @@ function Taze(p:P){
   const hourRows=groupedHourRows(p.hours||[]);
   const galleryPhotos=(p.gallery||[]).map(g=>g.image_url).filter(Boolean);
   const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const coverSound=useCoverSound();
   const heroPhotos=coverIsVideo?[]:Array.from(new Set([b.cover_url,...galleryPhotos].filter(Boolean))).slice(0,2);
   const aboutPhoto=galleryPhotos[2]||galleryPhotos[0]||'';
   const productPhoto=galleryPhotos[3]||b.logo_url||'';
@@ -3728,8 +3757,9 @@ function Taze(p:P){
 
     <section className="tzHero">
       <div className="tzHeroPhotos">
-        {coverIsVideo?<div className="tzHeroPhoto"><CoverVideo src={b.cover_url} className="tzHeroVideo"/><div className="tzHeroShade"/></div>:heroPhotos.length?heroPhotos.map((src,i)=><div className="tzHeroPhoto" key={i}><img src={src} alt={b.name}/><div className="tzHeroShade"/></div>):<div className="tzHeroPhoto"><div className="tzHeroShade"/></div>}
+        {coverIsVideo?<div className="tzHeroPhoto"><CoverVideo src={b.cover_url} className="tzHeroVideo" videoRef={coverSound.ref} muted={!coverSound.soundOn}/><div className="tzHeroShade"/></div>:heroPhotos.length?heroPhotos.map((src,i)=><div className="tzHeroPhoto" key={i}><img src={src} alt={b.name}/><div className="tzHeroShade"/></div>):<div className="tzHeroPhoto"><div className="tzHeroShade"/></div>}
       </div>
+      {coverIsVideo&&coverSound.ready&&<CoverSoundButton className="tzSound" on={coverSound.soundOn} onToggle={coverSound.toggle}/>}
       <h1 className="tzWordmark">{b.name}</h1>
       <div className="tzHeroBottomRow">
         <p className="tzHeroTagline">{b.hero_description||dec(b,'tz_tagline','Kendi tarzında keyfini çıkar.')}</p>
@@ -3812,6 +3842,7 @@ function Taze(p:P){
 
     <footer className="tzFooter">
       <div className="tzFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
+      <nav className="tzFooterLinks" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
       <div className="tzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   </main>;
@@ -3883,6 +3914,7 @@ function Ember(p:P){
   const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   const hasCover=!!b.cover_url;
   const coverIsVideo=hasCover&&b.cover_type==='video';
+  const coverSound=useCoverSound();
   const waPhone=(()=>{if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);return n||null})();
   useEmberEngine(rootRef);
   return <>
@@ -3904,8 +3936,9 @@ function Ember(p:P){
 
       {hasCover?
         <section className="emHeroPhoto" style={coverIsVideo?undefined:{backgroundImage:`url(${b.cover_url})`}}>
-          {coverIsVideo&&<CoverVideo src={b.cover_url} className="emHeroMedia"/>}
+          {coverIsVideo&&<CoverVideo src={b.cover_url} className="emHeroMedia" videoRef={coverSound.ref} muted={!coverSound.soundOn}/>}
           <div className="emHeroPhotoScrim"/>
+          {coverIsVideo&&coverSound.ready&&<CoverSoundButton className="emSound" on={coverSound.soundOn} onToggle={coverSound.toggle}/>}
           <div className="emHeroPhotoText">
             <h1 className="emHeroPhotoTitle">{b.hero_title||'Sofran burada'}<br/><em>{b.hero_highlight||'seni bekliyor.'}</em></h1>
             {b.hero_description&&<p className="emHeroPhotoDesc">{b.hero_description}</p>}
@@ -4011,6 +4044,7 @@ function Ember(p:P){
             </div>
           </div>
         </div>
+        <nav className="emFooterLegal" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
       </footer>
     </main>
   </>;
