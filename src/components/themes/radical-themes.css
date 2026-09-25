@@ -4204,3 +4204,27 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 @media(prefers-reduced-motion:reduce){
   .tCigkofte *,.tCigkofte *::before,.tCigkofte *::after{transition:none!important;animation:none!important}
 }
+
+/* ================= Sipariş seçim penceresi (restoran temaları) — birden fazla sipariş linki varken
+   "Sipariş Ver"e basınca açılır. Görünüm tek yerde; renk/şekil her temada --oc-* değişkenleriyle gelir
+   (aşağıda temaya göre tanımlı). Değişken tanımlı değilse nötr yedek değerler kullanılır. */
+.ocOverlay{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:var(--oc-overlay,rgba(0,0,0,.55))}
+.ocDialog{position:relative;width:min(100%,420px);max-height:calc(100dvh - 40px);overflow:auto;box-sizing:border-box;padding:28px 24px 24px;background:var(--oc-bg,#fff);color:var(--oc-ink,#111);border:var(--oc-border,1px solid rgba(0,0,0,.12));border-radius:var(--oc-radius,16px);box-shadow:var(--oc-shadow,0 24px 60px rgba(0,0,0,.35));font-family:var(--oc-font,inherit);text-align:left}
+.ocTitle{margin:0 44px 18px 0;font-family:var(--oc-title-font,inherit);font-size:var(--oc-title-size,1.25rem);font-weight:var(--oc-title-weight,700);line-height:1.25;letter-spacing:0;text-transform:none;color:inherit}
+.ocClose{position:absolute;top:10px;right:10px;width:44px;height:44px;display:grid;place-items:center;padding:0;background:transparent;color:inherit;border:0;border-radius:50%;font:inherit;font-size:18px;line-height:1;cursor:pointer}
+.ocClose:hover{opacity:.6}
+/* sitenin genel `.font-serif p/button {Arial}` kuralını geçmek için kapsamı yükseltilmiş yazı tipleri */
+.radical .ocDialog .ocTitle{font-family:var(--oc-title-font,inherit)}
+.radical .ocDialog .ocClose,.radical .ocDialog .ocItem{font-family:var(--oc-font,inherit)}
+.ocList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.ocItem{display:flex;align-items:center;justify-content:space-between;gap:12px;box-sizing:border-box;min-height:48px;padding:var(--oc-item-pad,12px 22px);background:var(--oc-item-bg,#111);color:var(--oc-item-ink,#fff)!important;border:var(--oc-item-border,1px solid transparent);border-radius:var(--oc-item-radius,999px);box-shadow:var(--oc-item-shadow,none);font-family:inherit;font-size:1rem;font-weight:700;line-height:1.2;letter-spacing:0;text-transform:none;text-decoration:none;transition:all .25s ease}
+.ocItem:hover,.ocItem:focus-visible{background:var(--oc-item-hover-bg,#333);color:var(--oc-item-hover-ink,#fff)!important;transform:translateY(-2px)}
+.ocItem:focus-visible,.ocClose:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.ocItem{transition:none}}
+
+/* --- tema değişkenleri --- */
+.tSofra{--oc-overlay:var(--sf-glass);--oc-bg:var(--sf-bg);--oc-ink:var(--sf-ink);--oc-border:3px solid var(--sf-ink);--oc-radius:22px;--oc-shadow:6px 6px 0 var(--sf-ink);--oc-font:var(--sf-sans);--oc-title-font:var(--sf-sans);--oc-title-size:var(--sf-h3);--oc-title-weight:600;--oc-item-bg:var(--sf-coral);--oc-item-ink:var(--sf-ink);--oc-item-border:1px solid var(--sf-ink);--oc-item-hover-bg:var(--sf-plum);--oc-item-hover-ink:var(--sf-cream)}
+.tTaze{--oc-overlay:color-mix(in srgb,var(--tz-dark) 62%,transparent);--oc-bg:var(--tz-cream);--oc-ink:var(--tz-ink);--oc-border:1.5px solid var(--tz-ink);--oc-radius:24px;--oc-title-font:'Fraunces',Georgia,serif;--oc-title-size:1.6rem;--oc-title-weight:500;--oc-item-bg:var(--tz-orange);--oc-item-ink:var(--tz-surface);--oc-item-hover-bg:var(--tz-dark);--oc-item-hover-ink:var(--tz-cream)}
+.tEmber{--oc-overlay:color-mix(in srgb,var(--sc-scrim-dark) 66%,transparent);--oc-bg:var(--sc-surface);--oc-ink:var(--sc-ink);--oc-border:1px solid var(--em-line);--oc-radius:20px;--oc-shadow:0 24px 60px color-mix(in srgb,var(--sc-scrim-dark) 45%,transparent);--oc-font:var(--sc-font-text);--oc-title-font:var(--sc-font-display);--oc-title-size:1.9rem;--oc-title-weight:400;--oc-item-bg:var(--sc-accent);--oc-item-ink:var(--sc-accent-ink);--oc-item-hover-bg:var(--sc-ink);--oc-item-hover-ink:var(--sc-surface)}
+.tMocha{--oc-overlay:color-mix(in srgb,var(--mc-red) 32%,transparent);--oc-bg:var(--mc-cream);--oc-ink:var(--mc-red);--oc-border:1px solid var(--mc-red);--oc-radius:0;--oc-shadow:none;--oc-font:var(--mc-font-body);--oc-title-font:var(--mc-font-display);--oc-title-size:1.7rem;--oc-title-weight:600;--oc-item-bg:var(--mc-red);--oc-item-ink:var(--mc-cream);--oc-item-radius:50%;--oc-item-pad:14px 52px;--oc-item-hover-bg:var(--mc-red-600);--oc-item-hover-ink:var(--mc-cream)}
+.tCigkofte{--oc-overlay:var(--color-overlay);--oc-bg:var(--color-bg);--oc-ink:var(--color-text);--oc-border:var(--border-w) solid var(--color-border);--oc-radius:var(--radius-xl);--oc-shadow:var(--shadow-hard-lg);--oc-font:var(--font-body);--oc-title-font:var(--font-display);--oc-title-size:var(--step-2);--oc-title-weight:900;--oc-item-bg:var(--color-accent);--oc-item-ink:var(--color-text-on-accent);--oc-item-border:var(--border-w) solid var(--color-border);--oc-item-shadow:var(--shadow-hard-sm);--oc-item-hover-bg:var(--color-accent-2);--oc-item-hover-ink:var(--color-text-on-yellow)}

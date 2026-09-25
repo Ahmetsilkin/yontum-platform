@@ -2,7 +2,7 @@
 import{useState,useEffect,useRef,Fragment}from'react';
 import dynamic from'next/dynamic';
 import{Instagram,MapPin,Phone}from'lucide-react';
-import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import'./radical-themes.css';
+import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import{getOrderLinks}from'@/lib/orderLinks';import'./radical-themes.css';
 /* Nova'nın 3D sahnesi (@react-three/fiber) sunucuda render edilemez (WebGL
    canvas/tarayıcı API'lerine ihtiyaç duyar) — bu yüzden ssr:false ile sadece
    istemcide, ayrı bir JS parçası (chunk) olarak yükleniyor. Diğer temaların
@@ -3565,11 +3565,65 @@ function VizonServiceDetail({b,service}:{b:any;service:any;gallery:any[];media:a
    süresi gibi restorana uymayan alanlar taşınmasın diye). Bölümler sabit
    sırada olduğundan (booking_first/portfolio gibi yeniden sıralama yok)
    diğer ailelerdeki flex+order kurulumuna hiç gerek yok — sade blok akışı. */
-function sofraPrimaryCta(b:any):{label:string;href:string;external:boolean}|null{
-  if(b.delivery_url)return{label:'Sipariş Ver',href:b.delivery_url,external:true};
+type Cta={label:string;href:string;external:boolean;orders?:{name:string;url:string}[]};
+function sofraPrimaryCta(b:any):Cta|null{
+  /* Sipariş bağlantıları (panelde "Sipariş / teslimat linkleri"): tek link → doğrudan o site açılır,
+     birden fazlaysa "Sipariş Ver" bir seçim penceresi açar (müşteri siteyi seçer). */
+  const orders=getOrderLinks(b);
+  if(orders.length>1)return{label:'Sipariş Ver',href:'#siparis',external:false,orders};
+  if(orders.length===1)return{label:'Sipariş Ver',href:orders[0].url,external:true};
   if(b.google_maps_url)return{label:'Yol Tarifi Al',href:b.google_maps_url,external:true};
   if(b.phone)return{label:'Bizi Arayın',href:`tel:${String(b.phone).replace(/\s+/g,'')}`,external:false};
   return null;
+}
+/* Restoran temalarının ortak "ana eylem" bağlantısı. Çoklu sipariş linkinde de bir <a> kalır (temanın
+   mevcut <a> stilleri bozulmasın diye) ama tıklanınca sayfadaki <OrderChooser>'ı açar. */
+const ORDER_EVENT='megsak-order-open';
+function Cta({cta,className,children,...rest}:{cta:Cta;className?:string;children?:React.ReactNode;[k:string]:any}){
+  if(cta.orders){
+    const open=(el:HTMLElement)=>window.dispatchEvent(new CustomEvent(ORDER_EVENT,{detail:{trigger:el}}));
+    return <a href="#siparis" role="button" aria-haspopup="dialog" className={className} {...rest} onClick={e=>{e.preventDefault();open(e.currentTarget)}} onKeyDown={e=>{if(e.key===' '){e.preventDefault();open(e.currentTarget)}}}>{children??cta.label}</a>;
+  }
+  const props=cta.external?{href:cta.href,target:'_blank',rel:'noopener noreferrer'}:{href:cta.href};
+  return <a className={className} {...rest} {...props}>{children??cta.label}</a>;
+}
+/* Birden fazla sipariş linki varken "Sipariş Ver"e basınca açılan seçim penceresi. Temanın kök öğesinin
+   içine konur (tema renkleri --oc-* değişkenleriyle gelir), yalnızca açıkken ve ≥2 link varken çizilir. */
+function OrderChooser({b}:{b:any}){
+  const links=getOrderLinks(b);
+  const[open,setOpen]=useState(false);
+  const opener=useRef<HTMLElement|null>(null);
+  const first=useRef<HTMLAnchorElement>(null);
+  const dialog=useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    const on=(e:Event)=>{opener.current=(e as CustomEvent).detail?.trigger||null;setOpen(true)};
+    window.addEventListener(ORDER_EVENT,on);
+    return()=>window.removeEventListener(ORDER_EVENT,on);
+  },[]);
+  useEffect(()=>{
+    if(!open)return;
+    const prevOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
+    const onKey=(e:KeyboardEvent)=>{
+      if(e.key==='Escape'){setOpen(false);return}
+      if(e.key!=='Tab'||!dialog.current)return;
+      const f=Array.from(dialog.current.querySelectorAll<HTMLElement>('a[href],button'));
+      if(!f.length)return;
+      const firstEl=f[0],lastEl=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===firstEl){e.preventDefault();lastEl.focus()}
+      else if(!e.shiftKey&&document.activeElement===lastEl){e.preventDefault();firstEl.focus()}
+    };
+    document.addEventListener('keydown',onKey);
+    const t=window.setTimeout(()=>first.current?.focus(),0);
+    return()=>{window.clearTimeout(t);document.removeEventListener('keydown',onKey);document.body.style.overflow=prevOverflow;opener.current?.focus?.()};
+  },[open]);
+  if(links.length<2||!open)return null;
+  return <div className="ocOverlay" role="presentation" onClick={()=>setOpen(false)}>
+    <div ref={dialog} className="ocDialog" role="dialog" aria-modal="true" aria-labelledby="ocTitle" onClick={e=>e.stopPropagation()}>
+      <button type="button" className="ocClose" aria-label="Kapat" onClick={()=>setOpen(false)}>✕</button>
+      <p id="ocTitle" className="ocTitle">Nereden sipariş vermek istersin?</p>
+      <ul className="ocList">{links.map((l,i)=><li key={l.url}><a ref={i===0?first:undefined} className="ocItem" href={l.url} target="_blank" rel="noopener noreferrer" onClick={()=>setOpen(false)}><span>{l.name}</span><span aria-hidden="true">↗</span></a></li>)}</ul>
+    </div>
+  </div>;
 }
 /* Randevu sistemi olmayan restoran temaları (Sofra/Taze) için paylaşılan
    "bize mesaj gönder" formu — zaten var olan /api/contact-messages'a POST
@@ -3610,7 +3664,6 @@ function Sofra(p:P){
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const items=p.menuItems||[];
   const cta=sofraPrimaryCta(b);
-  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   return <main id="top" className="tSofra">
     <header className="sfNav">
       <a className="sfBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
@@ -3620,7 +3673,7 @@ function Sofra(p:P){
         {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
         <a href="#iletisim">İletişim</a>
       </nav>
-      {cta&&<a className="sfNavBtn" {...ctaProps(cta)}>{cta.label}</a>}
+      {cta&&<Cta cta={cta} className="sfNavBtn"/>}
     </header>
 
     <section className="sfHero" style={heroPhoto?{backgroundImage:`url(${heroPhoto})`}:{}}>
@@ -3633,7 +3686,7 @@ function Sofra(p:P){
         {b.hero_description&&<p className="sfHeroDesc">{b.hero_description}</p>}
         <div className="sfHeroBtns">
           <a className="sfBtnSolid" href="#menu">Menüyü İncele</a>
-          {cta&&<a className="sfBtnOutline" {...ctaProps(cta)}>{cta.label}</a>}
+          {cta&&<Cta cta={cta} className="sfBtnOutline"/>}
         </div>
       </div>
     </section>
@@ -3717,7 +3770,8 @@ function Sofra(p:P){
       <nav className="sfFooterLinks" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
       <div className="sfFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
-  </main>;
+  <OrderChooser b={b}/>
+    </main>;
 }
 
 /* ================= TAZE — enerjik, oyuncu "DTC içecek markası" teması.
@@ -3745,7 +3799,6 @@ function Taze(p:P){
   const items=(p.menuItems||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const catName=(id:string)=>categories.find((c:any)=>c.id===id)?.name||'';
   const cta=sofraPrimaryCta(b);
-  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   return <main id="top" className="tTaze">
     <header className="tzNav">
       <a className="tzBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
@@ -3755,7 +3808,7 @@ function Taze(p:P){
         {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
         <a href="#iletisim">İletişim</a>
       </nav>
-      {cta&&<a className="tzNavBtn" {...ctaProps(cta)}>{cta.label}</a>}
+      {cta&&<Cta cta={cta} className="tzNavBtn"/>}
     </header>
 
     <section className="tzHero">
@@ -3769,7 +3822,7 @@ function Taze(p:P){
       </div>
       <div className="tzHeroCtaRow">
         <a className="tzBtnSolid" href="#menu">Menüyü Gör</a>
-        {cta&&<a className="tzBtnOutline" {...ctaProps(cta)}>{cta.label}</a>}
+        {cta&&<Cta cta={cta} className="tzBtnOutline"/>}
       </div>
       {productPhoto&&<div className="tzFloatCard"><img src={productPhoto} alt={b.name}/></div>}
     </section>
@@ -3787,7 +3840,7 @@ function Taze(p:P){
       <Reveal i={1} className="tzAboutText">
         <h2 className="tzDivider">{dec(b,'tz_aboutWord','tazelik')}</h2>
         <p>{b.description||`${b.name}, sadece bir şey satmıyor; konforu, kolaylığı ve üstün lezzeti kapına kadar getiriyor.`}</p>
-        {cta&&<a className="tzBtnSolid" {...ctaProps(cta)}>{cta.label}</a>}
+        {cta&&<Cta cta={cta} className="tzBtnSolid"/>}
       </Reveal>
     </section>
 
@@ -3848,7 +3901,8 @@ function Taze(p:P){
       <nav className="tzFooterLinks" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
       <div className="tzFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
-  </main>;
+  <OrderChooser b={b}/>
+    </main>;
 }
 /* ================= EMBER — Awwwards-caliber scroll-driven sales showcase,
    ported from the standalone scrollcraft build (scrollcraft/builds/ember,
@@ -3914,7 +3968,6 @@ function Ember(p:P){
   const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
   const items=p.menuItems||[];
   const cta=sofraPrimaryCta(b);
-  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   const hasCover=!!b.cover_url;
   const coverIsVideo=hasCover&&b.cover_type==='video';
   const coverSound=useCoverSound();
@@ -3947,7 +4000,7 @@ function Ember(p:P){
             {b.hero_description&&<p className="emHeroPhotoDesc">{b.hero_description}</p>}
             <div className="emHeroPhotoBtns">
               <a className="emBtnSolid" href="#emMenu">Menüyü İncele</a>
-              {cta&&<a className="emBtnOutline" {...ctaProps(cta)}>{cta.label}</a>}
+              {cta&&<Cta cta={cta} className="emBtnOutline"/>}
             </div>
           </div>
         </section>
@@ -4000,7 +4053,7 @@ function Ember(p:P){
       <section id="emReserve" className="emClose" data-sc-spotlight>
         <Reveal className="emCloseInner">
           <h2 className="sc-display sc-display--lg">{dec(b,'em_closeTitle','Sofran hazır.')}</h2>
-          {cta?<a className="emCloseCta" data-sc-magnet="0.26" {...ctaProps(cta)}>{cta.label}</a>
+          {cta?<Cta cta={cta} className="emCloseCta" data-sc-magnet="0.26"/>
               :<a className="emCloseCta" data-sc-magnet="0.26" href="#emContact">Bize Ulaşın</a>}
         </Reveal>
       </section>
@@ -4049,6 +4102,7 @@ function Ember(p:P){
         </div>
         <nav className="emFooterLegal" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
       </footer>
+    <OrderChooser b={b}/>
     </main>
   </>;
 }
@@ -4087,7 +4141,6 @@ function Mocha(p:P){
   const[activeCat,setActiveCat]=useState<string|undefined>(categories[0]?.id);
   const currentCat=categories.some((c:any)=>c.id===activeCat)?activeCat:categories[0]?.id;
   const cta=sofraPrimaryCta(b);
-  const ctaProps=(c:{href:string;external:boolean})=>c.external?{href:c.href,target:'_blank',rel:'noopener noreferrer'}:{href:c.href};
   const waPhone=(()=>{if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);return n||null})();
   return <main id="top" className="tMocha">
     <header className="mcNav">
@@ -4100,7 +4153,7 @@ function Mocha(p:P){
         <span className="mcWordmarkTag"><i/>restoran ve kafe<i/></span>
       </a>
       <nav className="mcNavGroup mcNavRight">
-        {cta&&<a {...ctaProps(cta)}>{cta.label}</a>}
+        {cta&&<Cta cta={cta}/>}
         <a href="#mcContact">İletişim</a>
       </nav>
     </header>
@@ -4176,7 +4229,7 @@ function Mocha(p:P){
             {b.show_prices!==false&&it.price!=null&&<b>₺{Number(it.price).toLocaleString('tr-TR')}</b>}
           </div>)}
           {items.filter((it:any)=>it.category_id===currentCat).length>0&&<span className="mcDash" aria-hidden="true"/>}
-          {cta&&<a className="mcBtn mcBtn--ellipse" {...ctaProps(cta)}>{cta.label}</a>}
+          {cta&&<Cta cta={cta} className="mcBtn mcBtn--ellipse"/>}
         </div>
       </div>
     </section>
@@ -4199,7 +4252,7 @@ function Mocha(p:P){
         <p className="mcEyebrow">{b.address?b.address.split(',')[0]:'Bize gel'}</p>
         <h2>{dec(b,'mc_reserveTitle','Sofran hazır')}</h2>
         <p className="mcLedeText">{dec(b,'mc_reserveNote','Bir masa ayırtmak ya da paket sipariş vermek için bize ulaş.')}</p>
-        {cta&&<a className="mcBtn mcBtn--solid" {...ctaProps(cta)}>{cta.label}</a>}
+        {cta&&<Cta cta={cta} className="mcBtn mcBtn--solid"/>}
       </div>
     </section>
 
@@ -4213,7 +4266,7 @@ function Mocha(p:P){
         {hourRows.length>0&&<div className="mcContactBlock"><small>Saatler</small>{hourRows.map((r,i)=><p key={i}>{r.label}: {r.value}</p>)}</div>}
         {b.phone&&<div className="mcContactBlock"><small>Telefon</small><a href={`tel:${String(b.phone).replace(/\s+/g,'')}`}>{b.phone}</a></div>}
         {b.instagram&&<div className="mcContactBlock"><small>Instagram</small><a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer">{b.instagram}</a></div>}
-        {cta&&<a className="mcBtn mcBtn--ellipse" {...ctaProps(cta)}>{cta.label}</a>}
+        {cta&&<Cta cta={cta} className="mcBtn mcBtn--ellipse"/>}
       </Reveal>
       <Reveal i={2} className="mcContactMedia">
         <figure className="mcFrame mcFrame--4-3">
@@ -4263,7 +4316,8 @@ function Mocha(p:P){
         </div>
       </div>
     </footer>
-  </main>;
+  <OrderChooser b={b}/>
+    </main>;
 }
 /* ============ ÇİĞKÖFTE — neo-brutalist restoran teması ============
    Kalın siyah çerçeve, blur'suz sert ofset gölge, kırmızı/sarı/krem, tek
@@ -4352,6 +4406,7 @@ function Cigkofte(p:P){
     document.addEventListener('keydown',onKey);
     return()=>document.removeEventListener('keydown',onKey);
   },[navOpen]);
+  const orderCta=getOrderLinks(b).length?sofraPrimaryCta(b):null;
   const phoneHref=b.phone?`tel:${String(b.phone).replace(/\s+/g,'')}`:'';
   const mapsHref=b.google_maps_url||(b.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`:'');
   const igHandle=b.instagram?String(b.instagram).replace(/^@/,'').trim():'';
@@ -4408,6 +4463,7 @@ function Cigkofte(p:P){
           ?<div className="cgClosed"><b>Şu an kapalıyız</b>{status.next&&<span>Sıradaki açılış: {status.next}</span>}</div>
           :<div className="cgHeroBtns">
             <a className="cgBtn cgBtn--solid" href="#menu">Menüyü Aç</a>
+            {orderCta&&<Cta cta={orderCta} className="cgBtn cgBtn--outline"/>}
             {phoneHref&&<a className="cgBtn cgBtn--accent" href={phoneHref}>{b.phone}</a>}
           </div>}
       </div>
@@ -4490,6 +4546,7 @@ function Cigkofte(p:P){
                 :<div className="cgInfoRow"><span className="cgInfoIcon"><CgPin/></span><span className="cgInfoText">{b.address}</span></div>)}
               {b.phone&&<a className="cgInfoRow" href={phoneHref}><span className="cgInfoIcon"><CgPhone/></span><span className="cgInfoText">{b.phone}</span></a>}
               {igHandle&&<a className="cgInfoRow" href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer"><span className="cgInfoIcon"><IgIcon/></span><span className="cgInfoText">@{igHandle}</span></a>}
+              {orderCta&&<Cta cta={orderCta} className="cgBtn cgBtn--solid"/>}
               {mapsHref&&<a className="cgBtn cgBtn--accent" href={mapsHref} target="_blank" rel="noopener noreferrer">Yol Tarifi Al</a>}
             </div>
           </div>
@@ -4517,7 +4574,8 @@ function Cigkofte(p:P){
       <img src={galleryPhotos[lb]} alt="" onClick={e=>e.stopPropagation()}/>
       {galleryPhotos.length>1&&<button type="button" className="cgLbBtn cgLbNext" aria-label="Sonraki fotoğraf" onClick={e=>{e.stopPropagation();setLb((lb+1)%galleryPhotos.length)}}>→</button>}
     </div>}
-  </main>;
+  <OrderChooser b={b}/>
+    </main>;
 }
 function IgIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>}
 function WaIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>}
