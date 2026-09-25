@@ -3228,7 +3228,7 @@
 }
 
 /* ================= Sofra — randevusuz restoran/kafe teması =================
-   Diğer ailelerden farkı: TenantBooking yok, mönü ayrı menu_categories/
+   Diğer ailelerden farkı: TenantBooking yok, menü ayrı menu_categories/
    menu_items tablolarından geliyor. Bölümler sabit sırada (booking_first
    gibi bir layout_preset restorana uygulanmıyor) — flex+order kurulumuna
    gerek yok, sade blok akışı yeterli. */

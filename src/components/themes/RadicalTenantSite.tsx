@@ -3649,10 +3649,10 @@ function Sofra(p:P){
 
     <section id="menu" className="sfMenu">
       <Reveal className="sfSectionHead">
-        <small>MÖNÜ</small>
-        <h2>{dec(b,'sf_menuTitle','Mönümüz')}</h2>
+        <small>MENÜ</small>
+        <h2>{dec(b,'sf_menuTitle','Menümüz')}</h2>
       </Reveal>
-      {categories.length===0&&<p className="sfMenuEmpty">Mönü yakında eklenecek.</p>}
+      {categories.length===0&&<p className="sfMenuEmpty">Menü yakında eklenecek.</p>}
       {categories.map((c:any,ci:number)=><Reveal i={ci} key={c.id} className="sfMenuCategory">
         <h3>{c.name}</h3>
         <div className="sfMenuItems">
@@ -3725,7 +3725,7 @@ function Sofra(p:P){
    kullanır, sadece tamamen farklı bir görsel dil: iki fotoğraf üstüne
    bindirilmiş dev italik serif marka adı, gerçek veriden gelen istatistik
    rozetleri (ürün sayısı, kuruluş yılından hesaplanan deneyim), uçuşan
-   etiket rozetli hakkımızda bölümü, numaralı mönü kartları ve küçük harfli
+   etiket rozetli hakkımızda bölümü, numaralı menü kartları ve küçük harfli
    italik serif bölüm ayraçları ("menü", "anlar" gibi). sofraPrimaryCta aynen
    paylaşılıyor — randevu yerine Sipariş Ver → Yol Tarifi Al → Bizi Arayın
    zinciri burada da geçerli. */
@@ -3793,7 +3793,7 @@ function Taze(p:P){
 
     <section id="menu" className="tzMenu">
       <Reveal as="div" className="tzDividerWrap"><h2 className="tzDivider center">menü</h2></Reveal>
-      {items.length===0?<p className="tzMenuEmpty">Mönü yakında eklenecek.</p>:
+      {items.length===0?<p className="tzMenuEmpty">Menü yakında eklenecek.</p>:
       <div className="tzMenuGrid">
         {items.map((it:any,i:number)=><Reveal as="article" i={i} key={it.id} className="tzMenuCard">
           <div className="tzMenuCardTop"><span>{String(i+1).padStart(2,'0')}</span><small>{catName(it.category_id)}</small></div>
@@ -4116,7 +4116,7 @@ function Mocha(p:P){
           <p className="mcEyebrow">{b.hero_label||'Restoran ve Kafe'}</p>
           <h1>{b.hero_title||b.name}</h1>
           <p className="mcLedeText">{b.hero_description||dec(b,'mc_tagline','Her tabakta özenle hazırlanmış bir sofra deneyimi.')}</p>
-          <a className="mcBtn mcBtn--ellipse" href="#mcMenu">Mönüyü Gör</a>
+          <a className="mcBtn mcBtn--ellipse" href="#mcMenu">Menüyü Gör</a>
         </div>
         <div className="mcHeroStack">
           <figure className="mcFrame mcFrame--wide">
@@ -4134,7 +4134,7 @@ function Mocha(p:P){
         <div>{b.address}{b.address&&hourRows[0]&&<br/>}{hourRows[0]&&`${hourRows[0].label}: ${hourRows[0].value}`}</div>
         <div>{dec(b,'mc_heroNote','Sabah kahvesinden akşam sofrasına, gün boyu açığız.')}</div>
         <div className="mcHeroInfoLinks">
-          <a href="#mcMenu">Mönü</a>
+          <a href="#mcMenu">Menü</a>
           <a href="#mcContact">İletişim</a>
         </div>
       </div>
@@ -4159,7 +4159,7 @@ function Mocha(p:P){
       <div className="mcMenuGrid">
         <div className="mcMenuSide">
           <p className="mcEyebrow">Sipariş Ver</p>
-          <h2>{dec(b,'mc_menuTitle','Tüm mönü')}</h2>
+          <h2>{dec(b,'mc_menuTitle','Tüm menü')}</h2>
           <p className="mcLedeText">{dec(b,'mc_menuNote','Mutfağımız gün boyu açık.')}</p>
           {categories.length>0&&<div className="mcMenuTabs">
             {categories.map((c:any)=><button type="button" key={c.id} className={currentCat===c.id?'is-active':''} onClick={()=>setActiveCat(c.id)}>{c.name}</button>)}
@@ -4169,7 +4169,7 @@ function Mocha(p:P){
           </figure>
         </div>
         <div className="mcMenuList">
-          {categories.length===0&&<p className="mcMenuEmpty">Mönü yakında eklenecek.</p>}
+          {categories.length===0&&<p className="mcMenuEmpty">Menü yakında eklenecek.</p>}
           {items.filter((it:any)=>it.category_id===currentCat).map((it:any)=><div className="mcMenuItem" key={it.id}>
             <div className="mcMenuItemRow"><span>{it.name}</span></div>
             {it.description&&<p>{it.description}</p>}
@@ -4242,7 +4242,7 @@ function Mocha(p:P){
         </div>
         <div className="mcFooterCol">
           <h5>Keşfet</h5>
-          <a href="#mcMenu">Mönü</a>
+          <a href="#mcMenu">Menü</a>
           {galleryPhotos.length>0&&<a href="#mcGallery">Galeri</a>}
           <a href="#mcReserve">{cta?.label||'İletişim'}</a>
         </div>
