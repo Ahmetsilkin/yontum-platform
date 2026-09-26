@@ -616,24 +616,48 @@
 @media(prefers-reduced-motion:reduce){.zfMarqueeTrack{animation:none}}
 @media(max-width:640px){.zfMissionArch{width:min(240px,66vw)}.zfMarqueeRow .zfMissionArch{width:min(170px,60vw)}}
 
-/* Hizmetler — yatay kaydırmalı karusel */
-.zfServices{padding:100px 0;background:var(--zf-bg)}
-.zfServices>div:first-child,.zfServices header{max-width:1200px;margin:0 auto 40px;padding:0 6vw;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+/* Hizmetler — bento ızgara (masaüstü 4 sütun asimetrik: 2x2 · 2x1 · 1x1 · 1x1 · 4x1; 24px köşe/boşluk) */
+.zfServices{padding:110px 6vw;background:var(--zf-bg)}
+.zfServices header{max-width:1200px;margin:0 auto 44px;display:block}
 .zfServices header small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold-text)}
 .zfServices header h2{font:500 clamp(28px,3.4vw,40px)/1.2;margin:10px 0 0}
-.zfCarouselNav{display:flex;gap:8px}
-.zfCarouselNav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--zf-line);background:none;color:var(--zf-ink);font-size:18px;cursor:pointer;transition:border-color .2s}
-.zfCarouselNav button:hover{border-color:var(--zf-gold)}
-.zfServiceScroller{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 6vw 10px;scrollbar-width:none}
-.zfServiceScroller::-webkit-scrollbar{display:none}
-.zfServiceCard{scroll-snap-align:start;flex:0 0 min(300px,78vw)}
-.zfServiceCardPhoto{aspect-ratio:4/5;background:var(--zf-bg);border-radius:6px;overflow:hidden;margin-bottom:16px}
-.zfServiceCardPhoto img{width:100%;height:100%;object-fit:cover}
-.zfServiceCardPhoto i{width:100%;height:100%;display:grid;place-items:center;font-size:26px;font-style:normal;color:var(--zf-muted)}
-.zfServiceCard h3{font:500 19px 'Playfair Display',Georgia,serif;margin:0 0 8px}
-.zfServiceCardFoot{display:flex;justify-content:space-between;color:var(--zf-muted);font-size:13px}
-.zfServiceCardFoot b{color:var(--zf-gold-text);font-weight:700}
-.zfServiceDetailLink{display:inline-block;margin-top:10px;color:var(--zf-gold-text)!important;font-size:12.5px;font-weight:600;border-bottom:1px solid var(--zf-gold)}
+.zfBento{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(190px,19vw,270px);gap:24px}
+.zfB1{grid-column:span 2;grid-row:span 2}
+.zfB2{grid-column:span 2}
+.zfB5{grid-column:1/-1}
+.zfBFull{grid-column:1/-1;grid-row:span 2}
+.zfBentoCard{position:relative;border-radius:24px;overflow:hidden;isolation:isolate;background:var(--zf-surface);opacity:0;transform:translateY(46px);
+  box-shadow:0 0 0 1px transparent;
+  transition:opacity .9s ease calc(var(--i,0) * 150ms),transform .9s cubic-bezier(.2,.7,.3,1) calc(var(--i,0) * 150ms),box-shadow .45s ease}
+.zfBentoCard.in{opacity:1;transform:none}
+.zfBentoCard:hover{box-shadow:0 0 0 1px color-mix(in srgb,var(--zf-gold) 70%,transparent),0 0 34px color-mix(in srgb,var(--zf-gold) 38%,transparent)}
+.zfBentoMedia{position:absolute;inset:0;overflow:hidden;z-index:0}
+.zfBentoParallax{position:absolute;left:0;right:0;top:-9%;height:118%;will-change:transform;transition:transform .12s linear}
+.zfBentoImg{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform 1s cubic-bezier(.2,.7,.3,1)}
+.zfBentoCard:hover .zfBentoImg{transform:scale(1.05)}
+.zfBentoScrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent 42%,color-mix(in srgb,var(--zf-ink) 78%,transparent))}
+.zfBentoBody{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:24px 26px;color:var(--zf-surface);pointer-events:none}
+.tZarafet .zfBentoBody h3{font:500 clamp(20px,1.9vw,26px)/1.2 'Playfair Display',Georgia,serif;margin:0;color:var(--zf-surface);text-transform:none;letter-spacing:0}   /* sarmalayıcının font-sans başlık kuralını ezmek için .tZarafet önekli */
+.tZarafet .zfB1 .zfBentoBody h3,.tZarafet .zfBFull .zfBentoBody h3{font-size:clamp(26px,3vw,38px)}
+.zfBentoMeta{display:flex;align-items:baseline;gap:14px;margin-top:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--zf-surface) 82%,transparent)}
+.zfBentoMeta b{color:var(--zf-surface);font-weight:700;font-size:13px}
+.zfBentoLink{position:absolute;inset:0;z-index:3;display:flex;align-items:flex-start;justify-content:flex-end;padding:18px 20px}
+.zfBentoLink span{padding:8px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:color-mix(in srgb,var(--zf-surface) 90%,transparent);color:var(--zf-ink);opacity:0;transform:translateY(-6px);transition:opacity .3s ease,transform .3s ease}
+.zfBentoCard:hover .zfBentoLink span,.zfBentoLink:focus-visible span{opacity:1;transform:none}
+.zfBentoLink:focus-visible{outline:2px solid var(--zf-gold);outline-offset:-4px;border-radius:24px}
+@media(max-width:760px){
+  .zfServices{padding:80px 6vw}
+  .zfBento{grid-template-columns:1fr 1fr;grid-auto-rows:clamp(150px,44vw,210px);gap:14px}
+  .zfBentoCard{border-radius:20px}
+  .zfBentoBody{padding:16px 16px 14px}
+  .zfBentoLink span{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .zfBentoCard{opacity:1;transform:none;transition:box-shadow .2s ease}
+  .zfBentoParallax{transform:none!important;transition:none}
+  .zfBentoImg{transition:none}
+  .zfBentoCard:hover .zfBentoImg{transform:none}
+}
 
 /* Galeri — sabitlenmiş başlık + kademeli giren fotoğraf koleksiyonu */
 .zfCollageWrap{position:relative;height:220vh}

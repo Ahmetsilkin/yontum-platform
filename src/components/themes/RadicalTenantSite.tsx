@@ -1,4 +1,5 @@
 'use client';
+import{DEFAULT_IMAGE_SET,getImageSet}from'@/lib/demo-images';
 import{useState,useEffect,useRef,Fragment}from'react';
 import dynamic from'next/dynamic';
 import{Instagram,MapPin,Phone}from'lucide-react';
@@ -671,22 +672,53 @@ function ZfMarquee({photos,alt}:{photos:string[];alt:string}){
     </div>
   </div>;
 }
+/* Zarafet hizmetler: bento ızgara. Masaüstü 4 sütun asimetrik (5'lik desen: 2x2 · 2x1 · 1x1 · 1x1 · 4x1), 24px köşe, 24px boşluk.
+   Her kutu bir hizmet: görsel = hizmetin görseli → işletme galerisi → kategoriye uygun örnek fotoğraf.
+   Kaydırınca kutular 0,15 sn arayla aşağıdan yukarı belirir, görseller kutu içinde yavaşça kayar (parallax), hover'da
+   görsel %5 büyür ve kenarda ince altın parıltı çıkar. GSAP yerine IntersectionObserver + rAF (bu projede scroll
+   kütüphaneleri sorun çıkarmıştı; davranış aynı). reduced-motion'da animasyon yok. */
+const ZF_BENTO:Record<number,string[]>={1:['zfBFull'],2:['zfB1','zfB1'],3:['zfB1','zfB2','zfB2'],4:['zfB1','zfB2','zfB3','zfB3'],5:['zfB1','zfB2','zfB3','zfB3','zfB5']};
 function ZarafetServices({p}:{p:P}){
-  const scrollerRef=useRef<HTMLDivElement>(null);
-  const nudge=(dir:number)=>{const el=scrollerRef.current;if(!el)return;el.scrollBy({left:dir*el.clientWidth*.82,behavior:'smooth'})};
-  if(!p.services.length)return null;
+  const gridRef=useRef<HTMLDivElement>(null);
+  const n=p.services.length;
+  useEffect(()=>{
+    const grid=gridRef.current;if(!grid)return;
+    const cards=Array.from(grid.querySelectorAll<HTMLElement>('.zfBentoCard'));
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cards.forEach(c=>c.classList.add('in'));return}
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    cards.forEach(c=>io.observe(c));
+    const layers=cards.map(c=>c.querySelector<HTMLElement>('.zfBentoParallax'));
+    let raf=0;
+    const update=()=>{raf=0;const vh=window.innerHeight;cards.forEach((c,i)=>{const layer=layers[i];if(!layer)return;const r=c.getBoundingClientRect();if(r.bottom<-120||r.top>vh+120)return;const prog=((r.top+r.height/2)-vh/2)/(vh/2+r.height/2);layer.style.transform=`translate3d(0,${(-prog*r.height*.07).toFixed(1)}px,0)`})};
+    const onScroll=()=>{if(!raf)raf=requestAnimationFrame(update)};
+    update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);
+    return()=>{io.disconnect();window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(raf)};
+  },[n]);
+  if(!n)return null;
+  const type=DEFAULT_IMAGE_SET[p.b.business_type]?p.b.business_type:'beauty';
+  const set=getImageSet(DEFAULT_IMAGE_SET[type],type);
+  const samples=[set.cover,...set.gallery];
+  const gal=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean) as string[];
   return <section id="hizmetler" className="zfServices">
     <Reveal><header>
       <div><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Duyulara dokunan bir deneyim.'}</h2></div>
-      <div className="zfCarouselNav"><button type="button" onClick={()=>nudge(-1)} aria-label="Önceki">‹</button><button type="button" onClick={()=>nudge(1)} aria-label="Sonraki">›</button></div>
     </header></Reveal>
-    <div className="zfServiceScroller" ref={scrollerRef}>
-      {p.services.map(s=><article key={s.id} className="zfServiceCard">
-        <div className="zfServiceCardPhoto">{s.image_url?<img src={s.image_url} alt={s.name}/>:<i>✂</i>}</div>
-        <h3>{s.name}</h3>
-        <div className="zfServiceCardFoot"><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
-        {hasServiceDetail(s)&&<a className="zfServiceDetailLink" href={`/site/${p.b.slug}/hizmet/${s.slug}`}>Detaylı İncele →</a>}
-      </article>)}
+    <div className="zfBento" ref={gridRef}>
+      {p.services.map((s,i)=>{
+        const size=Math.min(5,n-Math.floor(i/5)*5),cls=ZF_BENTO[size][i%5];
+        const src=s.image_url||(gal.length?gal[i%gal.length]:'')||samples[i%samples.length];
+        const isVideo=s.image_url&&s.image_type==='video';
+        const detail=hasServiceDetail(s);
+        return <article key={s.id} className={`zfBentoCard ${cls}`} style={{'--i':i%5} as React.CSSProperties}>
+          <div className="zfBentoMedia"><div className="zfBentoParallax">{isVideo?<video className="zfBentoImg" src={s.image_url} autoPlay muted loop playsInline preload="metadata"/>:<img className="zfBentoImg" src={src} alt={s.name} loading="lazy"/>}</div></div>
+          <div className="zfBentoScrim"/>
+          <div className="zfBentoBody">
+            <h3>{s.name}</h3>
+            <div className="zfBentoMeta"><span>{s.duration_minutes} dk</span>{p.b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</div>
+          </div>
+          <a className="zfBentoLink" href={detail?`/site/${p.b.slug}/hizmet/${s.slug}`:'#randevu'} aria-label={`${s.name}: ${detail?'detaylı incele':'randevu al'}`}><span>{detail?'Detaylı İncele':'Randevu Al'} →</span></a>
+        </article>;
+      })}
     </div>
   </section>;
 }
