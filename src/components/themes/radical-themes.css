@@ -4457,3 +4457,11 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
   .tDetay .dtSound{bottom:16px}
 }
 @media(prefers-reduced-motion:reduce){.tDetay *,.tDetay *::before,.tDetay *::after{transition:none!important;animation:none!important}}
+
+/* Örnek taslak (demo) etiketi: her temanın en üstünde sabit ince şerit. Sayfa şerit yüksekliği kadar aşağı itilir;
+   yapışkan/sabit navbar'lar (varsayılan demo temaları) şeridin altına oturur. */
+.radical:has(>.demoBanner){--demoH:30px;padding-top:var(--demoH)}
+.demoBanner{position:fixed;top:0;left:0;right:0;z-index:9999;height:var(--demoH,30px);display:flex;align-items:center;justify-content:center;gap:12px;padding:0 12px;background:#111;color:#fff;font:500 12px/1 Arial,sans-serif;white-space:nowrap;overflow:hidden}
+.demoBanner b{flex:none;padding:3px 8px;background:#ffd400;color:#111;font-size:11px;letter-spacing:.08em}
+.demoBanner span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.radical:has(>.demoBanner) :is(.ksNav,.zfNav,.emNav,.dtNav){top:var(--demoH)}

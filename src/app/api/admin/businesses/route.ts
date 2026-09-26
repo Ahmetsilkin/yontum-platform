@@ -4,7 +4,7 @@ export async function GET(){
   const store=await cookies();
   if(!isValidAdminSession(store.get(ADMIN_COOKIE_NAME)?.value))return NextResponse.json({error:'Yetkiniz yok.'},{status:403});
   const db=createServiceClient();
-  const{data,error}=await db.from('businesses').select('id,name,slug,phone,business_type,is_published,created_at').order('created_at',{ascending:false});
+  const{data,error}=await db.from('businesses').select('id,name,slug,phone,business_type,is_published,created_at,is_demo').order('created_at',{ascending:false});
   if(error)return NextResponse.json({error:error.message},{status:400});
   return NextResponse.json({businesses:data||[]});
 }

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-type BizRow = { id: string; name: string; slug: string; phone: string; business_type: string; is_published: boolean; created_at: string };
+type BizRow = { id: string; name: string; slug: string; phone: string; business_type: string; is_published: boolean; created_at: string; is_demo?: boolean };
 
 const BUSINESS_TYPES: { value: string; label: string }[] = [
   { value: 'barber', label: 'Erkek Berberi' },
@@ -119,7 +119,7 @@ export default function AdminBusinessManager() {
       <main className="dashboardMain noSide">
         <header className="dashboardTop">
           <div className="platformLogo"><span>M</span><b>MEGSAK</b></div>
-          <div className="adminTopActions"><button type="button" className="plainAction" onClick={logout}>Çıkış Yap</button></div>
+          <div className="adminTopActions"><a className="plainAction" href="/yonetim/demo">Demo Site Üretici</a><button type="button" className="plainAction" onClick={logout}>Çıkış Yap</button></div>
         </header>
         <div className="dashboardContent">
           <section className="panel dashPanel">
@@ -157,7 +157,7 @@ export default function AdminBusinessManager() {
                   <tbody>
                     {list.map(b => (
                       <tr key={b.id}>
-                        <td><b>{b.name}</b></td>
+                        <td><b>{b.name}</b>{b.is_demo&&<span style={{marginLeft:8,padding:'2px 8px',fontSize:11,fontWeight:700,background:'rgba(255,180,0,.3)'}}>DEMO</span>}</td>
                         <td><a href={`/site/${b.slug}`} target="_blank" rel="noopener noreferrer">{b.slug}</a></td>
                         <td>{b.phone}</td>
                         <td><button type="button" className={`publishBadge ${b.is_published ? 'live' : ''}`} disabled={togglingId === b.id} onClick={() => togglePublish(b)}>{togglingId === b.id ? '…' : b.is_published ? '● Yayında' : '○ Taslak'}</button></td>

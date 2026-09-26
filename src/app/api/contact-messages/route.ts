@@ -3,7 +3,8 @@ const schema=z.object({businessId:z.string().uuid(),name:z.string().trim().min(2
 export async function POST(req:NextRequest){
   try{
     const x=schema.parse(await req.json()),db=createServiceClient();
-    const{data:biz}=await db.from('businesses').select('id').eq('id',x.businessId).eq('is_published',true).single();
+    const{data:biz}=await db.from('businesses').select('id,is_demo').eq('id',x.businessId).eq('is_published',true).single();
+    if(biz?.is_demo)return NextResponse.json({error:'Bu bir örnek tasarımdır; mesaj gönderilemez.'},{status:403});
     if(!biz)return NextResponse.json({error:'İşletme bulunamadı.'},{status:404});
     const{error}=await db.from('contact_messages').insert({business_id:x.businessId,name:x.name,message:x.message});
     if(error)return NextResponse.json({error:'Mesaj gönderilemedi.'},{status:500});

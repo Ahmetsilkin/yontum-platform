@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from('businesses')
       .select('slug,updated_at')
       .eq('is_published', true)
+      .eq('is_demo', false)
       .is('deleted_at', null);
 
     const businessRoutes: MetadataRoute.Sitemap = (businesses || []).map((b) => ({
