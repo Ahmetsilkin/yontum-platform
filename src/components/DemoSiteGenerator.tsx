@@ -187,6 +187,14 @@ export default function DemoSiteGenerator(){
     if(!r.ok){setErr(j.error||'Kaydedilemedi.');return}
     setMsg(`"${d.name.trim()}" demo sitesi güncellendi.`);setEditing(null);load();
   }
+  async function reviewsAction(l:Lead,mode:'regenerate'|'remove'){
+    if(!l.business)return;
+    setErr('');setMsg('');
+    const r=await fetch('/api/admin/demo/site',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({businessId:l.business.id,edit:{reviews:mode}})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){setErr(j.error||'İşlem yapılamadı.');return}
+    setMsg(mode==='regenerate'?`"${l.name}" için örnek yorumlar yeniden üretildi.`:`"${l.name}" sitesindeki örnek yorumlar kaldırıldı.`);
+  }
   async function del(l:Lead){
     if(!l.business||!confirm(`"${l.name}" demo sitesi kalıcı olarak silinsin mi?`))return;
     const r=await fetch(`/api/admin/businesses/${l.business.id}`,{method:'DELETE'});
@@ -280,10 +288,14 @@ export default function DemoSiteGenerator(){
               {editing===l.id&&editDraft&&l.business?.is_demo&&<div style={{...card,marginTop:4}}>
                 <p className="builderHelp" style={{marginTop:0}}>Canlı demo sitesini düzenliyorsun. Tema ya da görsel setini değiştirirsen site yeni haliyle hemen güncellenir (kategori sonradan değiştirilemez; gerekirse siteyi silip yeniden üret).</p>
                 <LeadFields v={editDraft} themes={themes} lockType onChange={p=>setEditDraft(d=>d?{...d,...p}:d)}/>
-                <div style={{marginTop:12,display:'flex',gap:10}}>
+                <div style={{marginTop:12,display:'flex',flexWrap:'wrap',gap:10,alignItems:'center'}}>
                   <button type="button" className="blackBtn" disabled={saving||editDraft.name.trim().length<2} onClick={()=>saveEdit(l)}>{saving?'Kaydediliyor…':'Kaydet'}</button>
                   <button type="button" className="plainAction" onClick={()=>setEditing(null)}>Vazgeç</button>
+                  <span style={{opacity:.5}}>|</span>
+                  <button type="button" className="plainAction" onClick={()=>reviewsAction(l,'regenerate')}>Örnek yorumları yeniden üret</button>
+                  <button type="button" className="plainAction" onClick={()=>reviewsAction(l,'remove')}>Örnek yorumları kaldır</button>
                 </div>
+                <small style={{display:'block',marginTop:8,opacity:.75}}>Sitedeki "Müşteri değerlendirmeleri" bölümü, kategoriye uygun ÖRNEK yorumlarla dolar (üretimde otomatik eklenir). Bunlar gerçek müşteri yorumu değildir; sitede "yorumlar ve içerikler örnektir" uyarısı görünür ve demo devredilirken hepsi silinir.</small>
               </div>}
             </div>
           </div>)}
@@ -298,7 +310,7 @@ export default function DemoSiteGenerator(){
             <p>Telefon: <b>{claimDone.phone}</b><br/>Şifre: <b>{claimDone.password}</b><br/>Giriş: <a href={claimDone.loginUrl} target="_blank" rel="noopener noreferrer">{claimDone.loginUrl}</a><br/>Site: <a href={claimDone.siteUrl} target="_blank" rel="noopener noreferrer">{claimDone.siteUrl}</a></p>
             <button type="button" className="blackBtn" onClick={()=>setClaim(null)}>Kapat</button>
           </>:<>
-            <p className="builderHelp">Gerçek telefon numarası giriş kullanıcı adı olur. "Örnek tasarım" etiketi kalkar, randevu ve mesaj alınmaya başlar.</p>
+            <p className="builderHelp">Gerçek telefon numarası giriş kullanıcı adı olur. "Örnek tasarım" etiketi kalkar, randevu ve mesaj alınmaya başlar. Sitedeki <b>örnek yorumlar silinir</b>; işletme kendi gerçek müşteri yorumlarını toplar.</p>
             {err&&<p className="formError">{err}</p>}
             <label className="field">Telefon (giriş için)<input className="input" value={claimPhone} onChange={e=>setClaimPhone(e.target.value)} required/></label>
             <label className="field">Şifre<input className="input" value={claimPass} onChange={e=>setClaimPass(e.target.value)} minLength={8} required/></label>

@@ -10,8 +10,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',detay:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,detay:Detay},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'light',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',detay:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,detay:Detay},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Yorumlar ve içerikler örnektir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -3198,6 +3198,17 @@ function Deneyim(p:P){
   </main>;
 }
 
+/* Editoryal başlık: son cümle/kelime italik (serif başlıkların karakteristik italik vurgusu).
+   "Kusursuz Kesim. Sıfır Taviz." → ikinci cümle italik; tek kelimeyse tamamı italik. */
+function ItalicTail({text}:{text:string}){
+  const t=String(text||'').trim();
+  const sent=t.match(/^(.+?[.!?])\s+(.+)$/);
+  if(sent)return <>{sent[1]} <em>{sent[2]}</em></>;
+  const words=t.split(/\s+/);
+  if(words.length<2)return <em>{t}</em>;
+  return <>{words.slice(0,-1).join(' ')} <em>{words[words.length-1]}</em></>;
+}
+
 function Split(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
@@ -3234,7 +3245,7 @@ function Split(p:P){
       <div className="spLeftCol">
         <div className="spHeroText">
           <Reveal as="div" className="spHeroTextIn">
-            <h1>{b.hero_title||'Kusursuz Kesim. Sıfır Taviz.'}</h1>
+            <h1>{b.hero_title&&b.hero_highlight?<>{b.hero_title} <em>{b.hero_highlight}</em></>:<ItalicTail text={b.hero_title||'Kusursuz Kesim. Sıfır Taviz.'}/>}</h1>
             {b.hero_description&&<p>{b.hero_description}</p>}
           </Reveal>
           <a className="spScrollHint" href="#spAbout" data-cursor="Kaydır"><span/>Aşağı Kaydır</a>
@@ -3242,7 +3253,7 @@ function Split(p:P){
         <div className="spAboutText" id="spAbout" ref={aboutTextRef}>
           <Reveal as="div" className="spAboutTextIn">
             <span className="spKick">ZANAATIN MİRASI</span>
-            <h2>{dec(b,'sp_aboutTitle','Zanaatın Mirası')}</h2>
+            <h2><ItalicTail text={dec(b,'sp_aboutTitle','Zanaatın Mirası')}/></h2>
             <p>{dec(b,'sp_aboutText','Geleneksel berberliğin sabrını, modern İtalyan çizgisinin netliğiyle birleştiriyoruz. Her kesim; ölçülü, sessiz ve kusursuz bir zanaat anlayışının sonucudur — asla tesadüf değil.')}</p>
           </Reveal>
         </div>
@@ -3257,7 +3268,7 @@ function Split(p:P){
     {p.services.length>0&&<section id="hizmetler" className="spServices">
       <div className="spSectionHead">
         <span className="spKick">HİZMETLER</span>
-        <h2>{dec(b,'sp_servicesTitle','Ritüellerimiz')}</h2>
+        <h2><ItalicTail text={dec(b,'sp_servicesTitle','Ritüellerimiz')}/></h2>
       </div>
       <div className="spBento">
         {p.services.map((s,i)=><Reveal as="article" className={`spBentoCard${i===0?' spBentoBig':''}`} i={i} key={s.id}>
@@ -3275,7 +3286,7 @@ function Split(p:P){
     <section id="yorumlar" className="spReviews">
       <div className="spReviewsSticky">
         <span className="spKick">MÜŞTERİLERİMİZ</span>
-        <h2>{dec(b,'sp_reviewsTitle','Fikirler')}</h2>
+        <h2><ItalicTail text={dec(b,'sp_reviewsTitle','Fikirler')}/></h2>
         <p className="spScore"><b>{avgScore}</b> / 5.0<span>Elit Deneyim</span></p>
         <span className="spStars" aria-hidden="true">★★★★★</span>
       </div>
@@ -3290,7 +3301,7 @@ function Split(p:P){
     {shots.length>0&&<section id="galeri" className="spGallery">
       <div className="spSectionHead">
         <span className="spKick">GALERİ</span>
-        <h2>{dec(b,'sp_galleryTitle','Stüdyodan Kareler')}</h2>
+        <h2><ItalicTail text={dec(b,'sp_galleryTitle','Stüdyodan Kareler')}/></h2>
       </div>
       <div className="spGalleryGrid">
         {shots.slice(0,6).map((src,i)=><Reveal as="div" className="spGalleryItem" i={i} key={i}><img src={src} alt="" loading="lazy"/></Reveal>)}
@@ -3300,7 +3311,7 @@ function Split(p:P){
     <section id="randevu" className="spSplit spBooking">
       <div className="spLeftCol spBookingLeft">
         <span className="spKick">RANDEVU</span>
-        <h2>{dec(b,'sp_bookingTitle','Koltukta Yerinizi Ayırtın')}</h2>
+        <h2><ItalicTail text={dec(b,'sp_bookingTitle','Koltukta Yerinizi Ayırtın')}/></h2>
         <div className="spBookBox"><TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/></div>
       </div>
       <div className="spRightCol spBookingInfo">

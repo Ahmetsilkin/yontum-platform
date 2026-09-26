@@ -1,4 +1,4 @@
-import{NextRequest,NextResponse}from'next/server';import{z}from'zod';import{createServiceClient}from'@/lib/supabase-server';import{adminDenied}from'@/lib/admin-api';import{normalizePhoneDigits,phoneLoginEmail}from'@/lib/phone-auth';
+import{NextRequest,NextResponse}from'next/server';import{z}from'zod';import{createServiceClient}from'@/lib/supabase-server';import{adminDenied}from'@/lib/admin-api';import{removeSampleReviews}from'@/lib/demo-generate';import{normalizePhoneDigits,phoneLoginEmail}from'@/lib/phone-auth';
 /* Demo → gerçek işletme: işletme kabul edince gerçek telefon + şifre atanır, etiket kalkar (isteğe bağlı güzel adres). */
 const schema=z.object({businessId:z.string().uuid(),phone:z.string().trim().min(10),password:z.string().min(8),slug:z.string().trim().min(3).max(40).regex(/^[a-z0-9][a-z0-9-]*$/).optional()});
 export async function POST(req:NextRequest){
@@ -19,6 +19,7 @@ export async function POST(req:NextRequest){
     const slug=x.slug||biz.slug;
     const{error:bErr}=await db.from('businesses').update({phone:x.phone,slug,is_demo:false,demo_meta:{claimed_at:new Date().toISOString()},updated_at:new Date().toISOString()}).eq('id',x.businessId);
     if(bErr)return NextResponse.json({error:bErr.message},{status:400});
+    await removeSampleReviews(db,x.businessId);   // örnek yorumlar gerçek işletmeye geçmez
     const site=process.env.NEXT_PUBLIC_SITE_URL||req.nextUrl.origin;
     return NextResponse.json({ok:true,slug,siteUrl:`${site}/site/${slug}`,loginUrl:`${site}/giris`});
   }catch(e){

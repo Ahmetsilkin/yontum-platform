@@ -9,6 +9,7 @@ const schema=z.object({businessId:z.string().uuid(),edit:z.object({
   theme_id:z.string().trim().max(60).optional(),
   image_set:z.string().refine(v=>DEMO_IMAGE_SETS.some(s=>s.id===v)).optional(),
   opening_hours:z.string().regex(/^Mo-Su \d{2}:\d{2}-\d{2}:\d{2}$/).nullable().optional(),
+  reviews:z.enum(['regenerate','remove']).optional(),
 })});
 export async function PATCH(req:NextRequest){
   const denied=await adminDenied();if(denied)return denied;

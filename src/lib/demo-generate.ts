@@ -1,6 +1,7 @@
 import type{SupabaseClient}from'@supabase/supabase-js';
 import{DEMO_DEFAULT_THEME,cleanInstagram,demoSlug,parseOsmHours}from'@/lib/demo-leads';
 import{getImageSet,guessImageSet}from'@/lib/demo-images';
+import{buildSampleReviews}from'@/lib/demo-reviews';
 
 /* Bir aday işletmeden "örnek taslak" site üretir. Mevcut kayıt akışı (create_business_v2) yeniden kullanılır:
    her demo kendi sahte hesabına bağlanır (gerçek telefonla eşleşmez, şifresi hiçbir yerde tutulmaz). Sonra
@@ -50,6 +51,18 @@ export async function applyImageSet(db:SupabaseClient,businessId:string,business
   return set.id;
 }
 
+/* Sitedeki "Müşteri değerlendirmeleri" boş kalmasın diye kategoriye uygun ÖRNEK yorumlar (is_sample=true).
+   Gerçek yorumlara dokunmaz; demo devredilirken removeSampleReviews ile hepsi silinir. */
+export async function removeSampleReviews(db:SupabaseClient,businessId:string){
+  await db.from('appointment_ratings').delete().eq('business_id',businessId).eq('is_sample',true);
+}
+export async function applySampleReviews(db:SupabaseClient,businessId:string,businessType:string,setId?:string|null,count=7){
+  await removeSampleReviews(db,businessId);
+  const rows=buildSampleReviews(businessType,setId,count).map(r=>({business_id:businessId,customer_name:r.name,stars:r.stars,comment:r.comment,service_label:r.service,is_manual:true,is_sample:true,created_at:r.createdAt}));
+  const{error}=await db.from('appointment_ratings').insert(rows);
+  return error?0:rows.length;
+}
+
 /* OSM biçimindeki çalışma saatlerini işletmenin (ve sahibinin) takvimine yazar. Okunamazsa dokunmaz. */
 export async function applyHours(db:SupabaseClient,businessId:string,opening:string|null|undefined){
   const rows=parseOsmHours(opening);
@@ -92,6 +105,7 @@ export async function generateDemoBusiness(db:SupabaseClient,lead:any,origin:str
     if(upErr)throw new Error(upErr.message);
 
     await applyImageSet(db,businessId,lead.business_type,set.id,lead.name,{keepCover:true});
+    await applySampleReviews(db,businessId,lead.business_type,set.id);
     await applyHours(db,businessId,lead.opening_hours);
     await db.from('demo_leads').update({status:'generated',business_id:businessId}).eq('id',lead.id);
     return{leadId:lead.id,ok:true,slug,url:`${origin}/site/${slug}`,googleLinked:!!placeId};
@@ -101,7 +115,7 @@ export async function generateDemoBusiness(db:SupabaseClient,lead:any,origin:str
   }
 }
 
-export type DemoSiteEdit={name?:string;phone?:string|null;address?:string|null;instagram?:string|null;theme_id?:string|null;image_set?:string|null;opening_hours?:string|null};
+export type DemoSiteEdit={name?:string;phone?:string|null;address?:string|null;instagram?:string|null;theme_id?:string|null;image_set?:string|null;opening_hours?:string|null;reviews?:'regenerate'|'remove'};
 
 /* Üretilmiş bir demo siteyi (henüz devredilmediyse) düzenler; ilgili aday kaydını da senkron tutar. */
 export async function updateDemoSite(db:SupabaseClient,businessId:string,edit:DemoSiteEdit):Promise<{ok:boolean;error?:string}>{
@@ -126,6 +140,13 @@ export async function updateDemoSite(db:SupabaseClient,businessId:string,edit:De
     const set=getImageSet(edit.image_set,biz.business_type);
     await applyImageSet(db,businessId,biz.business_type,set.id,edit.name||biz.name);
     leadPatch.image_set=set.id;
+    // görsel seti değişince (ör. kafe → fırın) örnek yorumlar da yeni türe uygun olsun; yorumlar kapatıldıysa dokunma
+    if(edit.reviews!=='remove'){const{count}=await db.from('appointment_ratings').select('id',{count:'exact',head:true}).eq('business_id',businessId).eq('is_sample',true);if(count)await applySampleReviews(db,businessId,biz.business_type,set.id)}
+  }
+  if(edit.reviews==='remove')await removeSampleReviews(db,businessId);
+  if(edit.reviews==='regenerate'){
+    const{data:cur}=await db.from('demo_leads').select('image_set').eq('id',(biz.demo_meta as any)?.lead_id||'00000000-0000-0000-0000-000000000000').maybeSingle();
+    await applySampleReviews(db,businessId,biz.business_type,edit.image_set||cur?.image_set||guessImageSet(biz.business_type,biz.name));
   }
   if(edit.opening_hours!==undefined){
     leadPatch.opening_hours=edit.opening_hours||null;
