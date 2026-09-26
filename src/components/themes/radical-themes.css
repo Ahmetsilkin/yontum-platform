@@ -4228,3 +4228,241 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tEmber{--oc-overlay:color-mix(in srgb,var(--sc-scrim-dark) 66%,transparent);--oc-bg:var(--sc-surface);--oc-ink:var(--sc-ink);--oc-border:1px solid var(--em-line);--oc-radius:20px;--oc-shadow:0 24px 60px color-mix(in srgb,var(--sc-scrim-dark) 45%,transparent);--oc-font:var(--sc-font-text);--oc-title-font:var(--sc-font-display);--oc-title-size:1.9rem;--oc-title-weight:400;--oc-item-bg:var(--sc-accent);--oc-item-ink:var(--sc-accent-ink);--oc-item-hover-bg:var(--sc-ink);--oc-item-hover-ink:var(--sc-surface)}
 .tMocha{--oc-overlay:color-mix(in srgb,var(--mc-red) 32%,transparent);--oc-bg:var(--mc-cream);--oc-ink:var(--mc-red);--oc-border:1px solid var(--mc-red);--oc-radius:0;--oc-shadow:none;--oc-font:var(--mc-font-body);--oc-title-font:var(--mc-font-display);--oc-title-size:1.7rem;--oc-title-weight:600;--oc-item-bg:var(--mc-red);--oc-item-ink:var(--mc-cream);--oc-item-radius:50%;--oc-item-pad:14px 52px;--oc-item-hover-bg:var(--mc-red-600);--oc-item-hover-ink:var(--mc-cream)}
 .tCigkofte{--oc-overlay:var(--color-overlay);--oc-bg:var(--color-bg);--oc-ink:var(--color-text);--oc-border:var(--border-w) solid var(--color-border);--oc-radius:var(--radius-xl);--oc-shadow:var(--shadow-hard-lg);--oc-font:var(--font-body);--oc-title-font:var(--font-display);--oc-title-size:var(--step-2);--oc-title-weight:900;--oc-item-bg:var(--color-accent);--oc-item-ink:var(--color-text-on-accent);--oc-item-border:var(--border-w) solid var(--color-border);--oc-item-shadow:var(--shadow-hard-sm);--oc-item-hover-bg:var(--color-accent-2);--oc-item-hover-ink:var(--color-text-on-yellow)}
+
+/* ================= DETAY — Araba Bakım / Detailing (randevulu). Oswald (büyük harf) başlıklar + Inter gövde,
+   koyu zeminler, tek vurgu rengi, köşeli 56px butonlar, foto üstünde %50 siyah perde. Vurgu/koyu/açık renkler
+   panelden seçilen kombinasyondan .radical sarmalayıcısına --dt-* olarak yazılır (lib/detayPalettes.ts);
+   aşağıdaki varsayılanlar yalnızca yedek. */
+.radical:has(.tDetay){--dt-accent:#0E9C21;--dt-accent-strong:#0B7D1A;--dt-on-accent:#FFFFFF;--dt-accent-text:#0B7D1A;--dt-dark:#171717;--dt-charcoal:#2E2E2E;--dt-light:#F2F1F0}
+.tDetay{
+  --dt-white:#FFFFFF;--dt-ink:#2E2E2E;--dt-text:#333333;--dt-line:rgba(0,0,0,.12);--dt-line-dark:rgba(255,255,255,.14);--dt-overlay:rgba(0,0,0,.5);
+  --dt-display:'Oswald','Arial Narrow',Arial,sans-serif;--dt-sans:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --dt-wrap:1240px;--dt-pad:clamp(20px,4vw,48px);--dt-section:clamp(56px,7vw,80px);
+  background:var(--dt-light);color:var(--dt-text);font-family:var(--dt-sans);font-size:17px;line-height:1.5;overflow-x:clip}
+.radical .tDetay,.radical .tDetay *{font-family:var(--dt-sans);box-sizing:border-box}
+.radical .tDetay :is(h1,h2,h3,h4,.dtDisplay){font-family:var(--dt-display);font-weight:500;text-transform:uppercase;letter-spacing:.005em;line-height:1.1;margin:0}
+.radical .tDetay :is(h1,h2,h3,h4,.dtDisplay) *{font-family:inherit}
+.tDetay p{margin:0}
+.tDetay a{color:inherit;text-decoration:none}
+.tDetay img,.tDetay svg,.tDetay iframe,.tDetay video{display:block;max-width:100%}
+.tDetay [id]{scroll-margin-top:84px}
+.tDetay .dtWrap{width:100%;max-width:var(--dt-wrap);margin-inline:auto;padding-inline:var(--dt-pad)}
+.tDetay :focus-visible{outline:2px solid var(--dt-accent);outline-offset:3px}
+.tDetay .dtSkip{position:absolute;left:12px;top:0;z-index:99;transform:translateY(-140%);background:var(--dt-accent);color:var(--dt-on-accent);padding:12px 20px;font-weight:600}
+.tDetay .dtSkip:focus{transform:translateY(10px)}
+
+/* butonlar: köşeli, 56px, 15px 35px, ok ikonlu */
+.tDetay .dtBtn{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:56px;padding:15px 35px;background:var(--dt-accent);color:var(--dt-on-accent);border:1px solid var(--dt-accent);border-radius:0;font-size:16px;font-weight:500;line-height:1.2;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;transition:background .25s ease,border-color .25s ease,color .25s ease}
+.tDetay .dtBtn:hover{background:var(--dt-accent-strong);border-color:var(--dt-accent-strong)}
+.tDetay .dtBtn svg{transition:transform .25s ease}
+.tDetay .dtBtn:hover svg{transform:translateX(5px)}
+.tDetay .dtBtn--outline{background:transparent;color:#fff;border-color:#fff}
+.tDetay .dtBtn--outline:hover{background:#fff;border-color:#fff;color:var(--dt-dark)}
+.tDetay .dtBtn--nav{min-height:46px;padding:10px 24px;font-size:15px}
+
+/* navbar */
+.tDetay .dtNav{position:sticky;top:0;z-index:50;background:var(--dt-dark);color:#fff;border-bottom:1px solid var(--dt-line-dark)}
+.tDetay .dtNavInner{display:flex;align-items:center;gap:20px;min-height:76px}
+.tDetay .dtBrand{display:flex;align-items:center;gap:12px;margin-right:auto;min-width:0;color:#fff}
+.tDetay .dtBrand img{width:44px;height:44px;object-fit:contain;flex:none}
+.tDetay .dtBrand span{display:flex;flex-direction:column;gap:4px;min-width:0}
+.tDetay .dtBrand b{font-size:26px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26ch}
+.tDetay .dtBrand small{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dt-accent);white-space:nowrap}
+.tDetay .dtNavLinks{display:flex;align-items:center}
+.tDetay .dtNavLinks a,.tDetay .dtNavPanel a:not(.dtBtn){padding:13px 20px;font-size:15px;font-weight:600;line-height:20px;text-transform:uppercase;letter-spacing:.02em;color:#fff;transition:color .2s ease}
+.tDetay .dtNavLinks a:hover,.tDetay .dtNavPanel a:not(.dtBtn):hover{color:var(--dt-accent)}
+.tDetay .dtBurger{display:none;width:48px;height:48px;align-items:center;justify-content:center;padding:0;background:transparent;color:#fff;border:1px solid var(--dt-line-dark);border-radius:0;cursor:pointer}
+.tDetay .dtNavPanel{display:none}
+.tDetay:has(#yorumlar:empty) a[href="#yorumlar"]{display:none}
+
+/* kapak */
+.tDetay .dtHero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:min(80vh,720px);padding-block:clamp(72px,10vw,120px);background:var(--dt-dark);color:#fff;overflow:hidden}
+.tDetay .dtHero:not(.dtHero--media){background:linear-gradient(115deg,var(--dt-dark) 0%,var(--dt-charcoal) 100%)}
+.tDetay .dtHero:not(.dtHero--media)::before{content:'';position:absolute;right:-8%;top:0;bottom:0;width:38%;background:var(--dt-accent);opacity:.9;transform:skewX(-14deg);z-index:-1}
+.tDetay .dtHeroMedia{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.tDetay .dtHeroOverlay{position:absolute;inset:0;background:var(--dt-overlay);z-index:-1}
+.tDetay .dtHero:not(.dtHero--media) .dtHeroOverlay{display:none}
+.tDetay .dtHeroInner{display:flex;flex-direction:column;align-items:flex-start;gap:22px}
+.tDetay .dtChip{display:inline-block;padding:6px 12px;background:var(--dt-accent);color:var(--dt-on-accent);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.tDetay .dtHero h1{font-size:clamp(40px,6.4vw,72px);line-height:1.06;color:#fff;max-width:16ch}
+.tDetay .dtHero h1 em{font-style:normal;color:var(--dt-accent)}
+.tDetay .dtHeroSub{font-weight:400;font-size:clamp(20px,2.4vw,28px);line-height:1.5;max-width:30ch;color:#fff}
+.tDetay .dtHeroBtns{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px}
+.tDetay .dtSound{position:absolute;right:var(--dt-pad);bottom:24px;z-index:2;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;background:rgba(0,0,0,.4);color:#fff;border:1px solid #fff;border-radius:0;font-size:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:background .25s ease,color .25s ease}
+.tDetay .dtSound:hover{background:#fff;color:var(--dt-dark)}
+
+/* vurgu şeridi */
+.tDetay .dtBand{background:var(--dt-accent);color:var(--dt-on-accent);padding-block:clamp(32px,4vw,50px)}
+.tDetay .dtBandInner{display:flex;align-items:center;gap:clamp(18px,3vw,36px)}
+.tDetay .dtBandIcon{flex:none;display:grid;place-items:center;width:72px;height:72px;border:2px solid currentColor}
+.tDetay .dtBandIcon svg{width:38px;height:38px}
+.tDetay .dtBandText{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.tDetay .dtBandTitle{font-size:clamp(26px,3.2vw,40px);line-height:1.1;color:inherit}
+.tDetay .dtBandText p:last-child{max-width:70ch;font-size:17px}
+.tDetay .dtBandLink{flex:none;display:inline-flex;align-items:center;gap:12px;font-size:16px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;padding:14px 0;border-bottom:2px solid currentColor}
+.tDetay .dtBandLink svg{transition:transform .25s ease}
+.tDetay .dtBandLink:hover svg{transform:translateX(5px)}
+
+/* bölüm iskeleti */
+.tDetay .dtSection{padding-block:var(--dt-section)}
+.tDetay .dtEyebrow{display:inline-block;margin-bottom:12px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dt-accent-text)}
+.tDetay .dtHead{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:clamp(28px,4vw,44px)}
+.tDetay .dtHead--row{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.tDetay .dtSection h2{font-size:clamp(32px,4.2vw,50px);line-height:1.16;color:var(--dt-ink)}
+
+/* hakkımızda */
+.tDetay .dtAbout{background:var(--dt-light)}
+.tDetay .dtAboutGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,72px);align-items:center}
+.tDetay .dtAboutGrid--solo{grid-template-columns:minmax(0,1fr)}
+.tDetay .dtAboutText{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.tDetay .dtAboutText p{font-size:17px;max-width:62ch;white-space:pre-line}
+.tDetay .dtAboutPhoto{margin:0;position:relative}
+.tDetay .dtAboutPhoto::before{content:'';position:absolute;left:-14px;bottom:-14px;width:45%;height:45%;background:var(--dt-accent);z-index:0}
+.tDetay .dtAboutPhoto img{position:relative;z-index:1;width:100%;aspect-ratio:4/3;object-fit:cover}
+
+/* hizmet kartları */
+.tDetay .dtServices{background:var(--dt-dark);color:rgba(255,255,255,.86)}
+.tDetay .dtServices h2{color:#fff}
+.tDetay .dtServices .dtEyebrow{color:var(--dt-accent)}
+.tDetay .dtTiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:20px}
+.tDetay .dtTile{position:relative;isolation:isolate;display:flex;align-items:flex-end;min-height:330px;overflow:hidden;background:var(--dt-charcoal);color:#fff}
+.tDetay .dtTile>img,.tDetay .dtTile>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .6s ease}
+.tDetay .dtTileShade{position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.5) 55%,rgba(0,0,0,.42) 100%);transition:opacity .3s ease}
+.tDetay .dtTile:not(.dtTile--photo) .dtTileShade{background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(0,0,0,.35))}
+.tDetay .dtTile::after{content:'';position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--dt-accent);transition:width .35s ease}
+.tDetay .dtTile:hover::after,.tDetay .dtTile:focus-visible::after{width:100%}
+.tDetay .dtTile:hover>img,.tDetay .dtTile:hover>video{transform:scale(1.06)}
+.tDetay .dtTile:hover .dtTileShade{opacity:.78}
+.tDetay .dtTileBody{display:flex;flex-direction:column;align-items:flex-start;gap:10px;width:100%;padding:24px}
+.tDetay .dtTileBody h3{font-size:30px;line-height:1.05;color:#fff}
+.tDetay .dtTileDesc{font-size:15px;line-height:1.45;color:rgba(255,255,255,.86);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tDetay .dtTileMeta{display:flex;align-items:center;gap:12px;font-size:14px}
+.tDetay .dtTileMeta i{font-style:normal;padding:3px 10px;border:1px solid rgba(255,255,255,.5)}
+.tDetay .dtTileMeta b{padding:3px 10px;background:var(--dt-accent);color:var(--dt-on-accent);font-size:16px;font-weight:600}
+.tDetay .dtTileGo{display:inline-flex;align-items:center;gap:10px;margin-top:4px;font-size:14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+.tDetay .dtTileGo svg{width:20px;height:20px;transition:transform .25s ease}
+.tDetay .dtTile:hover .dtTileGo svg{transform:translateX(5px)}
+
+/* neden biz */
+.tDetay .dtWhy{background:var(--dt-white)}
+.tDetay .dtWhyGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.tDetay .dtWhyItem{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding-top:22px;border-top:4px solid var(--dt-accent)}
+.tDetay .dtWhyIcon{display:grid;place-items:center;width:56px;height:56px;background:var(--dt-dark);color:var(--dt-accent)}
+.tDetay .dtWhyItem h3{font-size:26px;color:var(--dt-ink)}
+.tDetay .dtWhyItem p{font-size:17px}
+
+/* galeri */
+.tDetay .dtGallery{background:var(--dt-light)}
+.tDetay .dtGalGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+.tDetay .dtGalItem{padding:0;border:0;background:var(--dt-charcoal);overflow:hidden;aspect-ratio:4/3;cursor:zoom-in}
+.tDetay .dtGalItem img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.tDetay .dtGalItem:hover img{transform:scale(1.07)}
+.tDetay .dtLb{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.86)}
+.tDetay .dtLb img{max-width:min(100%,1100px);max-height:84dvh;width:auto;height:auto;object-fit:contain}
+.tDetay .dtLbBtn{position:absolute;display:grid;place-items:center;width:48px;height:48px;padding:0;background:var(--dt-accent);color:var(--dt-on-accent);border:0;border-radius:0;font-size:20px;cursor:pointer}
+.tDetay .dtLbClose{top:20px;right:20px}
+.tDetay .dtLbPrev{left:20px;top:50%;margin-top:-24px}
+.tDetay .dtLbNext{right:20px;top:50%;margin-top:-24px}
+
+/* ekip */
+.tDetay .dtTeam{background:var(--dt-white)}
+.tDetay .dtTeamGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:24px}
+.tDetay .dtTeamItem{display:flex;flex-direction:column;gap:6px}
+.tDetay .dtTeamPhoto{aspect-ratio:1;background:var(--dt-dark);color:var(--dt-accent);display:grid;place-items:center;overflow:hidden;margin-bottom:8px}
+.tDetay .dtTeamPhoto img{width:100%;height:100%;object-fit:cover}
+.tDetay .dtTeamPhoto i{font-style:normal;font-size:64px;font-family:var(--dt-display)}
+.tDetay .dtTeamItem b{font-size:22px;color:var(--dt-ink)}
+.tDetay .dtTeamItem small{font-size:15px;color:var(--dt-accent-text);font-weight:600}
+
+/* yorumlar (paylaşılan OwnRatings / GoogleReviews) — antrasit bant */
+.tDetay .dtReviews:not(:empty){background:var(--dt-charcoal);color:#fff;padding-block:var(--dt-section)}
+.tDetay .dtReviews .ownReviews,.tDetay .dtReviews .googleReviews{max-width:var(--dt-wrap);margin-inline:auto;padding:0 var(--dt-pad);background:transparent;color:#fff}
+.tDetay .dtReviews .googleReviews{margin-top:56px}
+.tDetay .dtReviews header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;max-width:none;margin:0 0 32px;text-align:left}
+.tDetay .dtReviews small{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dt-accent)}
+.tDetay .dtReviews h2{margin-top:10px;font-size:clamp(30px,3.6vw,44px);color:#fff}
+.tDetay .dtReviews h2 span,.tDetay .dtReviews .googleReviewGrid article span,.tDetay .dtReviews .ownReviewStars{color:var(--dt-accent)!important;letter-spacing:2px;font-size:16px}
+.tDetay .dtReviews header p,.tDetay .dtReviews .googleReviews>footer,.tDetay .dtReviews .googleReviewGrid small{color:rgba(255,255,255,.7)}
+.tDetay .dtReviews .googleReviews header>a,.tDetay .dtReviews .googleReviewGrid article>a{color:var(--dt-accent)}
+.tDetay .dtReviews .ownReviewGrid,.tDetay .dtReviews .googleReviewGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px}
+.tDetay .dtReviews .ownReviewGrid article,.tDetay .dtReviews .googleReviewGrid article{background:var(--dt-dark);border:1px solid var(--dt-line-dark);border-radius:0;padding:24px;color:#fff;transition:border-color .25s ease}
+.tDetay .dtReviews .ownReviewGrid article:hover,.tDetay .dtReviews .googleReviewGrid article:hover{border-color:var(--dt-accent)}
+.tDetay .dtReviews .ownReviewGrid p,.tDetay .dtReviews .googleReviewGrid p{margin-top:12px;color:rgba(255,255,255,.88)}
+.tDetay .dtReviews .ownReviewHead,.tDetay .dtReviews .googleReviewGrid article>div:first-child{display:flex;align-items:center;gap:12px}
+.tDetay .dtReviews .ownReviewHead b,.tDetay .dtReviews .googleReviewGrid b{font-weight:600;color:#fff}
+.tDetay .dtReviews .ownReviewAvatar,.tDetay .dtReviews .ownReviewAvatarFallback,.tDetay .dtReviews .googleReviewGrid img,.tDetay .dtReviews .googleReviewGrid i{width:44px;height:44px;border-radius:0;object-fit:cover;flex:none;background:var(--dt-accent);color:var(--dt-on-accent)}
+.tDetay .dtReviews .ownReviewAvatarFallback,.tDetay .dtReviews .googleReviewGrid i{display:grid;place-items:center;font-style:normal;font-weight:700}
+
+/* randevu: vurgu rengi şeridi + üstüne binen kart (gerçek TenantBooking) */
+.tDetay .dtBooking{background:var(--dt-light)}
+.tDetay .dtBookingHead{background:var(--dt-accent);color:var(--dt-on-accent);padding-block:clamp(44px,6vw,72px) clamp(72px,9vw,110px)}
+.tDetay .dtBookingHead h2{font-size:clamp(34px,4.6vw,56px);color:inherit;margin-bottom:12px}
+.tDetay .dtBookingHead p{font-size:18px;max-width:56ch}
+.tDetay .dtBookingBody{margin-top:clamp(-72px,-6vw,-52px);padding-bottom:var(--dt-section);position:relative}
+.tDetay{--brand:var(--dt-accent)}
+.tDetay .tenantBooking{max-width:860px;margin:0 auto;padding:clamp(20px,3.5vw,40px);background:var(--dt-white);border:1px solid var(--dt-line);border-radius:0;box-shadow:0 24px 60px rgba(0,0,0,.14);color:var(--dt-text)}
+.tDetay .tenantBooking .tbTitle h3{font-size:30px;line-height:1.1;color:var(--dt-ink)}
+.tDetay .tenantBooking .tbTitle span{font-family:var(--dt-display);font-style:normal;color:var(--dt-accent-text)}
+.tDetay .tenantBooking .tenantStep i{border-radius:0;font-family:var(--dt-sans)}
+.tDetay .tenantBooking .tenantStep.active i{background:var(--dt-accent);border-color:var(--dt-accent);color:var(--dt-on-accent)}
+.tDetay .tenantBooking .tenantStepLine.active{background:var(--dt-accent)}
+.tDetay .tenantBooking .tenantNext{min-height:56px;border-radius:0!important;background:var(--dt-accent)!important;color:var(--dt-on-accent)!important;-webkit-text-fill-color:var(--dt-on-accent)!important;border:1px solid var(--dt-accent)!important;box-shadow:none!important;transform:none!important;font-size:16px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;transition:background .25s ease}
+.tDetay .tenantBooking .tenantNext:not(:disabled):hover{background:var(--dt-accent-strong)!important;border-color:var(--dt-accent-strong)!important}
+.tDetay .tenantBooking .tbServices button,.tDetay .tenantBooking .staffOptions button,.tDetay .tenantBooking .tbDays button,.tDetay .tenantBooking .tbSlots button{border-radius:0}
+.tDetay .tenantBooking .tbServices button.selected,.tDetay .tenantBooking .staffOptions button.selected{border-color:var(--dt-accent);box-shadow:inset 4px 0 var(--dt-accent)}
+.tDetay .tenantBooking .tbServices button.selected>i{border-color:var(--dt-accent)}
+.tDetay .tenantBooking .tbDays button.selected,.tDetay .tenantBooking .tbSlots button.selected{background:var(--dt-accent);border-color:var(--dt-accent);color:var(--dt-on-accent)!important;-webkit-text-fill-color:var(--dt-on-accent)!important}
+.tDetay .tenantBooking .tbDays b{font-family:var(--dt-display);font-weight:500}
+.tDetay .tenantBooking input,.tDetay .tenantBooking textarea{border-radius:0;background:var(--dt-white);color:var(--dt-text);font-family:var(--dt-sans)}
+.tDetay .tenantBooking .staffOptions img,.tDetay .tenantBooking .staffAvatar{border-radius:0;background:var(--dt-accent);color:var(--dt-on-accent)}
+
+/* harita + footer */
+.tDetay .dtMap{background:var(--dt-dark)}
+.tDetay .dtMap iframe{width:100%;height:340px;border:0;filter:grayscale(.25)}
+.tDetay .dtFooter{background:var(--dt-dark);color:rgba(255,255,255,.82);padding-top:clamp(56px,8vw,100px);padding-bottom:28px}
+.tDetay .dtFooterGrid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:clamp(28px,4vw,56px);padding-bottom:clamp(36px,5vw,56px)}
+.tDetay .dtFooterCol{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0}
+.tDetay .dtFooterCol h3{font-size:22px;color:#fff;margin-bottom:6px}
+.tDetay .dtFooterName{font-size:30px;line-height:1.05;color:#fff}
+.tDetay .dtFooterBrand .dtBtn{margin-top:10px}
+.tDetay .dtFooterCol a:not(.dtBtn){min-height:28px;color:rgba(255,255,255,.82);transition:color .2s ease}
+.tDetay .dtFooterCol a:not(.dtBtn):hover{color:var(--dt-accent)}
+.tDetay .dtHours{display:flex;justify-content:space-between;gap:16px;width:100%;max-width:300px;padding-bottom:8px;border-bottom:1px dashed var(--dt-line-dark);font-size:15px}
+.tDetay .dtFooterBottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-top:22px;border-top:1px solid var(--dt-line-dark);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.tDetay .dtFooterBottom nav{display:flex;flex-wrap:wrap;gap:6px 22px}
+.tDetay .dtFooterBottom a{display:inline-flex;align-items:center;min-height:44px}
+.tDetay .dtFooterBottom a:hover{color:var(--dt-accent)}
+
+/* platformun yüzen düğmeleri (temanın dışında): vurgu rengini alsın */
+.radical:has(.tDetay) .rWhatsapp{background:var(--dt-accent)!important;color:var(--dt-on-accent)!important;border-radius:0}
+.radical:has(.tDetay) .rWhatsapp svg{fill:var(--dt-on-accent)}
+.radical:has(.tDetay) .rGoogleReview{background:#fff;color:#171717;border-color:var(--dt-accent);border-radius:0;animation:none}
+.radical:has(.tDetay) .rGoogleReview svg{fill:var(--dt-accent)}
+
+@media(max-width:980px){
+  .tDetay .dtNavLinks{display:none}
+  .tDetay .dtBtn--nav{display:none}
+  .tDetay .dtBurger{display:inline-flex}
+  .tDetay .dtNav.is-open .dtNavPanel{display:block;position:absolute;left:0;right:0;top:100%;background:var(--dt-dark);border-bottom:1px solid var(--dt-line-dark);padding-block:12px 20px}
+  .tDetay .dtNavPanel .dtWrap{display:flex;flex-direction:column;align-items:stretch}
+  .tDetay .dtNavPanel a:not(.dtBtn){display:flex;align-items:center;min-height:48px;border-bottom:1px solid var(--dt-line-dark)}
+  .tDetay .dtNavPanel .dtBtn{margin-top:14px}
+  .tDetay .dtAboutGrid{grid-template-columns:minmax(0,1fr)}
+  .tDetay .dtWhyGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tDetay .dtFooterGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tDetay .dtFooterBrand{grid-column:1/-1}
+  .tDetay .dtBandInner{flex-wrap:wrap}
+}
+@media(max-width:640px){
+  .tDetay{font-size:16px}
+  .tDetay .dtBrand b{font-size:22px;max-width:16ch}
+  .tDetay .dtBrand img{width:38px;height:38px}
+  .tDetay .dtHeroBtns .dtBtn{flex:1 1 100%}
+  .tDetay .dtWhyGrid,.tDetay .dtFooterGrid{grid-template-columns:minmax(0,1fr)}
+  .tDetay .dtBandIcon{width:56px;height:56px}
+  .tDetay .dtBandLink{margin-left:0}
+  .tDetay .dtTile{min-height:280px}
+  .tDetay .dtHead--row .dtBtn{width:100%}
+  .tDetay .dtSound{bottom:16px}
+}
+@media(prefers-reduced-motion:reduce){.tDetay *,.tDetay *::before,.tDetay *::after{transition:none!important;animation:none!important}}

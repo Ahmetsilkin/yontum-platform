@@ -1,5 +1,5 @@
 import{NextRequest,NextResponse}from'next/server';import{cookies}from'next/headers';import{createServiceClient}from'@/lib/supabase-server';import{ADMIN_COOKIE_NAME,isValidAdminSession}from'@/lib/admin-gate';import{normalizePhoneDigits,phoneLoginEmail}from'@/lib/phone-auth';import{z}from'zod';
-const schema=z.object({businessType:z.enum(['barber','hair_salon','beauty','nail_lash','spa_massage','dietitian','psychologist','restaurant','other']),name:z.string().trim().min(2),slug:z.string().trim().min(3).max(40),phone:z.string().trim().min(10),password:z.string().min(8)});
+const schema=z.object({businessType:z.enum(['barber','hair_salon','beauty','nail_lash','spa_massage','dietitian','psychologist','restaurant','car_care','other']),name:z.string().trim().min(2),slug:z.string().trim().min(3).max(40),phone:z.string().trim().min(10),password:z.string().min(8)});
 export async function GET(){
   const store=await cookies();
   if(!isValidAdminSession(store.get(ADMIN_COOKIE_NAME)?.value))return NextResponse.json({error:'Yetkiniz yok.'},{status:403});

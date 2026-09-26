@@ -2,7 +2,7 @@
 import{useState,useEffect,useRef,Fragment}from'react';
 import dynamic from'next/dynamic';
 import{Instagram,MapPin,Phone}from'lucide-react';
-import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import{getOrderLinks}from'@/lib/orderLinks';import'./radical-themes.css';
+import TenantBooking from'@/components/TenantBooking';import AtelierBooking from'@/components/AtelierBooking';import ZarafetBooking from'@/components/ZarafetBooking';import GoogleReviews from'@/components/GoogleReviews';import OwnRatings from'@/components/OwnRatings';import{getOrderLinks}from'@/lib/orderLinks';import{getDetayPalette,DETAY_DEFAULT_PALETTE}from'@/lib/detayPalettes';import'./radical-themes.css';
 /* Nova'nın 3D sahnesi (@react-three/fiber) sunucuda render edilemez (WebGL
    canvas/tarayıcı API'lerine ihtiyaç duyar) — bu yüzden ssr:false ile sadece
    istemcide, ayrı bir JS parçası (chunk) olarak yükleniyor. Diğer temaların
@@ -10,8 +10,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'dark',split:'dark',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',detay:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,detay:Detay},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}><Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -4576,6 +4576,244 @@ function Cigkofte(p:P){
     </div>}
   <OrderChooser b={b}/>
     </main>;
+}
+/* ============ DETAY — Araba Bakım / Detailing teması (randevulu) ============
+   Referans: otomotiv/detailing işletmelerinin sık kullandığı sert, köşeli görünüm — Oswald (condensed,
+   büyük harf) başlıklar + Inter gövde, koyu zeminler, tek güçlü vurgu rengi, köşeli 56px butonlar (radius 0,
+   15px 35px, ok ikonlu), fotoğraf üstünde %50 siyah perde, açık gri (#F2F1F0) ve antrasit bölüm ritmi.
+   Yapı: koyu sticky navbar → tam ekran kapak (foto/video) → vurgu şeridi → hakkımızda → koyu hizmet
+   kartları (fotoğraflı) → neden biz → galeri → (ekip) → yorumlar → vurgu şeritli randevu (gerçek
+   TenantBooking) → harita → koyu footer. Renkler panelden seçilen hazır kombinasyondan gelir
+   (lib/detayPalettes.ts) ve .radical sarmalayıcısına CSS değişkeni olarak yazılır; böylece yüzen WhatsApp /
+   "Bizi Değerlendir" düğmeleri de aynı vurgu rengini alır. Görsel/metin kopyalanmadı, yalnızca biçim dili. */
+function DtArrow(){return <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h17M14 6l6 6-6 6"/></svg>}
+function DtIcon({n}:{n:number}){
+  const paths=[
+    <><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></>,
+    <><path d="M12 3c3 4 5.5 6.6 5.5 10a5.5 5.5 0 0 1-11 0C6.5 9.6 9 7 12 3z"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2"/></>,
+    <><path d="M3 12.5V4h8.5L21 13.5 13.5 21 3 12.5z"/><circle cx="8" cy="8.5" r="1.3"/></>,
+    <><path d="M7 11v9H4v-9h3zM7 11l4-8c1.6 0 2.5 1 2.5 2.4V9H19a1.6 1.6 0 0 1 1.6 1.9l-1.3 7A2 2 0 0 1 17.4 19.6H7"/></>,
+  ];
+  return <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{paths[n%4]}</svg>;
+}
+function detayVars(b:any):React.CSSProperties{
+  const pal=getDetayPalette(dec(b,'dt_palette',DETAY_DEFAULT_PALETTE));
+  return{'--dt-accent':pal.accent,'--dt-accent-strong':pal.accentStrong,'--dt-on-accent':pal.onAccent,'--dt-accent-text':pal.accentText,'--dt-dark':pal.dark,'--dt-charcoal':pal.charcoal,'--dt-light':pal.light,'--accent':pal.accent,'--brand':pal.accent}as React.CSSProperties;
+}
+function Detay(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const services=(p.services||[]).filter((s:any)=>s.is_active!==false);
+  const team=(p.staff||[]).filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
+  const galleryPhotos:string[]=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean);
+  const aboutPhoto=galleryPhotos[0]||(b.cover_type==='video'?'':b.cover_url)||'';
+  const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const coverSound=useCoverSound();
+  const kind=dec(b,'dt_kind','Araba Bakım');
+  const bookLabel=b.booking_button_text||'Randevu Al';
+  const phoneHref=b.phone?`tel:${String(b.phone).replace(/\s+/g,'')}`:'';
+  const igHandle=b.instagram?String(b.instagram).replace(/^@/,'').trim():'';
+  const mapsHref=b.google_maps_url||(b.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`:'');
+  const showAbout=!!(b.description||b.about_title);
+  const[navOpen,setNavOpen]=useState(false);
+  const[lb,setLb]=useState<number|null>(null);
+  useEffect(()=>{
+    if(lb===null)return;
+    const n=galleryPhotos.length;
+    const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setLb(null);else if(e.key==='ArrowRight')setLb(i=>i===null?i:(i+1)%n);else if(e.key==='ArrowLeft')setLb(i=>i===null?i:(i-1+n)%n)};
+    document.addEventListener('keydown',onKey);
+    const prev=document.body.style.overflow;document.body.style.overflow='hidden';
+    return()=>{document.removeEventListener('keydown',onKey);document.body.style.overflow=prev};
+  },[lb,galleryPhotos.length]);
+  useEffect(()=>{
+    if(!navOpen)return;
+    const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')setNavOpen(false)};
+    document.addEventListener('keydown',onKey);
+    return()=>document.removeEventListener('keydown',onKey);
+  },[navOpen]);
+  const closeNav=()=>setNavOpen(false);
+  const why=[1,2,3,4].map(i=>({
+    title:dec(b,`dt_why${i}Title`,['Titiz işçilik','Kaliteli ürünler','Net fiyat','Memnuniyet odaklı'][i-1]),
+    text:dec(b,`dt_why${i}Text`,['Her detay tek tek elden geçer, acele etmeden çalışırız.','Aracın boyasına ve iç mekânına uygun, güvenilir ürünler kullanırız.','İşe başlamadan önce kapsamı ve fiyatı birlikte netleştiririz.','Aracını teslim alırken sonuçtan emin olmanı isteriz.'][i-1]),
+  }));
+  return <main id="top" className="tDetay">
+    <a className="dtSkip" href="#hizmetler">İçeriğe geç</a>
+    <header className={`dtNav${navOpen?' is-open':''}`}>
+      <div className="dtWrap dtNavInner">
+        <a className="dtBrand" href="#top" onClick={closeNav}>{b.logo_url&&<img src={b.logo_url} alt=""/>}<span><b className="dtDisplay">{b.name}</b><small>{kind}</small></span></a>
+        <nav className="dtNavLinks" aria-label="Sayfa bölümleri">
+          <a href="#hizmetler">Hizmetler</a>
+          {showAbout&&<a href="#hakkimizda">Hakkımızda</a>}
+          {galleryPhotos.length>0&&<a href="#galeri">Galeri</a>}
+          <a href="#yorumlar">Yorumlar</a>
+          <a href="#iletisim">İletişim</a>
+        </nav>
+        <a className="dtBtn dtBtn--nav" href="#randevu">{bookLabel}</a>
+        <button type="button" className="dtBurger" aria-label={navOpen?'Menüyü kapat':'Menüyü aç'} aria-expanded={navOpen} aria-controls="dtNavPanel" onClick={()=>setNavOpen(o=>!o)}>
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">{navOpen?<path d="M5 5l14 14M19 5L5 19"/>:<path d="M4 7h16M4 12h16M4 17h16"/>}</svg>
+        </button>
+      </div>
+      <div className="dtNavPanel" id="dtNavPanel">
+        <div className="dtWrap">
+          <a href="#hizmetler" onClick={closeNav}>Hizmetler</a>
+          {showAbout&&<a href="#hakkimizda" onClick={closeNav}>Hakkımızda</a>}
+          {galleryPhotos.length>0&&<a href="#galeri" onClick={closeNav}>Galeri</a>}
+          <a href="#yorumlar" onClick={closeNav}>Yorumlar</a>
+          <a href="#iletisim" onClick={closeNav}>İletişim</a>
+          <a className="dtBtn" href="#randevu" onClick={closeNav}>{bookLabel}<DtArrow/></a>
+        </div>
+      </div>
+    </header>
+
+    <section className={`dtHero${b.cover_url?' dtHero--media':''}`}>
+      {b.cover_url&&(coverIsVideo
+        ?<CoverVideo src={b.cover_url} className="dtHeroMedia" videoRef={coverSound.ref} muted={!coverSound.soundOn}/>
+        :<img className="dtHeroMedia" src={b.cover_url} alt="" fetchPriority="high"/>)}
+      <div className="dtHeroOverlay" aria-hidden="true"/>
+      <div className="dtWrap dtHeroInner">
+        <span className="dtChip">{kind}</span>
+        <h1 className="dtDisplay">{b.hero_title||b.name}{b.hero_highlight&&<> <em>{b.hero_highlight}</em></>}</h1>
+        <p className="dtHeroSub dtDisplay">{b.hero_description||b.tagline||'Elde yıkamadan seramik kaplamaya, aracın için profesyonel bakım.'}</p>
+        <div className="dtHeroBtns">
+          <a className="dtBtn" href="#randevu">{bookLabel}<DtArrow/></a>
+          <a className="dtBtn dtBtn--outline" href="#hizmetler">Hizmetler<DtArrow/></a>
+        </div>
+      </div>
+      {coverIsVideo&&coverSound.ready&&<CoverSoundButton className="dtSound" on={coverSound.soundOn} onToggle={coverSound.toggle}/>}
+    </section>
+
+    <section className="dtBand">
+      <div className="dtWrap dtBandInner">
+        <span className="dtBandIcon"><DtIcon n={0}/></span>
+        <div className="dtBandText">
+          <p className="dtBandTitle dtDisplay">{dec(b,'dt_advTitle','Titiz işçilik, net fiyat')}</p>
+          <p>{dec(b,'dt_advText','Her araca kendi ihtiyacına göre yaklaşır, işi kaliteli ürünlerle ve zamanında teslim ederiz.')}</p>
+        </div>
+        <a className="dtBandLink" href="#hizmetler">Hizmetleri gör<DtArrow/></a>
+      </div>
+    </section>
+
+    {showAbout&&<section id="hakkimizda" className="dtSection dtAbout">
+      <div className={`dtWrap dtAboutGrid${aboutPhoto?'':' dtAboutGrid--solo'}`}>
+        <div className="dtAboutText">
+          <span className="dtEyebrow">{b.about_label||'Hakkımızda'}</span>
+          <h2 className="dtDisplay">{b.about_title||b.name}</h2>
+          {b.description&&<p>{b.description}</p>}
+          <a className="dtBtn" href="#randevu">{bookLabel}<DtArrow/></a>
+        </div>
+        {aboutPhoto&&<figure className="dtAboutPhoto"><img src={aboutPhoto} alt="" loading="lazy"/></figure>}
+      </div>
+    </section>}
+
+    <section id="hizmetler" className="dtSection dtServices">
+      <div className="dtWrap">
+        <div className="dtHead dtHead--row">
+          <div><span className="dtEyebrow">{b.services_label||'Hizmetler'}</span><h2 className="dtDisplay">{dec(b,'dt_servicesTitle',b.services_title||'Hizmetlerimiz')}</h2></div>
+          <a className="dtBtn" href="#randevu">{bookLabel}<DtArrow/></a>
+        </div>
+        <div className="dtTiles">
+          {services.map((s:any)=>{
+            const detail=hasServiceDetail(s);
+            const href=detail?`/site/${b.slug}/hizmet/${s.slug}`:'#randevu';
+            return <a key={s.id} className={`dtTile${s.image_url?' dtTile--photo':''}`} href={href}>
+              {s.image_url&&(s.image_type==='video'?<video src={s.image_url} autoPlay muted loop playsInline aria-hidden="true"/>:<img src={s.image_url} alt="" loading="lazy"/>)}
+              <span className="dtTileShade" aria-hidden="true"/>
+              <span className="dtTileBody">
+                <h3 className="dtDisplay">{s.name}</h3>
+                {s.description&&<span className="dtTileDesc">{s.description}</span>}
+                <span className="dtTileMeta"><i>{s.duration_minutes} dk</i>{b.show_prices&&s.price!=null&&<b>₺{Number(s.price).toLocaleString('tr-TR')}</b>}</span>
+                <span className="dtTileGo">{detail?'Detaylı incele':bookLabel}<DtArrow/></span>
+              </span>
+            </a>;
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section className="dtSection dtWhy">
+      <div className="dtWrap">
+        <div className="dtHead"><span className="dtEyebrow">{b.name}</span><h2 className="dtDisplay">{dec(b,'dt_whyTitle','Neden bizi seçmelisin?')}</h2></div>
+        <div className="dtWhyGrid">
+          {why.map((w,i)=><article key={i} className="dtWhyItem"><span className="dtWhyIcon"><DtIcon n={i}/></span><h3 className="dtDisplay">{w.title}</h3><p>{w.text}</p></article>)}
+        </div>
+      </div>
+    </section>
+
+    {galleryPhotos.length>0&&<section id="galeri" className="dtSection dtGallery">
+      <div className="dtWrap">
+        <div className="dtHead"><span className="dtEyebrow">Galeri</span><h2 className="dtDisplay">{dec(b,'dt_galleryTitle','Çalışmalarımızdan')}</h2></div>
+        <div className="dtGalGrid">
+          {galleryPhotos.map((src,i)=><button type="button" className="dtGalItem" key={i} aria-label={`Fotoğrafı büyüt (${i+1}/${galleryPhotos.length})`} onClick={()=>setLb(i)}><img src={src} alt="" loading="lazy"/></button>)}
+        </div>
+      </div>
+    </section>}
+
+    {team.length>0&&<section id="ekip" className="dtSection dtTeam">
+      <div className="dtWrap">
+        <div className="dtHead"><span className="dtEyebrow">Ekip</span><h2 className="dtDisplay">Ekibimiz</h2></div>
+        <div className="dtTeamGrid">
+          {team.map((s:any)=><article key={s.id} className="dtTeamItem"><div className="dtTeamPhoto">{s.photo_url?<img src={s.photo_url} alt="" loading="lazy"/>:<i>{s.name[0]}</i>}</div><b className="dtDisplay">{s.name}</b><small>{s.title||'Uzman'}</small></article>)}
+        </div>
+      </div>
+    </section>}
+
+    <div id="yorumlar" className="dtReviews">
+      <OwnRatings businessId={b.id}/>
+      <GoogleReviews businessId={b.id}/>
+    </div>
+
+    <section id="randevu" className="dtBooking">
+      <div className="dtBookingHead">
+        <div className="dtWrap">
+          <h2 className="dtDisplay">{dec(b,'dt_bookingTitle',b.booking_title||'Randevu al')}</h2>
+          <p>{dec(b,'dt_bookingText','Aracın için uygun gün ve saati seç, gerisini bize bırak.')}</p>
+        </div>
+      </div>
+      <div className="dtWrap dtBookingBody">
+        <TenantBooking business={b} services={p.services} hours={p.hours} staff={p.staff} staffServices={p.staffServices} staffHours={p.staffHours}/>
+      </div>
+    </section>
+
+    {b.show_map!==false&&b.address&&<div className="dtMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum haritası"/></div>}
+
+    <footer id="iletisim" className="dtFooter">
+      <div className="dtWrap">
+        <div className="dtFooterGrid">
+          <div className="dtFooterCol dtFooterBrand">
+            <p className="dtFooterName dtDisplay">{b.name}</p>
+            <p>{b.footer_note||b.tagline||'Aracın için profesyonel bakım ve detailing.'}</p>
+            <a className="dtBtn" href="#randevu">{bookLabel}<DtArrow/></a>
+          </div>
+          <div className="dtFooterCol">
+            <h3 className="dtDisplay">İletişim</h3>
+            {b.address&&<p>{b.address}</p>}
+            {b.phone&&<a href={phoneHref}>{b.phone}</a>}
+            {igHandle&&<a href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer">@{igHandle}</a>}
+            {mapsHref&&<a href={mapsHref} target="_blank" rel="noopener noreferrer">Yol tarifi al</a>}
+          </div>
+          {hourRows.length>0&&<div className="dtFooterCol">
+            <h3 className="dtDisplay">Çalışma Saatleri</h3>
+            {hourRows.map((r,i)=><p key={i} className="dtHours"><span>{r.label}</span><span>{r.value}</span></p>)}
+          </div>}
+          {services.length>0&&<div className="dtFooterCol">
+            <h3 className="dtDisplay">Hizmetler</h3>
+            {services.slice(0,8).map((s:any)=><a key={s.id} href="#hizmetler">{s.name}</a>)}
+          </div>}
+        </div>
+        <div className="dtFooterBottom">
+          <span>© {new Date().getFullYear()} {b.name}</span>
+          <nav aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
+        </div>
+      </div>
+    </footer>
+
+    {lb!==null&&galleryPhotos[lb]&&<div className="dtLb" role="dialog" aria-modal="true" aria-label="Fotoğraf görüntüleyici" onClick={()=>setLb(null)}>
+      <button type="button" className="dtLbBtn dtLbClose" aria-label="Kapat" onClick={()=>setLb(null)}>✕</button>
+      {galleryPhotos.length>1&&<button type="button" className="dtLbBtn dtLbPrev" aria-label="Önceki fotoğraf" onClick={e=>{e.stopPropagation();setLb((lb-1+galleryPhotos.length)%galleryPhotos.length)}}>←</button>}
+      <img src={galleryPhotos[lb]} alt="" onClick={e=>e.stopPropagation()}/>
+      {galleryPhotos.length>1&&<button type="button" className="dtLbBtn dtLbNext" aria-label="Sonraki fotoğraf" onClick={e=>{e.stopPropagation();setLb((lb+1)%galleryPhotos.length)}}>→</button>}
+    </div>}
+  </main>;
 }
 function IgIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>}
 function WaIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>}

@@ -12,6 +12,7 @@ const BUSINESS_TYPES: { value: string; label: string }[] = [
   { value: 'dietitian', label: 'Diyetisyen' },
   { value: 'psychologist', label: 'Psikolog / Danışman' },
   { value: 'restaurant', label: 'Restoran / Kafe' },
+  { value: 'car_care', label: 'Araba Bakım / Detailing' },
   { value: 'other', label: 'Diğer Hizmet İşletmesi' },
 ];
 
