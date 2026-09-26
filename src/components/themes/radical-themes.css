@@ -573,6 +573,7 @@
   --ip-gold:var(--zf-gold);--ip-ink:var(--zf-ink);--ip-line:var(--zf-line);--ip-surface:var(--zf-surface);}
 .tZarafet h1,.tZarafet h2,.tZarafet h3{font-family:'Playfair Display',Georgia,serif}
 .tZarafet em{font-style:italic;color:var(--zf-gold-text)}
+.zfHeroInner em,.zfContact em{color:var(--zf-gold)}   /* koyu fotoğraf üstündeki italik vurgu: altın (güzellikte sarı), metin rengi değil */
 
 /* Nav */
 .zfNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 6vw;background:#f6f1e8ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--zf-line)}
@@ -4530,3 +4531,17 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .radical:has(>.demoBanner) .rzNav{top:calc(16px + var(--demoH))}
 .radical:has(>.demoBanner) .cdFrame{top:calc(14px + var(--demoH))}
 .radical:has(>.demoBanner) .tDeneyim{height:calc(100vh - var(--demoH));height:calc(100dvh - var(--demoH))}   /* Deneyim kendi kaydırma kutusu: şerit kadar kısalır */
+
+/* Otomatik güzellik kapağı (kapak fotoğrafı yokken): 27 sn'de 3 kare, her biri ~9 sn, çapraz geçiş + Ken Burns.
+   Gelen kare üstte belirirken giden kare tam opak kalır (z-index animasyonu) → geçişte arka plan görünmez/solma olmaz.
+   İlk kare negatif gecikmeyle açılışta zaten görünür. reduced-motion'da yalnız ilk kare, sabit. */
+.autoCover{position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate}
+.autoCover.acFill{position:absolute;inset:0;z-index:0}
+.autoCover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02);will-change:opacity,transform;animation:acFade 27s linear infinite,acKen 27s ease-in-out infinite}
+.autoCover img:nth-child(1){animation-delay:-1.4s}
+.autoCover img:nth-child(2){animation-delay:7.6s}
+.autoCover img:nth-child(3){animation-delay:16.6s}
+@keyframes acFade{0%{opacity:0;z-index:2}5%{opacity:1;z-index:2}5.1%{opacity:1;z-index:1}38.5%{opacity:1;z-index:1}38.6%{opacity:0;z-index:0}100%{opacity:0;z-index:0}}
+@keyframes acKen{0%{transform:scale(1.02) translate3d(0,0,0)}38.6%{transform:scale(1.15) translate3d(-1.6%,-1.2%,0)}100%{transform:scale(1.15) translate3d(-1.6%,-1.2%,0)}}
+@media(prefers-reduced-motion:reduce){.autoCover img{animation:none;opacity:0;transform:none}.autoCover img:first-child{opacity:1}}
+

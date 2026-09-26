@@ -792,6 +792,7 @@ function Zarafet(p:P){
     return[raw];
   })();
   const missionPhoto=missionPhotos[0]||'';
+  const autoCover=!b.cover_url&&b.business_type==='beauty';   // kapak yoksa güzellik salonu için otomatik animasyonlu kapak
   return <main id="top" className="tZarafet">
     <header className="zfNav">
       <a className="zfBrand" href="#top">{b.name}</a>
@@ -805,6 +806,7 @@ function Zarafet(p:P){
     </header>
 
     <section className="zfHero" style={b.cover_url&&b.cover_type!=='video'?{backgroundImage:`url(${b.cover_url})`}:undefined}>
+      {autoCover&&<AutoCover fill/>}
       {b.cover_url&&b.cover_type==='video'&&<video className="zfHeroVideo" src={b.cover_url} autoPlay muted loop playsInline/>}
       <div className="zfHeroOverlay"/>
       <div className="zfHeroInner">
@@ -1094,7 +1096,7 @@ function Roze(p:P){
         ?<video className="rzHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
         :b.cover_url
           ?<img className="rzHeroMedia rzKenBurns" src={b.cover_url} alt={b.name}/>
-          :<div className="rzHeroMedia rzHeroMediaFallback"/>}
+          :b.business_type==='beauty'?<AutoCover fill className="rzHeroMedia"/>:<div className="rzHeroMedia rzHeroMediaFallback"/>}
       <div className="rzHeroOverlay"/>
       <div className="rzHeroInner">
         <p className="rzHeroEyebrow"><i/>{safeHeroLabel(b,'GÜZELLİK · BAKIM')}</p>
@@ -1368,7 +1370,7 @@ function Ipek(p:P){
           <a className="ipBtnOutline" href="#randevu">Randevu Al</a>
         </div>
       </Reveal>
-      <Reveal i={1} className="ipHeroPhoto">{b.cover_url&&b.cover_type==='video'?<video src={b.cover_url} autoPlay muted loop playsInline/>:b.cover_url?<img src={b.cover_url} alt={b.name}/>:<i>✂</i>}</Reveal>
+      <Reveal i={1} className="ipHeroPhoto">{b.cover_url&&b.cover_type==='video'?<video src={b.cover_url} autoPlay muted loop playsInline/>:b.cover_url?<img src={b.cover_url} alt={b.name}/>:b.business_type==='beauty'?<AutoCover/>:<i>✂</i>}</Reveal>
     </section>
 
     <section id="hakkimizda" className="ipIntro">
@@ -1541,7 +1543,7 @@ function Onix(p:P){
         {b.cover_url&&b.cover_type==='video'
           ?<video className="oxHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>
           :b.cover_url?<img className="oxHeroMedia" src={b.cover_url} alt={b.name}/>
-          :<div className="oxHeroMedia oxHeroMediaFallback"/>}
+          :b.business_type==='beauty'?<AutoCover className="oxHeroMedia"/>:<div className="oxHeroMedia oxHeroMediaFallback"/>}
       </div>
       <div className="oxHeroOverlay"/>
       <div className="oxHeroInner">
@@ -2710,8 +2712,8 @@ function Kil(p:P){
           <a className="klBtn" href="#hizmetler">{b.services_label||'Hizmetler'}</a>
         </div>
       </div>
-      {(b.cover_url||aboutPhoto)&&<div className="klHeroMediaBox">
-        {b.cover_url&&b.cover_type==='video'?<video className="klHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>:<img className="klHeroMedia" src={b.cover_url||aboutPhoto} alt={b.name}/>}
+      {(b.cover_url||aboutPhoto||b.business_type==='beauty')&&<div className="klHeroMediaBox">
+        {b.cover_url&&b.cover_type==='video'?<video className="klHeroMedia" src={b.cover_url} autoPlay muted loop playsInline/>:(b.cover_url||aboutPhoto)?<img className="klHeroMedia" src={b.cover_url||aboutPhoto} alt={b.name}/>:<AutoCover/>}
       </div>}
     </section>
 
@@ -3521,7 +3523,7 @@ function Vizon(p:P){
           <a className="vzBtn vzBtnGhost" href="#hizmetler">{b.services_label||'Hizmetler'}</a>
         </div>
       </div>
-      {heroPhoto&&<div className="vzHeroMedia"><img src={heroPhoto} alt={b.name}/></div>}
+      {heroPhoto?<div className="vzHeroMedia"><img src={heroPhoto} alt={b.name}/></div>:b.business_type==='beauty'?<div className="vzHeroMedia"><AutoCover/></div>:null}
     </section>
 
     <VizonGallery p={p}/>
@@ -4850,6 +4852,18 @@ function Detay(p:P){
     </div>}
   </main>;
 }
+/* Kapak fotoğrafı eklenmemiş GÜZELLİK salonları için otomatik kapak: 3 kareli (salon iç mekânı · cilt/spa · nail) yavaş
+   çapraz geçişli + Ken Burns yakınlaşma. Yalnızca business_type==='beauty' ve kapak/galeri fotoğrafı yokken kullanılır;
+   temalar kendi hero yapısına `AutoCover` koyar (Nova/Lumina/Cadre'nin zaten kendi otomatik hero'su var). */
+const AUTO_COVER_IMAGES=[
+  'https://images.unsplash.com/photo-1633681926035-ec1ac984418a?q=72&w=1600&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1610289982320-3891f7c9fd6d?q=72&w=1600&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1659391542239-9648f307c0b1?q=72&w=1600&auto=format&fit=crop',
+];
+function AutoCover({fill,className=''}:{fill?:boolean;className?:string}){
+  return <div className={`autoCover${fill?' acFill':''} ${className}`.trim()} aria-hidden="true">{AUTO_COVER_IMAGES.map((u,i)=><img key={u} src={u} alt="" loading={i===0?'eager':'lazy'} fetchPriority={i===0?'high':'auto'} decoding="async"/>)}</div>;
+}
+
 function IgIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>}
 function WaIcon(){return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>}
 function WhatsApp({b}:{b:any}){if(!b.whatsapp_enabled)return null;let n=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(n.startsWith('0'))n='90'+n.slice(1);if(!n)return null;return <a className="rWhatsapp" href={`https://wa.me/${n}?text=${encodeURIComponent(b.whatsapp_message||'Merhaba')}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp'tan yaz"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2m0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.28.86 5.84 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.26 8.24m4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.24-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.28"/></svg></a>}
