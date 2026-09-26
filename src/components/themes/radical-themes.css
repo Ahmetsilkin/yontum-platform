@@ -2894,12 +2894,12 @@
 }
 
 /* ================= SPLIT — split-screen, lüks/nostaljik "speakeasy" berber stüdyosu =================
-   Palet (yalnız burada token): sıcak krem zemin, füme-siyah metin, antrasit ikincil (çizgi/form), mercan vurgu (CTA).
+   Palet (yalnız burada token): sıcak krem zemin, füme-siyah metin, antrasit ikincil (çizgi/form), siyah (#000000) vurgu (CTA).
    Tipografi: başlıklarda editoryal serif (Ogg'a en yakın ücretsiz karşılık Playfair Display; italikler karakteristik),
    gövde/menüde Helvetica Neue (Apple'da sistem fontu, diğerlerinde Inter yedeği). */
 .tSplit{
   --bg:#FAF7F2;--ink:#0B0F19;--ink2:#2C2A29;
-  --accent:#FF6B52;--accent-strong:#FF5A36;--on-accent:#0B0F19;--accent-text:#C43A22;
+  --accent:#000000;--accent-strong:#2C2A29;--on-accent:#FFFFFF;--accent-text:#000000;
   --text:var(--ink);
   --surface:color-mix(in srgb,var(--bg) 96%,var(--ink2));
   --line:color-mix(in srgb,var(--ink2) 26%,transparent);--line-strong:color-mix(in srgb,var(--ink2) 55%,transparent);
@@ -2954,7 +2954,7 @@
 .spSectionHead h2{font-size:clamp(30px,4.2vw,54px);margin-top:14px}
 .spBento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(220px,auto);grid-auto-flow:dense;gap:18px}
 .spBentoCard{background:var(--surface);border:1px solid var(--line);padding:32px;display:flex;flex-direction:column;transition:background .4s ease,border-color .4s ease}
-.spBentoCard:hover{background:var(--accent);border-color:var(--accent)}
+.spBentoCard:hover{background:var(--accent);border-color:var(--accent);--text:var(--on-accent)}
 .spBentoBig{grid-column:span 2;grid-row:span 2}
 .spIndex{font-family:var(--head);font-size:13px;letter-spacing:.1em;color:color-mix(in srgb,var(--text) 60%,transparent)}
 .spBentoCard h3{font-size:clamp(22px,2vw,30px);margin-top:14px}
@@ -3016,7 +3016,7 @@
 .tSplit .spBookBox .tenantStep span,.tSplit .spBookBox h4{color:color-mix(in srgb,var(--text) 65%,transparent)}
 .spBookingInfo{background:var(--surface);justify-content:center;gap:40px;padding:8vw 6vw}
 .spBookingInfo:after{display:none}   /* görsel panelindeki karartma gradyanı bilgi panelinde olmasın */
-.tSplit .spBookBox .tenantBooking{--brand:var(--ink)!important}
+.tSplit .spBookBox .tenantBooking{--brand:var(--accent)!important}
 .spHourRow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
 .spHourRow:first-of-type{margin-top:18px}
 .spLocation p{margin:16px 0 0;color:color-mix(in srgb,var(--text) 80%,transparent);font-size:14px;line-height:1.6}
@@ -3031,7 +3031,7 @@
 .spFooterBrand p{margin:8px 0 0;color:color-mix(in srgb,var(--text) 65%,transparent);font-size:13px}
 .spFooterActions{display:flex;flex-wrap:wrap;gap:14px}
 .spBtn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border:1px solid color-mix(in srgb,var(--text) 45%,transparent);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;transition:background .3s ease,border-color .3s ease,color .3s ease}
-.spBtn:hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.spBtn:hover{background:var(--text);border-color:var(--text);color:var(--ink)}
 .spFooterBottom{width:100%;text-align:center;margin-top:10px;padding-top:22px;border-top:1px solid color-mix(in srgb,var(--text) 18%,transparent);font-size:11px;letter-spacing:.04em;color:color-mix(in srgb,var(--text) 55%,transparent)}
 
 /* MOBİL — split yapı tek sütuna düşer */

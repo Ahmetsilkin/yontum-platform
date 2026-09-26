@@ -3237,6 +3237,7 @@ function Split(p:P){
         {p.services.length>0&&<a href="#hizmetler">Hizmetler</a>}
         <a href="#yorumlar">Yorumlar</a>
         {shots.length>0&&<a href="#galeri">Galeri</a>}
+        <a href="#iletisim">İletişim</a>
       </div>
       <a className="spNavCta" href="#randevu">{b.booking_button_text||'Randevu Al'}</a>
     </nav>
@@ -3330,9 +3331,10 @@ function Split(p:P){
 
     <GoogleReviews businessId={b.id}/>
 
-    <footer className="spFooter">
+    <footer className="spFooter" id="iletisim">
       <div className="spFooterBrand"><b>{b.name}</b>{b.address&&<p>{b.address}</p>}</div>
       <div className="spFooterActions">
+        {b.phone&&<a className="spBtn" href={`tel:${String(b.phone).replace(/\s/g,'')}`}>Ara: {b.phone}</a>}
         {wa&&<a className="spBtn" href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer">WhatsApp'tan Yaz</a>}
         {b.instagram&&<a className="spBtn spBtnGhost" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/> {b.instagram}</a>}
       </div>
