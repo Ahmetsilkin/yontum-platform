@@ -2751,7 +2751,7 @@
    üzerindeki yazı füme. */
 .tDeneyim{
   --bg:#FFFFFF;--soft:#F8F9FA;--surface:var(--soft);--text:#1A1A1A;--muted:#8E8E93;
-  --accent:#C5A880;--on-accent:var(--text);--line:color-mix(in srgb,var(--text) 13%,transparent);
+  --accent:#C5A880;--on-accent:var(--text);--btn:#222222;--on-btn:#FFFFFF;--line:color-mix(in srgb,var(--text) 13%,transparent);
   --brand:var(--accent);
   --head:'Playfair Display','Georgia',serif;
   --body:'Montserrat','Inter',sans-serif;
@@ -2798,10 +2798,15 @@
 .dxScene.in :is(p,.dxServiceMeta,.dxBtn,.dxIndex,.dxReviewBy,.dxCtaActions,.dxBookBox){opacity:1;transform:none}
 
 /* ortak buton */
-.dxBtn{display:inline-flex;align-items:center;gap:.6em;margin-top:34px;padding:16px 32px;font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:var(--on-accent);border:1px solid var(--accent);border-radius:999px;transition:background .25s ease,color .25s ease,border-color .25s ease}
-.dxBtn:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.dxBtn{display:inline-flex;align-items:center;gap:.6em;margin-top:34px;padding:16px 32px;font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;background:var(--btn);color:var(--on-btn);border:1px solid var(--btn);border-radius:999px;transition:background .25s ease,color .25s ease,border-color .25s ease}
+.dxBtn:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 .dxBtnGhost{background:transparent;color:var(--text);border-color:var(--line)}
 .dxBtnGhost:hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+/* `.tDeneyim a{color:inherit}` (0,1,1) sınıf kuralını (0,1,0) ezdiği için buton yazı renkleri daha yüksek özgüllükle */
+.tDeneyim .dxBtn{color:var(--on-btn)}
+.tDeneyim .dxBtn:hover{color:var(--on-accent)}
+.tDeneyim .dxBtnGhost{color:var(--text)}
+.tDeneyim .dxBtnGhost:hover{color:var(--on-accent)}
 
 /* HERO */
 .dxHero .dxHeroMedia{position:absolute;inset:0;z-index:0}
@@ -2872,8 +2877,8 @@
 .tDeneyim .dxBookBox .tbServices button,.tDeneyim .dxBookBox .staffOptions button,.tDeneyim .dxBookBox .tbDays button,.tDeneyim .dxBookBox .tbSlots button{background:var(--bg)!important;border:1px solid var(--line)!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;box-shadow:none!important}
 .tDeneyim .dxBookBox :is(.tbServices,.staffOptions,.tbDays,.tbSlots) button.selected{background:var(--accent)!important;border-color:var(--accent)!important;color:var(--on-accent)!important;-webkit-text-fill-color:var(--on-accent)!important}
 .tDeneyim .dxBookBox :is(.tbServices,.staffOptions,.tbDays,.tbSlots) button.selected :is(small,b,span,strong){color:var(--on-accent)!important;-webkit-text-fill-color:var(--on-accent)!important}
-.tDeneyim .dxBookBox .tenantNext{background:var(--accent)!important;color:var(--on-accent)!important;-webkit-text-fill-color:var(--on-accent)!important;border-radius:999px!important;font-family:var(--body)!important;font-weight:600!important;letter-spacing:.08em}
-.tDeneyim .dxBookBox .tenantNext:hover:not(:disabled){background:var(--text)!important;color:var(--bg)!important;-webkit-text-fill-color:var(--bg)!important}
+.tDeneyim .dxBookBox .tenantNext{background:var(--btn)!important;color:var(--on-btn)!important;-webkit-text-fill-color:var(--on-btn)!important;border-radius:999px!important;font-family:var(--body)!important;font-weight:600!important;letter-spacing:.08em}
+.tDeneyim .dxBookBox .tenantNext:hover:not(:disabled){background:var(--accent)!important;color:var(--on-accent)!important;-webkit-text-fill-color:var(--on-accent)!important}
 .tDeneyim .dxBookBox .tenantStep span,.tDeneyim .dxBookBox h4{color:var(--muted)}
 /* FOOTER — sayfanın sonunda ayrı bölüm */
 .dxFooter{position:relative;background:var(--surface);border-top:1px solid var(--line);padding:clamp(48px,7vw,84px) 8vw clamp(28px,4vw,44px);color:var(--muted)}
