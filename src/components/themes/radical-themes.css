@@ -2745,13 +2745,13 @@
    Sahneler tam ekran, native scroll-snap ile geçer. Renkler yalnızca kökte
    token; sabit hex yok. Doğrudan çocuklara açık `order`. reduced-motion'da
    snap kapalı, düz sayfa, animasyon yok.
-   Palet (kullanıcının verdiği, başka renk eklenmedi): saf beyaz, yumuşak gri, füme (charcoal), soluk gri, altın.
-   Tipografi: başlık Playfair Display (editoryal serif), gövde/etiket/buton Montserrat. Altın (#C5A880) beyaz üstünde
-   düşük kontrastlı olduğu için METİN rengi olarak kullanılmaz: buton/çizgi/yıldız/nokta gibi dolgu-süs öğelerinde,
-   üzerindeki yazı füme. */
+   Palet (kullanıcının verdiği, başka renk eklenmedi): saf beyaz, yumuşak gri, füme (charcoal), soluk gri; vurgu/buton
+   rengi #222222 (önce altın #C5A880 idi, kullanıcı ikisini de #222222 yaptırdı). Vurgu koyu olduğu için üzerindeki yazı beyaz;
+   hover'da buton beyaz zemine + koyu çerçeveye döner (koyu üstüne koyu hover görünmez olurdu).
+   Tipografi: başlık Playfair Display (editoryal serif), gövde/etiket/buton Montserrat. */
 .tDeneyim{
   --bg:#FFFFFF;--soft:#F8F9FA;--surface:var(--soft);--text:#1A1A1A;--muted:#8E8E93;
-  --accent:#C5A880;--on-accent:var(--text);--btn:#222222;--on-btn:#FFFFFF;--line:color-mix(in srgb,var(--text) 13%,transparent);
+  --accent:#222222;--on-accent:#FFFFFF;--btn:var(--accent);--on-btn:var(--on-accent);--line:color-mix(in srgb,var(--text) 13%,transparent);
   --brand:var(--accent);
   --head:'Playfair Display','Georgia',serif;
   --body:'Montserrat','Inter',sans-serif;
@@ -2766,8 +2766,8 @@
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.tDeneyim,.tDeneyim *{cursor:none}}
 
 /* özel imleç */
-.dxCursor{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--accent);z-index:9999;pointer-events:none;display:grid;place-items:center;transition:width .3s ease,height .3s ease,margin .3s ease,background .3s ease}
-.dxCursor.hot{width:104px;height:104px;margin:-52px 0 0 -52px;background:var(--accent)}
+.dxCursor{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--bg);mix-blend-mode:difference;z-index:9999;pointer-events:none;display:grid;place-items:center;transition:width .3s ease,height .3s ease,margin .3s ease,background .3s ease,box-shadow .3s ease}
+.dxCursor.hot{width:104px;height:104px;margin:-52px 0 0 -52px;background:var(--accent);mix-blend-mode:normal;box-shadow:0 0 0 1px color-mix(in srgb,var(--bg) 45%,transparent)}
 .dxCursor span{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--on-accent);opacity:0;transition:opacity .2s ease}
 .dxCursor.hot span{opacity:1}
 @media(hover:none){.dxCursor{display:none}}
@@ -2799,12 +2799,12 @@
 
 /* ortak buton */
 .dxBtn{display:inline-flex;align-items:center;gap:.6em;margin-top:34px;padding:16px 32px;font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;background:var(--btn);color:var(--on-btn);border:1px solid var(--btn);border-radius:999px;transition:background .25s ease,color .25s ease,border-color .25s ease}
-.dxBtn:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.dxBtn:hover{background:var(--bg);color:var(--btn);border-color:var(--btn)}
 .dxBtnGhost{background:transparent;color:var(--text);border-color:var(--line)}
 .dxBtnGhost:hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 /* `.tDeneyim a{color:inherit}` (0,1,1) sınıf kuralını (0,1,0) ezdiği için buton yazı renkleri daha yüksek özgüllükle */
 .tDeneyim .dxBtn{color:var(--on-btn)}
-.tDeneyim .dxBtn:hover{color:var(--on-accent)}
+.tDeneyim .dxBtn:hover{color:var(--btn)}
 .tDeneyim .dxBtnGhost{color:var(--text)}
 .tDeneyim .dxBtnGhost:hover{color:var(--on-accent)}
 
@@ -2878,7 +2878,7 @@
 .tDeneyim .dxBookBox :is(.tbServices,.staffOptions,.tbDays,.tbSlots) button.selected{background:var(--accent)!important;border-color:var(--accent)!important;color:var(--on-accent)!important;-webkit-text-fill-color:var(--on-accent)!important}
 .tDeneyim .dxBookBox :is(.tbServices,.staffOptions,.tbDays,.tbSlots) button.selected :is(small,b,span,strong){color:var(--on-accent)!important;-webkit-text-fill-color:var(--on-accent)!important}
 .tDeneyim .dxBookBox .tenantNext{background:var(--btn)!important;color:var(--on-btn)!important;-webkit-text-fill-color:var(--on-btn)!important;border-radius:999px!important;font-family:var(--body)!important;font-weight:600!important;letter-spacing:.08em}
-.tDeneyim .dxBookBox .tenantNext:hover:not(:disabled){background:var(--accent)!important;color:var(--on-accent)!important;-webkit-text-fill-color:var(--on-accent)!important}
+.tDeneyim .dxBookBox .tenantNext:hover:not(:disabled){background:var(--bg)!important;color:var(--btn)!important;-webkit-text-fill-color:var(--btn)!important;box-shadow:inset 0 0 0 1px var(--btn)!important}
 .tDeneyim .dxBookBox .tenantStep span,.tDeneyim .dxBookBox h4{color:var(--muted)}
 /* FOOTER — sayfanın sonunda ayrı bölüm */
 .dxFooter{position:relative;background:var(--surface);border-top:1px solid var(--line);padding:clamp(48px,7vw,84px) 8vw clamp(28px,4vw,44px);color:var(--muted)}
