@@ -4464,4 +4464,6 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .demoBanner{position:fixed;top:0;left:0;right:0;z-index:9999;height:var(--demoH,30px);display:flex;align-items:center;justify-content:center;gap:12px;padding:0 12px;background:#111;color:#fff;font:500 12px/1 Arial,sans-serif;white-space:nowrap;overflow:hidden}
 .demoBanner b{flex:none;padding:3px 8px;background:#ffd400;color:#111;font-size:11px;letter-spacing:.08em}
 .demoBanner span{min-width:0;overflow:hidden;text-overflow:ellipsis}
-.radical:has(>.demoBanner) :is(.ksNav,.zfNav,.emNav,.dtNav){top:var(--demoH)}
+.radical:has(>.demoBanner) :is(.ksNav,.zfNav,.emNav,.dtNav,.oxNav,.lmNav,.nvNav,.cdNav){top:var(--demoH)}
+.radical:has(>.demoBanner) .rzNav{top:calc(16px + var(--demoH))}
+.radical:has(>.demoBanner) .cdFrame{top:calc(14px + var(--demoH))}

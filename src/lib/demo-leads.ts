@@ -124,3 +124,20 @@ export function demoSlug(name:string):string{
   let r='';for(let i=0;i<5;i++)r+=alphabet[Math.floor(Math.random()*alphabet.length)];
   return `${base}-${r}`;
 }
+
+/* Yönetim formundaki "açılış – kapanış" saatleri ↔ OSM opening_hours metni (her gün aynı) */
+export function hoursToOsm(start?:string|null,end?:string|null):string|null{
+  if(!start||!end||!/^\d{2}:\d{2}$/.test(start)||!/^\d{2}:\d{2}$/.test(end))return null;
+  return `Mo-Su ${start}-${end}`;
+}
+export function osmToHoursRange(raw?:string|null):{start:string;end:string}|null{
+  const m=(raw||'').trim().match(/^Mo-Su\s+(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})$/);
+  if(!m)return null;
+  const pad=(t:string)=>t.padStart(5,'0');
+  return{start:pad(m[1]),end:pad(m[2])};
+}
+/* "@kullanici", "instagram.com/kullanici/" → "kullanici" */
+export function cleanInstagram(raw:unknown):string{
+  const s=String(raw??'').trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/[/?#].*$/,'').replace(/^@/,'').trim();
+  return /^[A-Za-z0-9._]{1,30}$/.test(s)?s:'';
+}
