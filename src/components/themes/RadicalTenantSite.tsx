@@ -4582,7 +4582,7 @@ function Cigkofte(p:P){
    büyük harf) başlıklar + Inter gövde, koyu zeminler, tek güçlü vurgu rengi, köşeli 56px butonlar (radius 0,
    15px 35px, ok ikonlu), fotoğraf üstünde %50 siyah perde, açık gri (#F2F1F0) ve antrasit bölüm ritmi.
    Yapı: koyu sticky navbar → tam ekran kapak (foto/video) → vurgu şeridi → hakkımızda → koyu hizmet
-   kartları (fotoğraflı) → neden biz → galeri → (ekip) → yorumlar → vurgu şeritli randevu (gerçek
+   kartları (fotoğraflı) → neden biz → galeri → yorumlar → vurgu şeritli randevu (gerçek
    TenantBooking) → harita → koyu footer. Renkler panelden seçilen hazır kombinasyondan gelir
    (lib/detayPalettes.ts) ve .radical sarmalayıcısına CSS değişkeni olarak yazılır; böylece yüzen WhatsApp /
    "Bizi Değerlendir" düğmeleri de aynı vurgu rengini alır. Görsel/metin kopyalanmadı, yalnızca biçim dili. */
@@ -4604,7 +4604,6 @@ function Detay(p:P){
   const{b}=p;
   const hourRows=groupedHourRows(p.hours||[]);
   const services=(p.services||[]).filter((s:any)=>s.is_active!==false);
-  const team=(p.staff||[]).filter((s:any)=>!s.is_default&&s.is_active&&s.title!=='Ana Takvim'&&s.username!=='ana-takvim');
   const galleryPhotos:string[]=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean);
   const aboutPhoto=galleryPhotos[0]||(b.cover_type==='video'?'':b.cover_url)||'';
   const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
@@ -4744,15 +4743,6 @@ function Detay(p:P){
         <div className="dtHead"><span className="dtEyebrow">Galeri</span><h2 className="dtDisplay">{dec(b,'dt_galleryTitle','Çalışmalarımızdan')}</h2></div>
         <div className="dtGalGrid">
           {galleryPhotos.map((src,i)=><button type="button" className="dtGalItem" key={i} aria-label={`Fotoğrafı büyüt (${i+1}/${galleryPhotos.length})`} onClick={()=>setLb(i)}><img src={src} alt="" loading="lazy"/></button>)}
-        </div>
-      </div>
-    </section>}
-
-    {team.length>0&&<section id="ekip" className="dtSection dtTeam">
-      <div className="dtWrap">
-        <div className="dtHead"><span className="dtEyebrow">Ekip</span><h2 className="dtDisplay">Ekibimiz</h2></div>
-        <div className="dtTeamGrid">
-          {team.map((s:any)=><article key={s.id} className="dtTeamItem"><div className="dtTeamPhoto">{s.photo_url?<img src={s.photo_url} alt="" loading="lazy"/>:<i>{s.name[0]}</i>}</div><b className="dtDisplay">{s.name}</b><small>{s.title||'Uzman'}</small></article>)}
         </div>
       </div>
     </section>}

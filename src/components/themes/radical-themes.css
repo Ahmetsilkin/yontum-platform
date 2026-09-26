@@ -4364,15 +4364,6 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tDetay .dtLbPrev{left:20px;top:50%;margin-top:-24px}
 .tDetay .dtLbNext{right:20px;top:50%;margin-top:-24px}
 
-/* ekip */
-.tDetay .dtTeam{background:var(--dt-white)}
-.tDetay .dtTeamGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:24px}
-.tDetay .dtTeamItem{display:flex;flex-direction:column;gap:6px}
-.tDetay .dtTeamPhoto{aspect-ratio:1;background:var(--dt-dark);color:var(--dt-accent);display:grid;place-items:center;overflow:hidden;margin-bottom:8px}
-.tDetay .dtTeamPhoto img{width:100%;height:100%;object-fit:cover}
-.tDetay .dtTeamPhoto i{font-style:normal;font-size:64px;font-family:var(--dt-display)}
-.tDetay .dtTeamItem b{font-size:22px;color:var(--dt-ink)}
-.tDetay .dtTeamItem small{font-size:15px;color:var(--dt-accent-text);font-weight:600}
 
 /* yorumlar (paylaşılan OwnRatings / GoogleReviews) — antrasit bant */
 .tDetay .dtReviews:not(:empty){background:var(--dt-charcoal);color:#fff;padding-block:var(--dt-section)}
