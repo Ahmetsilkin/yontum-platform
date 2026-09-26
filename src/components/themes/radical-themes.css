@@ -568,11 +568,11 @@
 
 /* ================= Zarafet — ipeksi krem zemin, altın vurgulu, jaluzi geçişli, sabitlenmiş kademeli
    galeri ve dağınık yorum kartlarıyla zarif kuaför/güzellik/nail/spa teması ================= */
-.tZarafet{--zf-bg:#f6f1e8;--zf-surface:#ffffff;--zf-line:rgba(43,36,32,.12);--zf-ink:#2b2420;--zf-muted:#8a7d6c;--zf-gold:#a68a54;--zf-gold-light:#c7ab72;--accent:var(--zf-gold);--brand:var(--zf-gold);background:var(--zf-bg);color:var(--zf-ink);font-family:'Inter',Arial,Helvetica,sans-serif;
+.tZarafet{--zf-bg:#f6f1e8;--zf-surface:#ffffff;--zf-line:rgba(43,36,32,.12);--zf-ink:#2b2420;--zf-muted:#8a7d6c;--zf-gold:#a68a54;--zf-gold-light:#c7ab72;--zf-gold-text:var(--zf-gold);--zf-on-gold:#fff;--zf-glow:color-mix(in srgb,var(--zf-gold) 30%,transparent);--zf-foot-bg:#2b2420;--zf-foot-text:#f6f1e8;--zf-foot-label:var(--zf-gold-light);--accent:var(--zf-gold);--brand:var(--zf-gold);background:var(--zf-bg);color:var(--zf-ink);font-family:'Inter',Arial,Helvetica,sans-serif;
   --at-bg:var(--zf-bg);--at-surface:var(--zf-surface);--at-card-bg:var(--zf-surface);--at-line:var(--zf-line);--at-ink:var(--zf-ink);--at-muted:var(--zf-muted);--at-gold:var(--zf-gold);--at-gold-light:var(--zf-gold-light);
   --ip-gold:var(--zf-gold);--ip-ink:var(--zf-ink);--ip-line:var(--zf-line);--ip-surface:var(--zf-surface);}
 .tZarafet h1,.tZarafet h2,.tZarafet h3{font-family:'Playfair Display',Georgia,serif}
-.tZarafet em{font-style:italic;color:var(--zf-gold)}
+.tZarafet em{font-style:italic;color:var(--zf-gold-text)}
 
 /* Nav */
 .zfNav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 6vw;background:#f6f1e8ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--zf-line)}
@@ -580,8 +580,8 @@
 .zfNav nav{display:flex;gap:32px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
 .zfNav nav a{color:var(--zf-muted);transition:color .15s}
 .zfNav nav a:hover{color:var(--zf-ink)}
-.zfNavBtn{border:1px solid var(--zf-gold);color:var(--zf-gold)!important;padding:12px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:.2s;border-radius:999px}
-.zfNavBtn:hover{background:var(--zf-gold);color:#fff!important}
+.zfNavBtn{border:1px solid var(--zf-gold);color:var(--zf-gold-text)!important;padding:12px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:.2s;border-radius:999px}
+.zfNavBtn:hover{background:var(--zf-gold);color:var(--zf-on-gold)!important}
 @media(max-width:900px){.zfNav nav{display:none}.zfNavBtn{padding:10px 16px;font-size:10px}}
 
 /* Hero */
@@ -602,7 +602,7 @@
 .zfMission>p{color:var(--zf-muted);line-height:1.8;font-size:16px;margin:0 auto 50px;max-width:560px}
 .zfMissionGhostBg{position:absolute;top:-8%;bottom:-8%;left:50%;width:100vw;transform:translateX(-50%);background-size:cover;background-position:center;filter:blur(3px) grayscale(.35) brightness(1.15);opacity:.16;z-index:0;pointer-events:none}
 .zfMissionArchWrap{display:flex;flex-direction:column;align-items:center;gap:22px;margin-top:10px}
-.zfOrnament{width:26px;height:26px;color:var(--zf-gold);opacity:.55}
+.zfOrnament{width:26px;height:26px;color:var(--zf-gold-text);opacity:.55}
 .zfMissionArchRow{display:flex;gap:24px;justify-content:center}
 .zfMissionArch{width:min(320px,62vw);aspect-ratio:3/4;flex-shrink:0;background:#fdfcf9;padding:12px;box-sizing:border-box;border-radius:22px;box-shadow:0 20px 45px #00000026;overflow:hidden}
 .zfMissionArch img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
@@ -619,7 +619,7 @@
 /* Hizmetler — yatay kaydırmalı karusel */
 .zfServices{padding:100px 0;background:var(--zf-bg)}
 .zfServices>div:first-child,.zfServices header{max-width:1200px;margin:0 auto 40px;padding:0 6vw;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.zfServices header small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfServices header small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold-text)}
 .zfServices header h2{font:500 clamp(28px,3.4vw,40px)/1.2;margin:10px 0 0}
 .zfCarouselNav{display:flex;gap:8px}
 .zfCarouselNav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--zf-line);background:none;color:var(--zf-ink);font-size:18px;cursor:pointer;transition:border-color .2s}
@@ -632,14 +632,14 @@
 .zfServiceCardPhoto i{width:100%;height:100%;display:grid;place-items:center;font-size:26px;font-style:normal;color:var(--zf-muted)}
 .zfServiceCard h3{font:500 19px 'Playfair Display',Georgia,serif;margin:0 0 8px}
 .zfServiceCardFoot{display:flex;justify-content:space-between;color:var(--zf-muted);font-size:13px}
-.zfServiceCardFoot b{color:var(--zf-gold);font-weight:700}
-.zfServiceDetailLink{display:inline-block;margin-top:10px;color:var(--zf-gold)!important;font-size:12.5px;font-weight:600;border-bottom:1px solid var(--zf-gold)}
+.zfServiceCardFoot b{color:var(--zf-gold-text);font-weight:700}
+.zfServiceDetailLink{display:inline-block;margin-top:10px;color:var(--zf-gold-text)!important;font-size:12.5px;font-weight:600;border-bottom:1px solid var(--zf-gold)}
 
 /* Galeri — sabitlenmiş başlık + kademeli giren fotoğraf koleksiyonu */
 .zfCollageWrap{position:relative;height:220vh}
 .zfCollage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--zf-bg)}
 .zfCollageCenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2;max-width:480px;padding:0 20px}
-.zfCollageCenter small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfCollageCenter small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold-text)}
 .zfCollageCenter h2{font:500 clamp(28px,3.6vw,42px)/1.25;margin:12px 0 0}
 .zfCollagePhoto{position:absolute;width:min(220px,26vw);aspect-ratio:3/4;border-radius:6px 6px 60px 6px;overflow:hidden;opacity:0;transform:translateY(40px) scale(.92);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 50px #0000001a}
 .zfCollagePhoto.in{opacity:1;transform:translateY(0) scale(1)}
@@ -649,14 +649,14 @@
 /* Ekip */
 .zfTeamSection{padding:110px 6vw;background:var(--zf-bg)}
 .zfTeamSection>header{max-width:600px;margin:0 auto 46px;text-align:center}
-.zfTeamSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfTeamSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold-text)}
 .zfTeamSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
 .zfTeamGrid{display:flex;gap:28px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 6vw 16px;margin:0 -6vw;justify-content:safe center;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .zfTeamGrid::-webkit-scrollbar{display:none}
 .zfTeamGrid article{text-align:center;flex:0 0 200px;scroll-snap-align:start}
 .zfTeamPhoto{aspect-ratio:3/4;background:#fdfcf9;padding:12px;box-sizing:border-box;border-radius:22px;box-shadow:0 20px 45px #00000026;overflow:hidden}
 .zfTeamPhoto img{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:12px;animation:zfWave 7s ease-in-out infinite}
-.zfTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--zf-bg);border-radius:12px;font:500 40px 'Playfair Display',serif;color:var(--zf-gold);font-style:normal}
+.zfTeamPhoto i{width:100%;height:100%;display:grid;place-items:center;background:var(--zf-bg);border-radius:12px;font:500 40px 'Playfair Display',serif;color:var(--zf-gold-text);font-style:normal}
 @keyframes zfWave{
   0%,100%{clip-path:polygon(0 1.5%,100% 0%,100% 98.5%,0% 100%)}
   25%{clip-path:polygon(0 0%,100% 2%,100% 100%,0% 98%)}
@@ -687,7 +687,7 @@
 /* Randevu */
 .zfBookingSection{padding:110px 6vw;background:var(--zf-bg)}
 .zfBookingSection>header{max-width:600px;margin:0 auto 46px;text-align:center}
-.zfBookingSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold)}
+.zfBookingSection small{letter-spacing:3px;font-size:11px;font-weight:700;color:var(--zf-gold-text)}
 .zfBookingSection h2{font:500 34px 'Playfair Display',Georgia,serif;margin:12px 0 0}
 
 /* Randevu — adımlar tek tek, kaydırılarak açılır */
@@ -695,18 +695,18 @@
 .zfBookStep{background:var(--zf-surface);border:1px solid var(--zf-line);padding:28px}
 @keyframes zfStepIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .zfBookStepIn{animation:zfStepIn .55s cubic-bezier(.2,.8,.2,1) both}
-.zfBooking>.zfBookStep>small,.zfBooking>.zfBookStep>div>small{display:block;letter-spacing:2px;font-size:10px;font-weight:700;color:var(--zf-gold);margin-bottom:16px}
+.zfBooking>.zfBookStep>small,.zfBooking>.zfBookStep>div>small{display:block;letter-spacing:2px;font-size:10px;font-weight:700;color:var(--zf-gold-text);margin-bottom:16px}
 .zfBookServiceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .zfBookServiceGrid button{text-align:left;background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .zfBookServiceGrid button:hover{border-color:var(--zf-gold)}
-.zfBookServiceGrid button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px #a68a544d}
+.zfBookServiceGrid button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px var(--zf-glow)}
 .zfBookServiceGrid button b{display:block;font-size:13px;font-weight:700}
-.zfBookServiceGrid button em{display:block;color:var(--zf-gold);font-style:normal;font-size:12px;margin-top:4px}
+.zfBookServiceGrid button em{display:block;color:var(--zf-gold-text);font-style:normal;font-size:12px;margin-top:4px}
 .zfBookServiceGrid button small{display:block;color:var(--zf-muted);font-size:11px;margin-top:6px}
 .zfBookStaffRow{display:flex;flex-wrap:wrap;gap:10px}
 .zfBookStaffRow button{background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:10px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .zfBookStaffRow button:hover{border-color:var(--zf-gold)}
-.zfBookStaffRow button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px #a68a544d}
+.zfBookStaffRow button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px var(--zf-glow)}
 .zfBookStaffRow button b{display:block;font-size:12px;font-weight:700}
 .zfBookStaffRow button small{display:block;color:var(--zf-muted);font-size:10px;margin-top:3px}
 .zfBookDayRow{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px}
@@ -714,25 +714,25 @@
 .zfBookDayRow button:hover:not(:disabled){border-color:var(--zf-gold)}
 .zfBookDayRow button small{display:block;color:var(--zf-muted);font-size:9px}
 .zfBookDayRow button b{display:block;font-size:15px;margin-top:3px}
-.zfBookDayRow button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px #a68a544d}
+.zfBookDayRow button.selected{border-color:var(--zf-gold);box-shadow:0 0 10px var(--zf-glow)}
 .zfBookDayRow button.closed{opacity:.4;text-decoration:line-through;cursor:not-allowed}
 .zfBookTimeGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .zfBookTimeGrid p{grid-column:1/-1;color:var(--zf-muted);font-size:13px}
 .zfBookTimeGrid button{background:var(--zf-bg);border:1px solid var(--zf-line);color:var(--zf-ink);padding:10px 0;font-size:13px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .zfBookTimeGrid button:hover{border-color:var(--zf-gold)}
-.zfBookTimeGrid button.selected{background:var(--zf-gold);border-color:var(--zf-gold);color:#fff;box-shadow:0 0 10px #a68a544d}
+.zfBookTimeGrid button.selected{background:var(--zf-gold);border-color:var(--zf-gold);color:var(--zf-on-gold);box-shadow:0 0 10px var(--zf-glow)}
 .zfBookSummary{background:var(--zf-ink);color:#fff;padding:22px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:13px}
 .zfBookSummary>span{color:#ffffffcc}
 .zfBookSummary>b{color:var(--zf-gold-light);font:700 16px 'Playfair Display',Georgia,serif}
 .zfBookSummary>em{margin-left:auto;font-style:normal;letter-spacing:1px;font-size:11px;text-transform:uppercase;color:#fff}
-.zfBookSubmit{background:var(--zf-gold);color:#fff;border:0;padding:14px 22px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;cursor:pointer;transition:transform .15s}
+.zfBookSubmit{background:var(--zf-gold);color:var(--zf-on-gold);border:0;padding:14px 22px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;cursor:pointer;transition:transform .15s}
 .zfBookSubmit:hover:not(:disabled){transform:translateY(-2px)}
 .zfBookSubmit:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .zfBookDone{max-width:600px;margin:0 auto;text-align:center;padding:60px 6vw}
-.zfBookDone span{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--zf-gold);color:#fff;font-size:22px;margin-bottom:20px}
+.zfBookDone span{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--zf-gold);color:var(--zf-on-gold);font-size:22px;margin-bottom:20px}
 .zfBookDone h3{font:500 30px 'Playfair Display',Georgia,serif;margin:0 0 10px}
 .zfBookDone p{color:var(--zf-muted);margin-bottom:20px}
-.zfBookDone a{color:var(--zf-gold);text-decoration:underline}
+.zfBookDone a{color:var(--zf-gold-text);text-decoration:underline}
 .zfModalBackdrop{position:fixed;inset:0;background:#00000059;z-index:100;display:grid;place-items:center;padding:20px}
 .zfModal{width:min(440px,100%);background:var(--zf-surface);border:1px solid var(--zf-line);padding:34px 30px;position:relative}
 .zfModal h3{font:500 24px 'Playfair Display',Georgia,serif;margin:0 0 8px;color:var(--zf-ink)}
@@ -766,23 +766,23 @@
 @media(max-width:800px){.zfContactGrid{grid-template-columns:1fr}}
 
 /* Footer */
-.zfFooter{background:#2b2420;color:#f6f1e8;padding:80px 6vw 30px}
+.zfFooter{background:var(--zf-foot-bg);color:var(--zf-foot-text);padding:80px 6vw 30px}
 .zfFooterGrid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6vw}
-.zfFooterGrid .zfBrand{color:#f6f1e8}
-.zfFooterGrid>div:first-child p{color:#f6f1e8b3;margin-top:14px;font-size:13px;line-height:1.7;max-width:300px}
-.zfFooterGrid>div>small{display:flex;align-items:center;flex-wrap:wrap;gap:8px;letter-spacing:2px;font-size:11px;font-weight:700;color:var(--zf-gold-light);margin-bottom:16px}
-.zfFooterGrid>div>p{color:#f6f1e8cc;font-size:14px;margin:0 0 10px}
-.zfFooterGrid>div>p a{color:#f6f1e8;text-decoration:underline}
-.zfHoursRow{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:#f6f1e8cc;padding:8px 0;border-top:1px solid #f6f1e81f}
+.zfFooterGrid .zfBrand{color:var(--zf-foot-text)}
+.zfFooterGrid>div:first-child p{color:color-mix(in srgb,var(--zf-foot-text) 70%,transparent);margin-top:14px;font-size:13px;line-height:1.7;max-width:300px}
+.zfFooterGrid>div>small{display:flex;align-items:center;flex-wrap:wrap;gap:8px;letter-spacing:2px;font-size:11px;font-weight:700;color:var(--zf-foot-label);margin-bottom:16px}
+.zfFooterGrid>div>p{color:color-mix(in srgb,var(--zf-foot-text) 80%,transparent);font-size:14px;margin:0 0 10px}
+.zfFooterGrid>div>p a{color:var(--zf-foot-text);text-decoration:underline}
+.zfHoursRow{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:color-mix(in srgb,var(--zf-foot-text) 80%,transparent);padding:8px 0;border-top:1px solid color-mix(in srgb,var(--zf-foot-text) 12%,transparent)}
 .zfHoursRow:first-of-type{border-top:0}
 .zfOpenBadge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:9px;letter-spacing:1px;font-weight:700}
 .zfOpenBadge.open{background:#22c55e26;color:#4ade80}
-.zfOpenBadge.closed{background:#ffffff14;color:#f6f1e8a3}
+.zfOpenBadge.closed{background:color-mix(in srgb,var(--zf-foot-text) 8%,transparent);color:color-mix(in srgb,var(--zf-foot-text) 64%,transparent)}
 .zfFooterActions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.zfMapBtn{display:block;border:1px solid #f6f1e830;color:#f6f1e8!important;padding:12px 16px;text-align:center;font-size:12px;border-radius:999px;transition:border-color .2s}
-.zfMapBtn:hover{border-color:var(--zf-gold-light)}
+.zfMapBtn{display:block;border:1px solid color-mix(in srgb,var(--zf-foot-text) 19%,transparent);color:var(--zf-foot-text)!important;padding:12px 16px;text-align:center;font-size:12px;border-radius:999px;transition:border-color .2s}
+.zfMapBtn:hover{border-color:var(--zf-foot-label)}
 .zfCallBtn{display:block;background:var(--zf-gold);color:#2b2420!important;padding:12px 16px;text-align:center;font-weight:700;font-size:12px;border-radius:999px}
-.zfFooterBottom{max-width:1100px;margin:60px auto 0;padding-top:22px;border-top:1px solid #f6f1e81f;font-size:12px;color:#f6f1e8a3;text-align:center}
+.zfFooterBottom{max-width:1100px;margin:60px auto 0;padding-top:22px;border-top:1px solid color-mix(in srgb,var(--zf-foot-text) 12%,transparent);font-size:12px;color:color-mix(in srgb,var(--zf-foot-text) 64%,transparent);text-align:center}
 @media(max-width:800px){.zfFooterGrid{grid-template-columns:1fr;gap:36px}}
 
 /* Mobil sabit randevu barı */
@@ -790,9 +790,15 @@
 @media(max-width:768px){
   .tZarafet{padding-bottom:80px}
   .zfMobileSticky{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:10px;padding:12px 14px;background:#f6f1e8f2;backdrop-filter:blur(10px);border-top:1px solid var(--zf-line)}
-  .zfMobileSticky>a:first-child{flex:1;background:var(--zf-gold);color:#fff!important;text-align:center;padding:15px;font-weight:700;font-size:14px;border-radius:999px;box-shadow:0 6px 20px #a68a5440}
+  .zfMobileSticky>a:first-child{flex:1;background:var(--zf-gold);color:var(--zf-on-gold)!important;text-align:center;padding:15px;font-weight:700;font-size:14px;border-radius:999px;box-shadow:0 6px 20px color-mix(in srgb,var(--zf-gold) 25%,transparent)}
   .zfMobileStickyCall{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;border:1px solid var(--zf-line);border-radius:999px;color:var(--zf-ink)!important;font-size:18px}
 }
+
+/* Zarafet — GÜZELLİK kategorisi (profession-beauty): footer #F599C6, altın vurgu #FFEA88.
+   Sarı, krem zeminde METİN olarak okunmaz → sarı yalnız dolgu/çerçeve/çizgide; altın renkli yazılar koyu mürekkep,
+   sarı dolgu üstündeki yazı koyu. Diğer kategorilerin (kuaför, nail, spa) Zarafet'i değişmez. */
+.profession-beauty .tZarafet{--zf-gold:#FFEA88;--zf-gold-light:#FFEA88;--zf-gold-text:var(--zf-ink);--zf-on-gold:var(--zf-ink);--zf-foot-bg:#F599C6;--zf-foot-text:var(--zf-ink);--zf-foot-label:var(--zf-ink)}
+.profession-beauty .tZarafet .zfOpenBadge.open{background:color-mix(in srgb,var(--zf-ink) 10%,transparent);color:var(--zf-ink)}
 
 /* ================= İpek — krem/altın zemin, koyu kontrastlı süreç bölümü, foto mozaik galeri,
    yorum karuseli ve SSS akordiyonuyla kapsamlı, kurumsal güzellik salonu teması ================= */
