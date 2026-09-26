@@ -794,11 +794,12 @@
   .zfMobileStickyCall{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;border:1px solid var(--zf-line);border-radius:999px;color:var(--zf-ink)!important;font-size:18px}
 }
 
-/* Zarafet — GÜZELLİK kategorisi (profession-beauty): footer #F599C6, altın vurgu #FFEA88.
+/* Zarafet — GÜZELLİK kategorisi (profession-beauty): footer mürdüm (koyu erik) #5D2E46, altın vurgu #FFEA88.
    Sarı, krem zeminde METİN olarak okunmaz → sarı yalnız dolgu/çerçeve/çizgide; altın renkli yazılar koyu mürekkep,
-   sarı dolgu üstündeki yazı koyu. Diğer kategorilerin (kuaför, nail, spa) Zarafet'i değişmez. */
-.profession-beauty .tZarafet{--zf-gold:#FFEA88;--zf-gold-light:#FFEA88;--zf-gold-text:var(--zf-ink);--zf-on-gold:var(--zf-ink);--zf-foot-bg:#F599C6;--zf-foot-text:var(--zf-ink);--zf-foot-label:var(--zf-ink)}
-.profession-beauty .tZarafet .zfOpenBadge.open{background:color-mix(in srgb,var(--zf-ink) 10%,transparent);color:var(--zf-ink)}
+   sarı dolgu üstündeki yazı koyu. Footer koyu zemin olduğundan yazılar krem, etiketler ve vurgular sarı.
+   Diğer kategorilerin (kuaför, nail, spa) Zarafet'i değişmez. */
+.profession-beauty .tZarafet{--zf-gold:#FFEA88;--zf-gold-light:#FFEA88;--zf-gold-text:var(--zf-ink);--zf-on-gold:var(--zf-ink);--zf-foot-bg:#5D2E46;--zf-foot-text:#f6f1e8;--zf-foot-label:var(--zf-gold)}
+.profession-beauty .tZarafet .zfOpenBadge.open{background:color-mix(in srgb,var(--zf-gold) 22%,transparent);color:var(--zf-gold)}
 
 /* ================= İpek — krem/altın zemin, koyu kontrastlı süreç bölümü, foto mozaik galeri,
    yorum karuseli ve SSS akordiyonuyla kapsamlı, kurumsal güzellik salonu teması ================= */
