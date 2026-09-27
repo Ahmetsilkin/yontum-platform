@@ -4793,7 +4793,7 @@ function Bostan(p:P){
       <a className="bsBrand" href="#top">{b.name}</a>
       <nav>
         <a href="#menu">menü</a>
-        {(b.description||stripPhotos.length>0)&&<a href="#hikaye">hikayemiz</a>}
+        <a href="#hikaye">hikayemiz</a>
         <a href="#iletisim">iletişim</a>
       </nav>
       {orderCta&&<Cta cta={orderCta} className="bsNavCta"/>}
@@ -4836,15 +4836,15 @@ function Bostan(p:P){
       {orderCta&&<div className="bsMenuCta"><Cta cta={orderCta} className="bsBtnSolid"/></div>}
     </section>
 
-    {(bigPhoto||b.description)&&<section id="hikaye" className="bsGrid">
+    <section id="hikaye" className="bsGrid">
       <div className="bsGridTop">
-        {bigPhoto&&<Reveal as="figure" className="bsGridPhoto"><img src={bigPhoto} alt={b.name} loading="lazy"/></Reveal>}
+        <Reveal as="figure" className="bsGridPhoto">{bigPhoto?<img src={bigPhoto} alt={b.name} loading="lazy"/>:<div className="bsGridPhotoFallback" aria-hidden="true"/>}</Reveal>
         <Reveal i={1} className="bsGridStat"><b>{highlight.big}</b><p>{highlight.note}</p></Reveal>
       </div>
       {stripPhotos.length>1&&<Reveal i={2} className="bsGridStrip">
         {stripPhotos.slice(1).map((src:string)=><figure key={src}><img src={src} alt="" loading="lazy"/></figure>)}
       </Reveal>}
-    </section>}
+    </section>
 
     <OwnRatings businessId={b.id}/>
     <GoogleReviews businessId={b.id}/>

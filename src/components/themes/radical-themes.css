@@ -4506,6 +4506,7 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .bsGridTop{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin-bottom:24px}
 .bsGridPhoto{border-radius:28px;overflow:hidden;aspect-ratio:5/4;margin:0}
 .bsGridPhoto img{width:100%;height:100%;object-fit:cover;display:block}
+.bsGridPhotoFallback{width:100%;height:100%;background:radial-gradient(120% 120% at 75% 15%,color-mix(in srgb,var(--bs-lime) 35%,var(--bs-bg)),var(--bs-forest) 130%)}
 .bsGridStat{background:var(--bs-forest);border-radius:28px;padding:40px;display:flex;flex-direction:column;justify-content:center}
 .bsGridStat b{font-family:var(--head);font-weight:800;font-size:clamp(38px,4vw,58px);line-height:.9;color:var(--bs-lime)}
 .bsGridStat p{margin-top:14px;font-size:14px;line-height:1.5;color:color-mix(in srgb,var(--bs-bg) 80%,transparent)}
