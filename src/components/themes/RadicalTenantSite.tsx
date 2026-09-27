@@ -4938,29 +4938,15 @@ function Detay(p:P){
     </section>
 
     <section id="iletisim" className="dtSection dtContact">
-      <div className="dtWrap">
+      <div className="dtWrap dtContactSolo">
         <div className="dtHead">
           <span className="dtEyebrow">İletişim</span>
           <h2 className="dtDisplay">{dec(b,'dt_contactTitle','Bize Ulaşın')}</h2>
         </div>
-        <div className="dtContactGrid">
-          <div className="dtContactInfo">
-            <p>{dec(b,'dt_contactText','Sorularını yanıtlamaktan, aracını en kısa sürede ağırlamaktan mutluluk duyarız.')}</p>
-            {b.address&&<p className="dtContactRow">{b.address}</p>}
-            {b.phone&&<a className="dtContactRow" href={phoneHref}>{b.phone}</a>}
-            {igHandle&&<a className="dtContactRow" href={`https://instagram.com/${igHandle}`} target="_blank" rel="noopener noreferrer">@{igHandle}</a>}
-            {hourRows.length>0&&<div className="dtContactHours">{hourRows.map((r,i)=><p key={i} className="dtHours"><span>{r.label}</span><span>{r.value}</span></p>)}</div>}
-            <div className="dtContactBtns">
-              {b.phone&&<a className="dtBtn" href={phoneHref}>Hemen Ara<DtArrow/></a>}
-              {mapsHref&&<a className="dtBtn dtBtn--outline" href={mapsHref} target="_blank" rel="noopener noreferrer">Yol Tarifi Al<DtArrow/></a>}
-            </div>
-            {b.show_map!==false&&b.address&&<div className="dtMap dtContactMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum haritası"/></div>}
-          </div>
-          <div className="dtContactFormCard">
-            <h3 className="dtDisplay">Mesaj Gönder</h3>
-            <p>Aracın için soru sormak ister misin? Formu doldur, sana dönüş yapalım.</p>
-            <ContactMessageForm businessId={b.id} prefix="dt"/>
-          </div>
+        <div className="dtContactFormCard">
+          <h3 className="dtDisplay">Mesaj Gönder</h3>
+          <p>{dec(b,'dt_contactText','Aracın için soru sormak ister misin? Formu doldur, sana dönüş yapalım.')}</p>
+          <ContactMessageForm businessId={b.id} prefix="dt"/>
         </div>
       </div>
     </section>

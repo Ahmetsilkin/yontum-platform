@@ -4641,21 +4641,13 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tDetay .dtMap{background:var(--dt-dark)}
 .tDetay .dtMap iframe{width:100%;height:340px;border:0;filter:grayscale(.25)}
 
-/* Bize Ulaşın — koyu bant, sol bilgi/CTA + sağ harita (harita artık kenardan kenara başıboş değil, kart içinde) */
+/* Bize Ulaşın — koyu bant, ortalanmış tek sütun form kartı. İletişim bilgileri (adres/telefon/harita) burada
+   yinelenmiyor — footer'da zaten var; bu bölüm yalnızca mesaj gönderme. */
 .tDetay .dtContact{background:var(--dt-dark);color:rgba(255,255,255,.86)}
+.tDetay .dtContactSolo{max-width:640px}
+.tDetay .dtContact .dtHead{align-items:center;text-align:center;width:100%}
 .tDetay .dtContact .dtEyebrow{color:var(--dt-accent)}
 .tDetay .dtContact h2{color:#fff}
-.tDetay .dtContactGrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:start}
-.tDetay .dtContactInfo{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
-.tDetay .dtContactInfo>p:first-child{font-size:17px;max-width:52ch;color:rgba(255,255,255,.86)}
-.tDetay .dtContactRow{display:block;font-size:16px;color:#fff}
-.tDetay a.dtContactRow:hover{color:var(--dt-accent)}
-.tDetay .dtContactHours{margin-top:4px;display:flex;flex-direction:column;gap:8px;width:100%}
-.tDetay .dtContactHours .dtHours{max-width:340px;border-bottom-color:var(--dt-line-dark);color:rgba(255,255,255,.86)}
-.tDetay .dtContactBtns{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px}
-.tDetay .dtContactMap{width:100%;min-height:280px}
-.tDetay .dtContactMap iframe{height:100%;min-height:280px}
-.tDetay .dtContactMap{margin-top:10px}
 .tDetay .dtContactFormCard{background:var(--dt-light);color:var(--dt-text);padding:clamp(28px,4vw,44px)}
 .tDetay .dtContactFormCard h3{color:var(--dt-ink);font-size:24px;margin-bottom:10px}
 .tDetay .dtContactFormCard>p{color:var(--dt-text);margin-bottom:22px}
@@ -4668,7 +4660,6 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tDetay .dtContactSent{text-align:center;padding:10px 0 4px}
 .tDetay .dtContactSent span{display:inline-grid;place-items:center;width:52px;height:52px;background:var(--dt-accent);color:var(--dt-on-accent);font-size:22px;margin-bottom:14px}
 .tDetay .dtContactSent p{color:var(--dt-text)}
-@media(max-width:900px){.tDetay .dtContactGrid{grid-template-columns:1fr}}
 .tDetay .dtFooter{background:var(--dt-dark);color:rgba(255,255,255,.82);padding-top:clamp(56px,8vw,100px);padding-bottom:28px}
 .tDetay .dtFooterGrid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:clamp(28px,4vw,56px);padding-bottom:clamp(36px,5vw,56px)}
 .tDetay .dtFooterCol{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0}
