@@ -1370,11 +1370,11 @@ function Ipek(p:P){
           <a className="ipBtnOutline" href="#randevu">Randevu Al</a>
         </div>
       </Reveal>
-      <Reveal i={1} className="ipHeroPhoto">{b.cover_url&&b.cover_type==='video'?<video src={b.cover_url} autoPlay muted loop playsInline/>:b.cover_url?<img src={b.cover_url} alt={b.name}/>:b.business_type==='beauty'?<AutoCover/>:<i>✂</i>}</Reveal>
+      <Reveal i={1} className="ipHeroPhoto">{b.cover_url&&b.cover_type==='video'?<video src={b.cover_url} autoPlay muted loop playsInline/>:b.cover_url?<img src={b.cover_url} alt={b.name}/>:<AutoCover/>}</Reveal>
     </section>
 
     <section id="hakkimizda" className="ipIntro">
-      <Reveal className="ipIntroPhoto">{(p.gallery?.[0]?.image_url||b.cover_url)?<img src={p.gallery?.[0]?.image_url||b.cover_url} alt={b.name}/>:<i>✂</i>}</Reveal>
+      <Reveal className="ipIntroPhoto">{(p.gallery?.[0]?.image_url||b.cover_url)?<img src={p.gallery?.[0]?.image_url||b.cover_url} alt={b.name}/>:<AutoCover/>}</Reveal>
       <Reveal i={1} className="ipIntroText">
         <small>HOŞ GELDİNİZ</small>
         <h2>{dec(b,'ip_introTitle','Güzelliğin İnce Detaylarına Adanmış Bir Mekân.')}</h2>
@@ -4990,9 +4990,12 @@ function Detay(p:P){
     </div>}
   </main>;
 }
-/* Kapak fotoğrafı eklenmemiş GÜZELLİK salonları için otomatik kapak: 3 kareli (salon iç mekânı · cilt/spa · nail) yavaş
-   çapraz geçişli + Ken Burns yakınlaşma. Yalnızca business_type==='beauty' ve kapak/galeri fotoğrafı yokken kullanılır;
-   temalar kendi hero yapısına `AutoCover` koyar (Nova/Lumina/Cadre'nin zaten kendi otomatik hero'su var). */
+/* Kapak fotoğrafı eklenmemiş güzellik sektörü işletmeleri (kuaför/güzellik/nail-kirpik/spa) için otomatik
+   kapak: 3 kareli (salon iç mekânı · cilt/spa · nail) yavaş çapraz geçişli + Ken Burns yakınlaşma. Kapak/galeri
+   fotoğrafı yokken temalar kendi hero yapısına `AutoCover` koyar (Nova/Lumina/Cadre'nin zaten kendi otomatik
+   hero'su var). İpek ve Kil'de business_type'a bakılmaksızın koşulsuz kullanılır (o iki tema yalnızca güzellik
+   sektörü kategorilerine satılıyor); Roze/Onix/Vizon yalnızca business_type==='beauty' iken kullanır çünkü o
+   temalar başka kategoriye satılmıyor (Vizon'un spa_massage'ı hariç — orada henüz boş kalıyor, ayrı konu). */
 const AUTO_COVER_IMAGES=[
   'https://images.unsplash.com/photo-1633681926035-ec1ac984418a?q=72&w=1600&auto=format&fit=crop',
   'https://images.unsplash.com/photo-1610289982320-3891f7c9fd6d?q=72&w=1600&auto=format&fit=crop',
