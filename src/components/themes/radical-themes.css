@@ -4479,8 +4479,9 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tDetay .dtSkip:focus{transform:translateY(10px)}
 
 /* butonlar: köşeli, 56px, 15px 35px, ok ikonlu */
-.tDetay .dtBtn{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:56px;padding:15px 35px;background:var(--dt-accent);color:var(--dt-on-accent);border:1px solid var(--dt-accent);border-radius:0;font-size:16px;font-weight:500;line-height:1.2;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;transition:background .25s ease,border-color .25s ease,color .25s ease}
-.tDetay .dtBtn:hover{background:var(--dt-accent-strong);border-color:var(--dt-accent-strong)}
+.tDetay .dtBtn,.tDetay .dtBtnSolid{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:56px;padding:15px 35px;background:var(--dt-accent);color:var(--dt-on-accent);border:1px solid var(--dt-accent);border-radius:0;cursor:pointer;font-size:16px;font-weight:500;line-height:1.2;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;transition:background .25s ease,border-color .25s ease,color .25s ease}
+.tDetay .dtBtn:hover,.tDetay .dtBtnSolid:hover{background:var(--dt-accent-strong);border-color:var(--dt-accent-strong)}
+.tDetay .dtBtnSolid:disabled{opacity:.55;cursor:not-allowed}
 .tDetay .dtBtn svg{transition:transform .25s ease}
 .tDetay .dtBtn:hover svg{transform:translateX(5px)}
 .tDetay .dtBtn--outline{background:transparent;color:#fff;border-color:#fff}
@@ -4644,7 +4645,7 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tDetay .dtContact{background:var(--dt-dark);color:rgba(255,255,255,.86)}
 .tDetay .dtContact .dtEyebrow{color:var(--dt-accent)}
 .tDetay .dtContact h2{color:#fff}
-.tDetay .dtContactGrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:stretch}
+.tDetay .dtContactGrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:start}
 .tDetay .dtContactInfo{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
 .tDetay .dtContactInfo>p:first-child{font-size:17px;max-width:52ch;color:rgba(255,255,255,.86)}
 .tDetay .dtContactRow{display:block;font-size:16px;color:#fff}
@@ -4654,6 +4655,19 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tDetay .dtContactBtns{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px}
 .tDetay .dtContactMap{width:100%;min-height:280px}
 .tDetay .dtContactMap iframe{height:100%;min-height:280px}
+.tDetay .dtContactMap{margin-top:10px}
+.tDetay .dtContactFormCard{background:var(--dt-light);color:var(--dt-text);padding:clamp(28px,4vw,44px)}
+.tDetay .dtContactFormCard h3{color:var(--dt-ink);font-size:24px;margin-bottom:10px}
+.tDetay .dtContactFormCard>p{color:var(--dt-text);margin-bottom:22px}
+.tDetay .dtContactForm{display:flex;flex-direction:column;gap:14px}
+.tDetay .dtContactInput{min-height:52px;padding:14px 16px;border:1px solid var(--dt-line);border-radius:0;background:#fff;color:var(--dt-text);font-family:var(--dt-sans);font-size:15px}
+.tDetay .dtContactInput:focus-visible{outline:2px solid var(--dt-accent);outline-offset:2px}
+.tDetay .dtContactTextarea{resize:vertical;min-height:130px}
+.tDetay .dtContactErr{color:#c0392b;font-size:13px;margin:0}
+.tDetay .dtContactForm .dtBtnSolid{width:100%;margin-top:4px}
+.tDetay .dtContactSent{text-align:center;padding:10px 0 4px}
+.tDetay .dtContactSent span{display:inline-grid;place-items:center;width:52px;height:52px;background:var(--dt-accent);color:var(--dt-on-accent);font-size:22px;margin-bottom:14px}
+.tDetay .dtContactSent p{color:var(--dt-text)}
 @media(max-width:900px){.tDetay .dtContactGrid{grid-template-columns:1fr}}
 .tDetay .dtFooter{background:var(--dt-dark);color:rgba(255,255,255,.82);padding-top:clamp(56px,8vw,100px);padding-bottom:28px}
 .tDetay .dtFooterGrid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:clamp(28px,4vw,56px);padding-bottom:clamp(36px,5vw,56px)}

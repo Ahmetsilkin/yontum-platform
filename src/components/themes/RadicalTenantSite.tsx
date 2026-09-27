@@ -4954,8 +4954,13 @@ function Detay(p:P){
               {b.phone&&<a className="dtBtn" href={phoneHref}>Hemen Ara<DtArrow/></a>}
               {mapsHref&&<a className="dtBtn dtBtn--outline" href={mapsHref} target="_blank" rel="noopener noreferrer">Yol Tarifi Al<DtArrow/></a>}
             </div>
+            {b.show_map!==false&&b.address&&<div className="dtMap dtContactMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum haritası"/></div>}
           </div>
-          {b.show_map!==false&&b.address&&<div className="dtMap dtContactMap"><iframe src={`https://www.google.com/maps?q=${encodeURIComponent(b.address)}&output=embed`} loading="lazy" title="Konum haritası"/></div>}
+          <div className="dtContactFormCard">
+            <h3 className="dtDisplay">Mesaj Gönder</h3>
+            <p>Aracın için soru sormak ister misin? Formu doldur, sana dönüş yapalım.</p>
+            <ContactMessageForm businessId={b.id} prefix="dt"/>
+          </div>
         </div>
       </div>
     </section>
