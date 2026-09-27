@@ -557,10 +557,11 @@ function MenuCategoryForm({category,businessId,onSave,onCancel}:{category:any;bu
 }
 function MenuItemForm({item,categories,businessId,onSave,onCancel}:{item:any;categories:any[];businessId:string;onSave:(row:any)=>void;onCancel:()=>void}){
   const[msg,setMsg]=useState('');
+  const[photoRemoved,setPhotoRemoved]=useState(false);
   async function submit(e:React.FormEvent<HTMLFormElement>){
     e.preventDefault();
     const f=new FormData(e.currentTarget),raw=String(f.get('price')||'');
-    let imageUrl=item.image_url||'';
+    let imageUrl=photoRemoved?'':(item.image_url||'');
     const photo=f.get('image')as File;
     if(photo?.size){
       const ext=photo.name.split('.').pop(),path=`${businessId}/menu-item-${Date.now()}.${ext}`,up=await db.storage.from('business-media').upload(path,photo);
@@ -575,7 +576,7 @@ function MenuItemForm({item,categories,businessId,onSave,onCancel}:{item:any;cat
     <label>Ürün adı<input className="input" name="name" defaultValue={item.name||''} required/></label>
     <label>Fiyat (isteğe bağlı)<input className="input" name="price" type="number" min="0" defaultValue={item.price??''}/></label>
     <label>Açıklama<input className="input" name="description" defaultValue={item.description||''}/></label>
-    <label>Fotoğraf (isteğe bağlı){item.image_url&&<img src={item.image_url} alt="" style={{display:'block',width:60,height:60,objectFit:'cover',margin:'6px 0'}}/>}<input className="input" name="image" type="file" accept="image/png,image/jpeg,image/webp"/></label>
+    <label>Fotoğraf (isteğe bağlı){item.image_url&&!photoRemoved&&<span style={{display:'flex',alignItems:'center',gap:10,margin:'6px 0'}}><img src={item.image_url} alt="" style={{width:60,height:60,objectFit:'cover'}}/><button type="button" className="danger" onClick={()=>setPhotoRemoved(true)}>Fotoğrafı Kaldır</button></span>}<input className="input" name="image" type="file" accept="image/png,image/jpeg,image/webp" onChange={()=>setPhotoRemoved(false)}/></label>
     {msg&&<p className="formError">{msg}</p>}
     <button className="blackBtn">Kaydet</button>
     <button type="button" onClick={onCancel}>Vazgeç</button>
