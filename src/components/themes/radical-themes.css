@@ -4275,13 +4275,14 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 }
 
 /* ================= ASPAVA — Mama Shelter'dan esinlenen premium, "canlı" restoran/bar teması =================
-   Palet (brief'ten): --asp-bg koyu füme-siyah, --asp-canvas sıcak krem, --asp-accent canlı turuncu; koyu
-   bölümlerde beyaz metin, açık (canvas) bölümlerde --asp-ink. Küçük/etiket metinlerde tam doygun turuncu
-   canvas üstünde düşük kontrast verdiği için --asp-accent-text (turuncu+mürekkep karışımı, daha koyu)
-   kullanılıyor — dolgular/butonlar hep --asp-accent. Başlık Syne, gövde Plus Jakarta Sans. */
+   Palet (marka güncellemesi): --asp-bg koyu füme-siyah, --asp-canvas sıcak krem, --asp-accent "Turbo Yellow"
+   (CTA/buton dolguları, ikonik slogan vurguları — koyu zeminde mükemmel kontrast). Tam doygun sarı, canvas
+   (krem) üstünde ve küçük/etiket metinlerde neredeyse görünmez kaldığından, marka kitinin ikincil rengi
+   "Deep Olive" burada --asp-accent-text olarak kullanılıyor (fiyat, eyebrow, yıldız, menü ayracı gibi
+   canvas üstü ince metin/çizgiler). Başlık Syne, gövde Plus Jakarta Sans. */
 .tAspava{
-  --asp-bg:#0B0F19;--asp-canvas:#FAF7F2;--asp-accent:#FF6B52;--asp-accent-ink:#0B0F19;
-  --asp-accent-text:color-mix(in srgb,#FF6B52 68%,#1A1A1A 32%);
+  --asp-bg:#0B0F19;--asp-canvas:#FAF7F2;--asp-accent:#FFE900;--asp-accent-ink:#0B0F19;
+  --asp-accent-text:#7F7500;
   --asp-ink:#1A1A1A;--asp-line:color-mix(in srgb,#fff 14%,transparent);--asp-line-canvas:color-mix(in srgb,#1A1A1A 14%,transparent);
   --asp-muted:color-mix(in srgb,#fff 62%,transparent);--asp-muted-canvas:color-mix(in srgb,#1A1A1A 60%,transparent);
   --head:'Syne',Arial,sans-serif;--body:'Plus Jakarta Sans','Inter',Arial,sans-serif;
@@ -4335,8 +4336,9 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .aspBentoBig img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.7,.3,1)}
 .aspBentoBig:hover img{transform:scale(1.05)}
 .aspBentoNote{grid-column:span 2;border-radius:26px;background:var(--asp-canvas);color:var(--asp-ink);display:flex;align-items:center;padding:34px;transition:box-shadow .3s ease}
-.aspBentoNote:hover{box-shadow:0 0 0 1px color-mix(in srgb,var(--asp-accent) 55%,transparent),0 20px 50px -20px color-mix(in srgb,var(--asp-accent) 45%,transparent)}
+.aspBentoNote:hover{box-shadow:0 0 0 1px color-mix(in srgb,var(--asp-accent-text) 45%,transparent),0 20px 50px -20px color-mix(in srgb,var(--asp-accent-text) 35%,transparent)}
 .aspBentoNote p{font-family:var(--head);font-weight:700;font-size:clamp(20px,2.2vw,28px);line-height:1.25;margin:0}
+.aspBentoNote em{color:var(--asp-accent-text)}
 .aspBentoQuote{grid-column:span 2;border-radius:26px;background:color-mix(in srgb,#fff 6%,var(--asp-bg));border:1px solid var(--asp-line);padding:28px;display:flex;align-items:center}
 .aspBentoQuote:empty{display:none}
 .aspBentoQuote .ownQuote{width:100%}
@@ -4369,7 +4371,7 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .aspMenu .aspSectionHead h2{color:var(--asp-ink)}
 .aspMenuEmpty{text-align:center;color:var(--asp-muted-canvas)}
 .aspMenuGrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:48px 40px}
-.aspMenuCol h3{font-family:var(--head);font-size:20px;padding-bottom:14px;margin-bottom:20px;border-bottom:2px solid var(--asp-ink)}
+.aspMenuCol h3{font-family:var(--head);font-size:20px;padding-bottom:14px;margin-bottom:20px;border-bottom:2px solid var(--asp-accent-text)}
 .aspMenuList{display:flex;flex-direction:column;gap:18px}
 .aspMenuRowHead{display:flex;align-items:baseline;gap:10px}
 .aspMenuRowHead span{font-weight:700;font-size:15px}
@@ -4391,7 +4393,7 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .tAspava .ownReviewGrid p{color:var(--asp-ink);font-size:14px;line-height:1.6;margin-top:12px;font-weight:400}
 .tAspava .ownReviewHead{display:flex;align-items:center;gap:12px}
 .tAspava .ownReviewHead b{font-size:14px;font-weight:700;color:var(--asp-ink)}
-.tAspava .ownReviewAvatar,.tAspava .ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--asp-accent);color:#fff}
+.tAspava .ownReviewAvatar,.tAspava .ownReviewAvatarFallback{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--asp-accent);color:var(--asp-accent-ink)}
 .tAspava .ownReviewAvatarFallback{display:grid;place-items:center;font-weight:800;font-size:15px}
 @media(max-width:800px){.tAspava .ownReviewGrid{grid-template-columns:1fr}}
 
@@ -4420,7 +4422,7 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 .aspContactTextarea{resize:vertical;min-height:110px}
 .aspContactErr{color:#c0392b;font-size:13px;margin:0}
 .aspContactSent{text-align:center;padding:20px}
-.aspContactSent span{display:inline-grid;place-items:center;width:50px;height:50px;border-radius:50%;background:var(--asp-accent);color:#fff;font-size:22px;margin-bottom:14px}
+.aspContactSent span{display:inline-grid;place-items:center;width:50px;height:50px;border-radius:50%;background:var(--asp-accent);color:var(--asp-accent-ink);font-size:22px;margin-bottom:14px}
 .aspContactSent p{color:var(--asp-muted-canvas);font-size:14px;line-height:1.6}
 
 /* FOOTER */
