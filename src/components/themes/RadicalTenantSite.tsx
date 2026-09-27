@@ -11,8 +11,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'light',split:'light',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',aspava:'dark',detay:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,aspava:Aspava,detay:Detay},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Yorumlar ve içerikler örnektir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'light',split:'light',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',aspava:'dark',detay:'light',bostan:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,aspava:Aspava,detay:Detay,bostan:Bostan},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Yorumlar ve içerikler örnektir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -4745,6 +4745,140 @@ function Aspava(p:P){
       <div className="aspFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
       <nav className="aspFooterLinks" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
       <div className="aspFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  <OrderChooser b={b}/>
+  </main>;
+}
+
+/* ================= BOSTAN — Sweetgreen esinli, "çiftlik standı" estetiğinde premium restoran teması
+   (kullanıcının pasted brief'i). Palet marka kitinden verildi: --bs-bg sıcak krem #F4F3E7, --bs-forest
+   koyu orman yeşili #1E3932 (başlık/gövde metni/çerçeve/footer — hem yapısal hem birincil metin rengi),
+   --bs-lime elektrik limon-yeşili #E6FF55. Lime çok açık/parlak olduğu için ASLA düz metin rengi olarak
+   krem zemin üstünde kullanılmaz — yalnızca buton/rozet/vurgu DOLGUSU olarak, üstünde her zaman koyu
+   --bs-forest metinle (aynı "açık aksana koyu metin" deseni Aspava/Onix'te de kullanıldı). Başlık Outfit
+   (ultra kalın, satır aralığı sıkı), açıklama vurgu cümlesi Instrument Serif italik, gövde Inter.
+   Kullanıcıyla konuşulup netleştirilen kapsam: (1) Aspava'nın YERİNE değil, ayrı yeni bir tema; (2) brief
+   gerçek bir sepet/ödeme akışı istiyordu ama sonra "yapıyı kopyala, ödeme sistemi olmasın" dendi — bu
+   yüzden menü klasik satır listesi yerine ürün KARTLARI (fotoğraf + ad + açıklama + fiyat + yuvarlak "+")
+   olarak tasarlandı ama "+" gerçek bir sepete eklemiyor, platformun tüm restoran temalarındaki gibi tek
+   tıkla sofraPrimaryCta/OrderChooser akışına gidiyor (harici sipariş linki / WhatsApp / ara) — platformda
+   hiçbir yerde gerçek ödeme altyapısı yok. Brief'in "sürdürülebilirlik metriği" kartı uydurma sayı
+   istiyordu; proje kuralı gereği (uydurma istatistik yasak) bunun yerine gerçekten var olan bir veri
+   (kuruluş yılından hesaplanan deneyim yılı) varsa onu, yoksa düz bir fayda cümlesini gösteriyor — Taze
+   temasındaki "gerçek veriden rozet" ilkesiyle aynı. Brief'in çok-şubeli "konum seçici" hero girişi
+   atlandı (bu sistem tek işletme/tek site). Menü ürün kartlarında fotoğraf yalnızca işletme kendi
+   fotoğrafını yüklediyse gösterilir — kategoriye göre stok yemek fotoğrafı KONULMADI (gerçek olmayan bir
+   yemek görüntüsü göstermek yanıltıcı olur; bu, AutoCover'ın güzellik salonu iç mekân fotoğrafları için
+   kabul edilebilir olmasından farklı bir durum). */
+function bostanHighlight(b:any):{big:string;note:string}{
+  const years=b.established_year?Math.max(1,new Date().getFullYear()-b.established_year):null;
+  if(years)return{big:`${years}+`,note:dec(b,'bs_highlightNote','yıldır aynı özenle, günlük taze malzemeyle hazırlıyoruz.')};
+  return{big:dec(b,'bs_highlightBig','100%'),note:dec(b,'bs_highlightNote','günlük taze, yerel tedarikle hazırlanan lezzetler.')};
+}
+function Bostan(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const galleryPhotos=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean);
+  const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const coverSound=useCoverSound();
+  const heroPhoto=coverIsVideo?'':(b.cover_url||galleryPhotos[0]||'');
+  const stripPhotos=galleryPhotos.filter((u:string)=>u!==heroPhoto).slice(0,8);
+  const bigPhoto=stripPhotos[0]||heroPhoto;
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=(p.menuItems||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const orderCta=sofraPrimaryCta(b);
+  const highlight=bostanHighlight(b);
+  return <main id="top" className="tBostan">
+    <header className="bsNav">
+      <a className="bsBrand" href="#top">{b.name}</a>
+      <nav>
+        <a href="#menu">menü</a>
+        {(b.description||stripPhotos.length>0)&&<a href="#hikaye">hikayemiz</a>}
+        <a href="#iletisim">iletişim</a>
+      </nav>
+      {orderCta&&<Cta cta={orderCta} className="bsNavCta"/>}
+    </header>
+
+    <section className="bsHero">
+      <Reveal className="bsHeroText">
+        <p className="bsEyebrow">{b.hero_label||'taze · yerel · günlük'}</p>
+        <h1 className="bsHeroTitle">{b.hero_title||'İyi beslen,'}<br/>{b.hero_highlight||'iyi hisset.'}</h1>
+        <p className="bsHeroTag"><em>{b.hero_description||'yerel çiftliklerden gelen, günlük taze malzemelerle hazırlanır.'}</em></p>
+        <div className="bsHeroBtns">
+          {orderCta&&<Cta cta={orderCta} className="bsBtnSolid"/>}
+          <a className="bsBtnGhost" href="#menu">Menüyü Gör</a>
+        </div>
+      </Reveal>
+      <Reveal i={1} className="bsHeroMedia">
+        {coverIsVideo&&<CoverVideo src={b.cover_url} className="bsHeroVideo" videoRef={coverSound.ref} muted={!coverSound.soundOn}/>}
+        {!coverIsVideo&&heroPhoto&&<img src={heroPhoto} alt={b.name}/>}
+        {!coverIsVideo&&!heroPhoto&&<div className="bsHeroFallback" aria-hidden="true"/>}
+        {coverIsVideo&&coverSound.ready&&<CoverSoundButton className="bsSound" on={coverSound.soundOn} onToggle={coverSound.toggle}/>}
+      </Reveal>
+    </section>
+
+    <section id="menu" className="bsMenu">
+      <Reveal className="bsSectionHead"><small>menü</small><h2>{dec(b,'bs_menuTitle','Bugün ne var?')}</h2></Reveal>
+      {categories.length===0&&<p className="bsMenuEmpty">Menü yakında eklenecek.</p>}
+      {categories.map((c:any,ci:number)=><Reveal key={c.id} i={ci} className="bsMenuCat">
+        <h3>{c.name}</h3>
+        <div className="bsMenuGrid">
+          {items.filter((it:any)=>it.category_id===c.id).map((it:any)=><article className="bsCard" key={it.id}>
+            <div className="bsCardImg">{it.image_url?<img src={it.image_url} alt={it.name} loading="lazy"/>:<div className="bsCardImgFallback" aria-hidden="true"/>}</div>
+            <div className="bsCardBody">
+              <div className="bsCardHead"><h4>{it.name}</h4>{orderCta&&<Cta cta={orderCta} className="bsCardAdd" aria-label={`${it.name} sipariş et`}>+</Cta>}</div>
+              {it.description&&<p className="bsCardDesc">{it.description}</p>}
+              {b.show_prices!==false&&it.price!=null&&<b className="bsCardPrice">₺{Number(it.price).toLocaleString('tr-TR')}</b>}
+            </div>
+          </article>)}
+        </div>
+      </Reveal>)}
+      {orderCta&&<div className="bsMenuCta"><Cta cta={orderCta} className="bsBtnSolid"/></div>}
+    </section>
+
+    {(bigPhoto||b.description)&&<section id="hikaye" className="bsGrid">
+      <div className="bsGridTop">
+        {bigPhoto&&<Reveal as="figure" className="bsGridPhoto"><img src={bigPhoto} alt={b.name} loading="lazy"/></Reveal>}
+        <Reveal i={1} className="bsGridStat"><b>{highlight.big}</b><p>{highlight.note}</p></Reveal>
+      </div>
+      {stripPhotos.length>1&&<Reveal i={2} className="bsGridStrip">
+        {stripPhotos.slice(1).map((src:string)=><figure key={src}><img src={src} alt="" loading="lazy"/></figure>)}
+      </Reveal>}
+    </section>}
+
+    <OwnRatings businessId={b.id}/>
+    <GoogleReviews businessId={b.id}/>
+
+    <section id="iletisim" className="bsContact">
+      <Reveal className="bsSectionHead"><small>iletişim</small><h2>Bize uğra.</h2></Reveal>
+      <div className="bsContactGrid">
+        <div className="bsContactHours">
+          <h4>Çalışma Saatleri</h4>
+          {hourRows.map((r,i)=><div key={i} className="bsHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
+        </div>
+        <div className="bsContactInfo">
+          {b.address&&<p className="bsContactRow">{b.address}</p>}
+          {b.phone&&<a className="bsContactRow" href={`tel:${String(b.phone).replace(/\s+/g,'')}`}><WaIcon/>{b.phone}</a>}
+          {b.instagram&&<a className="bsContactRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a>}
+          {b.google_maps_url&&<a className="bsContactRow bsDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
+        </div>
+      </div>
+    </section>
+
+    <section className="bsMessageSection">
+      <Reveal className="bsSectionHead"><small>mesaj</small><h2>Bir şey mi sormak istiyorsun?</h2></Reveal>
+      <Reveal i={1} className="bsMessageFormWrap">
+        <div className="bsFormCard">
+          <h3>Bize yazın</h3>
+          <ContactMessageForm businessId={b.id} prefix="bs"/>
+        </div>
+      </Reveal>
+    </section>
+
+    <footer className="bsFooter">
+      <div className="bsFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
+      <nav className="bsFooterLinks" aria-label="Yasal bağlantılar"><a href="/gizlilik">gizlilik politikası</a><a href="/kosullar">kullanım koşulları</a></nav>
+      <div className="bsFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   <OrderChooser b={b}/>
   </main>;
