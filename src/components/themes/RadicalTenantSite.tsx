@@ -11,8 +11,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'light',split:'light',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',detay:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,detay:Detay},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Yorumlar ve içerikler örnektir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'light',split:'light',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',aspava:'dark',detay:'light'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,aspava:Aspava,detay:Detay},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Yorumlar ve içerikler örnektir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -4624,6 +4624,132 @@ function Cigkofte(p:P){
   <OrderChooser b={b}/>
     </main>;
 }
+/* ================= ASPAVA — Mama Shelter'dan esinlenen premium, "canlı" restoran/bar teması =================
+   Koyu füme-siyah (#0B0F19) zemin + sıcak krem (#FAF7F2) kart bölümleriyle dönüşümlü giden editoryal
+   kontrast, canlı turuncu (#FF6B52) vurgu; başlıklarda kalın/geometrik Syne, gövdede Plus Jakarta Sans,
+   başlıklarda doğal italik vurgu (paylaşılan ItalicTail). Yapı: koyu tam ekran kapak (video/foto + Ken
+   Burns) → asimetrik "bento" vitrin (büyük fotoğraf + editoryal metin kartı + canlı yorum alıntısı +
+   küçük fotoğraflar, kademeli beliren) → çok sütunlu menü matrisi (kategori başına sütun) → yorumlar →
+   koyu iletişim/rezervasyon bloğu → koyu mesaj formu (beyaz kart) → footer. Kullanıcının brief'i
+   Lenis/Framer Motion/GSAP ScrollTrigger istedi; bu projede scroll kütüphaneleri daha önce soruna yol
+   açtığı için (bkz. diğer temalardaki notlar) aynı görsel sonucu paylaşılan `Reveal` (IntersectionObserver
+   tabanlı kademeli beliren) + CSS hover/geçişlerle üretiyoruz — GSAP/Framer/Lenis hiç yok.
+   Rezervasyon ("Book a Table") her zaman telefon/WhatsApp'a gider (sistemde gerçek masa rezervasyon
+   altyapısı yok); sipariş/teslimat linkleri ayrı, diğer tüm restoran temalarıyla aynı ortak akış
+   (sofraPrimaryCta + Cta + OrderChooser). Brief'teki çok şube seçici bilinçli olarak eklenmedi — bu
+   sistemde her işletmenin tek adresi/tek sitesi var. Menü öğelerinde "Yeni/Şefin Önerisi" gibi rozetler
+   de eklenmedi — veritabanında böyle bir alan yok, olmayan veriyi uydurmamak için sade bırakıldı. */
+function aspReserveCta(b:any):Cta|null{
+  let wa=String(b.whatsapp_phone||b.phone||'').replace(/\D/g,'');if(wa.startsWith('0'))wa='90'+wa.slice(1);
+  if(b.whatsapp_enabled!==false&&wa)return{label:'Rezervasyon',href:`https://wa.me/${wa}`,external:true};
+  if(b.phone)return{label:'Rezervasyon',href:`tel:${String(b.phone).replace(/\s+/g,'')}`,external:false};
+  return null;
+}
+function Aspava(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const galleryPhotos=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean);
+  const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const coverSound=useCoverSound();
+  const heroPhoto=coverIsVideo?'':(b.cover_url||galleryPhotos[0]||'');
+  const bentoPhotos=Array.from(new Set([heroPhoto,...galleryPhotos].filter(Boolean))).slice(0,5);
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=(p.menuItems||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const orderCta=sofraPrimaryCta(b);
+  const reserveCta=aspReserveCta(b);
+  return <main id="top" className="tAspava">
+    <header className="aspNav">
+      <a className="aspBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>
+      <nav>
+        <a href="#menu">Menü</a>
+        {bentoPhotos.length>0&&<a href="#galeri">Galeri</a>}
+        <a href="#iletisim">İletişim</a>
+      </nav>
+      {orderCta&&<Cta cta={orderCta} className="aspNavBtn"/>}
+    </header>
+
+    <section className="aspHero">
+      {coverIsVideo&&<CoverVideo src={b.cover_url} className="aspHeroMedia" videoRef={coverSound.ref} muted={!coverSound.soundOn}/>}
+      {!coverIsVideo&&heroPhoto&&<img className="aspHeroMedia" src={heroPhoto} alt="" aria-hidden="true"/>}
+      {!coverIsVideo&&!heroPhoto&&<div className="aspHeroFallback" aria-hidden="true"/>}
+      <div className="aspHeroScrim"/>
+      {coverIsVideo&&coverSound.ready&&<CoverSoundButton className="aspSound" on={coverSound.soundOn} onToggle={coverSound.toggle}/>}
+      <div className="aspHeroInner">
+        <p className="aspEyebrow">{b.hero_label||'RESTORAN · BAR'}</p>
+        <h1 className="aspHeroTitle"><ItalicTail text={b.hero_title&&b.hero_highlight?`${b.hero_title} ${b.hero_highlight}`:(b.hero_title||'Ev yapımı lezzetler, ustaların elinden.')}/></h1>
+        {b.hero_description&&<p className="aspHeroDesc">{b.hero_description}</p>}
+        <div className="aspHeroBtns">
+          <a className="aspBtnGhost" href="#menu">Menüyü Gör</a>
+          {reserveCta&&<Cta cta={reserveCta} className="aspBtnSolid"/>}
+        </div>
+      </div>
+    </section>
+
+    {bentoPhotos.length>0&&<section id="galeri" className="aspShare">
+      <Reveal className="aspSectionHead"><small>{dec(b,'asp_shareLabel','KEYİFLE PAYLAŞ')}</small><h2>{dec(b,'asp_shareTitle','Sofra bizim, keyif senin.')}</h2></Reveal>
+      <div className="aspBento">
+        {bentoPhotos[0]&&<Reveal as="figure" className="aspBentoBig"><img src={bentoPhotos[0]} alt={b.name} loading="lazy"/></Reveal>}
+        <Reveal i={1} as="article" className="aspBentoNote"><p><ItalicTail text={dec(b,'asp_noteText','El emeği tabaklar, dost sofraları için hazırlanır.')}/></p></Reveal>
+        <Reveal i={2} className="aspBentoQuote"><OwnRatings businessId={b.id} variant="quote"/></Reveal>
+        {bentoPhotos.slice(1,5).map((src,i)=><Reveal key={src} as="figure" i={i+3} className="aspBentoSmall"><img src={src} alt="" loading="lazy"/></Reveal>)}
+      </div>
+    </section>}
+
+    <section id="menu" className="aspMenu">
+      <Reveal className="aspSectionHead"><small>MENÜ</small><h2>{dec(b,'asp_menuTitle','Menü')}</h2></Reveal>
+      {categories.length===0&&<p className="aspMenuEmpty">Menü yakında eklenecek.</p>}
+      <div className="aspMenuGrid">
+        {categories.map((c:any,ci:number)=><Reveal key={c.id} i={ci} className="aspMenuCol">
+          <h3>{c.name}</h3>
+          <div className="aspMenuList">
+            {items.filter((it:any)=>it.category_id===c.id).map((it:any)=><div className="aspMenuRow" key={it.id}>
+              <div className="aspMenuRowHead"><span>{it.name}</span><span className="aspMenuDots"/>{b.show_prices!==false&&it.price!=null&&<b>₺{Number(it.price).toLocaleString('tr-TR')}</b>}</div>
+              {it.description&&<p>{it.description}</p>}
+            </div>)}
+          </div>
+        </Reveal>)}
+      </div>
+      {orderCta&&<div className="aspMenuCta"><Cta cta={orderCta} className="aspBtnSolid"/></div>}
+    </section>
+
+    <OwnRatings businessId={b.id}/>
+    <GoogleReviews businessId={b.id}/>
+
+    <section id="iletisim" className="aspContact">
+      <Reveal className="aspSectionHead"><small>İLETİŞİM</small><h2>Bir masa ayırtalım.</h2></Reveal>
+      <div className="aspContactGrid">
+        <div className="aspContactHours">
+          <h4>Çalışma Saatleri</h4>
+          {hourRows.map((r,i)=><div key={i} className="aspHoursRow"><span>{r.label}</span><span>{r.value}</span></div>)}
+        </div>
+        <div className="aspContactInfo">
+          {b.address&&<p className="aspContactRow">{b.address}</p>}
+          {reserveCta&&<Cta cta={reserveCta} className="aspContactRow"><WaIcon/>{b.whatsapp_phone||b.phone}</Cta>}
+          {b.instagram&&<a className="aspContactRow" href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><IgIcon/>{b.instagram}</a>}
+          {b.google_maps_url&&<a className="aspContactRow aspDirectionsLink" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
+        </div>
+      </div>
+    </section>
+
+    <section className="aspMessageSection">
+      <Reveal className="aspSectionHead"><small>MESAJ</small><h2>Bize yazın.</h2></Reveal>
+      <Reveal i={1} className="aspMessageFormWrap">
+        <div className="aspFormCard">
+          <h3>Bir şey mi sormak istiyorsun?</h3>
+          <ContactMessageForm businessId={b.id} prefix="asp"/>
+        </div>
+      </Reveal>
+    </section>
+
+    <footer className="aspFooter">
+      <div className="aspFooterBrand"><b>{b.name}</b>{b.footer_note&&<p>{b.footer_note}</p>}</div>
+      <nav className="aspFooterLinks" aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a></nav>
+      <div className="aspFooterBottom">© {new Date().getFullYear()} {b.name}</div>
+    </footer>
+  <OrderChooser b={b}/>
+  </main>;
+}
+
 /* ============ DETAY — Araba Bakım / Detailing teması (randevulu) ============
    Referans: otomotiv/detailing işletmelerinin sık kullandığı sert, köşeli görünüm — Oswald (condensed,
    büyük harf) başlıklar + Inter gövde, koyu zeminler, tek güçlü vurgu rengi, köşeli 56px butonlar (radius 0,
