@@ -118,7 +118,7 @@ export default function AdminBusinessManager() {
     <div className="dashboardShell">
       <main className="dashboardMain noSide">
         <header className="dashboardTop">
-          <div className="platformLogo"><span>M</span><b>MEGSAK</b></div>
+          <div className="platformLogo"><span>M</span><b>Megsak</b></div>
           <div className="adminTopActions"><a className="plainAction" href="/yonetim/demo">Demo Site Üretici</a><button type="button" className="plainAction" onClick={logout}>Çıkış Yap</button></div>
         </header>
         <div className="dashboardContent">

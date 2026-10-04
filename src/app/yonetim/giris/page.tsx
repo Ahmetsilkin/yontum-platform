@@ -19,7 +19,7 @@ export default function AdminBusinessLogin() {
     <main className="authPage">
       <section className="authMain">
         <div className="authCard">
-          <div className="platformLogo"><span>M</span><b>MEGSAK</b></div>
+          <div className="platformLogo"><span>M</span><b>Megsak</b></div>
           <h2>{error ? 'Giriş yapılamadı' : 'Panele yönlendiriliyorsun…'}</h2>
           {error && <p className="formError">{error}</p>}
         </div>

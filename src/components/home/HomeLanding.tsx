@@ -125,7 +125,7 @@ const MOMENTS=[
   {h:'18:30',who:'Nail stüdyosu · Bursa',t:'Randevudan bir gün önce giden hatırlatma sayesinde gelemeyecek müşteri saatini iptal etti, boşalan saat başka biriyle doldu.'},
 ];
 const STEPS=[
-  {t:'Ücretsiz\nKayıt Ol',d:'E-posta ya da telefonla iki dakikada hesabını aç. Kredi kartı istemiyoruz.'},
+  {t:'Hesabını\nAl',d:'Bize ulaş; Megsak ekibi işletmenin hesabını açar ve giriş bilgilerini sana iletir.'},
   {t:'İşletmeni\nTanıt',d:'Hizmetlerini, fiyatlarını, çalışanlarını ve çalışma saatlerini ekle — panel adım adım yönlendirir.'},
   {t:'Temanı Seç &\nKişiselleştir',d:`${THEME_COUNT}+ temadan birini seç; logon, renklerin ve fotoğraflarınla sana özel hale getir.`},
   {t:'Randevu Almaya\nBaşla',d:'Siteni Instagram biyografine, Google profiline ve WhatsApp’a ekle; randevular kendiliğinden gelsin.'},

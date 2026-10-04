@@ -214,7 +214,7 @@ export default function DemoSiteGenerator(){
   const card={padding:12,border:'1px solid rgba(128,128,128,.35)',borderRadius:8} as const;
 
   return <div className="dashboardShell"><main className="dashboardMain noSide">
-    <header className="dashboardTop"><div className="platformLogo"><span>M</span><b>MEGSAK</b></div><div className="adminTopActions"><a className="plainAction" href="/yonetim">← İşletmeler</a></div></header>
+    <header className="dashboardTop"><div className="platformLogo"><span>M</span><b>Megsak</b></div><div className="adminTopActions"><a className="plainAction" href="/yonetim">← İşletmeler</a></div></header>
     <div className="dashboardContent">
       <section className="panel dashPanel">
         <div className="panelTitle"><div><h2>Demo site üretici</h2><p>Bölgedeki işletmeleri haritadan bul ya da elle ekle, seçtiklerinden "örnek taslak" site üret, işletmeciye gidip göster. Demo siteler arama motorlarına kapalıdır, en üstte "ÖRNEK TASARIM" etiketi taşır ve randevu/mesaj almaz. İşletmeci kabul ederse <b>Devret</b> ile gerçek hesaba çevrilir, kabul etmezse <b>Sil</b>.</p></div></div>

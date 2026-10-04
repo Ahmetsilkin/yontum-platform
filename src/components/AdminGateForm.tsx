@@ -21,7 +21,7 @@ export default function AdminGateForm() {
     <main className="authPage">
       <section className="authMain">
         <form className="authCard" onSubmit={submit}>
-          <div className="platformLogo"><span>M</span><b>MEGSAK</b></div>
+          <div className="platformLogo"><span>M</span><b>Megsak</b></div>
           <h2>Yönetim Paneli</h2>
           <p>Devam etmek için telefon numaranı ve şifreni gir.</p>
           {error && <p className="formError">{error}</p>}

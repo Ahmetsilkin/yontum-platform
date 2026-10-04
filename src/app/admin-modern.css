@@ -217,3 +217,87 @@ button.publishBadge:disabled{opacity:.6;cursor:default}
 .customerDetailModal{width:min(560px,100%)}
 .customerHistoryList{display:flex;flex-direction:column;max-height:320px;overflow:auto;margin-top:10px}
 @media(max-width:650px){.customerSearchBox input{min-width:0;width:100%}.customerToolbar{width:100%}}
+
+/* ================= v6 — developios görsel dili (ana sayfayla aynı): açık gri dokulu zemin, beyaz yuvarlak kartlar,
+   siyah kenar çubuğu + limon yeşili aktif sekme, koyu yeşil birincil buton, Inter Tight başlıklar. Renkler globals.css :root. */
+.dashboardShell{background-color:var(--bg-main);background-image:radial-gradient(rgba(0,0,0,.04) .8px,transparent .8px);background-size:4px 4px}
+.dashboardShell>aside{background:var(--side-bg)!important;background-image:none!important;border-right:0!important;color:var(--side-muted)}
+.dashboardShell>aside button,.dashboardShell>aside a{color:var(--side-muted)!important;border-radius:12px!important;font-weight:500}
+.dashboardShell>aside button:hover,.dashboardShell>aside a:hover{background:var(--side-hover)!important;color:var(--side-ink)!important}
+.dashboardShell>aside .active,.dashboardShell>aside .active:hover{background:var(--accent-lime)!important;color:#000!important;font-weight:600}
+.dashboardShell>aside .platformLogo,.dashboardShell>aside .platformLogo b{color:var(--side-ink)!important}
+.dashboardShell>aside .platformLogo small{color:var(--side-muted)}
+.dashboardShell>aside .mobileSideToggle{color:var(--side-ink)}
+.dashboardTop{background:transparent;border-bottom:0}
+.dashboardTop small{color:var(--text-tertiary);font-size:12px;font-weight:500;letter-spacing:.04em}
+.dashboardTop h1{font:600 clamp(26px,2.6vw,36px)/1.1 var(--font-display);letter-spacing:-.03em}
+.panel,.dashServiceGrid article,.siteEditor,.staffAdminGrid article,.manualReviewItem,.credBox,.analyticsGrid>div,.livePreviewBlock,.templatePreview,.reminderPanel{box-shadow:none;border-color:transparent}
+.panel{border-radius:var(--radius-card)}
+.contentHead h2,.panelTitle h2,.onboardingChecklist h2,.editorIntro h2{font:600 21px/1.25 var(--font-display);letter-spacing:-.02em}
+
+/* İstatistik kartları — developios "/01 · büyük rakam" kartları; ilki koyu yeşil vurgu kartı */
+.stats{counter-reset:stat;gap:14px}
+.stat{counter-increment:stat;display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:150px;border:0!important;border-radius:20px!important;box-shadow:none!important;background:var(--bg-card)!important;padding:20px 22px!important}
+.stat:after{display:none}
+.stat:before{content:'/0' counter(stat);font-size:11px;color:var(--text-tertiary);font-weight:500;order:-1}
+.stat small{order:2;font-size:13px;font-weight:500;letter-spacing:0;color:var(--text-secondary);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.stat b{order:1;margin-top:auto!important;font:600 clamp(30px,2.8vw,42px)/1 var(--font-display)!important;letter-spacing:-.03em!important;color:var(--text-primary)}
+.stats>.stat:first-child{background:var(--accent-primary)!important}
+.stats>.stat:first-child:before,.stats>.stat:first-child small{color:rgba(255,255,255,.72)}
+.stats>.stat:first-child b{color:#fff}
+.stats>.stat:first-child select{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2)}
+.stats>.stat:first-child select option{color:#000}
+.analyticsGrid>div{border-radius:20px}
+.analyticsGrid b{font-family:var(--font-display);font-weight:600}
+
+/* butonlar ve odak — koyu yeşil birincil, limon odak halkası */
+.blackBtn{background:var(--text-primary);box-shadow:none;border-radius:12px}
+.blackBtn:hover{background:var(--accent-primary)}
+.appointmentTabs button.active,.legacyDeviceButtons button.active{background:var(--text-primary);border-color:var(--text-primary)}
+.dashboardShell input,.dashboardShell select,.dashboardShell textarea{background:var(--bg-card)}
+.dashboardShell input:focus,.dashboardShell select:focus,.dashboardShell textarea:focus{border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(190,232,112,.55)}
+.dashboardShell .templatePreview.active{border-color:var(--accent-primary)!important;box-shadow:0 0 0 2px var(--accent-lime)}
+.dashboardShell .builderBlock>h3:before{background:var(--accent-lime)}
+.dashTable th,.dashTable .dayGroupHeader td{background:var(--bg-main)}
+.dashModal{border-radius:24px;box-shadow:0 30px 80px -20px rgba(0,0,0,.35)}
+.dashboardShell .dashModalBackdrop{background:rgba(0,0,0,.45)}
+.completedBadge,.publishBadge,.publishBadge.live{border-color:transparent}
+.reminderPanel{border-color:transparent}
+.customerVipBadge{background:var(--status-warn-bg);color:var(--status-warn-ink)}
+.ratingRequestBtn{border-color:transparent}
+
+/* marka logosu — ana sayfadaki gibi limon daire + Inter Tight */
+.platformLogo span{width:28px;height:28px;border-radius:50%;background:var(--accent-lime);color:#000;display:grid;place-items:center;font:700 13px var(--font-display);border:0!important}
+.platformLogo b{font:700 20px/1 var(--font-display);letter-spacing:-.03em!important}
+.platformLogo small{font:500 9px/1.2 var(--font-body);letter-spacing:.12em;margin-top:4px}
+
+/* GİRİŞ / ŞİFRE / DOĞRULAMA SAYFALARI — solda siyah çerçeveli blok, sağda beyaz form kartı */
+.authPage{background-color:var(--bg-main);background-image:radial-gradient(rgba(0,0,0,.04) .8px,transparent .8px);background-size:4px 4px;padding:12px;gap:12px}
+.authSide{background:#000!important;background-image:none!important;border-radius:clamp(24px,3vw,40px);border-right:0!important;color:#fff!important;position:relative;overflow:hidden;isolation:isolate}
+.authSide:before{content:'';position:absolute;width:70%;aspect-ratio:1;right:-18%;bottom:-22%;border-radius:50%;background:conic-gradient(from 200deg,var(--accent-lime) 0 38%,transparent 38%);-webkit-mask:radial-gradient(circle,transparent 62%,#000 62.5%);mask:radial-gradient(circle,transparent 62%,#000 62.5%);z-index:-1;opacity:.9}
+.authSide .platformLogo,.authSide .platformLogo b{color:#fff}
+.authSide .platformLogo small{color:#AEAEAE}
+.authSide h1{color:#fff!important;font:600 clamp(40px,5vw,72px)/1.05 var(--font-display)!important;letter-spacing:-.035em!important}
+.authSide h1 em{font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--accent-lime)}
+.authSide>small,.authSide p{color:#AEAEAE!important}
+.authMain{background:transparent!important}
+.authCard{background:#fff!important;border:0!important;border-radius:24px!important;box-shadow:none!important}
+.authCard h2{font:600 32px/1.15 var(--font-display)!important;letter-spacing:-.03em!important}
+.input{background:var(--bg-main)!important;border-color:transparent!important;border-radius:12px!important}
+.input:focus{background:#fff!important;border-color:var(--accent-primary)!important;box-shadow:0 0 0 3px rgba(190,232,112,.55)!important}
+.formButton{background:#000!important;border-radius:12px!important;font-weight:600!important}
+.formButton:hover{background:var(--accent-primary)!important}
+.verifiedPage{background-color:var(--bg-main)!important;background-image:radial-gradient(rgba(0,0,0,.04) .8px,transparent .8px)!important;background-size:4px 4px!important}
+.verifiedPage section{background:#fff!important;border:0!important;border-radius:28px!important;box-shadow:none!important}
+.verifiedPage h1{font-family:var(--font-display)!important;font-weight:600!important;letter-spacing:-.03em!important}
+.verifiedIcon{background:var(--accent-lime)!important;color:#000!important}
+.primaryBtn{background:#000}
+.primaryBtn:hover{background:var(--accent-primary)}
+.panel .stat,.dashModal .stat{background:var(--bg-main)!important}
+.stats>.stat:first-child{background:var(--accent-primary)!important}
+.stat small select,.statRangeSelect{max-width:100%;font-size:11.5px;padding:4px 8px;border-radius:8px}
+.stat small{flex-wrap:wrap}
+.templatePreview,.dashServiceGrid article,.staffAdminGrid article,.manualReviewItem,.credBox,.livePreviewBlock{border:1px solid var(--line)!important}
+.templatePreview:hover{border-color:var(--text-primary)!important}
+.authPage:not(:has(.authSide)){grid-template-columns:1fr}
+.authSide:before{right:-20%;bottom:auto;top:-28%}
