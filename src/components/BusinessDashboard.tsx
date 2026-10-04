@@ -26,6 +26,21 @@ function normalizePhone(p:string){const d=String(p||'').replace(/\D/g,'');if(/^9
 function customerWaLink(c:Customer){let p=String(c.phone||'').replace(/\D/g,'');if(p.startsWith('0'))p='90'+p.slice(1);return`https://wa.me/${p}`}
 type ThemeField={key:string;label:string;placeholder?:string;type?:'text'|'textarea'|'faq'|'image'|'images'|'select';options?:{value:string;label:string;hint?:string;colors?:string[]}[]};
 const THEME_CUSTOM_FIELDS:Record<string,ThemeField[]>={
+  smash:[
+    {key:'sm_tagline',label:'Logo yanındaki kısa etiket',placeholder:'Izgara Burger'},
+    {key:'sm_heroLine3',label:'Kapaktaki 3. dev satır',placeholder:'CESUR LEZZET'},
+    {key:'sm_marquee',label:'Kayan bant kelimeleri (· ile ayır)',placeholder:'SULU · PEYNİRLİ · DOPDOLU'},
+    {key:'sm_flavorTitle',label:'Lezzet bölümü başlığı',placeholder:'iyi hissettiren lezzet'},
+    {key:'sm_badge1Big',label:'Rozet 1 (büyük yazı)',placeholder:'GÜNLÜK'},{key:'sm_badge1Note',label:'Rozet 1 açıklaması',placeholder:'her sabah taze çekilen et'},
+    {key:'sm_badge2Big',label:'Rozet 2 (büyük yazı)',placeholder:'EL YAPIMI'},{key:'sm_badge2Note',label:'Rozet 2 açıklaması',placeholder:'her köfte siparişle ızgarada ezilir'},
+    {key:'sm_badge3Big',label:'Rozet 3 (büyük yazı)',placeholder:'TAZE'},{key:'sm_badge3Note',label:'Rozet 3 açıklaması',placeholder:'günlük sebze, günlük ekmek'},
+    {key:'sm_layersTitle',label:'Katman bölümü başlığı',placeholder:'KATMAN KATMAN'},
+    {key:'sm_layers',label:'Burger katman etiketleri (her satıra bir tane, üstten alta 6 satır)',type:'textarea',placeholder:'Üst ekmek\nTaze domates dilimi\nCheddar peyniri\nSmash dana köfte\nÇıtır marul\nAlt ekmek'},
+    {key:'sm_menuTitle',label:'Menü başlığı',placeholder:'HER LOKMADA KALİTE'},
+    {key:'sm_contactTitle',label:'İletişim başlığı',placeholder:'GEL, YE, TEKRAR GEL'},
+    {key:'sm_finalTitle',label:'Kapanış dev yazısı',placeholder:'HİSSET'},{key:'sm_finalSub',label:'Kapanış alt yazısı',placeholder:'farkı hisset'},
+    {key:'sm_footerTagline',label:'Footer sloganı',placeholder:'Smash köfte · kızarmış ekmek'},
+  ],
   detay:[
     {key:'dt_palette',label:'Renk kombinasyonu',type:'select',options:DETAY_PALETTES.map(p=>({value:p.id,label:p.label,hint:p.hint,colors:[p.dark,p.accent,p.light]}))},
     {key:'dt_kind',label:'İşletme türü etiketi (logonun altında görünür)',type:'select',options:DETAY_KINDS},

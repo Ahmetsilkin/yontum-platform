@@ -11,8 +11,8 @@ import TenantBooking from'@/components/TenantBooking';import AtelierBooking from
 const NovaScene=dynamic(()=>import('./NovaScene'),{ssr:false,loading:()=>null});
 type P={b:any;services:any[];hours:any[];staff:any[];staffServices:any[];staffHours:any[];gallery:any[];media:any[];blogPosts?:any[];menuCategories?:any[];menuItems?:any[]};
 const SCHEME_COLORS:Record<string,{bg:string;text:string}>={light:{bg:'#f8f7f3',text:'#171717'},dark:{bg:'#0d0d0d',text:'#f6f2e9'},warm:{bg:'#f4eadb',text:'#39261d'},natural:{bg:'#eef3ea',text:'#243328'},soft:{bg:'#fff3f7',text:'#422531'},vivid:{bg:'#fff5df',text:'#27152c'},luxury:{bg:'#14110e',text:'#f2e3c5'}};
-const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'light',split:'light',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',aspava:'dark',detay:'light',bostan:'light'};
-export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,aspava:Aspava,detay:Detay,bostan:Bostan},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Yorumlar ve içerikler örnektir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
+const FAMILY_DEFAULT_SCHEME:Record<string,string>={keskin:'light',atelier:'dark',vitrin:'dark',zarafet:'light',ipek:'light',roze:'soft',onix:'luxury',lumina:'dark',nova:'dark',cadre:'light',afis:'dark',brutal:'light',kil:'soft',defter:'warm',magaza:'light',deneyim:'light',split:'light',vizon:'light',sofra:'warm',taze:'light',ember:'dark',mocha:'light',cigkofte:'light',aspava:'dark',detay:'light',bostan:'light',smash:'dark'};
+export default function RadicalTenantSite(p:P){const family=(p.b.selected_theme_id||'barber_keskin').split('_').at(-1),C:any={keskin:Keskin,atelier:Atelier,vitrin:Vitrin,zarafet:Zarafet,ipek:Ipek,roze:Roze,onix:Onix,lumina:Lumina,nova:Nova,cadre:Cadre,afis:Afis,brutal:Brutal,kil:Kil,defter:Defter,magaza:Magaza,deneyim:Deneyim,split:Split,vizon:Vizon,sofra:Sofra,taze:Taze,ember:Ember,mocha:Mocha,cigkofte:Cigkofte,aspava:Aspava,detay:Detay,bostan:Bostan,smash:Smash},Layout=C[family]||Keskin,cfg=p.b.published_site_config||{},mode=cfg.colorMode||'light',accent=accentHex(cfg.accentColor,p.b.primary_color),effectiveScheme=p.b.background_scheme&&p.b.background_scheme!=='theme_default'?p.b.background_scheme:(FAMILY_DEFAULT_SCHEME[family]||'light'),schemeColors=SCHEME_COLORS[effectiveScheme]||SCHEME_COLORS.light;return <div className={`radical profession-${p.b.business_type} mode-${mode} scheme-${effectiveScheme} cta-${p.b.cta_style||'solid'} cta-anim-${p.b.cta_animation||'none'} font-${p.b.font_family||'serif'}`} style={{'--accent':accent,'--brand':accent,'--bg':schemeColors.bg,'--text':schemeColors.text,'--logo-scale':p.b.logo_scale||1,...(family==='detay'?detayVars(p.b):{})}as React.CSSProperties}>{p.b.is_demo&&<div className="demoBanner" role="note"><b>ÖRNEK TASARIM</b><span>{p.b.name} için hazırlanmış taslaktır; gerçek site değildir. Yorumlar ve içerikler örnektir. Randevu ve mesaj alınmaz.</span></div>}<Layout {...p}/><WhatsApp b={p.b}/><GoogleReviewLink b={p.b}/></div>}
 const Brand=({b}:{b:any})=><a className="rBrand" href="#top">{b.logo_url?<img src={b.logo_url} alt={b.name}/>:<i>{b.name?.[0]}</i>}<b>{b.name}</b></a>;
 const CTA=({b}:{b:any})=><a className="rCta" href="#randevu">{b.booking_button_text||'Randevu Al'} →</a>;
 function ServiceList({p,variant='cards'}:{p:P;variant?:string}){return <section id="hizmetler" className={`rServices ${variant}`}><header><small>{p.b.services_label||'HİZMETLER'}</small><h2>{p.b.services_title||'Hizmetler'}</h2></header><div>{p.services.map((s,i)=><article key={s.id}><span>{String(i+1).padStart(2,'0')}</span><h3>{s.name}</h3>{s.description&&<p>{s.description}</p>}<footer><em>{s.duration_minutes} dk</em>{p.b.show_prices&&s.price!=null&&<b>{Number(s.price).toLocaleString('tr-TR')} ₺</b>}</footer></article>)}</div></section>}
@@ -4881,6 +4881,210 @@ function Bostan(p:P){
       <div className="bsFooterBottom">© {new Date().getFullYear()} {b.name}</div>
     </footer>
   <OrderChooser b={b}/>
+  </main>;
+}
+
+/* ============ SMASH — burger restoranı teması (cravburgers.shop esinli brief) ============
+   Koyu kömür zemin (#0B0B0B), alev turuncusu (#E64A19) + cheddar sarısı (#FFB300) vurgu; Syne ultra kalın
+   büyük harf başlıklar, Plus Jakarta Sans gövde, Space Grotesk rozet/fiyat. Yapı: blur'lu sabit nav → dev
+   tipografi üstünde öne taşan burger görseli + dönen "kuruluş" rozeti → sonsuz kayan bant → asimetrik lezzet
+   ızgarası → kaydırdıkça katmanlarına ayrılan burger (sticky pin + scroll ilerlemesi, katmanlar CSS ile
+   çizildi, görsel gerektirmez) → yatay kayan menü kartları → yorumlar → iletişim → dev "HİSSET" kapanışı →
+   filigranlı footer. Brief GSAP/ScrollTrigger + Lenis istiyordu; projede scroll kütüphaneleri sorun
+   çıkardığı için pin/scrub etkileri aynı mantıkla sticky + tek bir rAF'lı scroll dinleyicisiyle yapıldı,
+   global smooth-scroll (Lenis) eklenmedi. Brief'teki şube şehir kartları (tek işletme = tek site) yerine
+   yatay kayan şerit menüyü taşıyor; uydurma kalori/protein rakamları yerine düzenlenebilir rozet metinleri
+   ve gerçek veri (kuruluş yılı) kullanılıyor. */
+const SMASH_LAYERS=['Üst ekmek','Taze domates dilimi','Cheddar peyniri','Smash dana köfte','Çıtır marul','Alt ekmek'];
+function smashReduced(){return typeof window!=='undefined'&&window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+/* Bölümün viewport içindeki ilerlemesini (0→1) --p değişkenine yazar; sticky iç kutu bu sürede sabit kalır. */
+function useSmashProgress(ref:React.RefObject<HTMLElement|null>,onProgress?:(p:number)=>void){
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    if(smashReduced()){el.style.setProperty('--p','1');onProgress?.(1);return}
+    let raf=0;
+    const tick=()=>{raf=0;const r=el.getBoundingClientRect(),span=Math.max(1,r.height-window.innerHeight),p=Math.min(1,Math.max(0,-r.top/span));el.style.setProperty('--p',p.toFixed(4));onProgress?.(p)};
+    const on=()=>{if(!raf)raf=requestAnimationFrame(tick)};
+    tick();
+    window.addEventListener('scroll',on,{passive:true});window.addEventListener('resize',on);
+    return()=>{window.removeEventListener('scroll',on);window.removeEventListener('resize',on);if(raf)cancelAnimationFrame(raf)};
+  },[]);// eslint-disable-line react-hooks/exhaustive-deps
+}
+function SmashBurger({labels,className=''}:{labels?:string[];className?:string}){
+  const kinds=['smBunTop','smTomato','smCheese','smPatty','smLettuce','smBunBottom'];
+  return <div className={`smBurger ${className}`} aria-hidden={labels?undefined:true}>
+    {kinds.map((k,i)=><div key={k} className="smLayer" style={{'--i':i}as React.CSSProperties}>
+      <div className={`smShape ${k}`}/>
+      {labels&&labels[i]&&<span className={`smLabel ${i%2?'smLabelL':'smLabelR'}`}><b>0{i+1}</b>{labels[i]}</span>}
+    </div>)}
+  </div>;
+}
+function SmashMenuTrack({children,pinned}:{children:React.ReactNode;pinned:boolean}){
+  const secRef=useRef<HTMLDivElement>(null),trackRef=useRef<HTMLDivElement>(null);
+  const[dist,setDist]=useState(0);
+  const[on,setOn]=useState(false);
+  useEffect(()=>{
+    if(!pinned)return;
+    const mq=window.matchMedia('(min-width: 821px) and (prefers-reduced-motion: no-preference)');
+    const measure=()=>{const t=trackRef.current;if(!t)return;setOn(mq.matches);setDist(Math.max(0,t.scrollWidth-t.clientWidth))};
+    measure();
+    const ro=new ResizeObserver(measure);if(trackRef.current)ro.observe(trackRef.current);
+    mq.addEventListener('change',measure);
+    return()=>{ro.disconnect();mq.removeEventListener('change',measure)};
+  },[pinned]);
+  const active=pinned&&on&&dist>0;
+  const live=useRef({active,dist});live.current={active,dist};
+  useSmashProgress(secRef,p=>{const t=trackRef.current;if(t)t.style.setProperty('--x',live.current.active?`${-p*live.current.dist}px`:'0px')});
+  return <div ref={secRef} className={`smHScroll ${active?'isPinned':''}`} style={active?{height:`calc(100vh + ${dist}px)`}:undefined}>
+    <div className="smHSticky"><div ref={trackRef} className="smHTrack">{children}</div></div>
+  </div>;
+}
+function Smash(p:P){
+  const{b}=p;
+  const hourRows=groupedHourRows(p.hours||[]);
+  const galleryPhotos:string[]=(p.gallery||[]).map((g:any)=>g.image_url).filter(Boolean);
+  const coverIsVideo=!!b.cover_url&&b.cover_type==='video';
+  const coverSound=useCoverSound();
+  const heroPhoto=coverIsVideo?'':(b.cover_url||galleryPhotos[0]||'');
+  const others=galleryPhotos.filter(u=>u!==heroPhoto);
+  const flavorPhoto=others[0]||heroPhoto;
+  const handPhoto=others[1]||'';
+  const finalPhoto=others[2]||others[0]||heroPhoto;
+  const categories=(p.menuCategories||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const items=(p.menuItems||[]).slice().sort((a:any,b2:any)=>a.sort_order-b2.sort_order);
+  const orderCta=sofraPrimaryCta(b);
+  const year=b.established_year;
+  const years=year?Math.max(1,new Date().getFullYear()-year):null;
+  const marquee=String(dec(b,'sm_marquee','SULU · PEYNİRLİ · DOPDOLU')).split(/\s*·\s*/).filter(Boolean);
+  const badgeText=`${year?`KURULUŞ ${year}`:'SMASH BURGER'} — ${b.name} — `.toLocaleUpperCase('tr-TR');
+  const layerLabels=String(dec(b,'sm_layers',SMASH_LAYERS.join('\n'))).split('\n').map(s=>s.trim());
+  const badges=[
+    {big:dec(b,'sm_badge1Big',years?`${years}+ YIL`:'GÜNLÜK'),note:dec(b,'sm_badge1Note',years?'aynı ızgarada, aynı tutkuyla':'her sabah taze çekilen et')},
+    {big:dec(b,'sm_badge2Big','EL YAPIMI'),note:dec(b,'sm_badge2Note','her köfte siparişle ızgarada ezilir')},
+    {big:dec(b,'sm_badge3Big','TAZE'),note:dec(b,'sm_badge3Note','günlük sebze, günlük ekmek')},
+  ];
+  const menuItems=categories.flatMap((c:any)=>items.filter((it:any)=>it.category_id===c.id).map((it:any)=>({...it,_cat:c.name})));
+  const pinMenu=menuItems.length>0&&menuItems.length<=14;
+  const card=(it:any)=><article className="smCard" key={it.id}>
+    <div className="smCardImg">{it.image_url?<img src={it.image_url} alt={it.name} loading="lazy"/>:<div className="smCardFallback" aria-hidden="true"/>}<span className="smCardCat">{it._cat}</span></div>
+    <div className="smCardBody">
+      <h3>{it.name}</h3>
+      {it.description&&<p>{it.description}</p>}
+      <div className="smCardFoot">
+        {b.show_prices!==false&&it.price!=null?<b className="smPrice">₺{Number(it.price).toLocaleString('tr-TR')}</b>:<span/>}
+        {orderCta&&<Cta cta={orderCta} className="smCardAdd" aria-label={`${it.name} sipariş et`}>+</Cta>}
+      </div>
+    </div>
+  </article>;
+  const layersRef=useRef<HTMLElement>(null);
+  useSmashProgress(layersRef);
+  return <main id="top" className="tSmash">
+    <header className="smNav">
+      <a className="smBrand" href="#top"><b>{b.name}</b><span>{dec(b,'sm_tagline','Izgara Burger')}</span></a>
+      <nav aria-label="Bölümler">
+        <a href="#top">Ana Sayfa</a>
+        <a href="#menu">Burgerler</a>
+        <a href="#lezzet">Lezzet</a>
+        <a href="#katmanlar">Katmanlar</a>
+        <a href="#iletisim">İletişim</a>
+      </nav>
+      {orderCta&&<Cta cta={orderCta} className="smNavCta">{orderCta.label} →</Cta>}
+    </header>
+
+    <section className="smHero">
+      <h1 className="smHeroType" style={{'--fit':Math.max(9,...[b.hero_title||'BURGER',b.hero_highlight||'TAZE SMASH',dec(b,'sm_heroLine3','CESUR LEZZET')].map((t:string)=>String(t).length))}as React.CSSProperties} aria-label={`${b.hero_title||'Burger'} ${b.hero_highlight||'taze smash'} ${dec(b,'sm_heroLine3','cesur lezzet')}`}>
+        <span aria-hidden="true">{b.hero_title||'BURGER'}</span>
+        <span aria-hidden="true" className="smOutline">{b.hero_highlight||'TAZE SMASH'}</span>
+        <span aria-hidden="true">{dec(b,'sm_heroLine3','CESUR LEZZET')}</span>
+      </h1>
+      <div className="smHeroMedia">
+        {coverIsVideo&&<CoverVideo src={b.cover_url} className="smHeroVideo" videoRef={coverSound.ref} muted={!coverSound.soundOn}/>}
+        {!coverIsVideo&&heroPhoto&&<img src={heroPhoto} alt={b.name}/>}
+        {!coverIsVideo&&!heroPhoto&&<SmashBurger className="smHeroBurger"/>}
+        {coverIsVideo&&coverSound.ready&&<CoverSoundButton className="smSound" on={coverSound.soundOn} onToggle={coverSound.toggle}/>}
+        <a className="smBadge" href="#menu" aria-label="Menüye git">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="smBadgePath" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text><textPath href="#smBadgePath">{badgeText}</textPath></text></svg>
+          <i aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></i>
+        </a>
+      </div>
+      <div className="smHeroFoot">
+        <p>{b.hero_description||'Kızgın sacda ezilerek pişen köftelerimiz, karamelize kabuğunun altında tüm suyunu saklar. Taze ekmek, eriyen cheddar, bol sos.'}</p>
+        <div className="smHeroBtns">
+          {orderCta&&<Cta cta={orderCta} className="smBtnSolid">{orderCta.label} →</Cta>}
+          <a className="smBtnGhost" href="#menu">Menüyü Gör</a>
+        </div>
+      </div>
+    </section>
+
+    <div className="smMarquee" aria-hidden="true">
+      <div className="smMarqueeTrack">{[0,1,2,3].map(k=><span key={k}>{marquee.map((w,i)=><Fragment key={i}><b>{w}</b><i>✱</i></Fragment>)}</span>)}</div>
+    </div>
+
+    <section id="lezzet" className="smFlavor">
+      <Reveal className="smFlavorMain">
+        {flavorPhoto?<img src={flavorPhoto} alt="" loading="lazy"/>:<div className="smFlavorFallback" aria-hidden="true"/>}
+        <h2>{dec(b,'sm_flavorTitle','iyi hissettiren lezzet')}</h2>
+      </Reveal>
+      <div className="smFlavorSide">
+        {badges.map((x,i)=><Reveal key={i} i={i+1} className={`smStat smStat${i+1}`}><b>{x.big}</b><p>{x.note}</p></Reveal>)}
+        <Reveal i={4} className="smStat smStatPhoto">
+          {handPhoto?<img src={handPhoto} alt="" loading="lazy"/>:<div className="smStatCta"><b>{dec(b,'sm_hungryTitle','ACIKTIN MI?')}</b>{orderCta&&<Cta cta={orderCta} className="smBtnDark">{orderCta.label} →</Cta>}</div>}
+        </Reveal>
+      </div>
+    </section>
+
+    <section id="katmanlar" ref={layersRef} className="smLayers">
+      <div className="smLayersSticky">
+        <div className="smLayersHead"><small>{dec(b,'sm_layersEyebrow','anatomi')}</small><h2>{dec(b,'sm_layersTitle','KATMAN KATMAN')}</h2></div>
+        <SmashBurger labels={layerLabels}/>
+        <p className="smLayersHint" aria-hidden="true">kaydır ↓</p>
+      </div>
+    </section>
+
+    <section id="menu" className="smMenu">
+      <div className="smMenuHead"><small>menü</small><h2>{dec(b,'sm_menuTitle','HER LOKMADA KALİTE')}</h2></div>
+      {menuItems.length===0&&<p className="smMenuEmpty">Menü yakında eklenecek.</p>}
+      {pinMenu&&<SmashMenuTrack pinned>{menuItems.map(card)}</SmashMenuTrack>}
+      {!pinMenu&&menuItems.length>0&&categories.map((c:any)=>{const list=menuItems.filter((it:any)=>it.category_id===c.id);if(!list.length)return null;return <div key={c.id} className="smMenuRow">
+        <h3 className="smMenuCat">{c.name}</h3>
+        <SmashMenuTrack pinned={false}>{list.map(card)}</SmashMenuTrack>
+      </div>})}
+    </section>
+
+    <div className="smReviews"><OwnRatings businessId={b.id}/><GoogleReviews businessId={b.id}/></div>
+
+    <section id="iletisim" className="smContact">
+      <div className="smContactInfo">
+        <small>iletişim</small>
+        <h2>{dec(b,'sm_contactTitle','GEL, YE, TEKRAR GEL')}</h2>
+        <div className="smHours">{hourRows.map((r,i)=><div key={i}><span>{r.label}</span><b>{r.value}</b></div>)}</div>
+        <div className="smContactLinks">
+          {b.address&&<p><MapPin size={18} aria-hidden="true"/>{b.address}</p>}
+          {b.phone&&<a href={`tel:${String(b.phone).replace(/\s+/g,'')}`}><Phone size={18} aria-hidden="true"/>{b.phone}</a>}
+          {b.instagram&&<a href={`https://instagram.com/${String(b.instagram).replace(/^@/,'').trim()}`} target="_blank" rel="noopener noreferrer"><Instagram size={18} aria-hidden="true"/>{b.instagram}</a>}
+          {b.google_maps_url&&<a className="smDirections" href={b.google_maps_url} target="_blank" rel="noopener noreferrer">Yol Tarifi Al →</a>}
+        </div>
+      </div>
+      <div className="smFormCard"><h3>Bize yazın</h3><ContactMessageForm businessId={b.id} prefix="sm"/></div>
+    </section>
+
+    <section className="smFinal">
+      <h2 className="smFinalType" style={{'--fit':Math.max(5,String(dec(b,'sm_finalTitle','HİSSET')).length)}as React.CSSProperties}><span>{dec(b,'sm_finalTitle','HİSSET')}</span><em>{dec(b,'sm_finalSub','farkı hisset')}</em></h2>
+      <div className="smFinalMedia">
+        {finalPhoto?<img src={finalPhoto} alt="" loading="lazy"/>:<SmashBurger className="smFinalBurger"/>}
+        {orderCta&&<Cta cta={orderCta} className="smBtnSolid smFinalBtn">{orderCta.label} →</Cta>}
+      </div>
+    </section>
+
+    <footer className="smFooter">
+      <div className="smFooterTop">
+        <p>{dec(b,'sm_footerTagline',`Smash köfte · kızarmış ekmek${year?` · ${year}'den beri`:''}`)}</p>
+        <nav aria-label="Alt bağlantılar"><a href="#menu">Burgerler</a><a href="#lezzet">Lezzet</a><a href="#iletisim">İletişim</a><a href="/gizlilik">Gizlilik</a><a href="/kosullar">Koşullar</a></nav>
+      </div>
+      <div className="smWatermark" aria-hidden="true" style={{'--fit':Math.max(4,String(b.name).length)}as React.CSSProperties}>{b.name}</div>
+      <div className="smFooterBottom">© {new Date().getFullYear()} {b.name} — Tüm hakları saklıdır</div>
+    </footer>
+    <OrderChooser b={b}/>
   </main>;
 }
 
