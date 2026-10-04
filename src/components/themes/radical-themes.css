@@ -5078,11 +5078,31 @@ html:has(.tSofra)::-webkit-scrollbar-thumb:hover{background:var(--sf-gray)}
 @media(max-width:600px){.smFinalMedia{aspect-ratio:4/5}}
 
 /* FOOTER — dev filigran */
-.smFooter{background:var(--sm-foot-bg);color:var(--sm-foot-text);padding:48px var(--sm-pad) 28px;overflow:hidden}
-.smFooterTop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;color:var(--sm-foot-muted);font-size:14px}
-.smFooterTop nav{display:flex;flex-wrap:wrap;gap:22px}
-.smFooterTop nav a:hover{color:var(--sm-mustard)}
-.smWatermark{font-family:var(--sm-display);font-weight:800;text-transform:uppercase;letter-spacing:-.06em;line-height:.8;font-size:clamp(22px,min(19vw,calc(86vw / var(--fit))),320px);color:var(--sm-mustard);white-space:nowrap;text-align:center;margin:30px 0 20px;overflow:hidden;text-overflow:clip}
-.smFooterBottom{font-size:13px;color:var(--sm-foot-muted);text-align:center}
+.smFooter{background:var(--sm-foot-bg);color:var(--sm-foot-text);padding:52px var(--sm-pad) clamp(30px,5vw,70px);overflow:hidden;--sm-cond:'League Gothic','Oswald','Arial Narrow',sans-serif}
+.smFooter :is(a,p){font-family:var(--sm-cond);text-transform:uppercase;letter-spacing:.01em;line-height:1}
+.smFooterTop{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px 40px;padding-bottom:26px;border-bottom:2px solid color-mix(in srgb,var(--sm-cream) 22%,transparent)}
+.smFooterTop nav{display:flex;flex-wrap:wrap;gap:12px 40px}
+.smFooterTop nav a{font-size:clamp(26px,2.4vw,36px);color:var(--sm-foot-text);transition:color .2s ease}
+.smFooter a:hover{color:var(--sm-mustard)}
+.smFooterCopy{font-size:clamp(22px,2vw,32px);color:var(--sm-foot-text)}
+.smFooterMid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px 30px;padding-top:26px}
+.smFooterMid p{font-size:clamp(22px,2vw,32px);color:var(--sm-foot-muted)}
+.smFooterMid nav{display:flex;gap:26px}
+.smFooterMid nav a{font-size:clamp(20px,1.6vw,26px);color:var(--sm-foot-muted)}
+/* dev filigran: iri yuvarlak harfler, kırmızı dolgu + kalın krem kontur; üstünde süzülen burger parçaları */
+.smWmWrap{position:relative;margin-top:clamp(50px,7vw,110px);padding-top:.5em;font-size:clamp(28px,min(22vw,calc(118vw / var(--fit))),360px)}
+.smWatermark{font-family:'Titan One','Syne',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:-.01em;line-height:.95;font-size:1em;color:var(--sm-red);-webkit-text-stroke:.09em var(--sm-cream);paint-order:stroke fill;text-wrap:balance;text-align:center;line-height:.98}
+.smPiece{position:absolute;display:block;pointer-events:none;animation:smBob 4.6s ease-in-out infinite;filter:drop-shadow(0 .08em .08em color-mix(in srgb,var(--sm-ink) 60%,transparent))}
+.smPieceLettuce{left:17%;top:.3em;clip-path:polygon(4% 46%,0 30%,9% 26%,8% 12%,20% 14%,24% 2%,36% 8%,46% 0,56% 7%,68% 2%,74% 12%,86% 10%,88% 24%,98% 28%,94% 42%,100% 54%,92% 64%,96% 78%,84% 82%,82% 94%,68% 90%,58% 100%,48% 92%,36% 98%,30% 88%,16% 90%,16% 78%,4% 74%,8% 60%);width:max(.62em,40px);height:max(.46em,30px);border-radius:70% 30% 62% 38% / 64% 42% 58% 36%;background:linear-gradient(118deg,transparent 47%,color-mix(in srgb,var(--sm-lettuce) 35%,var(--sm-cream)) 48% 52%,transparent 53%),radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--sm-lettuce) 65%,var(--sm-cream)) 0 18%,transparent 40%),radial-gradient(circle at 75% 75%,var(--sm-lettuce-dark) 0 20%,transparent 50%),var(--sm-lettuce);box-shadow:inset 0 0 0 .025em color-mix(in srgb,var(--sm-lettuce) 70%,var(--sm-cream)),inset -.04em -.05em 0 var(--sm-lettuce-dark);--r0:-16deg;--r1:6deg}
+.smPiecePatty{left:57%;top:.16em;width:max(.46em,30px);height:max(.58em,38px);border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--sm-patty-dark) 0 5%,transparent 6%),radial-gradient(circle at 62% 48%,var(--sm-patty-dark) 0 6%,transparent 7%),radial-gradient(circle at 40% 72%,var(--sm-patty-dark) 0 5%,transparent 6%),radial-gradient(circle at 70% 24%,color-mix(in srgb,var(--sm-patty) 55%,var(--sm-bun)) 0 5%,transparent 6%),radial-gradient(circle at 38% 38%,color-mix(in srgb,var(--sm-patty) 70%,var(--sm-bun)),var(--sm-patty) 55%,var(--sm-patty-dark));animation-delay:-1.4s;animation-duration:5.4s;--r0:-30deg;--r1:-10deg}
+.smPieceTomato{left:83%;top:.38em;width:max(.34em,24px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,transparent 0 20%,var(--sm-tomato-light) 21% 28%,transparent 29%),radial-gradient(circle,color-mix(in srgb,var(--sm-red) 72%,var(--sm-cream)) 0 62%,var(--sm-red) 64% 100%);animation-delay:-2.6s;animation-duration:4.2s;--r0:10deg;--r1:40deg}
+.smPieceCheese{left:5%;top:.46em;width:max(.32em,22px);aspect-ratio:1;background:var(--sm-mustard);border-radius:.03em;clip-path:polygon(0 0,100% 0,100% 82%,78% 82%,72% 100%,66% 82%,30% 82%,22% 96%,16% 82%,0 82%);animation-delay:-.7s;animation-duration:5s;--r0:18deg;--r1:-6deg}
+@keyframes smBob{0%,100%{transform:translateY(0) rotate(var(--r0,0deg))}50%{transform:translateY(-18%) rotate(var(--r1,0deg))}}
+@media(max-width:700px){.smFooterTop{flex-direction:column;align-items:flex-start}.smFooterTop nav{gap:8px 24px}}
+@media(prefers-reduced-motion:reduce){.smPiece{animation:none;transform:rotate(var(--r0,0deg))}}
 
 .tSmash{--oc-overlay:color-mix(in srgb,var(--sm-ink) 70%,transparent);--oc-bg:var(--sm-card);--oc-ink:var(--sm-text);--oc-border:1px solid var(--sm-line);--oc-radius:18px;--oc-shadow:0 30px 60px -20px var(--sm-shadow);--oc-font:var(--sm-body);--oc-title-font:var(--sm-display);--oc-title-size:1.5rem;--oc-title-weight:800;--oc-item-bg:var(--sm-flame);--oc-item-ink:var(--sm-on-flame);--oc-item-hover-bg:var(--sm-mustard);--oc-item-hover-ink:var(--sm-ink)}
+/* Smash: katmanlar ayrışırken her parça kendi ritminde hafifçe süzülür (iç .smShape — dış katmanın scroll transform'una dokunmaz) */
+.smLayers .smShape{animation:smLayerBob 3.8s ease-in-out infinite;animation-delay:calc(var(--i) * -.55s)}
+@keyframes smLayerBob{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(calc(var(--p) * -7px)) rotate(calc(var(--p) * 1.6deg))}}
+@media(prefers-reduced-motion:reduce){.smLayers .smShape{animation:none}}

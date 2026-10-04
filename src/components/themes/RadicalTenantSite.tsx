@@ -5079,11 +5079,20 @@ function Smash(p:P){
 
     <footer className="smFooter">
       <div className="smFooterTop">
-        <p>{dec(b,'sm_footerTagline',`Smash köfte · kızarmış ekmek${year?` · ${year}'den beri`:''}`)}</p>
-        <nav aria-label="Alt bağlantılar"><a href="#menu">Burgerler</a><a href="#lezzet">Lezzet</a><a href="#iletisim">İletişim</a><a href="/gizlilik">Gizlilik</a><a href="/kosullar">Koşullar</a></nav>
+        <nav aria-label="Alt bağlantılar"><a href="#top">Ana Sayfa</a><a href="#menu">Burgerler</a><a href="#lezzet">Lezzet</a><a href="#iletisim">İletişim</a></nav>
+        <p className="smFooterCopy">© {new Date().getFullYear()} {b.name} — Tüm hakları saklıdır</p>
       </div>
-      <div className="smWatermark" aria-hidden="true" style={{'--fit':Math.max(4,String(b.name).length)}as React.CSSProperties}>{b.name}</div>
-      <div className="smFooterBottom">© {new Date().getFullYear()} {b.name} — Tüm hakları saklıdır</div>
+      <div className="smFooterMid">
+        <p>{dec(b,'sm_footerTagline',`Smash köfte · kızarmış ekmek${year?` · ${year}'den beri`:''}`)}</p>
+        <nav aria-label="Yasal bağlantılar"><a href="/gizlilik">Gizlilik</a><a href="/kosullar">Koşullar</a></nav>
+      </div>
+      <div className="smWmWrap" aria-hidden="true" style={{'--fit':Math.max(4,Math.ceil(String(b.name).length/3),...String(b.name).split(/\s+/).map((w:string)=>w.length))}as React.CSSProperties}>
+        <div className="smWatermark">{b.name}</div>
+        <i className="smPiece smPieceLettuce"/>
+        <i className="smPiece smPiecePatty"/>
+        <i className="smPiece smPieceTomato"/>
+        <i className="smPiece smPieceCheese"/>
+      </div>
     </footer>
     <OrderChooser b={b}/>
   </main>;
